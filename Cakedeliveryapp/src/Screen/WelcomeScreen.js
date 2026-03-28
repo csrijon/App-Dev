@@ -36,9 +36,6 @@ const WelcomeScreen = () => {
         />
 
         {/* Button */}
-        {/* <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Get Started </Text>
-        </TouchableOpacity> */}
         <Button/>
 
         {/* Footer */}
