@@ -1,0 +1,160 @@
+import { View, Text, StatusBar, StyleSheet, ScrollView } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context";
+import Header from "../components/Header"
+import Search from "../components/Search";
+import Cakecard from "../components/Cakecard";
+import Ionicons from "react-native-vector-icons/Ionicons";
+
+const Homescreen = () => {
+    return (
+        <SafeAreaView style={styles.Homecontainer} >
+            <StatusBar backgroundColor="#FFF9E6" barStyle="dark-content" />
+
+            {/* Header Fixed */}
+            <Header name="Srijon Chowdhury" />
+
+            {/* Scrollable Content */}
+            <ScrollView showsVerticalScrollIndicator={false}>
+
+                <View style={styles.searchContainer} >
+                    <Search />
+                </View>
+
+                <View style={styles.featuredBakesContainer} >
+                    <Text style={styles.featuredBakesText} >Featured Bakes</Text>
+                    <Text style={styles.featuredBakesText} >View ALL</Text>
+                </View>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}  >
+                    <Cakecard />
+                     <Cakecard />
+                      <Cakecard />
+                       <Cakecard />
+                </ScrollView>
+                <Text style={styles.exploreCollectionsText} >
+                    Explore Collections
+                </Text>
+
+                <View style={styles.container}>
+                    <View style={styles.bigCard}>
+                        <Ionicons name="restaurant-outline" size={28} color="#6D4C41" />
+                        <Text style={styles.bigTitle}>Wedding masterpieces</Text>
+                        <Text style={styles.subText}>12 ARTISTS</Text>
+                    </View>
+
+                    <View style={styles.rightContainer}>
+                        <View style={styles.smallCard}>
+                            <View style={styles.iconCircle} >
+                                <Ionicons name="gift-outline" size={22} color="#6D4C41" />
+                            </View>
+                            <Text style={styles.smallText}>Birthday </Text>
+                        </View>
+
+                        <View style={[styles.smallCard, styles.pinkCard]}>
+                            <View style={styles.iconCircle}>
+                                <Ionicons name="cafe-outline" size={20} color="#6D4C41" />
+                            </View>
+                            <Text style={styles.smallText}>Cupcakes</Text>
+                        </View>
+                    </View>
+                </View>
+
+                <Text style={styles.exploreCollectionsText} >Nearby Artists</Text>
+
+                <Cakecard />
+
+            </ScrollView>
+        </SafeAreaView>
+    )
+}
+export default Homescreen;
+
+const styles = StyleSheet.create({
+    Homecontainer: {
+        flex: 1,
+        backgroundColor: "#f8f1df",
+        borderStyle: "solid",
+        borderBottomColor: "#e5e7eb",
+        borderBottomWidth: 1,
+    },
+    searchContainer: {
+        paddingHorizontal: 20,
+        marginVertical: 10,
+    },
+    featuredBakesContainer: {
+        flexDirection: "row",
+        paddingHorizontal: 20,
+        justifyContent: "space-between",
+        alignItems: "center",
+    },
+    featuredBakesText: {
+        fontSize: 18,
+        fontWeight: "bold",
+        color: "#75584e",
+        curser: "pointer"
+    },
+    exploreCollectionsText: {
+        fontSize: 18,
+        fontWeight: "bold",
+        color: "#75584e",
+        paddingHorizontal: 20,
+        marginVertical: 10,
+        letterSpacing: 0.4,
+    },
+    container: {
+        flexDirection: "row",
+        marginHorizontal: 20,
+        marginTop: 20,
+        gap: 15,
+    },
+    bigCard: {
+        flex: 1,
+        backgroundColor: "#E8DCCB",
+        borderRadius: 48,
+        padding: 20,
+        gap: 19,
+        justifyContent: "space-between",
+    },
+    bigTitle: {
+        fontSize: 16,
+        fontWeight: "600",
+        color: "#5D4037",
+    },
+    subText: {
+        fontSize: 10,
+        color: "#8D6E63",
+        marginTop: 5,
+    },
+    rightContainer: {
+        flex: 1,
+        justifyContent: "space-between",
+        gap: 15,
+    },
+    smallCard: {
+        height: 70,
+        backgroundColor: "#EDE0D4",
+        borderRadius: 35,
+        paddingHorizontal: 15,
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 10,
+    },
+
+    pinkCard: {
+        backgroundColor: "#E7C8C8",
+    },
+
+    iconCircle: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        backgroundColor: "#F3EFEF",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+
+    smallText: {
+        fontSize: 15,
+        fontWeight: "600",
+        color: "#5D4037",
+    },
+})
