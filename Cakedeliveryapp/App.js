@@ -1,11 +1,12 @@
 import WelcomeScreen from "./src/Screen/WelcomeScreen"
-import SIgnupScreen from "./src/Screen/SIgnupScreen"
+import Loginscreen from "./src/Screen/Loginscreen"
+import Signupscreen from "./src/Screen/Signupscreen"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 
 const App=()=>{
   return(
       <SafeAreaProvider>
-        <SIgnupScreen/>
+        <Signupscreen/>
       </SafeAreaProvider>
   )
 }
