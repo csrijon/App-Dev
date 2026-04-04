@@ -6,6 +6,7 @@ import CategoryCard from '../components/CategoryCard';
 import MenuCard from '../components/MenuCard';
 
 
+
 const CategoryListing = () => {
     return (
         <SafeAreaView style={styles.Categorycontainer} >
@@ -77,6 +78,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         justifyContent: "center",
         alignItems: "center",
+        // paddingHorizontal:20,
         gap: 20,
     }
 })

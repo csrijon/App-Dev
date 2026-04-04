@@ -1,7 +1,8 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity,Dimensions } from "react-native";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
+const screenWidth = Dimensions.get("window").width;
 
 const MenuCard = () => {
     return (
@@ -44,8 +45,8 @@ export default MenuCard;
 const styles = StyleSheet.create({
 
     cakecardContainer: {
-        width: 370,
-        height: 550,
+        width: screenWidth-48,
+        height: "auto",
         backgroundColor: "#fff",
         borderRadius: 48,
         padding: 24,

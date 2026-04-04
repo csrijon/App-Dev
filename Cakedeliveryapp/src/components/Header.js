@@ -32,7 +32,7 @@ export default Header;
 
 const styles = StyleSheet.create({
     container: {
-        height: 80,
+        height: "auto",
         backgroundColor: "#FFF9E6",
         flexDirection: "row",
         justifyContent: "space-between",
