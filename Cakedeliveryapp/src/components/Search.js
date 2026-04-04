@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         height: 50,
         borderRadius: 25,
-        marginTop: 20,
+        // marginTop: 20,
     },
     searchInput: {
         marginLeft: 10,

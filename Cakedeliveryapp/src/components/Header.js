@@ -1,7 +1,7 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const Header = ({ name }) => {
+const Header = ({ name,title }) => {
     return (
         <View style={styles.container}>
             
@@ -14,7 +14,7 @@ const Header = ({ name }) => {
                 />
                 </TouchableOpacity>
                 <View>
-                    <Text style={styles.welcomeText}>WELCOME BACK</Text>
+                    <Text style={styles.welcomeText}>{title?title:'WELCOME BACK'}</Text>
                     <Text style={styles.nameText}>{name}</Text>
                 </View>
             </View>

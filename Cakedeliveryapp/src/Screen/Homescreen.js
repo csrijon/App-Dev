@@ -4,6 +4,7 @@ import Header from "../components/Header"
 import Search from "../components/Search";
 import Cakecard from "../components/Cakecard";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import FoodCard from "../components/FoodCard";
 
 const Homescreen = () => {
     return (
@@ -59,9 +60,12 @@ const Homescreen = () => {
                 </View>
 
                 <Text style={styles.exploreCollectionsText} >Nearby Artists</Text>
-
-                <Cakecard />
-
+                <View style={styles.foodCardContainer} >
+                <FoodCard />
+                <FoodCard />
+                <FoodCard />
+                <FoodCard />
+                </View>
             </ScrollView>
         </SafeAreaView>
     )
@@ -78,7 +82,7 @@ const styles = StyleSheet.create({
     },
     searchContainer: {
         paddingHorizontal: 20,
-        marginVertical: 10,
+        marginVertical: 20,
     },
     featuredBakesContainer: {
         flexDirection: "row",
@@ -142,7 +146,6 @@ const styles = StyleSheet.create({
     pinkCard: {
         backgroundColor: "#E7C8C8",
     },
-
     iconCircle: {
         width: 40,
         height: 40,
@@ -151,10 +154,14 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
-
     smallText: {
         fontSize: 15,
         fontWeight: "600",
         color: "#5D4037",
     },
+    foodCardContainer:{
+      justifyContent:"center",
+        alignItems:"center",
+        paddingLeft:0,
+    }
 })
