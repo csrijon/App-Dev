@@ -6,11 +6,11 @@ const Detailsheader = () => {
     return (
         <View style={styles.Detailsheader} >
             <View style={styles.headerContent} >
-                <AntDesign name="arrowleft" color="#000" size={24} />
-                <Text>The Artisanal Patisserie</Text>
+                <AntDesign name="arrowleft" color="#75584e" size={24} />
+                <Text style={styles.headercontenttext} >The Artisanal Patisserie</Text>
             </View>
             <View style={styles.headerContent} >
-                <Ionicons name="search-outline" color="#8E8E8E" size={20} />
+                <Ionicons name="search-outline" color="#75584e" size={20} />
                 <TouchableOpacity>
                     <Image
                         source={require('../images/cakeimage.jpeg')}
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         height: "auto",
         paddingVertical: 20,
-        backgroundColor: "#FFF9E6",
+        backgroundColor: "#fff9e6",
     },
     headerContent: {
         flexDirection: "row",
@@ -44,6 +44,11 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         objectFit: "cover",
         resizeMode: "cover",
+    },
+    headercontenttext:{
+        fontSize: 16,
+        fontWeight: "700",
+        color: "#75584e"
     }
 
 })
