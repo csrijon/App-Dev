@@ -24,14 +24,22 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        backgroundColor: "#fff9e6"
+        backgroundColor: "#fff9e6",
+        borderBottomWidth:2,
+        borderColor:"red"
     },
     simpleheaderlogo: {
-        borderRadius: 9999
+        borderRadius: 9999,
+        width:40,
+        height:40,
     },
     simpleheadertext: {
         fontSize: 16,
         fontWeight: "700",
-        color: "#75584e"
+        color: "#75584e",
+        textAlign:"center",
+        position:"absolute",
+        left:0,
+        right:0,
     }
 })
