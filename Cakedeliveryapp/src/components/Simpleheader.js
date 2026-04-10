@@ -25,8 +25,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "space-between",
         backgroundColor: "#fff9e6",
-        borderBottomWidth:2,
-        borderColor:"red"
+        // borderBottomWidth:2,
+        // borderColor:"red"
     },
     simpleheaderlogo: {
         borderRadius: 9999,

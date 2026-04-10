@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
     alignItems: "center",
     backgroundColor: "#f4dce4",
+    flexWrap:"nowrap"
   },
   text: {
     fontSize: 14,
