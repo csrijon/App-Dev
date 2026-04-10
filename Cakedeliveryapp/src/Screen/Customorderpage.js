@@ -14,7 +14,7 @@ const Customorderpage = () => {
         <SafeAreaView style={styles.maincustomorderpage} >
             <StatusBar backgroundColor="#FFF9E6" barStyle="dark-content" />
             <Simpleheader />
-            <ScrollView vartical showsVerticalScrollIndicator={false} style={styles.scrollcustomorderpage} >
+            <ScrollView contentContainerStyle={{paddingBottom:40}} vartical showsVerticalScrollIndicator={false} style={styles.scrollcustomorderpage} >
                 {/* {top page text start} */}
                 <View style={styles.customfirsttext} >
                     <Text style={styles.textmasterpiece} >Design Your Masterpiece</Text>

@@ -5,7 +5,7 @@ const Simpleheader = () => {
     return (
         <View style={styles.simpleheader} >
 
-            <Image style={styles.simpleheaderlogo} source={require("../images/secendbackgroud.png")} />
+            <Image style={styles.simpleheaderlogo} source={require("../images/personimage.webp")} />
 
             <Text style={styles.simpleheadertext} >The Artisanal Patisserie</Text>
 
