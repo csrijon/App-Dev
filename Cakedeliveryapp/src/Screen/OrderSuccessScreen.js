@@ -4,8 +4,7 @@ import { StatusBar, View, StyleSheet, ScrollView, Text, ImageBackground } from "
 import LottieView from "lottie-react-native"
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Button from "../components/Button";
-
-
+import Oderplacecakecard from "../components/Oderplacecakecard"
 
 
 
@@ -72,6 +71,14 @@ const OrderSuccessScreen = () => {
                     <Button title="Track Order" />
                     <Button title="Go Home" />
                 </View>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}  >
+                    <Oderplacecakecard />
+                    <Oderplacecakecard />
+                    <Oderplacecakecard />
+                    <Oderplacecakecard />
+                    <Oderplacecakecard />
+                </ScrollView>
+
             </ScrollView>
         </SafeAreaView>
     )
@@ -184,8 +191,9 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         color: "#fff",
     },
-    Buttons:{
-        marginTop:20,
-        gap:15,
-    }
+    Buttons: {
+        marginTop: 25,
+        gap: 15,
+        marginBottom:25
+    },
 })
