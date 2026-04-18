@@ -69,7 +69,7 @@ const OrderSuccessScreen = ({navigation}) => {
                 {/* buttons  */}
                 <View style={styles.Buttons} >
                     <Button onPress={()=>navigation.navigate("Myorder")}  title="Track Order" />
-                    <Button title="Go Home" />
+                    <Button onPress={()=>navigation.navigate("Home")} title="Go Home" />
                 </View>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}  >
                     <Oderplacecakecard />
@@ -78,7 +78,6 @@ const OrderSuccessScreen = ({navigation}) => {
                     <Oderplacecakecard />
                     <Oderplacecakecard />
                 </ScrollView>
-
             </ScrollView>
         </SafeAreaView>
     )

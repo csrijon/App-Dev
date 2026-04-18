@@ -135,7 +135,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff9e6"
   },
   scrollmyordercontainer: {
-    flex: 1,
     padding: 20,
   },
   myordertext: {
@@ -150,6 +149,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 25,
     alignSelf: "flex-start",
+    marginBottom:15,
   },
   togglebutton: {
     paddingHorizontal: 30,
