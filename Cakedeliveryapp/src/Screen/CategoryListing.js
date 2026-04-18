@@ -7,7 +7,7 @@ import MenuCard from '../components/MenuCard';
 
 
 
-const CategoryListing = () => {
+const CategoryListing = ({navigation}) => {
     return (
         <SafeAreaView style={styles.Categorycontainer} >
             <StatusBar backgroundColor="#FFF9E6" barStyle={'dark-content'} />
@@ -31,7 +31,7 @@ const CategoryListing = () => {
                     <CategoryCard title="All Designs" />
                 </ScrollView>
                 <View style={styles.MenuCardsContainer} >
-                    <MenuCard />
+                    <MenuCard onpress={()=>navigation.navigate("Delivery")} />
                     <MenuCard />
                     <MenuCard />
                     <MenuCard />

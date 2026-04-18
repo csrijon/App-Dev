@@ -40,6 +40,20 @@ const Stackscreen = () => {
     </Stack.Navigator>
   )
 }
+
+const Orderstack = () => {
+  return (
+    <Stack.Navigator initialRouteName="Category" screenOptions={{headerShown:false}} >
+      <Stack.Screen name="Category" component={CategoryListing} />
+          <Stack.Screen name="Delivery" component={DeliveryMoment} />
+       <Stack.Screen name="Cakedetails" component={CakeDetails}/>
+      <Stack.Screen name="Ordersummary" component={Ordersummarypage}/>
+      <Stack.Screen name="Customorder" component={Customorderpage}/>
+      <Stack.Screen name="Ordesuccess" component={OrderSuccessScreen}/>
+      <Stack.Screen name="Myorder" component={Myorderscreen}/>
+    </Stack.Navigator>
+  )
+}
 const TabScreen = () => {
   return (
     <Tab.Navigator
@@ -55,7 +69,7 @@ const TabScreen = () => {
         tabBarItemStyle: {
           paddingTop: 10,
           borderRadius: 20,
-          paddingBottom:10
+          paddingBottom: 10
 
         },
         tabBarActiveTintColor: "#75584E",
@@ -76,7 +90,7 @@ const TabScreen = () => {
 
       <Tab.Screen
         name="Myorder"
-        component={CategoryListing}
+        component={Orderstack}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="cloud-done-sharp" color={color} size={size} />
@@ -86,7 +100,7 @@ const TabScreen = () => {
 
       <Tab.Screen
         name="Calender"
-        component={DeliveryMoment}
+        component={Customorderpage}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="calendar" color={color} size={size} />
@@ -103,6 +117,7 @@ const TabScreen = () => {
           )
         }}
       />
+
     </Tab.Navigator>
   )
 }

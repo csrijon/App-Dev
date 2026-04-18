@@ -4,7 +4,7 @@ import Detailsheader from "../components/Detailsheader";
 import { useState } from "react";
 
 
-const DeliveryMoment = () => {
+const DeliveryMoment = ({navigation}) => {
 
     const [selected, setselected] = useState(null)
     return (
@@ -87,7 +87,7 @@ const DeliveryMoment = () => {
                 </View>
 
                 {/* Button */}
-                <TouchableOpacity style={styles.nextBtn}>
+                <TouchableOpacity onPress={()=>navigation.navigate("Cakedetails")} style={styles.nextBtn}>
                     <Text style={styles.nextText}>Next: Summary →</Text>
                 </TouchableOpacity>
 

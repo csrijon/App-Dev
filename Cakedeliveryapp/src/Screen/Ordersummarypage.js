@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Button from "../components/Button";
 
-const Ordersummarypage = () => {
+const Ordersummarypage = ({navigation}) => {
     return (
         <SafeAreaView style={styles.Ordersummarypagecontainer} >
             <StatusBar backgroundColor="#fff9e6" barStyle="dark-content" />
@@ -148,7 +148,7 @@ const Ordersummarypage = () => {
                     </View>
 
                     <View>
-                        <Button title="Proceed to Payment" />
+                        <Button onPress={()=>navigation.navigate("Ordesuccess")} title="Proceed to Payment" />
                     </View>
                 </View>
 

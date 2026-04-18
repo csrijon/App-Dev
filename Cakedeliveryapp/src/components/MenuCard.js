@@ -4,7 +4,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const screenWidth = Dimensions.get("window").width;
 
-const MenuCard = () => {
+const MenuCard = ({onpress}) => {
     return (
         // <View style={styles.mainContainer}>
         <View style={styles.cakecardContainer}>
@@ -32,7 +32,7 @@ const MenuCard = () => {
 
             <View style={styles.cardPrice}>
                 <Text style={styles.price}>$500.00</Text>
-                <TouchableOpacity  style={styles.icon} >
+                <TouchableOpacity onPress={onpress} style={styles.icon} >
                     <AntDesign name="plus" color="#000" size={20} />
                 </TouchableOpacity>
             </View>

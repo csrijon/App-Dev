@@ -3,7 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import Detailsheader from "../components/Detailsheader";
 
 
-const CakeDetails = () => {
+const CakeDetails = ({navigation}) => {
     return (
         <SafeAreaView style={styles.CakeDetails} >
             <StatusBar backgroundColor="#fff9e6" barStyle="dark-content" />
@@ -61,11 +61,11 @@ const CakeDetails = () => {
 
                         {/* Buttons */}
                         <View style={styles.buttonContainer}>
-                            <TouchableOpacity style={styles.primaryBtn}>
+                            <TouchableOpacity onPress={()=>navigation.navigate("Ordersummary")}  style={styles.primaryBtn}>
                                 <Text style={styles.primaryText}>Add to Cart</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={styles.secondaryBtn}>
+                            <TouchableOpacity onPress={()=>navigation.navigate("Customorder")} style={styles.secondaryBtn}>
                                 <Text style={styles.secondaryText}>Custom Order</Text>
                             </TouchableOpacity>
                         </View>

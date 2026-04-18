@@ -8,7 +8,7 @@ import Oderplacecakecard from "../components/Oderplacecakecard"
 
 
 
-const OrderSuccessScreen = () => {
+const OrderSuccessScreen = ({navigation}) => {
     return (
         <SafeAreaView style={styles.ordersuccesscontainer} >
             <StatusBar backgroundColor="#fff9e6" barStyle="dark-content" />
@@ -68,7 +68,7 @@ const OrderSuccessScreen = () => {
 
                 {/* buttons  */}
                 <View style={styles.Buttons} >
-                    <Button title="Track Order" />
+                    <Button onPress={()=>navigation.navigate("Myorder")}  title="Track Order" />
                     <Button title="Go Home" />
                 </View>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}  >
