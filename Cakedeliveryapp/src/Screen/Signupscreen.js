@@ -1,13 +1,12 @@
 import { SafeAreaView } from "react-native-safe-area-context"
-import { View, StyleSheet, ScrollView, Text, StatusBar, Image, TextInput } from "react-native"
+import { View, StyleSheet, ScrollView, Text, StatusBar, Image, TextInput, TouchableOpacity } from "react-native"
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Button from "../components/Button";
 import Socialmediabutton from "../components/Socialmediabutton"
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 
-
-const Signupscreen = () => {
+const Signupscreen = ({navigation}) => {
     return (
         <SafeAreaView style={styles.signupsafearea}>
             <StatusBar backgroundColor="#FFF9E6" barStyle="dark-content" />
@@ -83,7 +82,10 @@ const Signupscreen = () => {
                         {/* {last element start} */}
                         <View style={styles.lastelement} >
                             <Text style={styles.lastelementText} >Already have an account?</Text>
-                            <Text style={styles.loginelementText} >Log in here</Text>
+                            <TouchableOpacity onPress={()=>navigation.navigate("Login")} >
+                                <Text style={styles.loginelementText} >Log in here</Text>
+                            </TouchableOpacity>
+
                         </View>
                     </View>
                     {/*signup form end*/}
@@ -166,34 +168,34 @@ const styles = StyleSheet.create({
     signupbutton: {
         marginVertical: 20,
     },
-    quickaccesstext:{
+    quickaccesstext: {
         textAlign: "center",
         color: "#646040",
         marginBottom: 20,
     },
-    socialmediabuttons:{
+    socialmediabuttons: {
         marginBottom: 20,
     },
-    lastelement:{
+    lastelement: {
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
         gap: 10,
     },
-    lastelementText:{
-        fontSize:16,
-        lineHeight:24,
+    lastelementText: {
+        fontSize: 16,
+        lineHeight: 24,
     },
-    loginelementText:{
-        fontSize:16,
-        lineHeight:24,
-        color:"#6b4a3f",
-        fontWeight:"bold",
-        cursor:"pointer",
+    loginelementText: {
+        fontSize: 16,
+        lineHeight: 24,
+        color: "#6b4a3f",
+        fontWeight: "bold",
+        cursor: "pointer",
     },
-    textinput:{
-        color:"#000",
-        flex:1,
+    textinput: {
+        color: "#000",
+        flex: 1,
     }
 
 

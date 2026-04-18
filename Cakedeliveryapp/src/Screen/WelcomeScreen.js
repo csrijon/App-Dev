@@ -7,9 +7,11 @@ import {
   StatusBar,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import  Button  from "../components/Button.jsx";
+import Button from "../components/Button.jsx";
+import { useNavigation } from "@react-navigation/native";
 
 const WelcomeScreen = () => {
+  const navigation = useNavigation()
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar backgroundColor="#efe3d3" barStyle="dark-content" />
@@ -36,10 +38,10 @@ const WelcomeScreen = () => {
         />
 
         {/* Button */}
-        <Button/>
+        <Button onPress={() => navigation.navigate("Signup")} title="Get Started" />
 
         {/* Footer */}
-        <Text style={styles.footer}>HANDCRAFTED IN PARIS</Text>
+        <Text style={styles.footer}>Created By Srijon</Text>
       </View>
     </SafeAreaView>
   );

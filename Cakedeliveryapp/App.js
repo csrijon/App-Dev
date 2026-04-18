@@ -9,13 +9,97 @@ import { SafeAreaProvider } from "react-native-safe-area-context"
 import Customorderpage from "./src/Screen/Customorderpage"
 import Ordersummarypage from "./src/Screen/Ordersummarypage"
 import OrderSuccessScreen from "./src/Screen/OrderSuccessScreen"
+import Myorderscreen from "./src/Screen/Myorderscreen"
+import { NavigationContainer } from "@react-navigation/native"
+import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const App=()=>{
-  return(
-      <SafeAreaProvider>
-        <OrderSuccessScreen/>
-        {/* <CakeDetails/> */}
-      </SafeAreaProvider>
+
+const Stack = createNativeStackNavigator()
+const Tab = createBottomTabNavigator()
+console.log(Stack)
+const App = () => {
+  return (
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <Stackscreen />
+      </NavigationContainer>
+    </SafeAreaProvider>
+  )
+}
+
+const Stackscreen = () => {
+  return (
+    <Stack.Navigator initialRouteName="Welcome" screenOptions={{ headerShown: false }}  >
+      <Stack.Screen name="Welcome" component={WelcomeScreen} />
+      <Stack.Screen name="Signup" component={Signupscreen} />
+      <Stack.Screen name="Login" component={Loginscreen} />
+      <Stack.Screen name="Tabs" component={TabScreen} />
+    </Stack.Navigator>
+  )
+}
+const TabScreen = () => {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: {
+          backgroundColor: "#FFF9E6",
+          height: 70,
+          borderTopLeftRadius: 40,
+          borderTopRightRadius: 40,
+          overflow: "hidden"
+        },
+        tabBarItemStyle: {
+          paddingTop: 10,
+          borderRadius:20
+        },
+        tabBarActiveTintColor: "#75584E",
+        tabBarInactiveTintColor: "#646040",
+        tabBarActiveBackgroundColor:"#F6CFC2",
+      }}
+    >
+      <Tab.Screen
+        name="Home"
+        component={Homescreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home-outline" color={color} size={size} />
+          )
+        }}
+      />
+
+      <Tab.Screen
+        name="Myorder"
+        component={Myorderscreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="cloud-done-sharp" color={color} size={size} />
+          )
+        }}
+      />
+
+      <Tab.Screen
+        name="Calender"
+        component={DeliveryMoment}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="calendar" color={color} size={size} />
+          )
+        }}
+      />
+
+      <Tab.Screen
+        name="Profile"
+        component={Customorderpage}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person" color={color} size={size} />
+          )
+        }}
+      />
+    </Tab.Navigator>
   )
 }
 export default App

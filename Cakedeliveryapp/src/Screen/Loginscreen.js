@@ -5,7 +5,7 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import Button from "../components/Button";
 import Socialmediabutton from "../components/Socialmediabutton"
 
-const Loginscreen = () => {
+const Loginscreen = ({navigation}) => {
     return (
         <SafeAreaView style={styles.loginsafearea} >
             <StatusBar backgroundColor="#FFF9E6" barStyle={"dark-content"} />
@@ -44,7 +44,7 @@ const Loginscreen = () => {
                     </View>
                     {/* {button start} */}
                     <View style={styles.loginbutton} >
-                        <Button title="Login to Haven" />
+                        <Button onPress={()=>navigation.navigate("Tabs")} title="Login to Haven" />
                     </View>
                     {/* {Button end} */}
                     <Text style={styles.orcontinue} >OR CONTINUE WITH</Text>

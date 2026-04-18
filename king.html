@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>My Orders - Cake Haven</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface": "#fff9e6",
+                        "surface-dim": "#e2dbb3",
+                        "on-secondary-container": "#5e4d54",
+                        "tertiary-dim": "#734557",
+                        "tertiary-container": "#f8bbd0",
+                        "outline": "#807c59",
+                        "tertiary-fixed": "#f8bbd0",
+                        "secondary-fixed-dim": "#e6ced6",
+                        "primary-container": "#f6cfc2",
+                        "on-background": "#363317",
+                        "secondary-fixed": "#f4dce4",
+                        "surface-container-lowest": "#ffffff",
+                        "background": "#fff9e6",
+                        "on-primary-fixed-variant": "#6a4e44",
+                        "on-error-container": "#6e0a12",
+                        "surface-container": "#f5efcd",
+                        "surface-container-low": "#faf4d6",
+                        "on-tertiary": "#fff7f7",
+                        "error-container": "#fa746f",
+                        "surface-bright": "#fff9e6",
+                        "on-surface-variant": "#646040",
+                        "on-primary-container": "#5f453b",
+                        "secondary-dim": "#5f4f55",
+                        "secondary": "#6c5a61",
+                        "on-primary": "#fff7f5",
+                        "primary-fixed-dim": "#e7c1b4",
+                        "on-secondary": "#fff7f8",
+                        "on-error": "#fff7f6",
+                        "inverse-primary": "#f6cfc2",
+                        "tertiary": "#815163",
+                        "tertiary-fixed-dim": "#e9aec3",
+                        "primary-dim": "#684d43",
+                        "outline-variant": "#b9b38d",
+                        "error-dim": "#67040d",
+                        "on-primary-fixed": "#4b3229",
+                        "error": "#a83836",
+                        "on-secondary-fixed-variant": "#68575e",
+                        "on-tertiary-fixed": "#4b2334",
+                        "primary-fixed": "#f6cfc2",
+                        "on-tertiary-container": "#623648",
+                        "on-tertiary-fixed-variant": "#6c3f51",
+                        "secondary-container": "#f4dce4",
+                        "inverse-on-surface": "#a29d88",
+                        "on-surface": "#363317",
+                        "inverse-surface": "#100e03",
+                        "surface-container-high": "#f0e9c5",
+                        "on-secondary-fixed": "#4b3b41",
+                        "surface-variant": "#eae3bb",
+                        "primary": "#75584e"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .order-card-gradient {
+            background: linear-gradient(135deg, #ffffff 0%, #faf4d6 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#FFF9E6]/80 backdrop-blur-md shadow-[0px_24px_48px_rgba(117,88,78,0.08)] px-6 py-4 flex justify-between items-center">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
+<img alt="User Profile" data-alt="Close up portrait of a smiling young man in soft warm natural lighting with a blurred cafe background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPaJnwOSO3Yw2E9clClB7qRT-wBEFnpiBHhD3oAEbdtISmkOu4sycNzkMRnDjCM2sDVl120VUFTWzOvaZMVVPvLHKtYXfRiH_eFvrN5Un_kS5dhSKBagXq1M6AcG3o1KG7uyxUXoSTAXKirsIflIre0jx10ds5X-REUcSPQCsUFnf0dSfooOwBJYsjK3NKYr539zNyS3Aphrxbtdp2Ut8AbMfRxTTiGmCPGKYHocR8ya243A-CYL13EA6uf9O8g5iG5lq4bgF-pqek"/>
+</div>
+<h1 class="font-headline text-2xl font-bold tracking-tight text-primary">The Artisanal Pâtisserie</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center text-primary active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+</header>
+<main class="pt-24 px-6 max-w-2xl mx-auto">
+<!-- Page Header & Tabs -->
+<section class="mb-8">
+<h2 class="font-headline text-display-md text-3xl font-bold text-on-surface mb-6">My Orders</h2>
+<div class="flex gap-2 p-1.5 bg-surface-container-low rounded-full w-fit">
+<button class="px-8 py-2.5 rounded-full bg-primary text-on-primary font-semibold text-sm transition-all shadow-sm">
+                    Active
+                </button>
+<button class="px-8 py-2.5 rounded-full text-on-surface-variant font-medium text-sm hover:bg-surface-container-high transition-all">
+                    Past
+                </button>
+</div>
+</section>
+<!-- Orders List -->
+<div class="space-y-6">
+<!-- Order Card 1: Pending -->
+<div class="order-card-gradient rounded-xl p-5 flex gap-5 shadow-[0px_24px_48px_rgba(117,88,78,0.06)] border border-outline-variant/10">
+<div class="relative w-28 h-28 shrink-0">
+<img alt="Dark Chocolate Cake" class="w-full h-full object-cover rounded-tl-xl rounded-br-xl" data-alt="Exquisite multi-layered dark chocolate cake with ganache frosting and gold leaf accents on a clean white surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzzivdFGO2WJMGlumXW_KRuO7otvX_jdin6e4PI0qgYzsax4r5nWIqzXDG5s7fv4cWRO1hDhino0GwPRsz4TdXDey_JkpteCO_mTPpNQIhmQ0LdipkRy_12viOiDfdHAnozp7jjgynHZSXWccHBnO0ZYGEAu7rl-3eLg8M9w3BdVN1A69FrRUOQeI5MEIyti2BPxo0b681R3iP17Wh1IIEKRWC2NzH65dhDH9XOFdQcVIxa-sIoktG8YCxOR36zi0x4uLn6rBcRJCD"/>
+<div class="absolute -top-2 -right-2 bg-tertiary-container text-on-tertiary-container text-[10px] font-bold px-2 py-1 rounded-sm uppercase tracking-wider">
+                        Pending
+                    </div>
+</div>
+<div class="flex flex-col justify-between py-1 flex-grow">
+<div>
+<div class="flex justify-between items-start">
+<h3 class="font-bold text-lg text-primary leading-tight">Midnight Truffle Gâteau</h3>
+<span class="font-bold text-primary">$48.00</span>
+</div>
+<p class="text-on-surface-variant text-sm mt-1">Order #CH-92831</p>
+<div class="flex items-center gap-1.5 mt-2">
+<span class="material-symbols-outlined text-sm text-outline" data-icon="calendar_today">calendar_today</span>
+<span class="text-xs font-medium text-on-surface-variant">Oct 24, 2023 • 2:30 PM</span>
+</div>
+</div>
+<div class="flex justify-end mt-2">
+<button class="text-xs font-bold text-primary uppercase tracking-widest hover:opacity-70 transition-opacity">Track Order</button>
+</div>
+</div>
+</div>
+<!-- Order Card 2: Accepted -->
+<div class="order-card-gradient rounded-xl p-5 flex gap-5 shadow-[0px_24px_48px_rgba(117,88,78,0.06)] border border-outline-variant/10">
+<div class="relative w-28 h-28 shrink-0">
+<img alt="Strawberry Shortcake" class="w-full h-full object-cover rounded-tl-xl rounded-br-xl" data-alt="Fresh strawberry shortcake with whipped cream and mint leaves in bright airy morning light on a rustic table" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC41BOnMDmND24ftp3dDJutzFUXuizY43TKFPdrnerftYq6iQf9M15ID-zEdvhljRyTuP7cjoEoUXhJ-d2NrU1BEJq3R4IErZywTpyGUUSUp8UCaCV1hWbAYz2M17_s_X3H6bbRHjoaHBTcRv3yDa88CP4iLwzRtT2S2H0OObE8geFAxyT-ElQpEBvvD29hLdGJY8-P67PTYiI-zy4A22GlF3SWA89i8TQH7w1MdgC8DgPbx6IYhdSYrd0udi-APzBrcgCHL_2XA_tn"/>
+<div class="absolute -top-2 -right-2 bg-primary-container text-on-primary-container text-[10px] font-bold px-2 py-1 rounded-sm uppercase tracking-wider">
+                        Accepted
+                    </div>
+</div>
+<div class="flex flex-col justify-between py-1 flex-grow">
+<div>
+<div class="flex justify-between items-start">
+<h3 class="font-bold text-lg text-primary leading-tight">Wild Berry Chantilly</h3>
+<span class="font-bold text-primary">$35.50</span>
+</div>
+<p class="text-on-surface-variant text-sm mt-1">Order #CH-92810</p>
+<div class="flex items-center gap-1.5 mt-2">
+<span class="material-symbols-outlined text-sm text-outline" data-icon="calendar_today">calendar_today</span>
+<span class="text-xs font-medium text-on-surface-variant">Oct 23, 2023 • 11:15 AM</span>
+</div>
+</div>
+<div class="flex justify-end mt-2">
+<button class="text-xs font-bold text-primary uppercase tracking-widest hover:opacity-70 transition-opacity">View Details</button>
+</div>
+</div>
+</div>
+<!-- Order Card 3: Delivered (Reference for UI style) -->
+<div class="opacity-70 bg-surface-container-low rounded-xl p-5 flex gap-5 border border-outline-variant/5">
+<div class="relative w-28 h-28 shrink-0 grayscale-[40%]">
+<img alt="Lemon Tart" class="w-full h-full object-cover rounded-tl-xl rounded-br-xl" data-alt="Artisanal lemon tart with scorched meringue peaks and citrus zest on a ceramic plate in soft evening light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzwGAI9VXJ6XY4fSvlyy5UzsDOq004-6qsjZhCrHZEVsWwjOD1x90ffTP4ZuqfHYCB4TpK9sHmPRu4dlgnTdTz0PZQESQVGcjwK4ZkX6H9gZ6h_cyAza9ZondYEhYPfMp6jIxJAIFCJTQ01J4EtMblYz8ym8446-FLuB6__P2Odj85E-U_JdX0td67MvkZ-mrp7rvmAdUNjVUUOST7XWr8kF8tC7_NoV5N3JqzbehSfSz6QuF3z1qn_JqgSuKS_NkQfIv1g8ycvNnZ"/>
+<div class="absolute -top-2 -right-2 bg-surface-container-highest text-on-surface-variant text-[10px] font-bold px-2 py-1 rounded-sm uppercase tracking-wider">
+                        Delivered
+                    </div>
+</div>
+<div class="flex flex-col justify-between py-1 flex-grow">
+<div>
+<div class="flex justify-between items-start">
+<h3 class="font-bold text-lg text-primary leading-tight">Citron Meringue Bloom</h3>
+<span class="font-bold text-primary">$29.00</span>
+</div>
+<p class="text-on-surface-variant text-sm mt-1">Order #CH-92755</p>
+<div class="flex items-center gap-1.5 mt-2">
+<span class="material-symbols-outlined text-sm text-outline" data-icon="calendar_today">calendar_today</span>
+<span class="text-xs font-medium text-on-surface-variant">Oct 20, 2023 • 4:45 PM</span>
+</div>
+</div>
+<div class="flex justify-end mt-2">
+<button class="px-4 py-1.5 rounded-full border border-primary/20 text-[10px] font-bold text-primary uppercase tracking-widest hover:bg-primary-container transition-colors">Reorder</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Empty State Logic could go here, but focusing on the list for now -->
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-[#FFF9E6] shadow-[0px_-10px_30px_rgba(117,88,78,0.05)] rounded-t-[3rem] z-50 border-t border-[#B9B38D]/15">
+<!-- Home -->
+<a class="flex flex-col items-center justify-center text-[#646040] px-6 py-2 hover:bg-[#FAF4D6] rounded-full active:scale-90 transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label text-[10px] font-medium tracking-wide">Home</span>
+</a>
+<!-- My Orders (ACTIVE) -->
+<a class="flex flex-col items-center justify-center bg-[#F6CFC2] text-[#75584E] rounded-full px-6 py-2 active:scale-90 transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_bag" style="font-variation-settings: 'FILL' 1;">shopping_bag</span>
+<span class="font-label text-[10px] font-bold tracking-wide">My Orders</span>
+</a>
+<!-- Calendar -->
+<a class="flex flex-col items-center justify-center text-[#646040] px-6 py-2 hover:bg-[#FAF4D6] rounded-full active:scale-90 transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+<span class="font-label text-[10px] font-medium tracking-wide">Calendar</span>
+</a>
+<!-- Profile -->
+<a class="flex flex-col items-center justify-center text-[#646040] px-6 py-2 hover:bg-[#FAF4D6] rounded-full active:scale-90 transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label text-[10px] font-medium tracking-wide">Profile</span>
+</a>
+</nav>
+</body></html>
