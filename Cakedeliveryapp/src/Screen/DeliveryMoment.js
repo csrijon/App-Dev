@@ -11,7 +11,7 @@ const DeliveryMoment = () => {
         <SafeAreaView style={styles.container}>
             <StatusBar backgroundColor="#f5ecd9" barStyle="dark-content" />
             <Detailsheader />
-            <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollcontainer} >
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom:40}} style={styles.scrollcontainer} >
                 {/* Header */}
                 <Text style={styles.step}>ORDER STEP 02</Text>
                 <Text style={styles.title}>Choose Your Delivery Moment</Text>

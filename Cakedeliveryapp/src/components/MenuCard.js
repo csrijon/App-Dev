@@ -32,7 +32,7 @@ const MenuCard = () => {
 
             <View style={styles.cardPrice}>
                 <Text style={styles.price}>$500.00</Text>
-                <TouchableOpacity style={styles.icon} >
+                <TouchableOpacity  style={styles.icon} >
                     <AntDesign name="plus" color="#000" size={20} />
                 </TouchableOpacity>
             </View>

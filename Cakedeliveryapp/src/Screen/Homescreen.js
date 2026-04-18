@@ -1,12 +1,14 @@
-import { View, Text, StatusBar, StyleSheet, ScrollView } from "react-native"
+import { View, Text, StatusBar, StyleSheet, ScrollView, TouchableOpacity } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../components/Header"
 import Search from "../components/Search";
 import Cakecard from "../components/Cakecard";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FoodCard from "../components/FoodCard";
+import { useWindowDimensions } from "react-native";
 
 const Homescreen = () => {
+    const {width,height} =useWindowDimensions()
     return (
         <SafeAreaView style={styles.Homecontainer} >
             <StatusBar backgroundColor="#FFF9E6" barStyle="dark-content" />
@@ -15,7 +17,7 @@ const Homescreen = () => {
             <Header name="Srijon Chowdhury" />
 
             {/* Scrollable Content */}
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView contentContainerStyle={{paddingBottom:40}} showsVerticalScrollIndicator={false}>
 
                 <View style={styles.searchContainer} >
                     <Search />
@@ -23,13 +25,15 @@ const Homescreen = () => {
 
                 <View style={styles.featuredBakesContainer} >
                     <Text style={styles.featuredBakesText} >Featured Bakes</Text>
-                    <Text style={styles.featuredBakesText} >View ALL</Text>
+                    <TouchableOpacity>
+                        <Text style={styles.featuredBakesText} >View ALL</Text>
+                    </TouchableOpacity>
                 </View>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}  >
                     <Cakecard />
-                     <Cakecard />
-                      <Cakecard />
-                       <Cakecard />
+                    <Cakecard />
+                    <Cakecard />
+                    <Cakecard />
                 </ScrollView>
                 <Text style={styles.exploreCollectionsText} >
                     Explore Collections
@@ -43,14 +47,14 @@ const Homescreen = () => {
                     </View>
 
                     <View style={styles.rightContainer}>
-                        <View style={styles.smallCard}>
+                        <View style={[styles.smallCard,{height:height*0.08}]}>
                             <View style={styles.iconCircle} >
                                 <Ionicons name="gift-outline" size={22} color="#6D4C41" />
                             </View>
                             <Text style={styles.smallText}>Birthday </Text>
                         </View>
 
-                        <View style={[styles.smallCard, styles.pinkCard]}>
+                        <View style={[styles.smallCard, styles.pinkCard,{height:height*0.08}]}>
                             <View style={styles.iconCircle}>
                                 <Ionicons name="cafe-outline" size={20} color="#6D4C41" />
                             </View>
@@ -61,10 +65,10 @@ const Homescreen = () => {
 
                 <Text style={styles.exploreCollectionsText} >Nearby Artists</Text>
                 <View style={styles.foodCardContainer} >
-                <FoodCard />
-                <FoodCard />
-                <FoodCard />
-                <FoodCard />
+                    <FoodCard />
+                    <FoodCard />
+                    <FoodCard />
+                    <FoodCard />
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -131,10 +135,9 @@ const styles = StyleSheet.create({
     rightContainer: {
         flex: 1,
         justifyContent: "space-between",
-        gap: 15,
+        gap: 10,
     },
     smallCard: {
-        height: 70,
         backgroundColor: "#EDE0D4",
         borderRadius: 35,
         paddingHorizontal: 15,
@@ -147,9 +150,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#E7C8C8",
     },
     iconCircle: {
-        width: 40,
-        height: 40,
         borderRadius: 20,
+        padding:5,
         backgroundColor: "#F3EFEF",
         justifyContent: "center",
         alignItems: "center",
@@ -159,9 +161,12 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         color: "#5D4037",
     },
-    foodCardContainer:{
-      justifyContent:"center",
-        alignItems:"center",
-        paddingLeft:0,
+    foodCardContainer: {
+        justifyContent: "center",
+        // alignItems: "center",
+        width:"100%",
+        // paddingLeft: 0,
+        paddingHorizontal:20,
+        overflow:"hidden"
     }
 })

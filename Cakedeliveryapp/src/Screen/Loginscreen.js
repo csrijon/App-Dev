@@ -71,45 +71,54 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#FFF9E6",
         paddingHorizontal: 20,
-        paddingVertical: 40,
+        paddingVertical: 20,
     },
+
     loginconatiner: {
         flex: 1,
     },
+
     loginbox: {
         flex: 1,
         justifyContent: "flex-start",
         paddingHorizontal: 30,
-        paddingVertical: 30,
+        paddingVertical: 10,
         gap: 20,
         borderRadius: 48,
         backgroundColor: "#FFFFFF",
         elevation: 5,
     },
+
     img: {
         alignItems: "center"
     },
+
     welcomecake: {
         alignItems: "center",
         gap: 10
     },
+
     welcomeboldtext: {
         letterSpacing: -0.4,
         color: "#75584E",
         fontSize: 19,
-        fontWeight: 700
+        fontWeight: "700"   // ✅ fixed
     },
+
     welcomenormaltext: {
         fontSize: 20,
         color: "#646040"
     },
+
     mailinput: {
         marginTop: 20,
         gap: 10
     },
+
     mailinputtext: {
         paddingLeft: 10
     },
+
     mailtextinput: {
         flexDirection: "row",
         alignItems: "center",
@@ -120,14 +129,18 @@ const styles = StyleSheet.create({
         borderRadius: 32,
         gap: 15
     },
+
     passwordsection: {
-        flex: 1,
+        // ❌ removed flex: 1 (important fix)
+        gap: 10
     },
+
     passwordforget: {
         flexDirection: "row",
         justifyContent: "space-between",
         paddingHorizontal: 10
     },
+
     passwordinput: {
         flexDirection: "row",
         alignItems: "center",
@@ -137,23 +150,27 @@ const styles = StyleSheet.create({
         paddingVertical: 16,
         borderRadius: 32,
         gap: 15,
-        marginTop: 20
+        marginTop: 10   // 🔧 balanced spacing
     },
+
     loginbutton: {
         marginTop: 10
     },
+
     orcontinue: {
         textAlign: "center",
-        marginTop: 20,
+        marginTop: 10,
         color: "#646040"
     },
+
     lastelement: {
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
         gap: 5,
-        marginTop: 20
+        marginTop: 10
     },
+
     signupText: {
         color: "#75584E",
         fontWeight: "bold"

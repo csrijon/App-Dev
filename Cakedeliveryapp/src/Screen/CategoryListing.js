@@ -12,7 +12,7 @@ const CategoryListing = () => {
         <SafeAreaView style={styles.Categorycontainer} >
             <StatusBar backgroundColor="#FFF9E6" barStyle={'dark-content'} />
             <Header name="Wedding Cakes" title="Category Listing" />
-            <ScrollView style={styles.CategoryListing} >
+            <ScrollView contentContainerStyle={{paddingBottom:40}} style={styles.CategoryListing} >
                 {/* {filter section start } */}
                 <View style={styles.FilterSection} >
 

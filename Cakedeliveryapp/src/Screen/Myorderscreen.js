@@ -1,165 +1,165 @@
 import Simpleheader from "../components/Simpleheader"
 import { SafeAreaView } from "react-native-safe-area-context"
-import { StatusBar, ScrollView, View, Text, TouchableOpacity, StyleSheet, useWindowDimensions,Image } from "react-native"
+import { StatusBar, ScrollView, View, Text, TouchableOpacity, StyleSheet, useWindowDimensions, Image } from "react-native"
 import { useState } from "react"
 
 
 const Myorderscreen = () => {
-    const { width } = useWindowDimensions()
-    const [selectbg,setbg] = useState(null)
-    console.log(width)
-    return (
-        <SafeAreaView style={styles.myordercontainer} >
-            <StatusBar backgroundColor="#fff9e6" barStyle="dark-content" />
-            <Simpleheader />
-            <ScrollView vertical showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollmyordercontainer}  >
-                <View style={styles.ordertextsection} >
-                    <Text style={[styles.myordertext, { fontSize: width * 0.08 }]} >My Orders</Text>
-                    <View style={styles.togglebuttonsection} >
-                        <TouchableOpacity style={[styles.togglebutton,styles.togglebuttongray]} >
-                            <Text>Active</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={()=>setbg(!selectbg)} style={[styles.togglebutton,{backgroundColor:selectbg?"#75584e":"#faf4d6"}]} >
-                            <Text>Past</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
+  const { width } = useWindowDimensions()
+  const [selectbg, setbg] = useState(null)
+  console.log(width)
+  return (
+    <SafeAreaView style={styles.myordercontainer} >
+      <StatusBar backgroundColor="#fff9e6" barStyle="dark-content" />
+      <Simpleheader />
+      <ScrollView vertical showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollmyordercontainer}  >
+        <View style={styles.ordertextsection} >
+          <Text style={[styles.myordertext, { fontSize: width * 0.08 }]} >My Orders</Text>
+          <View style={styles.togglebuttonsection} >
+            <TouchableOpacity style={[styles.togglebutton, styles.togglebuttongray]} >
+              <Text>Active</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setbg(!selectbg)} style={[styles.togglebutton, { backgroundColor: selectbg ? "#75584e" : "#faf4d6" }]} >
+              <Text>Past</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
 
-                 <View>
+        <View>
 
-      {/* Card 1 */}
-      <View style={styles.shellWrapper}>
+          {/* Card 1 */}
+          <View style={styles.shellWrapper}>
 
-        <Image 
-          source={require("../images/cakeimage.jpeg")} 
-          style={styles.visualThumb} 
-        />
+            <Image
+              source={require("../images/cakeimage.jpeg")}
+              style={styles.visualThumb}
+            />
 
-        <View style={styles.metaCluster}>
+            <View style={styles.metaCluster}>
 
-          <View style={[styles.statePill, styles.pillPending]}>
-            <Text style={styles.pillText}>PENDING</Text>
+              <View style={[styles.statePill, styles.pillPending]}>
+                <Text style={styles.pillText}>PENDING</Text>
+              </View>
+
+              <View style={styles.headerRow}>
+                <Text style={styles.productHeading}>
+                  Midnight Truffle Gâteau
+                </Text>
+                <Text style={styles.priceTag}>$48.00</Text>
+              </View>
+
+              <Text style={styles.orderRef}>Order #CH-92831</Text>
+              <Text style={styles.timeStamp}>Oct 24, 2023 • 2:30 PM</Text>
+
+              <TouchableOpacity style={styles.actionTrigger}>
+                <Text style={styles.triggerText}>TRACK ORDER</Text>
+              </TouchableOpacity>
+
+            </View>
           </View>
 
-          <View style={styles.headerRow}>
-            <Text style={styles.productHeading}>
-              Midnight Truffle Gâteau
-            </Text>
-            <Text style={styles.priceTag}>$48.00</Text>
+          {/* Card 2 */}
+          <View style={styles.shellWrapper}>
+
+            <Image
+              source={require("../images/cakeimage.jpeg")}
+              style={styles.visualThumb}
+            />
+
+            <View style={styles.metaCluster}>
+
+              <View style={[styles.statePill, styles.pillAccepted]}>
+                <Text style={styles.pillText}>ACCEPTED</Text>
+              </View>
+
+              <View style={styles.headerRow}>
+                <Text style={styles.productHeading}>
+                  Wild Berry Chantilly
+                </Text>
+                <Text style={styles.priceTag}>$35.50</Text>
+              </View>
+
+              <Text style={styles.orderRef}>Order #CH-92810</Text>
+              <Text style={styles.timeStamp}>Oct 23, 2023 • 11:15 AM</Text>
+
+              <TouchableOpacity style={styles.actionTrigger}>
+                <Text style={styles.triggerText}>VIEW DETAILS</Text>
+              </TouchableOpacity>
+
+            </View>
           </View>
 
-          <Text style={styles.orderRef}>Order #CH-92831</Text>
-          <Text style={styles.timeStamp}>Oct 24, 2023 • 2:30 PM</Text>
+          {/* Card 3 */}
+          <View style={styles.shellWrapper}>
 
-          <TouchableOpacity style={styles.actionTrigger}>
-            <Text style={styles.triggerText}>TRACK ORDER</Text>
-          </TouchableOpacity>
+            <Image
+              source={require("../images/cakeimage.jpeg")}
+              style={styles.visualThumb}
+            />
+
+            <View style={styles.metaCluster}>
+
+              <View style={[styles.statePill, styles.pillDelivered]}>
+                <Text style={styles.pillText}>DELIVERED</Text>
+              </View>
+
+              <View style={styles.headerRow}>
+                <Text style={styles.productHeading}>
+                  Citron Meringue Bloom
+                </Text>
+                <Text style={styles.priceTag}>$29.00</Text>
+              </View>
+
+              <Text style={styles.orderRef}>Order #CH-92755</Text>
+              <Text style={styles.timeStamp}>Oct 20, 2023 • 4:45 PM</Text>
+
+              <TouchableOpacity style={styles.actionTrigger}>
+                <Text style={styles.triggerText}>REORDER</Text>
+              </TouchableOpacity>
+
+            </View>
+          </View>
 
         </View>
-      </View>
 
-      {/* Card 2 */}
-      <View style={styles.shellWrapper}>
-
-        <Image 
-          source={require("../images/cakeimage.jpeg")} 
-          style={styles.visualThumb} 
-        />
-
-        <View style={styles.metaCluster}>
-
-          <View style={[styles.statePill, styles.pillAccepted]}>
-            <Text style={styles.pillText}>ACCEPTED</Text>
-          </View>
-
-          <View style={styles.headerRow}>
-            <Text style={styles.productHeading}>
-              Wild Berry Chantilly
-            </Text>
-            <Text style={styles.priceTag}>$35.50</Text>
-          </View>
-
-          <Text style={styles.orderRef}>Order #CH-92810</Text>
-          <Text style={styles.timeStamp}>Oct 23, 2023 • 11:15 AM</Text>
-
-          <TouchableOpacity style={styles.actionTrigger}>
-            <Text style={styles.triggerText}>VIEW DETAILS</Text>
-          </TouchableOpacity>
-
-        </View>
-      </View>
-
-      {/* Card 3 */}
-      <View style={styles.shellWrapper}>
-
-        <Image 
-          source={require("../images/cakeimage.jpeg")} 
-          style={styles.visualThumb} 
-        />
-
-        <View style={styles.metaCluster}>
-
-          <View style={[styles.statePill, styles.pillDelivered]}>
-            <Text style={styles.pillText}>DELIVERED</Text>
-          </View>
-
-          <View style={styles.headerRow}>
-            <Text style={styles.productHeading}>
-              Citron Meringue Bloom
-            </Text>
-            <Text style={styles.priceTag}>$29.00</Text>
-          </View>
-
-          <Text style={styles.orderRef}>Order #CH-92755</Text>
-          <Text style={styles.timeStamp}>Oct 20, 2023 • 4:45 PM</Text>
-
-          <TouchableOpacity style={styles.actionTrigger}>
-            <Text style={styles.triggerText}>REORDER</Text>
-          </TouchableOpacity>
-
-        </View>
-      </View>
-
-    </View>
-
-            </ScrollView>
-        </SafeAreaView>
-    )
+      </ScrollView>
+    </SafeAreaView>
+  )
 }
 
 export default Myorderscreen
 
 const styles = StyleSheet.create({
-    myordercontainer: {
-        flex: 1,
-        backgroundColor: "#fff9e6"
-    },
-    scrollmyordercontainer: {
-        flex: 1,
-        padding: 20,
-    },
-    myordertext: {
-        fontWeight: 700,
-        color: "#363317",
-        marginBottom: 20,
-    },
-    ordertextsection: {
-        flex: 1
-    },
-    togglebuttonsection: {
-        flexDirection: "row",
-        gap: 25,
-        alignSelf: "flex-start",
-    },
-    togglebutton: {
-        paddingHorizontal: 30,
-        paddingVertical: 10,
-        borderRadius: 22
-    },
-    togglebuttongray: {
-        backgroundColor: "#75584e",
-    },
-     shellWrapper: {
+  myordercontainer: {
+    flex: 1,
+    backgroundColor: "#fff9e6"
+  },
+  scrollmyordercontainer: {
+    flex: 1,
+    padding: 20,
+  },
+  myordertext: {
+    fontWeight: 700,
+    color: "#363317",
+    marginBottom: 20,
+  },
+  ordertextsection: {
+    flex: 1
+  },
+  togglebuttonsection: {
+    flexDirection: "row",
+    gap: 25,
+    alignSelf: "flex-start",
+  },
+  togglebutton: {
+    paddingHorizontal: 30,
+    paddingVertical: 10,
+    borderRadius: 22
+  },
+  togglebuttongray: {
+    backgroundColor: "#75584e",
+  },
+  shellWrapper: {
     flexDirection: "row",
     backgroundColor: "#F6EFD9",
     borderRadius: 25,

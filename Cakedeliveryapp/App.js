@@ -14,6 +14,7 @@ import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { View } from "react-native/types_generated/index"
 
 
 const Stack = createNativeStackNavigator()
@@ -49,21 +50,24 @@ const TabScreen = () => {
           height: 70,
           borderTopLeftRadius: 40,
           borderTopRightRadius: 40,
-          overflow: "hidden"
+          overflow: "hidden",
         },
         tabBarItemStyle: {
           paddingTop: 10,
-          borderRadius:20
+          borderRadius: 20,
+          paddingBottom:10
+
         },
         tabBarActiveTintColor: "#75584E",
         tabBarInactiveTintColor: "#646040",
-        tabBarActiveBackgroundColor:"#F6CFC2",
+        tabBarActiveBackgroundColor: "#F6CFC2",
       }}
     >
       <Tab.Screen
         name="Home"
         component={Homescreen}
         options={{
+
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home-outline" color={color} size={size} />
           )
@@ -72,7 +76,7 @@ const TabScreen = () => {
 
       <Tab.Screen
         name="Myorder"
-        component={Myorderscreen}
+        component={CategoryListing}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="cloud-done-sharp" color={color} size={size} />

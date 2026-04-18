@@ -1,10 +1,12 @@
 import React from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { useWindowDimensions } from "react-native";
 
 const FoodCard = () => {
+  const {height,width} = useWindowDimensions()
   return (
-    <View style={styles.card}>
+    <View style={[styles.card]}>
 
       {/* Left Image */}
       <Image
@@ -39,11 +41,10 @@ export default FoodCard;
 const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
-    marginHorizontal: 20,
     alignItems: "center",
-    width: "90%",
     alignSelf: "center",
     marginTop: 20,
+    width:"100%"
   },
   image: {
     width:100,
@@ -58,8 +59,8 @@ const styles = StyleSheet.create({
   titleRow: {
     flexDirection: "row",
     alignItems: "center",
-    // justifyContent: "space-between",
-    gap: 40,
+    justifyContent: "space-between",
+    // gap: 40,
   },
   title: {
     fontSize: 18,
