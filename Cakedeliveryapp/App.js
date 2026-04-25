@@ -10,6 +10,8 @@ import Customorderpage from "./src/Screen/Customorderpage"
 import Ordersummarypage from "./src/Screen/Ordersummarypage"
 import OrderSuccessScreen from "./src/Screen/OrderSuccessScreen"
 import Myorderscreen from "./src/Screen/Myorderscreen"
+import Profilescreen from  "./src/Screen/Profilescreen"
+import AddressUI from "./src/Screen/AddressUI"
 import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
@@ -54,6 +56,15 @@ const Orderstack = () => {
     </Stack.Navigator>
   )
 }
+
+const Profilestack =()=>{
+  return(
+    <Stack.Navigator initialRouteName="Profilescreen" screenOptions={{headerShown:false}} >
+      <Stack.Screen name="Profilescreen" component={Profilescreen} />
+      <Stack.Screen name="Adressscreen" component={AddressUI}/>
+    </Stack.Navigator>
+  )
+}
 const TabScreen = () => {
   return (
     <Tab.Navigator
@@ -75,6 +86,7 @@ const TabScreen = () => {
         tabBarActiveTintColor: "#75584E",
         tabBarInactiveTintColor: "#646040",
         tabBarActiveBackgroundColor: "#F6CFC2",
+        tabBarHideOnKeyboard:true
       }}
     >
       <Tab.Screen
@@ -110,7 +122,7 @@ const TabScreen = () => {
 
       <Tab.Screen
         name="Profile"
-        component={Customorderpage}
+        component={Profilestack}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person" color={color} size={size} />

@@ -6,7 +6,9 @@ const Detailsheader = () => {
     return (
         <View style={styles.Detailsheader} >
             <View style={styles.headerContent} >
-                <AntDesign name="arrowleft" color="#75584e" size={24} />
+                <TouchableOpacity  >
+                    <AntDesign name="arrowleft" color="#75584e" size={24} />
+                </TouchableOpacity>
                 <Text style={styles.headercontenttext} >The Artisanal Patisserie</Text>
             </View>
             <View style={styles.headerContent} >
@@ -45,7 +47,7 @@ const styles = StyleSheet.create({
         objectFit: "cover",
         resizeMode: "cover",
     },
-    headercontenttext:{
+    headercontenttext: {
         fontSize: 16,
         fontWeight: "700",
         color: "#75584e"

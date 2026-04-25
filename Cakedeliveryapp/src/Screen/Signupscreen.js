@@ -1,16 +1,24 @@
 import { SafeAreaView } from "react-native-safe-area-context"
+import { useState } from "react";
 import { View, StyleSheet, ScrollView, Text, StatusBar, Image, TextInput, TouchableOpacity } from "react-native"
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Button from "../components/Button";
 import Socialmediabutton from "../components/Socialmediabutton"
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 
 
-const Signupscreen = ({navigation}) => {
+const Signupscreen = ({ navigation }) => {
+
+    const [checkbox, setcheckbox] = useState(false)
+    const [fullname, setfullname] = useState("")
+    const [fullemail, setfullemail] = useState("")
+    const [password, setpassword] = useState("")
+    const [confirmpassword, setconfirmpassword] = useState("")
+
     return (
         <SafeAreaView style={styles.signupsafearea}>
             <StatusBar backgroundColor="#FFF9E6" barStyle="dark-content" />
-            <ScrollView vartical showsVerticalScrollIndicator={false} style={styles.scrollview} >
+            <ScrollView contentContainerStyle={{ paddingBottom: 40 }} vertical showsVerticalScrollIndicator={false} style={styles.scrollview} >
                 <View style={styles.signupview} >
                     {/*signup top start*/}
                     <View style={styles.signuptop} >
@@ -29,7 +37,10 @@ const Signupscreen = ({navigation}) => {
                             <Text>FULL NAME</Text>
                             <View style={styles.inputcontainer} >
                                 <Ionicons style={styles.iconcolor} name="person" color="#000" size={24} />
-                                <TextInput placeholderTextColor="#646040" style={styles.textinput} placeholder="Enter Your Full Name" />
+                                <TextInput onChangeText={(text) => {
+                                    setfullname(text)
+                                    console.log(text)
+                                }} value={fullname} keyboardType="default" placeholderTextColor="#646040" style={styles.textinput} placeholder="Enter Your Full Name" />
                             </View>
                         </View>
                         {/* {Full name input end} */}
@@ -38,7 +49,10 @@ const Signupscreen = ({navigation}) => {
                             <Text>EMAIL ADDRESS</Text>
                             <View style={styles.inputcontainer} >
                                 <Ionicons style={styles.iconcolor} name="mail" color="#000" size={24} />
-                                <TextInput placeholderTextColor="#646040" style={styles.textinput} placeholder="Enter Your Email Address" />
+                                <TextInput onChangeText={(text) => {
+                                    setfullemail(text)
+                                    console.log(text)
+                                }} value={fullemail} keyboardType="default" placeholderTextColor="#646040" style={styles.textinput} placeholder="Enter Your Email Address" />
                             </View>
                         </View>
                         {/* {Email input end} */}
@@ -47,7 +61,10 @@ const Signupscreen = ({navigation}) => {
                             <Text>PASSWORD</Text>
                             <View style={styles.inputcontainer} >
                                 <Ionicons style={styles.iconcolor} name="lock-closed-outline" color="#000" size={24} />
-                                <TextInput placeholderTextColor="#646040" style={styles.textinput} placeholder="Enter Your Password" secureTextEntry />
+                                <TextInput value={password} onChangeText={(text) => {
+                                    setpassword(text)
+                                    console.log(text)
+                                }} keyboardType="default" placeholderTextColor="#646040" style={styles.textinput} placeholder="Enter Your Password" secureTextEntry />
                             </View>
                         </View>
                         {/* {Password input end} */}
@@ -56,13 +73,18 @@ const Signupscreen = ({navigation}) => {
                             <Text>CONFIRM PASSWORD</Text>
                             <View style={styles.inputcontainer} >
                                 <Ionicons style={styles.iconcolor} name="checkmark-circle-outline" color="#0c0000" size={24} />
-                                <TextInput placeholderTextColor="#646040" style={styles.textinput} placeholder="Confirm Your Password" secureTextEntry />
+                                <TextInput value={confirmpassword} onChangeText={(text) => {
+                                    setconfirmpassword(text)
+                                    console.log(text)
+                                }} keyboardType="default" placeholderTextColor="#646040" style={styles.textinput} placeholder="Confirm Your Password" secureTextEntry />
                             </View>
                         </View>
                         {/* {Confirm Password input end} */}
                         {/* terms and condition start */}
                         <View style={styles.termsandcondition} >
-                            <MaterialIcons name="check-box-outline-blank" color="#000" size={24} />
+                            <TouchableOpacity onPress={() => setcheckbox(!checkbox)} >
+                                <Fontisto name={checkbox ? "checkbox-active" : "checkbox-passive"} color="#000" size={24} />
+                            </TouchableOpacity>
                             <Text style={styles.termsandconditionText} >I agree to the Terms of Service and
                                 {"\n"} Privacy Policy.</Text>
                         </View>
@@ -82,7 +104,7 @@ const Signupscreen = ({navigation}) => {
                         {/* {last element start} */}
                         <View style={styles.lastelement} >
                             <Text style={styles.lastelementText} >Already have an account?</Text>
-                            <TouchableOpacity onPress={()=>navigation.navigate("Login")} >
+                            <TouchableOpacity onPress={() => navigation.navigate("Login")} >
                                 <Text style={styles.loginelementText} >Log in here</Text>
                             </TouchableOpacity>
 
@@ -160,7 +182,7 @@ const styles = StyleSheet.create({
     termsandcondition: {
         flexDirection: "row",
         alignItems: "center",
-        gap: 10,
+        gap: 15,
     },
     termsandconditionText: {
         lineHeight: 20,
