@@ -15,6 +15,14 @@ const Signupscreen = ({ navigation }) => {
     const [password, setpassword] = useState("")
     const [confirmpassword, setconfirmpassword] = useState("")
 
+    const onclickcreateaccount=()=>{
+        if (checkbox && fullname && fullemail && password && confirmpassword) {
+            console.log("all statement is true")
+        }else{
+            console.log("some statement is false")
+        }
+    }
+
     return (
         <SafeAreaView style={styles.signupsafearea}>
             <StatusBar backgroundColor="#FFF9E6" barStyle="dark-content" />
@@ -91,7 +99,7 @@ const Signupscreen = ({ navigation }) => {
                         {/* terms and condition end */}
                         {/* {Button start} */}
                         <View style={styles.signupbutton} >
-                            <Button title="Create Account" />
+                            <Button onPress={onclickcreateaccount} title="Create Account" />
                         </View>
                         {/* {Button end} */}
                         <Text style={styles.quickaccesstext} >QUICK ACCESS</Text>

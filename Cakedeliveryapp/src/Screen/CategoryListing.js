@@ -7,12 +7,12 @@ import MenuCard from '../components/MenuCard';
 
 
 
-const CategoryListing = ({navigation}) => {
+const CategoryListing = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.Categorycontainer} >
             <StatusBar backgroundColor="#FFF9E6" barStyle={'dark-content'} />
             <Header name="Wedding Cakes" title="Category Listing" />
-            <ScrollView contentContainerStyle={{paddingBottom:40}} style={styles.CategoryListing} >
+            <ScrollView vertical showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }} style={styles.CategoryListing} >
                 {/* {filter section start } */}
                 <View style={styles.FilterSection} >
 
@@ -31,12 +31,12 @@ const CategoryListing = ({navigation}) => {
                     <CategoryCard title="All Designs" />
                 </ScrollView>
                 <View style={styles.MenuCardsContainer} >
-                    <MenuCard onpress={()=>navigation.navigate("Delivery")} />
-                    <MenuCard />
-                    <MenuCard />
-                    <MenuCard />
-                    <MenuCard />
-                    <MenuCard />
+                    <MenuCard onPress={() => navigation.navigate("MyOrder")} />
+                    <MenuCard onPress={() => navigation.navigate("MyOrder")} />
+                    <MenuCard onPress={() => navigation.navigate("MyOrder")} />
+                    <MenuCard onPress={() => navigation.navigate("MyOrder")} />
+                    <MenuCard onPress={() => navigation.navigate("MyOrder")} />
+                    <MenuCard onPress={() => navigation.navigate("MyOrder")} />
                 </View>
             </ScrollView>
         </SafeAreaView>

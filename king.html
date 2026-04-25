@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cake Haven - Select Your Date</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface": "#fff9e6",
+            "surface-dim": "#e2dbb3",
+            "on-secondary-container": "#5e4d54",
+            "tertiary-dim": "#734557",
+            "tertiary-container": "#f8bbd0",
+            "outline": "#807c59",
+            "tertiary-fixed": "#f8bbd0",
+            "secondary-fixed-dim": "#e6ced6",
+            "primary-container": "#f6cfc2",
+            "on-background": "#363317",
+            "secondary-fixed": "#f4dce4",
+            "surface-container-lowest": "#ffffff",
+            "background": "#fff9e6",
+            "on-primary-fixed-variant": "#6a4e44",
+            "on-error-container": "#6e0a12",
+            "surface-container": "#f5efcd",
+            "surface-container-low": "#faf4d6",
+            "on-tertiary": "#fff7f7",
+            "error-container": "#fa746f",
+            "surface-bright": "#fff9e6",
+            "on-surface-variant": "#646040",
+            "on-primary-container": "#5f453b",
+            "secondary-dim": "#5f4f55",
+            "secondary": "#6c5a61",
+            "on-primary": "#fff7f5",
+            "primary-fixed-dim": "#e7c1b4",
+            "on-secondary": "#fff7f8",
+            "on-error": "#fff7f6",
+            "inverse-primary": "#f6cfc2",
+            "tertiary": "#815163",
+            "tertiary-fixed-dim": "#e9aec3",
+            "primary-dim": "#684d43",
+            "outline-variant": "#b9b38d",
+            "error-dim": "#67040d",
+            "on-primary-fixed": "#4b3229",
+            "error": "#a83836",
+            "on-secondary-fixed-variant": "#68575e",
+            "on-tertiary-fixed": "#4b2334",
+            "primary-fixed": "#f6cfc2",
+            "on-tertiary-container": "#623648",
+            "on-tertiary-fixed-variant": "#6c3f51",
+            "secondary-container": "#f4dce4",
+            "inverse-on-surface": "#a29d88",
+            "on-surface": "#363317",
+            "inverse-surface": "#100e03",
+            "surface-container-high": "#f0e9c5",
+            "on-secondary-fixed": "#4b3b41",
+            "surface-variant": "#eae3bb"
+          },
+          fontFamily: {
+            "headline": ["Plus Jakarta Sans"],
+            "body": ["Plus Jakarta Sans"],
+            "label": ["Plus Jakarta Sans"]
+          },
+          borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-32">
+<!-- TopAppBar Execution -->
+<header class="fixed top-0 w-full z-50 bg-[#FFF9E6]/80 backdrop-blur-md shadow-[0px_24px_48px_rgba(117,88,78,0.08)] flex justify-between items-center px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container">
+<img alt="User profile photo" class="w-full h-full object-cover" data-alt="Close up portrait of a smiling young man in a light linen shirt, warm soft indoor studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0uwzd4BgrAt6g8t9CMmAl49iq0on2ZrbU0j4mld-kciwvkgqyTTb5OU44FgMvOUuw_d7je8_wul9o7uXAJYV2Rdt710gj_RtPWKEBFgoe4MfxYiyYggkrDLJn-FRYqkLzD3XwtmnBbSYzRtd-AtEgONoU-7Z4d9IfarbSVLd4JxlQKZeDujLmlrvHBAVjomlbPvewhrUfq4yV8-sV5hGjfY3ZMSIrr2oWEugdSVLTOyZFSa_fA_hMM6Q1Xdk7PdWDRTAsZwlm1uvh"/>
+</div>
+</div>
+<h1 class="font-headline text-2xl font-bold tracking-tight text-primary">The Artisanal Pâtisserie</h1>
+<button class="w-10 h-10 flex items-center justify-center text-primary active:scale-95 transition-transform">
+<span class="material-symbols-outlined">search</span>
+</button>
+</header>
+<main class="pt-24 px-6 max-w-2xl mx-auto">
+<!-- Hero Header -->
+<section class="mb-10 text-center">
+<h2 class="text-display-md font-extrabold text-primary tracking-tight mb-2">Pick a Sweet Moment</h2>
+<p class="text-on-surface-variant body-lg leading-relaxed">Select your preferred date for cake delivery or pickup. Our ovens are ready.</p>
+</section>
+<!-- Calendar Container -->
+<div class="bg-surface-container-lowest rounded-xl p-8 shadow-[0px_24px_48px_rgba(117,88,78,0.05)] mb-8">
+<!-- Calendar Header -->
+<div class="flex items-center justify-between mb-10">
+<button class="w-12 h-12 rounded-full flex items-center justify-center bg-surface-container-low text-primary hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<div class="text-center">
+<h3 class="text-headline-md font-bold text-on-surface">October 2024</h3>
+<span class="text-label-md text-on-surface-variant font-medium tracking-widest uppercase">Select Date</span>
+</div>
+<button class="w-12 h-12 rounded-full flex items-center justify-center bg-surface-container-low text-primary hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+<!-- Days Row -->
+<div class="grid grid-cols-7 gap-4 mb-6 text-center">
+<span class="text-label-md font-bold text-on-surface-variant">SUN</span>
+<span class="text-label-md font-bold text-on-surface-variant">MON</span>
+<span class="text-label-md font-bold text-on-surface-variant">TUE</span>
+<span class="text-label-md font-bold text-on-surface-variant">WED</span>
+<span class="text-label-md font-bold text-on-surface-variant">THU</span>
+<span class="text-label-md font-bold text-on-surface-variant">FRI</span>
+<span class="text-label-md font-bold text-on-surface-variant">SAT</span>
+</div>
+<!-- Grid of Dates -->
+<div class="grid grid-cols-7 gap-y-4 gap-x-2">
+<!-- Week 1 Empty Spaces -->
+<div class="aspect-square"></div>
+<div class="aspect-square"></div>
+<!-- Days -->
+<button class="aspect-square rounded-full flex items-center justify-center text-on-surface hover:bg-primary-container transition-all active:scale-90 text-lg font-medium">1</button>
+<button class="aspect-square rounded-full flex items-center justify-center text-on-surface hover:bg-primary-container transition-all active:scale-90 text-lg font-medium">2</button>
+<button class="aspect-square rounded-full flex items-center justify-center text-on-surface hover:bg-primary-container transition-all active:scale-90 text-lg font-medium">3</button>
+<button class="aspect-square rounded-full flex items-center justify-center text-on-surface-variant opacity-30 cursor-not-allowed text-lg font-medium bg-surface-container-high" disabled="">4</button>
+<button class="aspect-square rounded-full flex items-center justify-center text-on-surface hover:bg-primary-container transition-all active:scale-90 text-lg font-medium">5</button>
+<button class="aspect-square rounded-full flex items-center justify-center text-on-surface hover:bg-primary-container transition-all active:scale-90 text-lg font-medium">6</button>
+<button class="aspect-square rounded-full flex items-center justify-center text-on-surface hover:bg-primary-container transition-all active:scale-90 text-lg font-medium">7</button>
+<button class="aspect-square rounded-full flex items-center justify-center text-on-surface hover:bg-primary-container transition-all active:scale-90 text-lg font-medium">8</button>
+<!-- Selected State -->
+<button class="aspect-square rounded-full flex items-center justify-center bg-primary text-on-primary shadow-lg text-lg font-bold scale-110">9</button>
+<button class="aspect-square rounded-full flex items-center justify-center text-on-surface hover:bg-primary-container transition-all active:scale-90 text-lg font-medium">10</button>
+<button class="aspect-square rounded-full flex items-center justify-center text-on-surface-variant opacity-30 cursor-not-allowed text-lg font-medium bg-surface-container-high" disabled="">11</button>
+<button class="aspect-square rounded-full flex items-center justify-center text-on-surface-variant opacity-30 cursor-not-allowed text-lg font-medium bg-surface-container-high" disabled="">12</button>
+<button class="aspect-square rounded-full flex items-center justify-center text-on-surface hover:bg-primary-container transition-all active:scale-90 text-lg font-medium">13</button>
+<button class="aspect-square rounded-full flex items-center justify-center text-on-surface hover:bg-primary-container transition-all active:scale-90 text-lg font-medium">14</button>
+<button class="aspect-square rounded-full flex items-center justify-center text-on-surface hover:bg-primary-container transition-all active:scale-90 text-lg font-medium">15</button>
+<button class="aspect-square rounded-full flex items-center justify-center text-on-surface hover:bg-primary-container transition-all active:scale-90 text-lg font-medium">16</button>
+<button class="aspect-square rounded-full flex items-center justify-center text-on-surface hover:bg-primary-container transition-all active:scale-90 text-lg font-medium">17</button>
+<button class="aspect-square rounded-full flex items-center justify-center text-on-surface hover:bg-primary-container transition-all active:scale-90 text-lg font-medium">18</button>
+<button class="aspect-square rounded-full flex items-center justify-center text-on-surface hover:bg-primary-container transition-all active:scale-90 text-lg font-medium">19</button>
+<button class="aspect-square rounded-full flex items-center justify-center text-on-surface hover:bg-primary-container transition-all active:scale-90 text-lg font-medium">20</button>
+<button class="aspect-square rounded-full flex items-center justify-center text-on-surface hover:bg-primary-container transition-all active:scale-90 text-lg font-medium">21</button>
+<button class="aspect-square rounded-full flex items-center justify-center text-on-surface hover:bg-primary-container transition-all active:scale-90 text-lg font-medium">22</button>
+<button class="aspect-square rounded-full flex items-center justify-center text-on-surface hover:bg-primary-container transition-all active:scale-90 text-lg font-medium">23</button>
+<button class="aspect-square rounded-full flex items-center justify-center text-on-surface hover:bg-primary-container transition-all active:scale-90 text-lg font-medium">24</button>
+<button class="aspect-square rounded-full flex items-center justify-center text-on-surface hover:bg-primary-container transition-all active:scale-90 text-lg font-medium">25</button>
+<button class="aspect-square rounded-full flex items-center justify-center text-on-surface hover:bg-primary-container transition-all active:scale-90 text-lg font-medium">26</button>
+</div>
+</div>
+<!-- Booking Details Summary -->
+<div class="bg-primary-container/30 rounded-xl p-6 mb-12 flex items-center gap-6">
+<div class="w-16 h-16 rounded-lg overflow-hidden shrink-0">
+<img alt="Featured cake" class="w-full h-full object-cover" data-alt="Gourmet multi-layered chocolate cake with gold leaf accents on a marble platter, soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfD3d74vwZUkXr1nDRe0bVqd1RFlSBelOcLBMBYWy5AFfLhnmQyBd7aKAshl2yzl4C6Ve5qJDO5CacyhHoF1u_iGqMBAVMhiNX-n77klhMvmYjcSECpZ4ZBLuy5vFuM4fPL2SQdHw9y3ibwaAfiO1MKvdOLPhW0MsN1nw6vyJPl6KmzFXlyTdJzYmgPDHKBZmg5sczASso928b1-UDggM2hABY5HDVeNQglDcMfHPze97PL0_VZiAsksHGYwt9Pb_emKsdXY8iwE4o"/>
+</div>
+<div>
+<h4 class="font-bold text-primary">Classic Velvet Noir</h4>
+<p class="text-sm text-on-primary-container">Scheduled for: <span class="font-bold">Oct 9th, 2024</span></p>
+</div>
+</div>
+<!-- Confirm Button -->
+<button class="w-full py-5 bg-primary text-on-primary font-bold text-lg rounded-full shadow-lg hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-3">
+      Confirm Date
+      <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</main>
+<!-- BottomNavBar Execution -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-[#FFF9E6] rounded-t-[3rem] shadow-[0px_-10px_30px_rgba(117,88,78,0.05)] border-t border-[#B9B38D]/15 z-50">
+<div class="flex flex-col items-center justify-center text-[#646040] px-6 py-2 hover:bg-[#FAF4D6] rounded-full transition-all active:scale-90">
+<span class="material-symbols-outlined mb-1">home</span>
+<span class="font-plus-jakarta text-[10px] font-medium tracking-wide">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#646040] px-6 py-2 hover:bg-[#FAF4D6] rounded-full transition-all active:scale-90">
+<span class="material-symbols-outlined mb-1">shopping_bag</span>
+<span class="font-plus-jakarta text-[10px] font-medium tracking-wide">My Orders</span>
+</div>
+<!-- Active State: Calendar -->
+<div class="flex flex-col items-center justify-center bg-[#F6CFC2] text-[#75584E] rounded-full px-6 py-2 transition-all active:scale-90">
+<span class="material-symbols-outlined mb-1">calendar_month</span>
+<span class="font-plus-jakarta text-[10px] font-bold tracking-wide">Calendar</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#646040] px-6 py-2 hover:bg-[#FAF4D6] rounded-full transition-all active:scale-90">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-plus-jakarta text-[10px] font-medium tracking-wide">Profile</span>
+</div>
+</nav>
+</body></html>

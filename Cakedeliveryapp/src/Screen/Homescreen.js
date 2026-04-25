@@ -7,7 +7,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import FoodCard from "../components/FoodCard";
 import { useWindowDimensions } from "react-native";
 
-const Homescreen = () => {
+const Homescreen = ({navigation}) => {
     const {width,height} =useWindowDimensions()
     return (
         <SafeAreaView style={styles.Homecontainer} >
@@ -25,7 +25,7 @@ const Homescreen = () => {
 
                 <View style={styles.featuredBakesContainer} >
                     <Text style={styles.featuredBakesText} >Featured Bakes</Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={()=>navigation.navigate("Category")} >
                         <Text style={styles.featuredBakesText} >View ALL</Text>
                     </TouchableOpacity>
                 </View>

@@ -4,8 +4,22 @@ import Zocial from 'react-native-vector-icons/Zocial';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Button from "../components/Button";
 import Socialmediabutton from "../components/Socialmediabutton"
+import { useState } from "react";
 
 const Loginscreen = ({ navigation }) => {
+    
+    const [loginemail,setloginemail] = useState("")
+    const [loginpassword,setloginpassword] = useState("")
+
+    const onclickloginbutton=()=>{
+        if (loginemail&&loginpassword) {
+            console.log("all statement is visible")
+            navigation.replace("Tabs")
+        }else{
+            console.log("Nothing is Visible")
+        }
+    }
+
     return (
         <SafeAreaView style={styles.loginsafearea} >
             <StatusBar backgroundColor="#FFF9E6" barStyle={"dark-content"} />
@@ -28,7 +42,9 @@ const Loginscreen = ({ navigation }) => {
                         <Text style={styles.mailinputtext} >EMAIL ADDRESS</Text>
                         <View style={styles.mailtextinput} >
                             <Zocial name="email" color="#000" size={24} />
-                            <TextInput require placeholder="csrijon92@gmail.com" />
+                            <TextInput value={loginemail} onChangeText={(text)=>{
+                                setloginemail(text)
+                            }} require placeholder="csrijon92@gmail.com" />
                         </View>
                     </View>
                     {/* {mail input end} */}
@@ -41,12 +57,15 @@ const Loginscreen = ({ navigation }) => {
                         </View>
                         <View style={styles.passwordinput} >
                             <Octicons name="lock" color="#000" size={24} />
-                            <TextInput secureTextEntry require placeholder="Enter The password" />
+                            <TextInput onChangeText={(text)=>{
+                             setloginpassword(text)
+                             console.log(text)
+                            }} value={loginpassword} secureTextEntry require placeholder="Enter The password" />
                         </View>
                     </View>
                     {/* {button start} */}
                     <View style={styles.loginbutton} >
-                        <Button onPress={() => navigation.navigate("Tabs")} title="Login to Haven" />
+                        <Button onPress={onclickloginbutton} title="Login to Haven" />
                     </View>
                     {/* {Button end} */}
                     <Text style={styles.orcontinue} >OR CONTINUE WITH</Text>

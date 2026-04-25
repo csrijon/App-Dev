@@ -10,8 +10,9 @@ import Customorderpage from "./src/Screen/Customorderpage"
 import Ordersummarypage from "./src/Screen/Ordersummarypage"
 import OrderSuccessScreen from "./src/Screen/OrderSuccessScreen"
 import Myorderscreen from "./src/Screen/Myorderscreen"
-import Profilescreen from  "./src/Screen/Profilescreen"
+import Profilescreen from "./src/Screen/Profilescreen"
 import AddressUI from "./src/Screen/AddressUI"
+import Calenderpage from "./src/Screen/Calenderpage"
 import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
@@ -43,25 +44,33 @@ const Stackscreen = () => {
   )
 }
 
-const Orderstack = () => {
+const Homestack = () => {
   return (
-    <Stack.Navigator initialRouteName="Category" screenOptions={{headerShown:false}} >
+    <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }} >
+      <Stack.Screen name="Home" component={Homescreen} />
       <Stack.Screen name="Category" component={CategoryListing} />
-          <Stack.Screen name="Delivery" component={DeliveryMoment} />
-       <Stack.Screen name="Cakedetails" component={CakeDetails}/>
-      <Stack.Screen name="Ordersummary" component={Ordersummarypage}/>
-      <Stack.Screen name="Customorder" component={Customorderpage}/>
-      <Stack.Screen name="Ordesuccess" component={OrderSuccessScreen}/>
-      <Stack.Screen name="Myorder" component={Myorderscreen}/>
     </Stack.Navigator>
   )
 }
 
-const Profilestack =()=>{
-  return(
-    <Stack.Navigator initialRouteName="Profilescreen" screenOptions={{headerShown:false}} >
+const Orderstack = () => {
+  return (
+    <Stack.Navigator initialRouteName="Delivery" screenOptions={{ headerShown: false }} >
+      <Stack.Screen name="Delivery" component={DeliveryMoment} />
+      <Stack.Screen name="Cakedetails" component={CakeDetails} />
+      <Stack.Screen name="Ordersummary" component={Ordersummarypage} />
+      <Stack.Screen name="Customorder" component={Customorderpage} />
+      <Stack.Screen name="Ordesuccess" component={OrderSuccessScreen} />
+      <Stack.Screen name="Myorder" component={Myorderscreen} />
+    </Stack.Navigator>
+  )
+}
+
+const Profilestack = () => {
+  return (
+    <Stack.Navigator initialRouteName="Profilescreen" screenOptions={{ headerShown: false }} >
       <Stack.Screen name="Profilescreen" component={Profilescreen} />
-      <Stack.Screen name="Adressscreen" component={AddressUI}/>
+      <Stack.Screen name="Adressscreen" component={AddressUI} />
     </Stack.Navigator>
   )
 }
@@ -86,12 +95,12 @@ const TabScreen = () => {
         tabBarActiveTintColor: "#75584E",
         tabBarInactiveTintColor: "#646040",
         tabBarActiveBackgroundColor: "#F6CFC2",
-        tabBarHideOnKeyboard:true
+        tabBarHideOnKeyboard: true
       }}
     >
       <Tab.Screen
         name="Home"
-        component={Homescreen}
+        component={Homestack}
         options={{
 
           tabBarIcon: ({ color, size }) => (
@@ -101,7 +110,7 @@ const TabScreen = () => {
       />
 
       <Tab.Screen
-        name="Myorder"
+        name="MyOrder"
         component={Orderstack}
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -112,7 +121,7 @@ const TabScreen = () => {
 
       <Tab.Screen
         name="Calender"
-        component={Customorderpage}
+        component={Calenderpage}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="calendar" color={color} size={size} />

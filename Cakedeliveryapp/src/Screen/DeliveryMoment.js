@@ -2,16 +2,18 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, StatusBar, Image 
 import { SafeAreaView } from "react-native-safe-area-context";
 import Detailsheader from "../components/Detailsheader";
 import { useState } from "react";
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 
-const DeliveryMoment = ({navigation}) => {
+
+const DeliveryMoment = ({ navigation }) => {
 
     const [selected, setselected] = useState(null)
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar backgroundColor="#f5ecd9" barStyle="dark-content" />
             <Detailsheader />
-            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom:40}} style={styles.scrollcontainer} >
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }} style={styles.scrollcontainer} >
                 {/* Header */}
                 <Text style={styles.step}>ORDER STEP 02</Text>
                 <Text style={styles.title}>Choose Your Delivery Moment</Text>
@@ -22,9 +24,10 @@ const DeliveryMoment = ({navigation}) => {
                         <Text style={styles.dateLabel}>Collection Date</Text>
                         <Text style={styles.date}>Friday, 12 June</Text>
                     </View>
-                    <View style={styles.calendarIcon}>
-                        <Text>📅</Text>
-                    </View>
+                    <TouchableOpacity onPress={()=>navigation.navigate("Calender")} style={styles.calendarIcon}>
+                        {/* <Text>📅</Text> */}
+                        <AntDesign name="calendar" color="#000" size={24} />
+                    </TouchableOpacity>
                 </View>
 
                 {/* Time Options */}
@@ -42,7 +45,7 @@ const DeliveryMoment = ({navigation}) => {
                     </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={[styles.option, styles.selected]}>
+                <TouchableOpacity style={[styles.option]}>
                     <View style={styles.iconCircleDark}>
                         <Text style={{ color: "#fff" }}>☀️</Text>
                     </View>
@@ -87,7 +90,7 @@ const DeliveryMoment = ({navigation}) => {
                 </View>
 
                 {/* Button */}
-                <TouchableOpacity onPress={()=>navigation.navigate("Cakedetails")} style={styles.nextBtn}>
+                <TouchableOpacity onPress={() => navigation.navigate("Cakedetails")} style={styles.nextBtn}>
                     <Text style={styles.nextText}>Next: Summary →</Text>
                 </TouchableOpacity>
 
@@ -146,7 +149,7 @@ const styles = StyleSheet.create({
     },
 
     calendarIcon: {
-        backgroundColor: "#f3e8d9",
+        backgroundColor: "#f6cfc2",
         padding: 12,
         borderRadius: 20,
     },
@@ -159,13 +162,14 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 48,
         borderBottomRightRadius: 48,
         marginBottom: 12,
-        borderWidth:2,
+        borderWidth: 2,
+        borderColor: "white"
     },
 
-    selected: {
-        borderWidth: 2,
-        borderColor: "#6b4f4f",
-    },
+    // selected: {
+    //     borderWidth: 2,
+    //     borderColor: "#6b4f4f",
+    // },
 
     iconCircle: {
         backgroundColor: "#f3d9dc",
@@ -189,7 +193,7 @@ const styles = StyleSheet.create({
     },
 
     optionTitle: {
-        fontSize:18,
+        fontSize: 18,
         fontWeight: "bold",
         color: "#5c4033",
     },
@@ -227,11 +231,11 @@ const styles = StyleSheet.create({
         height: 200,
         borderRadius: 20,
         marginBottom: 10,
-        transform:[{rotate:"5deg"}]
+        transform: [{ rotate: "5deg" }]
     },
 
     badge: {
-        marginTop:15,
+        marginTop: 15,
         backgroundColor: "#e7b6c7",
         paddingHorizontal: 10,
         paddingVertical: 4,
@@ -262,7 +266,7 @@ const styles = StyleSheet.create({
     },
 
     nextText: {
-        fontSize:18,
+        fontSize: 18,
         color: "#fff",
         fontWeight: "bold",
     },

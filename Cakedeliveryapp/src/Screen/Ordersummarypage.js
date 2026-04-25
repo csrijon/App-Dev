@@ -144,7 +144,7 @@ const Ordersummarypage = ({navigation}) => {
 
                     <View style={[styles.row, styles.totalammount]} >
                         <Text style={styles.totalammounttext} >Total Amount</Text>
-                        <Text style={styles.totalammountrupy} >$700</Text>
+                        <Text style={styles.totalammountrupy} >$500</Text>
                     </View>
 
                     <View>
