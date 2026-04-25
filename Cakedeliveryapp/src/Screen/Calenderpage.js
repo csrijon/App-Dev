@@ -1,25 +1,25 @@
 import { SafeAreaView } from "react-native-safe-area-context"
-import { View, StyleSheet, Text, Image,ScrollView } from "react-native"
+import { View, StyleSheet, Text, Image, ScrollView } from "react-native"
 import Simpleheader from "../components/Simpleheader"
 import { Calendar } from "react-native-calendars"
 import { useState } from "react"
+import Button from "../components/Button"
 
-const Calenderpage = ({navigation}) => {
+const Calenderpage = ({ navigation }) => {
 
-    const[selecteddate,setselecteddate] = useState("")
+    const [selecteddate, setselecteddate] = useState("")
     return (
         <SafeAreaView style={styles.Calenderpagecontainer} >
             <Simpleheader />
-            <ScrollView vertical contentContainerStyle={{paddingBottom:40}} style={styles.calenderwrapper} >
+            <ScrollView vertical contentContainerStyle={{ paddingBottom: 40 }} style={styles.calenderwrapper} >
                 <View style={styles.calendertoptext} >
                     <Text style={styles.calendarTitle} >Pick a Sweet Moment</Text>
                     <Text style={styles.calendarSubtitle} >Select your preferred date for cake delivery or pickup. Our ovens are ready.</Text>
                 </View>
 
                 <View style={styles.maincalender} >
-                    <Calendar onDayPress={(day)=>{
+                    <Calendar onDayPress={(day) => {
                         setselecteddate(day.dateString)
-                        navigation.navigate("MyOrder")
                     }} style={{
                         padding: 20,
                         borderRadius: 48,
@@ -30,10 +30,10 @@ const Calenderpage = ({navigation}) => {
                             calendarBackground: '#fff',
                             todayTextColor: "red",
                             arrowColor: "#000",
-                           selectedDayTextColor:"black"
+                            selectedDayTextColor: "black"
                         }}
                         markedDates={{
-                            [selecteddate]:{selected:true,selectedColor:"#f6cfc2",color:"black"}
+                            [selecteddate]: { selected: true, selectedColor: "#f6cfc2", color: "black" }
                         }}
                     />
                 </View>
@@ -56,6 +56,10 @@ const Calenderpage = ({navigation}) => {
 
                 </View>
 
+                <View style={styles.confirmbutton} >
+                    <Button onPress={()=> navigation.navigate("MyOrder")} title={"Confirm Date"} />
+                </View>
+
 
             </ScrollView>
         </SafeAreaView>
@@ -75,7 +79,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         gap: 10,
-        marginTop:20
+        marginTop: 20
     },
     calendarTitle: {
         letterSpacing: -0.4,
@@ -135,6 +139,9 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         color: "#3E2C2C",
     },
+    confirmbutton:{
+        marginTop:20
+    }
 
 })
 
