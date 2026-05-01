@@ -12,7 +12,11 @@ import OrderSuccessScreen from "./src/Screen/OrderSuccessScreen"
 import Myorderscreen from "./src/Screen/Myorderscreen"
 import Profilescreen from "./src/Screen/Profilescreen"
 import AddressUI from "./src/Screen/AddressUI"
+import Resetpage from "./src/Screen/Resetpage"
 import Calenderpage from "./src/Screen/Calenderpage"
+import ResetLinkpage from "./src/Screen/ResetLinkpage"
+import Setpasswordpage from "./src/Screen/Setpasswordpage"
+import PasswordChanged from "./src/Screen/PasswordChanged"
 import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
@@ -39,6 +43,10 @@ const Stackscreen = () => {
       <Stack.Screen name="Welcome" component={WelcomeScreen} />
       <Stack.Screen name="Signup" component={Signupscreen} />
       <Stack.Screen name="Login" component={Loginscreen} />
+      <Stack.Screen name="Reset" component={Resetpage}/>
+      <Stack.Screen name="Link" component={ResetLinkpage}/>
+      <Stack.Screen name="Setnewpass" component={Setpasswordpage}/>
+      <Stack.Screen name="PasswordChanged" component={PasswordChanged}/>
       <Stack.Screen name="Tabs" component={TabScreen} />
     </Stack.Navigator>
   )

@@ -51,7 +51,7 @@ const Loginscreen = ({ navigation }) => {
                     <View style={styles.passwordsection} >
                         <View style={styles.passwordforget} >
                             <Text>PASSWORD</Text>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={()=>navigation.navigate("Reset")} >
                                 <Text>FORGOT?</Text>
                             </TouchableOpacity>
                         </View>

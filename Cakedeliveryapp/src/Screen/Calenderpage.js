@@ -57,9 +57,8 @@ const Calenderpage = ({ navigation }) => {
                 </View>
 
                 <View style={styles.confirmbutton} >
-                    <Button onPress={()=> navigation.navigate("MyOrder")} title={"Confirm Date"} />
+                    <Button onPress={() => navigation.navigate("MyOrder")} title={"Confirm Date"} />
                 </View>
-
 
             </ScrollView>
         </SafeAreaView>
@@ -139,8 +138,8 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         color: "#3E2C2C",
     },
-    confirmbutton:{
-        marginTop:20
+    confirmbutton: {
+        marginTop: 20
     }
 
 })
