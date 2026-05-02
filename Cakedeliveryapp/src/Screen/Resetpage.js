@@ -2,17 +2,20 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import { View, TouchableOpacity, Text, StyleSheet, Image, TextInput } from "react-native"
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Resetheader from "../components/Resetheader"
+import { useState } from "react";
 
 
 const Resetpage = ({navigation}) => {
+    const [getmail,setmail] = useState(null)
+
+    const onclicksendlinkbutton =()=>{
+        console.log(getmail)
+        navigation.replace("Link")
+        setmail("")
+    }
     return (
         <SafeAreaView style={styles.Resetpagecontainer} >
-            {/* <View style={styles.Resetpagetop}>
-                <TouchableOpacity onPress={()=>navigation.goBack()} >
-                    <AntDesign name="arrowleft" color="#000" size={24} />
-                </TouchableOpacity>
-                <Text style={styles.topresettext} >Reset Password</Text>
-            </View> */}
+         
             <Resetheader onPress={() => navigation.goBack()} />
 
             <View style={styles.imagecontainer} >
@@ -40,10 +43,16 @@ const Resetpage = ({navigation}) => {
                     placeholder="hello@example.com"
                     placeholderTextColor="#B7AA88"
                     style={styles.inputField}
+                    onChangeText={(text)=>{
+                        // console.log(text)
+                        setmail(text)
+                    }  }
+                    require
+                    value={getmail}
                 />
-
+{/* onPress={()=>navigation.navigate("Link")} */}
                 {/* Button */}
-                <TouchableOpacity onPress={()=>navigation.navigate("Link")} style={styles.primaryBtn}>
+                <TouchableOpacity onPress={onclicksendlinkbutton}  style={styles.primaryBtn}>
                     <Text style={styles.btnText}>Send Reset Link →</Text>
                 </TouchableOpacity>
 
@@ -66,7 +75,7 @@ const styles = StyleSheet.create({
     Resetpagecontainer: {
         flex: 1,
         backgroundColor: "#fff9e6",
-        padding: 20
+        paddingHorizontal:20
     },
  
     imagecontainer: {

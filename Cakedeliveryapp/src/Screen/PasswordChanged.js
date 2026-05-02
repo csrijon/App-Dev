@@ -11,13 +11,13 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import Feather from "react-native-vector-icons/Feather";
 import Resetheader from "../components/Resetheader";
 
-const PasswordChanged = ({navigation}) => {
+const PasswordChanged = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.safeCanvas}>
       <Resetheader />
 
       <View style={styles.screenDeck}>
-        
+
         {/* 🔹 Image Section */}
         <View style={styles.heroWrap}>
           <Image
@@ -40,7 +40,7 @@ const PasswordChanged = ({navigation}) => {
         </Text>
 
         {/* 🔹 Button */}
-        <TouchableOpacity onPress={()=>navigation.navigate("Login")} style={styles.ctaShell}>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")} style={styles.ctaShell}>
           <Text style={styles.ctaLabel}>Back to Login →</Text>
         </TouchableOpacity>
 
