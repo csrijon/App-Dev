@@ -3,16 +3,16 @@ import { TouchableOpacity, View, StyleSheet } from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
-const Socialmediabutton = () => {
+const Socialmediabutton = ({onPress}) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity onPress={onPress} style={styles.button}>
         <Ionicons name="logo-google" color="#000" size={24} />
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button}>
+      {/* <TouchableOpacity style={styles.button}>
         <SimpleLineIcons name="social-linkedin" color="#000" size={24} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };

@@ -4,18 +4,51 @@ import Zocial from 'react-native-vector-icons/Zocial';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Button from "../components/Button";
 import Socialmediabutton from "../components/Socialmediabutton"
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import Config from "react-native-config";
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
+
 
 const Loginscreen = ({ navigation }) => {
-    
-    const [loginemail,setloginemail] = useState("")
-    const [loginpassword,setloginpassword] = useState("")
 
-    const onclickloginbutton=()=>{
-        if (loginemail&&loginpassword) {
+    const [loginemail, setloginemail] = useState("")
+    const [loginpassword, setloginpassword] = useState("")
+
+    useEffect(() => {
+        GoogleSignin.configure({
+            webClientId: "282609993383-90d25avkr9g7sd220unv2v5g7cur1u12.apps.googleusercontent.com"
+        })
+    }, [])
+
+    const onclickgooglelogin = async () => {
+        try {
+            const userinfo = await GoogleSignin.signIn()
+            console.log(userinfo, "user:")
+
+            const idToken = userinfo.data.idToken
+            console.log(idToken)
+            let response = await fetch("http://10.0.2.2:5000/googleAuth",{
+               method:"POST",
+               headers:{
+                "Content-Type":"application/json"
+               },
+               body:JSON.stringify({idToken: idToken})
+            })
+            let resdata = await response.json()
+            console.log(resdata)
+        } catch (error) {
+         console.log(error)
+        }
+    }
+
+
+    const onclickloginbutton = () => {
+        if (loginemail && loginpassword) {
             console.log("all statement is visible")
             navigation.replace("Tabs")
-        }else{
+        } else {
             console.log("Nothing is Visible")
         }
     }
@@ -39,27 +72,27 @@ const Loginscreen = ({ navigation }) => {
                     {/* {top text end} */}
                     {/* {mailinput start} */}
                     <View style={styles.mailinput} >
-                        <Text style={styles.mailinputtext} >EMAIL ADDRESS</Text>
+                        <Text style={styles.mailinputtext} >Mobile Number</Text>
                         <View style={styles.mailtextinput} >
-                            <Zocial name="email" color="#000" size={24} />
-                            <TextInput value={loginemail} onChangeText={(text)=>{
+                          <FontAwesome name="mobile-phone" color="#000" size={24} />
+                            <TextInput keyboardType="numeric"  value={loginemail} onChangeText={(text) => {
                                 setloginemail(text)
-                            }} require placeholder="csrijon92@gmail.com" />
+                            }} require placeholder="7029046473" maxLength={10} />
                         </View>
                     </View>
                     {/* {mail input end} */}
                     <View style={styles.passwordsection} >
                         <View style={styles.passwordforget} >
                             <Text>PASSWORD</Text>
-                            <TouchableOpacity onPress={()=>navigation.navigate("Reset")} >
+                            <TouchableOpacity onPress={() => navigation.navigate("Reset")} >
                                 <Text>FORGOT?</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={styles.passwordinput} >
                             <Octicons name="lock" color="#000" size={24} />
-                            <TextInput onChangeText={(text)=>{
-                             setloginpassword(text)
-                             console.log(text)
+                            <TextInput onChangeText={(text) => {
+                                setloginpassword(text)
+                                console.log(text)
                             }} value={loginpassword} secureTextEntry require placeholder="Enter The password" />
                         </View>
                     </View>
@@ -70,7 +103,7 @@ const Loginscreen = ({ navigation }) => {
                     {/* {Button end} */}
                     <Text style={styles.orcontinue} >OR CONTINUE WITH</Text>
                     {/* {social media button start} */}
-                    <Socialmediabutton />
+                    <Socialmediabutton onPress={onclickgooglelogin} />
                     {/* {social media button end} */}
                     {/* {last element start} */}
                     <View style={styles.lastelement} >

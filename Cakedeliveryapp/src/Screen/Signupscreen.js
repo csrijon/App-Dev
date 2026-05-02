@@ -5,6 +5,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Button from "../components/Button";
 import Socialmediabutton from "../components/Socialmediabutton"
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 
 const Signupscreen = ({ navigation }) => {
@@ -54,13 +55,14 @@ const Signupscreen = ({ navigation }) => {
                         {/* {Full name input end} */}
                         {/* {Email input start} */}
                         <View style={styles.signupforminput} >
-                            <Text>EMAIL ADDRESS</Text>
+                            <Text>Mobile Number</Text>
                             <View style={styles.inputcontainer} >
-                                <Ionicons style={styles.iconcolor} name="mail" color="#000" size={24} />
+                              
+                                 <FontAwesome  style={styles.iconcolor} name="mobile-phone" color="#000" size={24} />
                                 <TextInput onChangeText={(text) => {
                                     setfullemail(text)
                                     console.log(text)
-                                }} value={fullemail} keyboardType="default" placeholderTextColor="#646040" style={styles.textinput} placeholder="Enter Your Email Address" />
+                                }} value={fullemail} maxLength={10} keyboardType="numeric" placeholderTextColor="#646040" style={styles.textinput} placeholder="Enter Your Email Address" />
                             </View>
                         </View>
                         {/* {Email input end} */}

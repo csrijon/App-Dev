@@ -59,7 +59,7 @@ const Resetpage = ({navigation}) => {
                 {/* Bottom Text */}
                 <View style={styles.bottomRow}>
                     <Text style={styles.normalText}>Remember your password? </Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={()=>navigation.navigate("Login")} >
                         <Text style={styles.loginText}>Log in</Text>
                     </TouchableOpacity>
 
