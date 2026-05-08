@@ -6,7 +6,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 
 
-const DeliveryMoment = ({ navigation }) => {
+const DeliveryMoment = ({ navigation, route }) => {
 
     const [selected, setselected] = useState(null)
     return (
@@ -22,9 +22,9 @@ const DeliveryMoment = ({ navigation }) => {
                 <View style={styles.dateCard}>
                     <View>
                         <Text style={styles.dateLabel}>Collection Date</Text>
-                        <Text style={styles.date}>Friday, 12 June</Text>
+                        <Text style={styles.date}>{new Date().toDateString()} </Text>
                     </View>
-                    <TouchableOpacity onPress={()=>navigation.navigate("Calender")} style={styles.calendarIcon}>
+                    <TouchableOpacity onPress={() => navigation.navigate("Calender")} style={styles.calendarIcon}>
                         {/* <Text>📅</Text> */}
                         <AntDesign name="calendar" color="#000" size={24} />
                     </TouchableOpacity>
@@ -76,16 +76,16 @@ const DeliveryMoment = ({ navigation }) => {
                 {/* Cake Card */}
                 <View style={styles.cakeCard}>
                     <Image
-                        source={require("../images/cakeimage.jpeg")}
+                        source={{ uri: route.params.image }}
                         style={styles.cakeImg}
                     />
 
                     <Text style={styles.badge}>CHEF'S RECOMMENDATION</Text>
 
-                    <Text style={styles.cakeTitle}>The Midnight Velvet</Text>
+                    <Text style={styles.cakeTitle}>{route.params.title}</Text>
 
                     <Text style={styles.cakeDesc}>
-                        Your selected slot is perfect for the fresh frosting setting of our signature velvet collection.
+                        {route.params.description}
                     </Text>
                 </View>
 

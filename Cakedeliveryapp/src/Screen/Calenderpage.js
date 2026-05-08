@@ -18,7 +18,7 @@ const Calenderpage = ({ navigation }) => {
                 </View>
 
                 <View style={styles.maincalender} >
-                    <Calendar onDayPress={(day) => {
+                    <Calendar  onDayPress={(day) => {
                         setselecteddate(day.dateString)
                     }} style={{
                         padding: 20,

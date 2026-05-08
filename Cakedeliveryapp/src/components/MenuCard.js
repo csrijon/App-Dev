@@ -4,34 +4,34 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const screenWidth = Dimensions.get("window").width;
 
-const MenuCard = ({onPress}) => {
+
+
+const MenuCard = ({onPress,rating,bakingTime,title,description,price,image}) => {
     return (
         // <View style={styles.mainContainer}>
         <View style={styles.cakecardContainer}>
             <Image
-                source={{
-                    uri: "https://legateaucakes.com/cdn/shop/files/28d729eb-0915-4e9a-87be-c015e085d598.png?v=1772039786",
-                }}
+               source={{uri:image}}
                 style={styles.image}
             />
 
             <View style={styles.cakeRating}>
                 <View style={styles.rating}>
                     <FontAwesome name="star" color="#75584e" size={14} />
-                    <Text style={styles.ratingText} >4.5</Text>
+                    <Text style={styles.ratingText} >{rating}</Text>
                 </View>
-                <Text style={styles.bakingTime} >Baking:48h</Text>
+                <Text style={styles.bakingTime} >Baking:{bakingTime}</Text>
             </View>
 
             <View style={styles.cardDetails}>
-                <Text style={styles.title}>Midnight Forest</Text>
+                <Text style={styles.title}>{title}</Text>
                 <Text style={styles.description}>
-                    A mysterious and enchanting forest that comes alive under the cover of darkness.
+                   { description}
                 </Text>
             </View>
 
             <View style={styles.cardPrice}>
-                <Text style={styles.price}>$500.00</Text>
+                <Text style={styles.price}>{price}</Text>
                 <TouchableOpacity onPress={onPress} style={styles.icon} >
                     <AntDesign name="plus" color="#000" size={20} />
                 </TouchableOpacity>
