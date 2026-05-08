@@ -8,6 +8,7 @@ import Button from "../components/Button"
 const Calenderpage = ({ navigation }) => {
 
     const [selecteddate, setselecteddate] = useState("")
+    const [datetime,setdatetime] = useState("")
     return (
         <SafeAreaView style={styles.Calenderpagecontainer} >
             <Simpleheader />
@@ -18,8 +19,9 @@ const Calenderpage = ({ navigation }) => {
                 </View>
 
                 <View style={styles.maincalender} >
-                    <Calendar  onDayPress={(day) => {
+                    <Calendar   onDayPress={(day) => {
                         setselecteddate(day.dateString)
+                        setdatetime(new Date(day.dateString).toDateString())
                     }} style={{
                         padding: 20,
                         borderRadius: 48,
@@ -35,6 +37,7 @@ const Calenderpage = ({ navigation }) => {
                         markedDates={{
                             [selecteddate]: { selected: true, selectedColor: "#f6cfc2", color: "black" }
                         }}
+                        
                     />
                 </View>
 
@@ -48,7 +51,7 @@ const Calenderpage = ({ navigation }) => {
                     </View>
 
                     <View style={styles.textBlock}>
-                        <Text style={styles.titleText}>Classic Velvet Noir</Text>
+                        <Text style={styles.titleText}>{datetime}</Text>
                         <Text style={styles.subtitleText}>
                             Scheduled for: <Text style={styles.highlightText}>Oct 9th, 2024</Text>
                         </Text>
@@ -57,7 +60,12 @@ const Calenderpage = ({ navigation }) => {
                 </View>
 
                 <View style={styles.confirmbutton} >
-                    <Button onPress={() => navigation.navigate("MyOrder")} title={"Confirm Date"} />
+                    <Button onPress={() => navigation.navigate("MyOrder",{
+                        screen:"Delivery",
+                        params:{
+                            date:datetime
+                        }
+                    })} title={"Confirm Date"} />
                 </View>
 
             </ScrollView>

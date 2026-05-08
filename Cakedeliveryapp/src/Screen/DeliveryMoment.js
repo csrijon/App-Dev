@@ -22,7 +22,8 @@ const DeliveryMoment = ({ navigation, route }) => {
                 <View style={styles.dateCard}>
                     <View>
                         <Text style={styles.dateLabel}>Collection Date</Text>
-                        <Text style={styles.date}>{new Date().toDateString()} </Text>
+                        <Text style={styles.date}>{route.params.date} </Text>
+                        {/* {new Date().toDateString()} */}
                     </View>
                     <TouchableOpacity onPress={() => navigation.navigate("Calender")} style={styles.calendarIcon}>
                         {/* <Text>📅</Text> */}
