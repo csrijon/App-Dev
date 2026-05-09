@@ -6,6 +6,8 @@ import Cakecard from "../components/Cakecard";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FoodCard from "../components/FoodCard";
 import { useWindowDimensions } from "react-native";
+import Geolocation from '@react-native-community/geolocation';
+import { useEffect } from "react";
 
 
 const cakeData = [
@@ -105,6 +107,13 @@ const foodData = [
 ];
 
 const Homescreen = ({ navigation }) => {
+
+       useEffect(()=>{
+          Geolocation.getCurrentPosition((info)=>(
+               console.log(info)
+          ))
+       },[])
+
     const { width, height } = useWindowDimensions()
     return (
         <SafeAreaView style={styles.Homecontainer} >

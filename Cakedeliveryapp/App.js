@@ -14,7 +14,7 @@ import Myorderscreen from "./src/Screen/Myorderscreen"
 import Profilescreen from "./src/Screen/Profilescreen"
 import AddressUI from "./src/Screen/AddressUI"
 import Resetpage from "./src/Screen/Resetpage"
-import Calenderpage from "./src/Screen/Calenderpage"
+import EmptyOrderScreen from "./src/Screen/EmptyOrderScreen"
 import ResetLinkpage from "./src/Screen/ResetLinkpage"
 import Setpasswordpage from "./src/Screen/Setpasswordpage"
 import PasswordChanged from "./src/Screen/PasswordChanged"
@@ -134,7 +134,7 @@ const TabScreen = () => {
 
       <Tab.Screen
         name="Orderagain"
-        component={Calenderpage}
+        component={EmptyOrderScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="bag" color={color} size={size} />

@@ -20,9 +20,9 @@ const Header = ({ name,title }) => {
             </View>
 
             {/* Right Section */}
-            <TouchableOpacity style={styles.searchBox}>
+            {/* <TouchableOpacity style={styles.searchBox}>
                 <Ionicons name="search" color="#000" size={20} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
         </View>
     )
@@ -60,12 +60,12 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         color: "#3E3E3E",
     },
-    searchBox: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        backgroundColor: "#EFE7C7",
-        justifyContent: "center",
-        alignItems: "center",
-    }
+    // searchBox: {
+    //     width: 40,
+    //     height: 40,
+    //     borderRadius: 20,
+    //     backgroundColor: "#EFE7C7",
+    //     justifyContent: "center",
+    //     alignItems: "center",
+    // }
 });
