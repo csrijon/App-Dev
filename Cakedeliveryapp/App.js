@@ -23,7 +23,7 @@ import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 
-
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
@@ -47,10 +47,10 @@ const Stackscreen = () => {
       <Stack.Screen name="Welcome" component={WelcomeScreen} />
       <Stack.Screen name="Signup" component={Signupscreen} />
       <Stack.Screen name="Login" component={Loginscreen} />
-      <Stack.Screen name="Reset" component={Resetpage}/>
-      <Stack.Screen name="Link" component={ResetLinkpage}/>
-      <Stack.Screen name="Setnewpass" component={Setpasswordpage}/>
-      <Stack.Screen name="PasswordChanged" component={PasswordChanged}/>
+      <Stack.Screen name="Reset" component={Resetpage} />
+      <Stack.Screen name="Link" component={ResetLinkpage} />
+      <Stack.Screen name="Setnewpass" component={Setpasswordpage} />
+      <Stack.Screen name="PasswordChanged" component={PasswordChanged} />
       <Stack.Screen name="Tabs" component={TabScreen} />
     </Stack.Navigator>
   )
@@ -61,14 +61,14 @@ const Homestack = () => {
   return (
     <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }} >
       <Stack.Screen name="Home" component={Homescreen} />
-      <Stack.Screen name="Category" component={CategoryListing} />
     </Stack.Navigator>
   )
 }
 
 const Orderstack = () => {
   return (
-    <Stack.Navigator initialRouteName="Delivery" screenOptions={{ headerShown: false }} >
+    <Stack.Navigator initialRouteName="Category" screenOptions={{ headerShown: false }} >
+      <Stack.Screen name="Category" component={CategoryListing} />
       <Stack.Screen name="Delivery" component={DeliveryMoment} />
       <Stack.Screen name="Cakedetails" component={CakeDetails} />
       <Stack.Screen name="Ordersummary" component={Ordersummarypage} />
@@ -123,27 +123,27 @@ const TabScreen = () => {
       />
 
       <Tab.Screen
-        name="MyOrder"
+        name="Categorys"
         component={Orderstack}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="cloud-done-sharp" color={color} size={size} />
+            <MaterialIcons name="category" color={color} size={size} />
           )
         }}
       />
 
       <Tab.Screen
-        name="Calender"
+        name="Orderagain"
         component={Calenderpage}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="calendar" color={color} size={size} />
+            <Ionicons name="bag" color={color} size={size} />
           )
         }}
       />
 
       <Tab.Screen
-        name="Profile"
+        name="Blog"
         component={Profilestack}
         options={{
           tabBarIcon: ({ color, size }) => (

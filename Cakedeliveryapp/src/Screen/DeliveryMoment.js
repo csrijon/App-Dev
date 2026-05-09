@@ -3,12 +3,15 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Detailsheader from "../components/Detailsheader";
 import { useState } from "react";
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { Calendar } from "react-native-calendars"
 
 
 
 const DeliveryMoment = ({ navigation, route }) => {
 
     const [selected, setselected] = useState(null)
+    const [selecteddate, setselecteddate] = useState("")
+    const [datetime, setdatetime] = useState("")
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar backgroundColor="#f5ecd9" barStyle="dark-content" />
@@ -19,17 +22,42 @@ const DeliveryMoment = ({ navigation, route }) => {
                 <Text style={styles.title}>Choose Your Delivery Moment</Text>
 
                 {/* Date Card */}
-                <View style={styles.dateCard}>
+                {/* <View style={styles.dateCard}>
                     <View>
                         <Text style={styles.dateLabel}>Collection Date</Text>
                         <Text style={styles.date}>{route.params.date} </Text>
-                        {/* {new Date().toDateString()} */}
+     
                     </View>
                     <TouchableOpacity onPress={() => navigation.navigate("Calender")} style={styles.calendarIcon}>
-                        {/* <Text>📅</Text> */}
+                       
                         <AntDesign name="calendar" color="#000" size={24} />
                     </TouchableOpacity>
+                </View> */}
+
+                <View style={styles.maincalender} >
+                    <Calendar onDayPress={(day) => {
+                        setselecteddate(day.dateString)
+                        setdatetime(new Date(day.dateString).toDateString())
+                    }} style={{
+                        padding: 20,
+                        borderRadius: 48,
+                        arrowColor: "#fff"
+                    }}
+                        theme={{
+                            backgroundColor: '#fff',
+                            calendarBackground: '#fff',
+                            todayTextColor: "red",
+                            arrowColor: "#000",
+                            selectedDayTextColor: "black"
+                        }}
+                        markedDates={{
+                            [selecteddate]: { selected: true, selectedColor: "#f6cfc2", color: "black" }
+                        }}
+
+                    />
                 </View>
+
+
 
                 {/* Time Options */}
                 <TouchableOpacity onPress={() => setselected(!selected)} style={[styles.option, { borderColor: selected ? "#6b4f4f" : "white" }]}>
@@ -77,7 +105,7 @@ const DeliveryMoment = ({ navigation, route }) => {
                 {/* Cake Card */}
                 <View style={styles.cakeCard}>
                     <Image
-                        source={{ uri: route.params.image }}
+                        source={{ uri: route?.params?.image }}
                         style={styles.cakeImg}
                     />
 
@@ -167,10 +195,9 @@ const styles = StyleSheet.create({
         borderColor: "white"
     },
 
-    // selected: {
-    //     borderWidth: 2,
-    //     borderColor: "#6b4f4f",
-    // },
+    maincalender: {
+        marginBottom: 30
+    },
 
     iconCircle: {
         backgroundColor: "#f3d9dc",

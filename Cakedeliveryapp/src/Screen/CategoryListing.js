@@ -251,13 +251,10 @@ const CategoryListing = ({ navigation }) => {
                         data={menuItems}
                         keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => (
-                            <MenuCard onPress={() => navigation.navigate("MyOrder", {
-                                screen: "Delivery",
-                                params: {
+                            <MenuCard onPress={() => navigation.navigate("Delivery", {
                                     title: item.title,
                                     description: item.description,
                                     image: item.image
-                                }
                             })} rating={item.rating} image={item.image} bakingTime={item.bakingTime} title={item.title} description={item.description} price={item.price} />
                         )}
                     />

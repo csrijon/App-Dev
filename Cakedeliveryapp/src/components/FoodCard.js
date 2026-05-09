@@ -3,32 +3,32 @@ import { View, Text, Image, StyleSheet } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useWindowDimensions } from "react-native";
 
-const FoodCard = () => {
+const FoodCard = ({title,image,rating,subtitle,tags,tag}) => {
   const {height,width} = useWindowDimensions()
   return (
     <View style={[styles.card]}>
 
       {/* Left Image */}
       <Image
-        source={require("../images/cakeimage.jpeg")}
+        source={image}
         style={styles.image}
       />
       {/* Right Content */}
       <View style={styles.content}>
         <View style={styles.titleRow}>
-          <Text style={styles.title}>The Flour Atelier</Text>
+          <Text style={styles.title}>{title}</Text>
           <View style={styles.ratingBox}>
             <Ionicons name="star" size={12} color="#000" />
-            <Text style={styles.ratingText}>4.9</Text>
+            <Text style={styles.ratingText}>{rating}</Text>
           </View>
         </View>
 
-        <Text style={styles.subtitle}>French Patisserie · 0.8 miles</Text>
+        <Text style={styles.subtitle}>{subtitle}</Text>
 
         {/* Tags */}
         <View style={styles.tagRow}>
-          <Text style={styles.tag}>GLUTEN-FREE</Text>
-          <Text style={styles.tag}>ORGANIC</Text>
+          <Text style={styles.tag}>{tags}</Text>
+          <Text style={styles.tag}>{tag}</Text>
         </View>
       </View>
 

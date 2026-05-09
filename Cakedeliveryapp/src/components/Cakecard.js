@@ -1,13 +1,13 @@
 import { View, Image, Text, StyleSheet } from "react-native"
 
-const Cakecard = () => {
+const Cakecard = ({image,trend,name,price}) => {
     return (
         <View style={styles.Cakecard} >
-            <Image style={styles.Cakeimage} source={require("../images/cakeimage.jpeg")} />
+            <Image style={styles.Cakeimage} source={image} />
             <View style={styles.cakedetails} >
-                <Text style={styles.caketexttrend} >Trending</Text>
-                <Text style={styles.caketextname} >Chocolate Cake</Text>
-                <Text style={styles.caketextprice} >$20.00</Text>
+                <Text style={styles.caketexttrend} >{trend}</Text>
+                <Text style={styles.caketextname} >{name}</Text>
+                <Text style={styles.caketextprice} >{price}</Text>
             </View>
         </View>
     )
