@@ -3,207 +3,222 @@
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Glaze &amp; Grain | Order Again</title>
+<title>Glaze &amp; Grain - Artisanal Pâtisserie</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-container": "#623648",
+                    "primary-dim": "#684d43",
+                    "surface-tint": "#75584e",
+                    "secondary": "#6c5a61",
+                    "surface-bright": "#fff9e6",
+                    "surface-container": "#f5efcd",
+                    "error-container": "#fa746f",
+                    "secondary-fixed-dim": "#e6ced6",
+                    "on-surface": "#363317",
+                    "on-secondary-container": "#5e4d54",
+                    "secondary-dim": "#5f4f55",
+                    "on-primary": "#fff7f5",
+                    "error": "#a83836",
+                    "tertiary-dim": "#734557",
+                    "primary-fixed": "#f6cfc2",
+                    "on-background": "#363317",
+                    "tertiary-container": "#f8bbd0",
+                    "on-primary-fixed": "#4b3229",
+                    "surface-variant": "#eae3bb",
+                    "surface-container-high": "#f0e9c5",
+                    "background": "#fff9e6",
+                    "tertiary": "#815163",
+                    "on-tertiary-fixed-variant": "#6c3f51",
+                    "primary": "#75584e",
+                    "on-surface-variant": "#646040",
+                    "on-secondary": "#fff7f8",
+                    "on-secondary-fixed-variant": "#68575e",
+                    "on-primary-container": "#5f453b",
+                    "on-error-container": "#6e0a12",
+                    "error-dim": "#67040d",
+                    "on-secondary-fixed": "#4b3b41",
+                    "on-primary-fixed-variant": "#6a4e44",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed": "#4b2334",
+                    "primary-container": "#f6cfc2",
+                    "outline-variant": "#b9b38d",
+                    "surface": "#fff9e6",
+                    "on-tertiary": "#fff7f7",
+                    "primary-fixed-dim": "#e7c1b4",
+                    "tertiary-fixed": "#f8bbd0",
+                    "secondary-container": "#f4dce4",
+                    "surface-container-highest": "#eae3bb",
+                    "tertiary-fixed-dim": "#e9aec3",
+                    "inverse-surface": "#100e03",
+                    "outline": "#807c59",
+                    "surface-dim": "#e2dbb3",
+                    "secondary-fixed": "#f4dce4",
+                    "inverse-primary": "#f6cfc2",
+                    "surface-container-low": "#faf4d6",
+                    "inverse-on-surface": "#a29d88",
+                    "on-error": "#fff7f6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Plus Jakarta Sans"],
+                    "display": ["Plus Jakarta Sans"],
+                    "body": ["Plus Jakarta Sans"],
+                    "label": ["Plus Jakarta Sans"]
+            }
+          },
+        },
+      }
+    </script>
 <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
-    </style>
-<script id="tailwind-config">
-        tailwind.config = {
-          darkMode: "class",
-          theme: {
-            extend: {
-              "colors": {
-                      "surface-variant": "#eae3bb",
-                      "on-primary-fixed": "#4b3229",
-                      "surface-container-high": "#f0e9c5",
-                      "tertiary-container": "#f8bbd0",
-                      "on-background": "#363317",
-                      "tertiary-dim": "#734557",
-                      "primary-fixed": "#f6cfc2",
-                      "error": "#a83836",
-                      "on-error-container": "#6e0a12",
-                      "error-dim": "#67040d",
-                      "on-secondary-fixed-variant": "#68575e",
-                      "on-primary-container": "#5f453b",
-                      "on-secondary": "#fff7f8",
-                      "on-tertiary-fixed-variant": "#6c3f51",
-                      "tertiary": "#815163",
-                      "primary": "#75584e",
-                      "on-surface-variant": "#646040",
-                      "background": "#fff9e6",
-                      "secondary": "#6c5a61",
-                      "surface-tint": "#75584e",
-                      "surface-bright": "#fff9e6",
-                      "primary-dim": "#684d43",
-                      "on-tertiary-container": "#623648",
-                      "secondary-dim": "#5f4f55",
-                      "on-primary": "#fff7f5",
-                      "error-container": "#fa746f",
-                      "on-secondary-container": "#5e4d54",
-                      "secondary-fixed-dim": "#e6ced6",
-                      "on-surface": "#363317",
-                      "surface-container": "#f5efcd",
-                      "inverse-primary": "#f6cfc2",
-                      "secondary-fixed": "#f4dce4",
-                      "surface-dim": "#e2dbb3",
-                      "on-error": "#fff7f6",
-                      "surface-container-low": "#faf4d6",
-                      "inverse-on-surface": "#a29d88",
-                      "surface-container-lowest": "#ffffff",
-                      "on-primary-fixed-variant": "#6a4e44",
-                      "on-secondary-fixed": "#4b3b41",
-                      "outline": "#807c59",
-                      "tertiary-fixed-dim": "#e9aec3",
-                      "inverse-surface": "#100e03",
-                      "tertiary-fixed": "#f8bbd0",
-                      "secondary-container": "#f4dce4",
-                      "surface-container-highest": "#eae3bb",
-                      "on-tertiary": "#fff7f7",
-                      "primary-fixed-dim": "#e7c1b4",
-                      "on-tertiary-fixed": "#4b2334",
-                      "surface": "#fff9e6",
-                      "primary-container": "#f6cfc2",
-                      "outline-variant": "#b9b38d"
-              },
-              "borderRadius": {
-                      "DEFAULT": "1rem",
-                      "lg": "2rem",
-                      "xl": "3rem",
-                      "full": "9999px"
-              },
-              "fontFamily": {
-                      "headline": ["Plus Jakarta Sans"],
-                      "display": ["Plus Jakarta Sans"],
-                      "body": ["Plus Jakarta Sans"],
-                      "label": ["Plus Jakarta Sans"]
-              }
-            },
-          },
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #FFF9E6;
+            color: #363317;
         }
-    </script>
+    </style>
 <style>
     body {
       min-height: max(884px, 100dvh);
     }
   </style>
   </head>
-<body class="bg-background text-on-surface min-h-screen flex flex-col">
-<!-- TopAppBar -->
-<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-xl shadow-[0px_24px_48px_rgba(117,88,78,0.08)]">
-<div class="flex items-center gap-4">
-<button class="p-2 text-primary hover:bg-primary-container/20 transition-colors rounded-full active:scale-95 duration-200">
-<span class="material-symbols-outlined" data-icon="menu">menu</span>
-</button>
-<h1 class="font-display font-bold text-primary dark:text-primary-fixed text-headline-md tracking-tight">Glaze &amp; Grain</h1>
+<body class="bg-surface text-on-surface antialiased min-h-screen">
+<!-- TopAppBar Fragment as requested for Mobile App Header -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl flex justify-between items-center px-6 h-20 shadow-[0px_24px_48px_rgba(117,88,78,0.08)]">
+<!-- Location Selector Left -->
+<div class="flex items-center gap-2 group cursor-pointer active:scale-95 transition-transform duration-200">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-primary shadow-sm">
+<span class="material-symbols-outlined" data-icon="location_on" style="font-variation-settings: 'FILL' 1;">location_on</span>
 </div>
-<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container">
-<img alt="Customer profile photo" class="w-full h-full object-cover" data-alt="A professional, warm studio portrait of a woman with a kind smile, looking directly at the camera. The lighting is soft and high-key, emphasizing a clean and premium aesthetic. She is set against a blurred, warm cream-colored background that matches the brand's sophisticated and artisanal palette. The image has a gentle, high-end lifestyle magazine feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAi8JoZCtnHhI9QwaQL2q3Ax_uFzh92Ks4KgMKgQ9Fpe9EnI-E5w3DOFYc91hBMXHxTifpDhsTHAv4hOM4XbPEN0LXsi5auQIYEI1fJyrLeDNP6CGmiyw0VYxrMizpIVLBJnvXN3JsPj_KbjsU9ver7IVcJYu_0SjAbbBLYPQSm16J0EYmAmQor7azGWBat3Bu3weUEtVDP0Xz0B0WSiyIkbE7IVCR_cmWAARxg2Lu5oTmsYtqp6_RLEPD5gI-Jwldmtuy6YWmxlE5q"/>
+<div class="flex flex-col">
+<span class="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Delivery to</span>
+<div class="flex items-center gap-1">
+<span class="font-headline text-on-surface font-extrabold tracking-tight">London, NW1</span>
+<span class="material-symbols-outlined text-primary text-sm" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Right Profile Section -->
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant hover:bg-primary-container/20 transition-colors active:scale-90">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<div class="relative active:scale-95 duration-200">
+<div class="w-12 h-12 rounded-full p-0.5 bg-gradient-to-tr from-primary to-primary-dim">
+<img alt="Customer profile photo" class="w-full h-full rounded-full object-cover border-2 border-surface" data-alt="A professional and warm studio portrait of a customer with a friendly expression. The lighting is soft and high-key, matching a premium light-mode UI aesthetic. The background is a clean, neutral cream color that complements an artisanal bakery brand palette. The subject is well-dressed in high-quality textures, suggesting a sophisticated, modern lifestyle." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAii049DuzAe6GYSmbRPGKfoL-V_4T3NPfzWJms0ip_zzGoiFz20FZKwyqL2m1UoUtT2tVj-mlSEA3Vn1y9mUU3Ntqmls2vjZ_x5iYOiAOySca5SIFzBRbMqoTNW8u6m4xRsSXWsIGXwKLrrwFVzJ9n3SDSgUnBsZ_0te83m3xqBnglmMj4tR3b13PeZumM6s6ok3D8FSUJQZOfOcMQxKFL22SoDirhZfqW_pytUlu_bBERFh7DIhpdO8SkUbFXJG2uH59WzcyT5W7r"/>
+</div>
+</div>
 </div>
 </header>
-<!-- Main Content Area -->
-<main class="flex-grow pt-24 pb-32 px-6 flex flex-col items-center justify-center max-w-4xl mx-auto w-full">
-<!-- Empty State Bento/Asymmetric Section -->
-<div class="w-full grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-<!-- Hero Illustration/Image with Artisanal Silhouette -->
-<div class="md:col-span-7 relative order-1 md:order-2">
-<div class="relative z-10 w-full aspect-square overflow-hidden rounded-tl-xl rounded-br-xl shadow-[0px_24px_48px_rgba(117,88,78,0.08)]">
-<img alt="Artisanal Cake" class="w-full h-full object-cover" data-alt="A gourmet, multi-layered chocolate cake with smooth ganache and delicate gold leaf accents, positioned elegantly on a vintage ceramic stand. The setting is a bright, sun-drenched boutique bakery with soft focus backgrounds of flour-dusted wooden tables and pastel-colored walls. The lighting is warm and natural, creating soft ambient glows that highlight the cake's exquisite texture and the brand's premium, artisanal identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3X-hUrUXhXEmfMstiAwuic2qgFS_YKlkF44T1Cy-OJO9ZfU87XXQTec9USK2mimOBjPGRpu-Hc7-xvSQ1PVUZgHaSQ_6YR758QPwNfsihrV4ciU_rsADtanHh5MNe5xQG84c8KlVtWdM9wpTSeozcToglfPwv7sNvHJBW8Hx-B3XbRcAPLvEAlRa71-QDhNnPyzvt7lyvZ2NjoRPkL-R6lJd_aVRQF8GUKo7l3b54OOlv9OzcuuHzlRV-HD0r6H5sAPZ1YK-y9MhU"/>
+<!-- Main Content Canvas -->
+<main class="pt-24 px-6 pb-24">
+<!-- Hero Section -->
+<section class="mb-10 relative overflow-hidden rounded-xl h-64 flex items-end p-6 bg-primary-dim shadow-xl">
+<img alt="Featured Pastry" class="absolute inset-0 w-full h-full object-cover opacity-60" data-alt="A stunning, editorial photograph of a multi-layered artisanal cake decorated with delicate edible gold leaf and fresh organic berries. The cake sits on a vintage ceramic pedestal against a soft, sun-drenched morning light background in a rustic Parisian bakery. The color palette features warm creams, rich browns, and soft pinks, emphasizing a tactile and luxurious atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcXRCBd_3IGUU-9NrPt1hdWFbXivqrkLABZSKH5YkSA2Cs_93JP8n5Wt52A5AucUUHSIeAW-iofxATXjif3c5xoBu0Ws5VuI_KFK2q9Xqvk1MK1FsR6-bm5Fxyrezx-TvIHNTNoyJWi17NEX4OAtD1ci1pI52WlpYD5Pwgg8nARmEMwQ2JLYa1-qusFjHmiUlipVCiEM2kcVU15NAc32IUgQnNI6Gan79bSJyCrKVEly6y3o-mNTIk01X0h6SF36muJ0Sp7n6emtwr"/>
+<div class="relative z-10 max-w-[70%]">
+<span class="inline-block px-3 py-1 mb-3 bg-tertiary-container text-on-tertiary-container text-[10px] font-bold rounded-sm uppercase tracking-widest">Limited Edition</span>
+<h1 class="text-white font-display text-4xl font-extrabold leading-tight tracking-tighter">Velvet Espresso Tart</h1>
 </div>
-<!-- Decorative Layer -->
-<div class="absolute -top-4 -left-4 w-24 h-24 bg-tertiary-container/30 rounded-full blur-2xl"></div>
-<div class="absolute -bottom-8 -right-8 w-32 h-32 bg-primary-container/40 rounded-full blur-3xl"></div>
+</section>
+<!-- Collections Bento Grid -->
+<div class="grid grid-cols-2 gap-4 mb-8">
+<div class="col-span-2 bg-surface-container-low p-6 rounded-xl relative overflow-hidden h-40 flex flex-col justify-end">
+<span class="material-symbols-outlined absolute top-4 right-4 text-primary/20 text-6xl" data-icon="bakery_dining">bakery_dining</span>
+<h3 class="font-headline text-2xl font-bold text-on-surface">Artisanal Breads</h3>
+<p class="text-on-surface-variant text-sm">Freshly baked at 4:00 AM daily.</p>
 </div>
-<!-- Content Section -->
-<div class="md:col-span-5 flex flex-col space-y-6 text-center md:text-left order-2 md:order-1">
-<div class="space-y-4">
-<span class="inline-block px-4 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label text-label-md tracking-wider">NEW BEGINNINGS</span>
-<h2 class="font-display font-extrabold text-primary text-4xl md:text-5xl leading-tight tracking-tight">Your Sweet Journey Begins</h2>
-<p class="font-body text-body-lg text-on-surface-variant leading-relaxed">
-                        You haven't placed any orders yet. Once you order your favorite cakes, they’ll appear here for quick reordering.
-                    </p>
+<div class="bg-secondary-container p-6 rounded-xl aspect-square flex flex-col justify-between">
+<div class="w-10 h-10 bg-surface/50 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" data-icon="auto_awesome">auto_awesome</span>
 </div>
-<div class="flex flex-col sm:flex-row gap-4 pt-2">
-<a class="inline-flex items-center justify-center px-8 py-4 bg-primary text-on-primary font-bold rounded-full shadow-lg hover:shadow-xl transition-all active:scale-95 duration-200" href="#">
-                        Explore the Gallery
-                        <span class="material-symbols-outlined ml-2 text-xl" data-icon="arrow_forward">arrow_forward</span>
-</a>
+<h3 class="font-headline text-lg font-bold text-on-secondary-container">Pastry Boxes</h3>
 </div>
-<!-- Secondary Info: Tonal Layering Card -->
-<div class="mt-8 p-6 bg-surface-container-low rounded-lg flex items-center gap-4">
-<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center text-primary">
-<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+<div class="bg-primary-container p-6 rounded-xl aspect-square flex flex-col justify-between">
+<div class="w-10 h-10 bg-surface/50 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="redeem">redeem</span>
 </div>
-<div class="flex-1">
-<p class="font-label text-label-md text-on-surface font-bold">First Order Perk</p>
-<p class="font-label text-label-md text-on-surface-variant">Enjoy a complimentary pastry on your first checkout.</p>
+<h3 class="font-headline text-lg font-bold text-on-primary-container">Gift Cards</h3>
+</div>
+</div>
+<!-- Featured Carousel (Editorial Layout) -->
+<div class="flex justify-between items-center mb-6">
+<h2 class="font-headline text-2xl font-extrabold tracking-tight">Today's Specials</h2>
+<button class="text-primary font-bold text-sm">View All</button>
+</div>
+<div class="flex gap-6 overflow-x-auto pb-6 scrollbar-hide -mx-6 px-6">
+<!-- Product Card 1 -->
+<div class="flex-shrink-0 w-64 bg-surface-container-low rounded-xl overflow-hidden group">
+<div class="h-48 overflow-hidden rounded-t-xl rounded-br-xl">
+<img alt="Croissant" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A macro shot of a perfectly golden, flaky croissant showing its intricate laminated layers. The pastry sits on a marble surface with scattered crumbs and a light dusting of powdered sugar. The lighting is warm and directional, creating soft shadows that emphasize the texture. The overall aesthetic is clean, minimalist, and high-end artisanal food photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0gfVoIVlMfdfdv7rwMW8Hys3dWuoP17B8oTUqxKk-dMdB6M5Id3dkcQnoSaSUI5rrKmVlRKO-xkp9Ez9FF1Xs_ALL6XzyHsTJRwEMYT8Wn0vyMK3mKA9EnOhxLBM6C52P5zGb608Hp5OYc-OrvTGwDSJV4gfjAj-1wF8i2dfnmb-e4qCe9RLyvrXyqjo8wlnlQr0e53Er5XBWVwPhM0wyHMCCTosVW9jCIKOc0xOpzkCW51yklyIteHXcz-OrOCYE9-yTMBwAd0rE"/>
+</div>
+<div class="p-5">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-headline font-bold text-lg">Pistachio Pain</h4>
+<span class="text-primary font-extrabold">£4.50</span>
+</div>
+<div class="flex gap-2">
+<span class="bg-tertiary-container/30 text-on-tertiary-container text-[10px] px-2 py-0.5 rounded-full font-bold">Nutty</span>
+<span class="bg-secondary-container/30 text-on-secondary-container text-[10px] px-2 py-0.5 rounded-full font-bold">Bestseller</span>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="flex-shrink-0 w-64 bg-surface-container-low rounded-xl overflow-hidden group">
+<div class="h-48 overflow-hidden rounded-t-xl rounded-bl-xl">
+<img alt="Chocolate Cake" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A rich, decadent dark chocolate ganache cake slice with a smooth, reflective glaze. It is served on a matte ceramic plate with a single gold fork resting beside it. The lighting is moody yet bright enough to show the deep brown tones of the chocolate. The composition is asymmetrical, following the high-end editorial gallery style of the Glaze and Grain brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZ2o3IMtfkmSfaKZJZJlN6dSEbU9agEFu2LcMXmOdCjg2HfzQSqxh7aPuSWJnxQS-0OeghPiAQQLnK8_frasQ8WUS4mNgCNM3wOKEn5YGcRqglK5f7N9Ws5edzIT5v2KMFO6l_XKc_F0wDj5wUwpr5s1qMXU_c3WfesNWPtaO9n8duYxIE2BVBuT1WAa1Dk1Q2qWYode_eHoclUm1C8wGb1NAgxSfhqGTngZsfUHpaBhwH9-YIt09r3TJBn2YOt1oDyiy000Puk3NN"/>
+</div>
+<div class="p-5">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-headline font-bold text-lg">Midnight Ganache</h4>
+<span class="text-primary font-extrabold">£6.20</span>
+</div>
+<div class="flex gap-2">
+<span class="bg-tertiary-container/30 text-on-tertiary-container text-[10px] px-2 py-0.5 rounded-full font-bold">Rich</span>
+<span class="bg-secondary-container/30 text-on-secondary-container text-[10px] px-2 py-0.5 rounded-full font-bold">Chef's Choice</span>
 </div>
 </div>
 </div>
 </div>
 </main>
-<!-- BottomNavBar -->
-<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-surface dark:bg-surface-dim rounded-t-lg shadow-[0px_-12px_32px_rgba(117,88,78,0.05)]">
-<a class="flex flex-col items-center justify-center text-on-surface-variant px-5 py-1 hover:text-primary transition-all active:scale-90 duration-150" href="#">
-<span class="material-symbols-outlined mb-1" data-icon="cake">cake</span>
-<span class="font-label text-label-md">Gallery</span>
-</a>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface flex justify-around items-center px-4 py-3 pb-safe shadow-[0px_-12px_32px_rgba(117,88,78,0.05)] rounded-t-lg">
 <a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-5 py-1 active:scale-90 duration-150" href="#">
-<span class="material-symbols-outlined mb-1" data-icon="history" style="font-variation-settings: 'FILL' 1;">history</span>
-<span class="font-label text-label-md">Orders</span>
+<span class="material-symbols-outlined" data-icon="cake" style="font-variation-settings: 'FILL' 1;">cake</span>
+<span class="font-label text-[10px] mt-0.5 font-bold">Gallery</span>
 </a>
 <a class="flex flex-col items-center justify-center text-on-surface-variant px-5 py-1 hover:text-primary transition-all active:scale-90 duration-150" href="#">
-<span class="material-symbols-outlined mb-1" data-icon="local_shipping">local_shipping</span>
-<span class="font-label text-label-md">Tracking</span>
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label text-[10px] mt-0.5">Orders</span>
 </a>
 <a class="flex flex-col items-center justify-center text-on-surface-variant px-5 py-1 hover:text-primary transition-all active:scale-90 duration-150" href="#">
-<span class="material-symbols-outlined mb-1" data-icon="person">person</span>
-<span class="font-label text-label-md">Profile</span>
+<span class="material-symbols-outlined" data-icon="local_shipping">local_shipping</span>
+<span class="font-label text-[10px] mt-0.5">Tracking</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-5 py-1 hover:text-primary transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label text-[10px] mt-0.5">Profile</span>
 </a>
 </nav>
-<!-- Side Navigation Drawer (Hidden by default, used for structure reference) -->
-<aside class="hidden fixed left-0 top-0 h-full w-80 bg-surface dark:bg-surface-dim rounded-r-lg shadow-xl z-[60] flex flex-col p-6 gap-4 transform -translate-x-full transition-transform duration-300">
-<div class="flex flex-col gap-2 mb-6">
-<div class="w-16 h-16 rounded-full overflow-hidden bg-surface-container-highest">
-<img alt="Customer Avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZEmM_ErMMt-pTJfsmyQudW7VCf4BqgsH8_diGU3zxhTtGanE1TuUrwq25J08mWMkPKbiaAouE07e2pJJ6Sg00Ixj0g4vWI87eHRCmyw60AUkpSam69YRr2FqRJV6-wtjLfCfXfBO4ZVs8WnvOsmw1baiyvDa_fGqYMvY-qwpJ8iE8aO2tOkt1LNAPHdVSpTo3eDUpCyH2S7NqMWZzGurV15ucIi8pq_HR16FKc-cfJo0zkmnXzHlsXp8od8VVCqGT7acPj4HD4FaC"/>
+<!-- Floating Action Button for the Menu Page -->
+<div class="fixed bottom-24 right-6 z-40">
+<button class="w-16 h-16 rounded-full bg-primary text-on-primary shadow-2xl flex items-center justify-center active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-3xl" data-icon="shopping_basket">shopping_basket</span>
+</button>
 </div>
-<div>
-<h3 class="font-display font-bold text-primary text-xl">Sweet Tooth Sam</h3>
-<p class="text-on-surface-variant text-sm">Gold Member</p>
-<p class="text-on-surface-variant text-xs opacity-70">12 Cakes Ordered</p>
-</div>
-</div>
-<nav class="flex flex-col gap-2">
-<a class="flex items-center gap-4 p-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg active:translate-x-1 duration-200" href="#">
-<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
-<span class="font-body text-body-lg">Collections</span>
-</a>
-<a class="flex items-center gap-4 p-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg active:translate-x-1 duration-200" href="#">
-<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
-<span class="font-body text-body-lg">Custom Orders</span>
-</a>
-<a class="flex items-center gap-4 p-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg active:translate-x-1 duration-200" href="#">
-<span class="material-symbols-outlined" data-icon="bakery_dining">bakery_dining</span>
-<span class="font-body text-body-lg">Baking Classes</span>
-</a>
-<a class="flex items-center gap-4 p-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg active:translate-x-1 duration-200" href="#">
-<span class="material-symbols-outlined" data-icon="redeem">redeem</span>
-<span class="font-body text-body-lg">Gift Cards</span>
-</a>
-<hr class="border-outline-variant/15 my-2"/>
-<a class="flex items-center gap-4 p-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg active:translate-x-1 duration-200" href="#">
-<span class="material-symbols-outlined" data-icon="contact_support">contact_support</span>
-<span class="font-body text-body-lg">Support</span>
-</a>
-</nav>
-</aside>
 </body></html>
