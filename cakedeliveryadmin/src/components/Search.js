@@ -1,11 +1,11 @@
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { View, TextInput,StyleSheet } from "react-native"
 
-const Search = () => {
+const Search = ({placeholder}) => {
     return (
         <View style={Searchstyle.Searchsection} >
             <Ionicons name="search-outline" color="#000" size={24} />
-            <TextInput placeholder='Search desserts' />
+            <TextInput placeholder={placeholder} />
         </View>
     )
 }

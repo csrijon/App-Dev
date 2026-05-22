@@ -2,6 +2,8 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import { StatusBar, ScrollView, View, StyleSheet, Text, FlatList, TouchableOpacity } from "react-native"
 import Adminheader from "../components/Adminheader"
 import OrderCard from "../components/OrderCard"
+import Plusbutton from "../components/Plusbutton"
+import { useState } from "react"
 
 const ordersData = [
     {
@@ -82,6 +84,9 @@ const orderStatusData = [
 
 
 const Ordermanagementpage = () => {
+
+    const [activecolorid, setactivecolorid] = useState(null)
+
     return (
         <SafeAreaView style={Ordermanagementstyle.Ordermanagementcontainer} >
             <StatusBar backgroundColor="#fff9e6cc" barStyle="dark-content" />
@@ -95,8 +100,8 @@ const Ordermanagementpage = () => {
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={Ordermanagementstyle.statusContainer} >
                     {
                         orderStatusData.map((item) => (
-                            <TouchableOpacity key={item.id} style={Ordermanagementstyle.statusButton}>
-                                <Text style={Ordermanagementstyle.statusText}>
+                            <TouchableOpacity onPress={() => setactivecolorid(item.id)} key={item.id} style={[Ordermanagementstyle.statusButton, { backgroundColor: activecolorid === item.id ? "#75584e" : "#F4F1EC" }]}>
+                                <Text  style={[Ordermanagementstyle.statusText,{color:activecolorid===item.id?"white":"black"}]}>
                                     {item.title}
                                 </Text>
                             </TouchableOpacity>
@@ -112,6 +117,7 @@ const Ordermanagementpage = () => {
                 />
 
             </ScrollView>
+          <Plusbutton/>
         </SafeAreaView>
     )
 }
@@ -143,7 +149,7 @@ const Ordermanagementstyle = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         gap: 12,
-        marginTop:8
+        marginTop: 8
     },
     statusButton: {
         paddingHorizontal: 18,

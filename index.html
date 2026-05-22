@@ -3,67 +3,81 @@
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Order Management | Glaze &amp; Grain</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .artisanal-card {
+            border-radius: 2rem;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .bg-mesh {
+            background-color: #fff9e6;
+            background-image: radial-gradient(at 0% 0%, rgba(246, 207, 194, 0.2) 0px, transparent 50%),
+                              radial-gradient(at 100% 100%, rgba(117, 88, 78, 0.05) 0px, transparent 50%);
+        }
+    </style>
 <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
                     "colors": {
-                        "on-surface-variant": "#646040",
-                        "secondary-fixed-dim": "#e6ced6",
-                        "primary": "#75584e",
-                        "on-primary-fixed": "#4b3229",
-                        "primary-dim": "#684d43",
-                        "surface-tint": "#75584e",
-                        "secondary-dim": "#5f4f55",
-                        "outline": "#807c59",
-                        "on-primary-fixed-variant": "#6a4e44",
-                        "inverse-surface": "#100e03",
-                        "primary-container": "#f6cfc2",
-                        "primary-fixed-dim": "#e7c1b4",
-                        "tertiary-dim": "#734557",
                         "tertiary-fixed": "#f8bbd0",
-                        "on-background": "#363317",
-                        "surface-bright": "#fff9e6",
-                        "surface-container-highest": "#eae3bb",
-                        "on-tertiary-fixed-variant": "#6c3f51",
-                        "surface-container": "#f5efcd",
-                        "on-error-container": "#6e0a12",
-                        "on-primary": "#fff7f5",
-                        "background": "#fff9e6",
-                        "surface-container-low": "#faf4d6",
-                        "surface": "#fff9e6",
-                        "on-error": "#fff7f6",
-                        "on-primary-container": "#5f453b",
-                        "on-secondary-fixed-variant": "#68575e",
-                        "on-secondary-fixed": "#4b3b41",
-                        "on-tertiary": "#fff7f7",
-                        "tertiary": "#815163",
-                        "surface-container-lowest": "#ffffff",
                         "secondary-container": "#f4dce4",
                         "inverse-on-surface": "#a29d88",
-                        "secondary-fixed": "#f4dce4",
+                        "on-tertiary-fixed-variant": "#6c3f51",
+                        "surface-dim": "#e2dbb3",
+                        "surface-container": "#f5efcd",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface-variant": "#646040",
+                        "on-primary-fixed": "#4b3229",
+                        "tertiary-dim": "#734557",
+                        "secondary-dim": "#5f4f55",
                         "inverse-primary": "#f6cfc2",
-                        "error-dim": "#67040d",
+                        "on-error-container": "#6e0a12",
+                        "tertiary": "#815163",
+                        "on-secondary": "#fff7f8",
+                        "background": "#fff9e6",
+                        "surface-tint": "#75584e",
+                        "secondary-fixed": "#f4dce4",
                         "on-tertiary-fixed": "#4b2334",
-                        "on-tertiary-container": "#623648",
+                        "surface-bright": "#fff9e6",
+                        "tertiary-container": "#f8bbd0",
+                        "outline-variant": "#b9b38d",
+                        "on-primary-container": "#5f453b",
+                        "on-secondary-fixed": "#4b3b41",
+                        "error": "#a83836",
                         "tertiary-fixed-dim": "#e9aec3",
                         "on-surface": "#363317",
-                        "error-container": "#fa746f",
-                        "on-secondary": "#fff7f8",
-                        "outline-variant": "#b9b38d",
-                        "secondary": "#6c5a61",
-                        "error": "#a83836",
-                        "surface-variant": "#eae3bb",
-                        "tertiary-container": "#f8bbd0",
-                        "surface-container-high": "#f0e9c5",
                         "primary-fixed": "#f6cfc2",
+                        "surface-variant": "#eae3bb",
+                        "primary-fixed-dim": "#e7c1b4",
+                        "on-secondary-fixed-variant": "#68575e",
+                        "on-primary-fixed-variant": "#6a4e44",
+                        "on-tertiary": "#fff7f7",
+                        "surface-container-high": "#f0e9c5",
+                        "inverse-surface": "#100e03",
+                        "secondary": "#6c5a61",
+                        "secondary-fixed-dim": "#e6ced6",
+                        "outline": "#807c59",
+                        "on-primary": "#fff7f5",
+                        "surface-container-low": "#faf4d6",
+                        "surface": "#fff9e6",
+                        "primary": "#75584e",
+                        "error-container": "#fa746f",
+                        "on-error": "#fff7f6",
+                        "surface-container-highest": "#eae3bb",
+                        "on-tertiary-container": "#623648",
+                        "error-dim": "#67040d",
+                        "primary-container": "#f6cfc2",
+                        "primary-dim": "#684d43",
                         "on-secondary-container": "#5e4d54",
-                        "surface-dim": "#e2dbb3"
+                        "on-background": "#363317"
                     },
                     "borderRadius": {
                         "DEFAULT": "1rem",
@@ -77,188 +91,209 @@
                         "body": ["Plus Jakarta Sans"],
                         "label": ["Plus Jakarta Sans"]
                     }
-                }
-            }
+                },
+            },
         }
     </script>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .material-symbols-fill {
-            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #fff9e6;
-            color: #363317;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .hide-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-    </style>
 </head>
-<body class="bg-background min-h-screen flex flex-col pb-24">
-<!-- Top Bar -->
-<header class="sticky top-0 w-full z-50 bg-background/80 backdrop-blur-md flex items-center justify-between px-6 py-4">
-<button class="text-primary p-2 -ml-2 rounded-full hover:bg-primary-container/20 active:scale-95 transition-all">
-<span class="material-symbols-outlined">menu</span>
-</button>
-<h1 class="font-headline text-lg font-bold text-primary">The Pâtisserie</h1>
-<img alt="Admin profile" class="w-10 h-10 rounded-full border-2 border-primary-container object-cover shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmnUd5B4NZaFZiwDHbtvkzFkOP5GSisEXvuNP5g-8PbCqcehIeONaudH3Yprid9awLXYf9nAa2JrDN0ZZIVG7R7YWE99-hkCIMc4vJiAtrxKzy0ZgRpoeal_v4Gows3HB2QEMMfkp818gqfD2izlxZbSaD5m17f0dBf2Xb0__zOg6c_FJEsDbqrcWdJrYnW7RXr2qjUOXdfwetLMSwMiGVInjqEe-sTyresrh5jI0lgTQ7DDIME_LqoyDvzLk8VqH4HhuBnfkidx-E"/>
+<body class="bg-mesh text-on-surface min-h-screen">
+<!-- Top Navigation -->
+<header class="fixed top-0 w-full z-50 bg-surface/60 backdrop-blur-md border-b border-outline/10">
+<div class="flex items-center justify-between px-6 py-4">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary p-2 hover:bg-primary-container/50 rounded-full transition-all">menu</button>
+<h1 class="font-headline font-bold text-primary text-xl tracking-tight">The Pâtisserie</h1>
+</div>
+<img alt="Admin profile" class="w-10 h-10 rounded-full ring-2 ring-primary/20 object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-g3ykOYB7AMl6FWLTWiqPZB5Yy85HuEbp_3E2B8bBQ_mU4ME04rcDuDLvxAipRVgEWabSrz306s8NX0jdtLxF8k18rFufnFFGN5UxC9AGxlLxNdaV_-betFxvMS0EiqZ25fuf2Oq3lN7PHqH-Td2UkKObk9UmrW2n3EdUVtvLDu84-DIwOL5nNrXwUgLeSO4BEnB7AdvGROXbGXkqxfQm3kt7VdQX5iDNwTNr952euOJNfwOlmxvOuoiY5j_qoo8mZcaCJW0ub_kT"/>
+</div>
 </header>
+<div class="flex pt-20">
+<!-- Sidebar -->
+<aside class="hidden lg:flex fixed left-0 top-20 bottom-0 w-72 flex-col py-8 px-4 border-r border-outline/10 bg-surface/40 backdrop-blur-sm">
+<div class="px-4 mb-8">
+<div class="flex items-center gap-3 p-3 rounded-2xl bg-surface-container-low">
+<div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div>
+<p class="font-bold text-primary text-sm">Master Confectioner</p>
+<p class="text-on-surface-variant text-xs">Admin Access</p>
+</div>
+</div>
+</div>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-primary-container/50 rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-primary-container/50 rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">cake</span>
+<span class="font-medium">Catalog</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-primary-container/50 rounded-full transition-all" href="#">
+<span class="material-symbols-outlined">shopping_bag</span>
+<span class="font-medium">Orders</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-primary text-on-primary rounded-full transition-all shadow-lg shadow-primary/20" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-medium">Customers</span>
+</a>
+</nav>
+</aside>
 <!-- Main Content -->
-<main class="flex-1 px-6 pt-2">
+<main class="flex-1 lg:ml-72 p-6 md:p-10">
+<div class="max-w-6xl mx-auto">
 <!-- Header Section -->
-<div class="mb-6">
-<h2 class="text-3xl font-extrabold text-primary tracking-tight font-headline">Order Management</h2>
-<p class="text-on-surface-variant text-sm mt-1">Track, manage, and fulfill your artisanal bakery orders in real-time.</p>
+<div class="mb-10">
+<h2 class="font-display text-4xl md:text-5xl font-extrabold text-on-surface tracking-tight mb-6">Customer <span class="text-primary italic">Directory</span></h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="bg-primary-container/50 p-6 rounded-3xl border border-primary/10">
+<p class="text-xs font-bold uppercase tracking-widest text-primary mb-1">Total Patrons</p>
+<p class="text-3xl font-black text-on-primary-container">1,284</p>
 </div>
-<!-- Filter Tabs -->
-<div class="flex items-center gap-2 overflow-x-auto hide-scrollbar mb-8 -mx-6 px-6">
-<button class="whitespace-nowrap px-6 py-2.5 rounded-full bg-primary text-on-primary text-sm font-semibold shadow-sm">All</button>
-<button class="whitespace-nowrap px-6 py-2.5 rounded-full text-on-surface-variant text-sm font-semibold bg-surface-container/50 hover:bg-surface-container transition-all">Pending</button>
-<button class="whitespace-nowrap px-6 py-2.5 rounded-full text-on-surface-variant text-sm font-semibold bg-surface-container/50 hover:bg-surface-container transition-all">Preparing</button>
-<button class="whitespace-nowrap px-6 py-2.5 rounded-full text-on-surface-variant text-sm font-semibold bg-surface-container/50 hover:bg-surface-container transition-all">Out for Delivery</button>
-</div>
-<!-- Orders Stack -->
-<div class="space-y-6">
-<!-- Order Card 1 (Custom) -->
-<div class="bg-surface-container-lowest rounded-[2rem] p-5 shadow-[0px_12px_32px_rgba(117,88,78,0.04)] border border-outline-variant/10 relative overflow-hidden">
-<div class="absolute top-0 left-0 w-2 h-full bg-primary"></div>
-<div class="space-y-4">
-<div class="relative w-full aspect-[16/9] rounded-2xl overflow-hidden">
-<img alt="Wedding Cake" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9792c57TJzUVNbRf3H1vdNokDQx6bv6A4Dmq6RJJz2UIM-7kLkqDXXW0-MYZNDxtCHC2gJrDIuSsetwhA9rJE0mUxbO1m0rF0ZzNXW6YwtKO8dlZDzHc9tjvybty5_4ARavkQuehba8Q9dXek-Ei2gwA2633pqbzK-sBeG9XUZQXD9T8e_JPz1nikDg1vau6U3QhisPGYp1m6EhGSswdY2kxE-2Qiv5D1ZbeS2CswU8bKXTZaG6DC_T1U_56JNhFtj7611EKAGzTS"/>
-<div class="absolute top-3 left-3">
-<span class="bg-tertiary-container text-on-tertiary-container text-[10px] uppercase font-bold px-3 py-1.5 rounded-full shadow-lg">Custom</span>
+<div class="bg-secondary-container/50 p-6 rounded-3xl border border-secondary/10">
+<p class="text-xs font-bold uppercase tracking-widest text-secondary mb-1">Active Now</p>
+<p class="text-3xl font-black text-on-secondary-container">412</p>
 </div>
 </div>
-<div class="flex justify-between items-start">
+</div>
+<!-- Search & Filters -->
+<div class="mb-8 flex flex-col md:flex-row gap-4">
+<div class="relative flex-1 group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full pl-12 pr-6 py-4 rounded-full bg-surface-container border-none focus:ring-2 focus:ring-primary/20 text-body-md placeholder-on-surface-variant/60" placeholder="Find a customer..." type="text"/>
+</div>
+<div class="flex gap-2 overflow-x-auto no-scrollbar pb-2">
+<button class="bg-primary text-on-primary px-6 py-3 rounded-full font-bold whitespace-nowrap shadow-md">All</button>
+<button class="bg-surface-container hover:bg-surface-container-high px-6 py-3 rounded-full font-semibold text-on-surface-variant whitespace-nowrap transition-colors">Gold Tier</button>
+<button class="bg-surface-container hover:bg-surface-container-high px-6 py-3 rounded-full font-semibold text-on-surface-variant whitespace-nowrap transition-colors">Recent Activity</button>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- Customer List -->
+<div class="lg:col-span-7 space-y-4">
+<!-- Active Selected Customer -->
+<div class="bg-surface-container-lowest p-6 rounded-[2rem] flex items-center justify-between border-2 border-primary/20 shadow-xl shadow-primary/5 cursor-pointer transform hover:scale-[1.01] transition-all">
+<div class="flex items-center gap-5">
+<div class="relative">
+<img class="w-16 h-16 rounded-full object-cover ring-4 ring-primary-container" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDl5uO2vGx_1mmEq3fzAVrdlA8JgNI_M1_h_oEspdSvmtfTY2q9T2xwHEjtokt5EvJsNbmkmAz07fzgZ7MpSywtovncXFIJsC35siqSWBQWmE-nEUZK3rzlYJrifG4cFXLM1-PZOu2MFqxIGww2u8rmirsQJiP7bvp50C9jYu3JPmvS0u22zhgd2YUgmOGACSd-ccZYvm4JwlzuB--m9SVhCi6IjeshGPPjcoJsCHBwfgbb3mqaS9pSvzxm3IHGwbAm8pqXUTNQNowf"/>
+<div class="absolute bottom-0 right-0 w-5 h-5 bg-green-500 border-4 border-white rounded-full"></div>
+</div>
 <div>
-<span class="text-[10px] text-on-surface-variant font-bold tracking-widest uppercase">Order #BK-8291</span>
-<h3 class="text-xl font-bold text-on-surface">Eleanor Rigby</h3>
-<div class="flex items-center gap-1.5 text-on-surface-variant text-xs mt-1">
-<span class="material-symbols-outlined text-[14px]">schedule</span>
-<span>Delivery by 2:30 PM Today</span>
+<h3 class="font-bold text-xl text-on-surface">Eloise Beaumont</h3>
+<p class="text-on-surface-variant text-sm font-medium">24 Total Orders</p>
 </div>
 </div>
-<span class="text-primary font-bold text-lg">$145.00</span>
-</div>
-<div class="flex gap-3">
-<button class="flex-1 bg-primary text-on-primary py-3.5 rounded-full font-bold text-sm shadow-md active:scale-95 transition-transform">Accept Order</button>
-<button class="w-12 h-12 flex items-center justify-center border border-outline-variant/30 rounded-full text-on-surface-variant hover:bg-surface-variant/30 transition-all">
-<span class="material-symbols-outlined">more_horiz</span>
-</button>
+<div class="text-right">
+<span class="bg-tertiary-container text-on-tertiary-container text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full">Gold Tier</span>
+<p class="text-primary font-bold text-sm mt-2">Active</p>
 </div>
 </div>
-</div>
-<!-- Order Card 2 -->
-<div class="bg-surface-container-lowest rounded-[2rem] p-5 shadow-[0px_12px_32px_rgba(117,88,78,0.04)] border border-outline-variant/10">
-<div class="space-y-4">
-<div class="relative w-full aspect-[16/9] rounded-2xl overflow-hidden">
-<img alt="Macarons" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDPVgoc5nv0aYB0bmYCTW91zPCfrCRMzxD0Skhb0wuV9YzrQBFvnTOjYu-ZlUnULheVxjXSjlfn8zVXF7EZpRSt41haZmCddJ54MegCZby1rJ5aWNVGKbrjE-k-MWSZjbTNTx4-u9kfa6xVnB1uH0WTJf2SmEeRsNtw7mO4bLB9m-1sxPbYnJOlyt7JLBBNJoOHdVkudE5BIh8FtVxtPa5BCJ55kl_0eJOjFt-VYH703MPJqjZETF_CoKQ3gCWwc8WpmIGhBdm8hEg"/>
-</div>
-<div class="flex justify-between items-start">
+<!-- Other Customers -->
+<div class="bg-surface-container-low/50 hover:bg-surface-container-low p-5 rounded-2xl flex items-center justify-between border border-outline/5 cursor-pointer transition-all">
+<div class="flex items-center gap-5">
+<img class="w-14 h-14 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBq5-eWZrZHdEGI9IxH9ULGXPxRVveP0z1LMWGaqfXCDkhOXgNjfK68xZLHdaIXkVVlv-FDuTGj1M9TdStfLTjG9MiUzlgx7uxYvr9U6MPZxhVx-3cC6UZaGlh5Natyz5yzNCi3UhvL6ZJZqY2k7nTMF0OxCMmzxJUmKCkgriwxDJzvQy0dvUjQamk5WhtgNCdawkdAxCwcIb6dXfM_8iCLjsD7TFqOlj0iRWudxaKkFGkZ7tw_a9oshK78SohmOnTg37gMG4r9Ivll"/>
 <div>
-<span class="text-[10px] text-on-surface-variant font-bold tracking-widest uppercase">Order #BK-8292</span>
-<h3 class="text-xl font-bold text-on-surface">Julian Casablancas</h3>
-<div class="flex items-center gap-1.5 text-secondary font-medium text-xs mt-1">
-<span class="material-symbols-outlined text-[14px]">local_shipping</span>
-<span>Preparing (15 mins left)</span>
+<h3 class="font-bold text-on-surface">Julian Lefebvre</h3>
+<p class="text-on-surface-variant text-xs">12 Total Orders</p>
 </div>
 </div>
-<span class="text-primary font-bold text-lg">$42.50</span>
+<span class="bg-secondary-container text-on-secondary-container text-[10px] font-black uppercase px-3 py-1 rounded-full">Silver Tier</span>
 </div>
-<div class="flex gap-3">
-<button class="flex-1 bg-primary-container text-on-primary-container py-3.5 rounded-full font-bold text-sm shadow-sm active:scale-95 transition-transform">Update Status</button>
-<button class="w-12 h-12 flex items-center justify-center border border-outline-variant/30 rounded-full text-on-surface-variant hover:bg-surface-variant/30 transition-all">
-<span class="material-symbols-outlined">more_horiz</span>
-</button>
-</div>
-</div>
-</div>
-<!-- Order Card 3 -->
-<div class="bg-surface-container-lowest rounded-[2rem] p-5 shadow-[0px_12px_32px_rgba(117,88,78,0.04)] border border-outline-variant/10">
-<div class="space-y-4">
-<div class="relative w-full aspect-[16/9] rounded-2xl overflow-hidden">
-<img alt="Croissants" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuALvTlq9U9zFUFWAQSnVldP86INgC6fQWDAbaC2AJvEFGbLjVMKYZS-snWgWgjGneqwCeKYU8keqn34BJV38G2uUsp-6J7qHTbXCB8FnuwT0TAlHOSqQHWrD117fwF-gzcPjMekwSDM2-dSAEzc3eKkDiNeW71g2dcBN8mxB8wX5F2fKpxYtkoabt-Fjun4Js2dabBi6m5nkdiVNCS6mBvnxc1VP0bz4qJXhW_6fiqTwz4TiIyFnyuKKnsq6hu-rX7TgwHkoqRWqH1o"/>
-</div>
-<div class="flex justify-between items-start">
+<div class="bg-surface-container-low/50 hover:bg-surface-container-low p-5 rounded-2xl flex items-center justify-between border border-outline/5 cursor-pointer transition-all">
+<div class="flex items-center gap-5">
+<img class="w-14 h-14 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9WRja_3sFBsvKAqSqOsantwHWemZs-oSJw50-A7oUdJKz8ICYt54vfuWo6wt99nmLnsLH1lu9Rhz3Yp3DKUwaZUui5S6I0KkouKYVUOHdrzZ5NJ87uBHo9kqUdGkO1fggYlr1ITCvwlqg7ASr98YI0P-EroWEAPJazZvnkTgmVIIIYglERzi2wykDmk7s5n22zsSMU3S_A-tze2EHIvcZADiR_jCC9aXAml6w1U8CX4qPG9KKLZrCjP3CePKancBCqQHMzUW1P7gg"/>
 <div>
-<span class="text-[10px] text-on-surface-variant font-bold tracking-widest uppercase">Order #BK-8293</span>
-<h3 class="text-xl font-bold text-on-surface">Sarah Vaughan</h3>
-<div class="flex items-center gap-1.5 text-on-surface-variant text-xs mt-1">
-<span class="material-symbols-outlined text-[14px]">schedule</span>
-<span>Delivery by 4:00 PM Today</span>
+<h3 class="font-bold text-on-surface">Clara Hollister</h3>
+<p class="text-on-surface-variant text-xs">31 Total Orders</p>
 </div>
 </div>
-<span class="text-primary font-bold text-lg">$28.00</span>
+<span class="bg-tertiary-container text-on-tertiary-container text-[10px] font-black uppercase px-3 py-1 rounded-full">Gold Tier</span>
 </div>
-<div class="flex gap-3">
-<button class="flex-1 bg-primary text-on-primary py-3.5 rounded-full font-bold text-sm shadow-md active:scale-95 transition-transform">Accept Order</button>
-<button class="w-12 h-12 flex items-center justify-center border border-outline-variant/30 rounded-full text-on-surface-variant hover:bg-surface-variant/30 transition-all">
-<span class="material-symbols-outlined">more_horiz</span>
-</button>
-</div>
-</div>
-</div>
-<!-- Order Card 4 (Custom) -->
-<div class="bg-surface-container-lowest rounded-[2rem] p-5 shadow-[0px_12px_32px_rgba(117,88,78,0.04)] border border-outline-variant/10 relative overflow-hidden mb-8">
-<div class="absolute top-0 left-0 w-2 h-full bg-primary"></div>
-<div class="space-y-4">
-<div class="relative w-full aspect-[16/9] rounded-2xl overflow-hidden">
-<img alt="Chocolate Tart" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGhM0cJUnjybuKvu4244AOulR8XbjpGG5IWiTvAH6pF430OGV4clJqomjtzj1IDRNwyfNl-6_lS25uAbBnfULDpGThiQ-KU7k6wZb8jV69VxG6N79mCm4iKhN4vaqzkMg6F1lbx4_sFStABXMcIU-9-PNnNR3UA2--7AZfvo0PjlcPF99b_OaM3JzlaEzH01lvPd-0cBqjcecoKYd3ZGSbia3XtqOHqnGBmGbceUiEnWgyE9OhGS8U78kcKniGBfz9g1FVtnQbz1m8"/>
-<div class="absolute top-3 left-3">
-<span class="bg-tertiary-container text-on-tertiary-container text-[10px] uppercase font-bold px-3 py-1.5 rounded-full shadow-lg">Custom</span>
-</div>
-</div>
-<div class="flex justify-between items-start">
+<div class="bg-surface-container-low/50 hover:bg-surface-container-low p-5 rounded-2xl flex items-center justify-between border border-outline/5 cursor-pointer transition-all">
+<div class="flex items-center gap-5">
+<img class="w-14 h-14 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuABL56otRbfHPhWa4Zrrq23Ti53AfebFWITonsyTcUg0wuZXCeppHYow_AVrjpW4QPVlsODDUgcSP3cT2NVZHBltidOsnz5PCOvjR7KUzP7TowwS5XbkbbRQ4MCp28NiwJIMzMQzoqR2AjzMGVSqcHxFK-o4s8JV0bCzKTaEZR_FHF9d_9ir0JaE-6-51KfLiueteQE6yT9MUeahqIReM3rBJt9ml2pNknBxIH1PtNh0SLEeGBzAJNBkCh_QN3LmAYq2apx2GODZ7jH"/>
 <div>
-<span class="text-[10px] text-on-surface-variant font-bold tracking-widest uppercase">Order #BK-8294</span>
-<h3 class="text-xl font-bold text-on-surface">Miles Davis</h3>
-<div class="flex items-center gap-1.5 text-error font-medium text-xs mt-1">
-<span class="material-symbols-outlined text-[14px]">local_shipping</span>
-<span>Driver Assigned (5 mins)</span>
+<h3 class="font-bold text-on-surface">Marcus Vance</h3>
+<p class="text-on-surface-variant text-xs">5 Total Orders</p>
 </div>
 </div>
-<span class="text-primary font-bold text-lg">$85.00</span>
-</div>
-<div class="flex gap-3">
-<button class="flex-1 bg-primary-container text-on-primary-container py-3.5 rounded-full font-bold text-sm shadow-sm active:scale-95 transition-transform">Update Status</button>
-<button class="w-12 h-12 flex items-center justify-center border border-outline-variant/30 rounded-full text-on-surface-variant hover:bg-surface-variant/30 transition-all">
-<span class="material-symbols-outlined">more_horiz</span>
-</button>
+<span class="bg-surface-variant text-on-surface-variant text-[10px] font-black uppercase px-3 py-1 rounded-full">Bronze Tier</span>
 </div>
 </div>
+<!-- Selected Detail Section -->
+<aside class="lg:col-span-5 space-y-6 lg:sticky lg:top-24">
+<div class="bg-surface-container-highest p-8 rounded-[2.5rem] shadow-2xl shadow-primary/10 border border-outline/5">
+<div class="mb-10">
+<p class="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-6">Quick Contact</p>
+<div class="space-y-5">
+<div class="flex items-center gap-4 group">
+<div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary shadow-sm">
+<span class="material-symbols-outlined text-xl">mail</span>
+</div>
+<span class="font-medium text-on-surface/80 group-hover:text-primary transition-colors cursor-pointer">eloise.beaumont@example.com</span>
+</div>
+<div class="flex items-center gap-4 group">
+<div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary shadow-sm">
+<span class="material-symbols-outlined text-xl">call</span>
+</div>
+<span class="font-medium text-on-surface/80 group-hover:text-primary transition-colors cursor-pointer">+33 1 42 68 53 00</span>
+</div>
+<div class="flex items-center gap-4 group">
+<div class="w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary shadow-sm">
+<span class="material-symbols-outlined text-xl">location_on</span>
+</div>
+<span class="font-medium text-on-surface/80">7th Arr., Paris, France</span>
+</div>
+</div>
+<button class="w-full mt-8 bg-primary text-on-primary py-4 rounded-full font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">Send Promo Code</button>
+</div>
+<div class="pt-8 border-t border-outline/10">
+<p class="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-8">Recent Activity</p>
+<div class="space-y-8">
+<!-- History Item -->
+<div class="flex gap-4 items-center group">
+<img class="w-16 h-16 rounded-2xl object-cover shadow-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCR-OxyOJ1UCvIia3eBZwL_VHLcpBrfnjLlk1KijGUoXwiB4EMYKLdEXKRO43qY_R9bm9HEjPddIbdT6qtga9J49nxtH3GMojP5NEMP0XYggJgSKZGOgBVmsvlmnwmV_DeMaFR-Xa7m10ThDkW_Vsir65ovheZ9rDuIrX4Vb8re6YkwHsEnVP4x1Ltk6LnU9xR96TCf7CejKIUsee-dhSjrHPfXjtjkXM92lt3FFOq8xKrTfiKC9TEoN2gYG1ja5NREc5iRprxeD5iG"/>
+<div class="flex-1 min-w-0">
+<p class="font-bold text-on-surface truncate group-hover:text-primary transition-colors">Midnight Truffle Gateau</p>
+<p class="text-on-surface-variant text-[11px] font-semibold">Oct 14 • $124.00</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant/40">chevron_right</span>
+</div>
+<div class="flex gap-4 items-center group">
+<img class="w-16 h-16 rounded-2xl object-cover shadow-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZpM0enrIWNMwMYoztCcONehbG-9yXcUU8z5BzQtWWJUajkJIBZYSR8iNFi10CiNiWcQF3XYmrusMlLEOW-98SVkKux3vPTPdoXQ_P-NHFTiice3WAgduneoMu60hnRAI2rjcutDj53MRnVrbgP-rb-YMlHywvlWqsWiKpy_YZTz6-mYglLnoTXc_AVn2FfVieXFlRPyfDLtvOW_cyZ7158zBlWPXXMBINcWDWXTEMe3-Wltur4692URZrs4MK9ewD4CcDlCbaBN6K"/>
+<div class="flex-1 min-w-0">
+<p class="font-bold text-on-surface truncate group-hover:text-primary transition-colors">Rose &amp; Lychee Macaron</p>
+<p class="text-on-surface-variant text-[11px] font-semibold">Sep 28 • $89.00</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant/40">chevron_right</span>
+</div>
+<div class="flex gap-4 items-center group">
+<img class="w-16 h-16 rounded-2xl object-cover shadow-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDD-YLtZh781X4gad3LmsUVFYBcrWpp-xhsN2IkyacDyBiK_ULcSoaJOP4PZ1mjgj68s8gZZvUUw1LWite1fmKGECCGh4rMxKW67Q3P_d4-4ebrHXqyDVuIqTombaOFonMqC_-IDS9QX8IdaHHnUQXU66Vw_Ja9Oc0fO7MFurgmwTEL1JItNLQZaU_q3ShLlV4rfDYvdrVSVrb91C8FzgYiMz-BVwJdxbKiel1Itmyqlv1wUffahsEbFkULnz_FfZDRurzHKVFb0DlF"/>
+<div class="flex-1 min-w-0">
+<p class="font-bold text-on-surface truncate group-hover:text-primary transition-colors">Elderflower Lemon Tier</p>
+<p class="text-on-surface-variant text-[11px] font-semibold">Aug 15 • $210.00</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant/40">chevron_right</span>
+</div>
+</div>
+<button class="w-full mt-10 text-xs font-black text-primary uppercase tracking-widest hover:underline transition-all">View Full Order History</button>
+</div>
+</div>
+<!-- Notes Section -->
+<div class="bg-secondary-container/40 p-6 rounded-[2rem] border border-secondary/10 relative overflow-hidden group">
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-secondary text-sm">sticky_note_2</span>
+<p class="text-sm font-bold text-on-secondary-container">Personal Notes</p>
+</div>
+<p class="text-sm italic text-on-secondary-container/80 leading-relaxed">"Prefers less sugar in buttercreams. Has a nut allergy (Walnuts)."</p>
+</div>
+<span class="material-symbols-outlined absolute -bottom-2 -right-2 text-6xl text-secondary/5 rotate-12 group-hover:rotate-0 transition-transform duration-700">priority_high</span>
+</div>
+</aside>
 </div>
 </div>
 </main>
-<!-- Floating Action Button -->
-<button class="fixed bottom-24 right-6 bg-primary text-on-primary w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-transform z-40">
-<span class="material-symbols-outlined">add</span>
-</button>
-<!-- Bottom Navigation -->
-<nav class="fixed bottom-0 w-full bg-surface-container-high/90 backdrop-blur-xl border-t border-outline-variant/10 px-6 py-3 flex items-center justify-between z-50">
-<a class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary transition-colors" href="#">
-<span class="material-symbols-outlined">dashboard</span>
-<span class="text-[10px] font-bold uppercase tracking-tighter">Dashboard</span>
-</a>
-<a class="flex flex-col items-center gap-1 text-primary" href="#">
-<span class="material-symbols-outlined material-symbols-fill">shopping_bag</span>
-<span class="text-[10px] font-bold uppercase tracking-tighter">Orders</span>
-</a>
-<a class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary transition-colors" href="#">
-<span class="material-symbols-outlined">cake</span>
-<span class="text-[10px] font-bold uppercase tracking-tighter">Catalog</span>
-</a>
-<a class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary transition-colors" href="#">
-<span class="material-symbols-outlined">group</span>
-<span class="text-[10px] font-bold uppercase tracking-tighter">Customers</span>
-</a>
-</nav>
+</div>
 </body></html>
