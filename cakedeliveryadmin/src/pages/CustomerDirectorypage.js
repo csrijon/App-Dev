@@ -154,7 +154,7 @@ const CustomerDirectorypage = () => {
 
                                     <View style={CustomerDirectorystyle.membershipBadgeBox}>
                                         <Text style={CustomerDirectorystyle.membershipBadgeText}>
-                                           {item.membership}
+                                            {item.membership}
                                         </Text>
                                     </View>
 
@@ -240,7 +240,7 @@ const CustomerDirectorystyle = StyleSheet.create({
     },
     bestcustomersection: {
         marginTop: 5,
-        gap:15
+        gap: 15
     },
     profileCardContainer: {
         width: "100%",
