@@ -1,5 +1,5 @@
 import { SafeAreaView } from "react-native-safe-area-context"
-import React from "react";
+import React, { useState } from "react";
 import {
     View,
     Text,
@@ -13,6 +13,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 const Addnewcakepage = () => {
+
+    const [activeoffer, setnotactiveoffer] = useState(false)
+
     return (
         <SafeAreaView style={styles.Addnewcakecontainer} >
             <StatusBar backgroundColor="#fff8e6" barStyle="dark-content" />
@@ -243,13 +246,9 @@ const Addnewcakepage = () => {
 
                         </View>
 
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => setnotactiveoffer(!activeoffer)} >
 
-                            <Ionicons
-                                name="toggle"
-                                color="#7B5A4E"
-                                size={52}
-                            />
+                            <MaterialIcons name={activeoffer ? "toggle-off" : "toggle-on"} color="#75584e" size={52} />
 
                         </TouchableOpacity>
 
@@ -282,19 +281,20 @@ const Addnewcakepage = () => {
                                 placeholderTextColor="#B4AA8D"
                                 style={styles.discountTextInputField}
                                 keyboardType="numeric"
+
                             />
 
                         </View>
 
                     </View>
 
-                    <TouchableOpacity style={styles.skipCouponButton}>
+                    {/* <TouchableOpacity style={styles.skipCouponButton}>
 
                         <Text style={styles.skipCouponButtonText}>
                             Continue Without Coupon
                         </Text>
 
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
                 </View>
 
@@ -365,12 +365,12 @@ const Addnewcakepage = () => {
                                     <Text style={styles.couponCodeText}>
                                         SWEET10
                                     </Text>
-
+                                    {/* 
                                     <View style={styles.flavorTagBadge}>
                                         <Text style={styles.flavorTagText}>
                                             FLAVOR{"\n"}TAG
                                         </Text>
-                                    </View>
+                                    </View> */}
 
                                 </View>
 
@@ -399,7 +399,7 @@ const Addnewcakepage = () => {
 
                                     <Ionicons
                                         name="create-outline"
-                                        size={18}
+                                        size={16}
                                         color="#FFFFFF"
                                     />
 
@@ -873,36 +873,36 @@ const styles = StyleSheet.create({
         color: "#6B5B4C",
     },
 
-  activeOfferCountCard: {
-    width: 110,
-    height: 110,
-    backgroundColor: "#F2D8E3",
-    borderRadius: 30,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: 12,
-},
+    activeOfferCountCard: {
+        width: 110,
+        height: 110,
+        backgroundColor: "#F2D8E3",
+        borderRadius: 30,
+        justifyContent: "center",
+        alignItems: "center",
+        paddingVertical: 12,
+    },
 
-activeOfferRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 4,
-},
+    activeOfferRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        marginBottom: 4,
+    },
 
- activeOfferCount: {
-    fontSize: 26,
-    fontWeight: "800",
-    color: "#7A5C50",
-    marginLeft: 6,
-    lineHeight: 30,
-},
-activeOfferText: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#7A5C50",
-    letterSpacing: 1,
-},
+    activeOfferCount: {
+        fontSize: 26,
+        fontWeight: "800",
+        color: "#7A5C50",
+        marginLeft: 6,
+        lineHeight: 30,
+    },
+    activeOfferText: {
+        fontSize: 18,
+        fontWeight: "700",
+        color: "#7A5C50",
+        letterSpacing: 1,
+    },
 
     couponCardContainer: {
         width: "100%",
@@ -993,10 +993,10 @@ activeOfferText: {
         justifyContent: "space-between",
         height: 90,
     },
-
     editButton: {
-       padding:10,
-        borderRadius: 19,
+        height: 36,
+        width: 36,
+        borderRadius: 18,
         backgroundColor: "#7A5C50",
         justifyContent: "center",
         alignItems: "center",
