@@ -4,7 +4,7 @@ import Adminheader from "../components/Adminheader"
 import Search from "../components/Search"
 import { useState } from "react"
 import Catalogcard from "../components/Catalogcard"
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import Plusbutton from "../components/Plusbutton"
 
 
 let bardata = [
@@ -104,9 +104,10 @@ const Catalogpage = () => {
                     />
                 </View>
             </ScrollView>
-            <TouchableOpacity style={Catalogstyle.fixedbutton} >
-                    <AntDesign name="plus" color="#fff" size={24} />
-                </TouchableOpacity>
+            {/* <TouchableOpacity style={Catalogstyle.fixedbutton} >
+                <AntDesign name="plus" color="#fff" size={24} />
+            </TouchableOpacity> */}
+            <Plusbutton/>
         </SafeAreaView>
     )
 }
@@ -153,6 +154,6 @@ const Catalogstyle = StyleSheet.create({
 
         borderRadius: 999,
 
-        elevation: 5, 
+        elevation: 5,
     }
 })

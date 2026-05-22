@@ -4,6 +4,7 @@ import Loginpage from "./src/pages/Loginpage"
 import Signuppage from "./src/pages/Signuppage"
 import Dashboardpage from "./src/pages/Dashboardpage"
 import Catalogpage from "./src/pages/Catalogpage"
+import Ordermanagementpage from "./src/pages/Ordermanagementpage"
 import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
 import {
   SafeAreaProvider,
@@ -16,7 +17,7 @@ function App() {
   return (
     <SafeAreaProvider>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <Catalogpage/>
+      <Ordermanagementpage/>
     </SafeAreaProvider>
   );
 }
