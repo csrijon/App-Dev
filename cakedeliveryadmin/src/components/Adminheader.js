@@ -9,7 +9,7 @@ const Adminheader = () => {
             </Text>
             <View style={headerstyle.headersubheading} >
                 <TouchableOpacity>
-                    <Ionicons name="notifications" color="#ec561a" size={24} />
+                    <Ionicons name="notifications" color="#7B5A4E" size={24} />
                 </TouchableOpacity>
 
                 <TouchableOpacity>
@@ -37,8 +37,6 @@ const headerstyle = StyleSheet.create({
         justifyContent: "space-between",
         flexDirection: "row",
         alignItems: "center",
-        borderBottomWidth:0.5,
-        borderColor:"black"
     },
     profileImage: {
         width: 45,

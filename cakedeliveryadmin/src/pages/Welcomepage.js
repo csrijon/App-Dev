@@ -10,7 +10,7 @@ import {
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const Welcomepage = () => {
+const Welcomepage = ({navigation}) => {
     return (
         <SafeAreaView style={styles.mainContainer}>
             <StatusBar
@@ -52,7 +52,7 @@ const Welcomepage = () => {
                     THE CONFECTIONER'S{"\n"}GALLERY
                 </Text>
 
-                <TouchableOpacity style={styles.actionButton}>
+                <TouchableOpacity onPress={()=>navigation.navigate("Signup")} style={styles.actionButton}>
                     <Text style={styles.actionButtonText}>
                         GET STARTED
                     </Text>

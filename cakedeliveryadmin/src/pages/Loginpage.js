@@ -5,12 +5,13 @@ import {
     StyleSheet,
     TextInput,
     StatusBar,
+    TouchableOpacity
 } from "react-native";
 import Button from "../components/Button"
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const Loginpage = () => {
+const Loginpage = ({navigation}) => {
     return (
         <SafeAreaView style={pastryStyles.velvetCanvas}>
             <StatusBar
@@ -61,17 +62,19 @@ const Loginpage = () => {
                     secureTextEntry
                     style={pastryStyles.butterInputShell}
                 />
-                <Button title="Sign in →" />
+                <Button onPress={()=>navigation.navigate("TabScreens")} title="Sign in →" />
 
                 <View style={pastryStyles.sugarFooterRibbon}>
                     <Text style={pastryStyles.cinnamonHint}>
                         Don’t have an account?
                     </Text>
+                    <TouchableOpacity onPress={()=>navigation.navigate("Signup")} >
+                        <Text style={pastryStyles.pralineLinkText}>
+                            {" "}
+                            Create account
+                        </Text>
+                    </TouchableOpacity>
 
-                    <Text style={pastryStyles.pralineLinkText}>
-                        {" "}
-                        Create account
-                    </Text>
                 </View>
             </View>
 

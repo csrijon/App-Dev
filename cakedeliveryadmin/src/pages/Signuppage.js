@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     View,
     Text,
@@ -9,8 +9,14 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context"
 import Button from "../components/Button";
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 
-const Signuppage = () => {
+const Signuppage = ({ navigation }) => {
+
+    const [eyeactive, seteyeactive] = useState(false)
+    const [check, setcheck] = useState(false)
+
     return (
         <SafeAreaView style={dessertStyles.milkCanvas}>
             <StatusBar
@@ -65,18 +71,21 @@ const Signuppage = () => {
                         <TextInput
                             placeholder="Minimum 8 characters"
                             placeholderTextColor="#B8AF8F"
-                            secureTextEntry
+                            secureTextEntry={eyeactive ? true : false}
                             style={dessertStyles.passwordInput}
                         />
 
-                        <Text style={dessertStyles.eyeIcon}>
-                            👁
-                        </Text>
+                        <TouchableOpacity onPress={() => seteyeactive(!eyeactive)} style={dessertStyles.eyeIcon}>
+                            <Ionicons name={eyeactive ? "eye-off" : "eye"} color="#7B5A4E" size={24} />
+                        </TouchableOpacity>
                     </View>
                 </View>
 
                 <View style={dessertStyles.policyRow}>
-                    <View style={dessertStyles.checkBox} />
+                    {/* <View style={dessertStyles.checkBox} /> */}
+                    <TouchableOpacity onPress={() => setcheck(!check)} style={dessertStyles.checkBox} >
+                        <Fontisto name={check ? "checkbox-active" : "checkbox-passive"} color="#7B5A4E" size={20} />
+                    </TouchableOpacity>
 
                     <Text style={dessertStyles.policyText}>
                         I agree to the{" "}
@@ -96,7 +105,7 @@ const Signuppage = () => {
                     <Text style={dessertStyles.bottomText}>
                         Already have an account?
                     </Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate("Login")} >
                         <Text style={dessertStyles.loginText}>
                             {" "}
                             Log In
@@ -195,12 +204,7 @@ const dessertStyles = StyleSheet.create({
     },
 
     checkBox: {
-        width: 18,
-        height: 18,
-        borderWidth: 1.5,
-        borderColor: "#C5B99B",
-        borderRadius: 5,
-        marginTop: 3,
+        marginTop: 5,
     },
 
     policyText: {
@@ -214,32 +218,6 @@ const dessertStyles = StyleSheet.create({
         color: "#6D5248",
         fontWeight: "700",
     },
-
-    // signupButton: {
-    //     width: "100%",
-    //     height: 62,
-    //     backgroundColor: "#8A675B",
-    //     borderRadius: 36,
-    //     justifyContent: "center",
-    //     alignItems: "center",
-    //     marginTop: 48,
-
-    //     shadowColor: "#000",
-    //     shadowOffset: {
-    //         width: 0,
-    //         height: 10,
-    //     },
-
-    //     shadowOpacity: 0.12,
-    //     shadowRadius: 10,
-    //     elevation: 8,
-    // },
-
-    // signupButtonText: {
-    //     color: "#fff",
-    //     fontSize: 20,
-    //     fontWeight: "700",
-    // },
 
     bottomAuthRow: {
         flexDirection: "row",

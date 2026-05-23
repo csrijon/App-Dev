@@ -1,9 +1,9 @@
 import { Text, TouchableOpacity, StyleSheet } from "react-native"
 
-const Button = ({title}) => {
+const Button = ({title,onPress}) => {
     return (
         <TouchableOpacity
-            style={styles.mochaActionCapsule}
+          onPress={onPress}  style={styles.mochaActionCapsule}
         >
             <Text style={styles.espressoButtonText}>
                {title}
