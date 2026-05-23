@@ -8,7 +8,7 @@ const Ordertrackingpage = () => {
         <SafeAreaView style={ordertrackingstyle.Ordertrackingpagecontainer} >
             <StatusBar backgroundColor="#fff9e6cc" barStyle="dark-content" />
             <Ordertrackheader />
-            <ScrollView contentContainerStyle={{ paddingHorizontal: 20,paddingBottom:30 }} showsVerticalScrollIndicator={false} >
+            <ScrollView contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 30 }} showsVerticalScrollIndicator={false} >
                 <View style={ordertrackingstyle.deliveryScreen}>
                     <ImageBackground
                         source={require("../images/catalog.png")}
@@ -591,7 +591,7 @@ const ordertrackingstyle = StyleSheet.create({
         borderRadius: 36,
         paddingHorizontal: 26,
         paddingVertical: 28,
-        marginTop:20
+        marginTop: 20
     },
 
     milestoneHeadingText: {
