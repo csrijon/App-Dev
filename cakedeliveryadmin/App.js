@@ -8,6 +8,7 @@ import Ordermanagementpage from "./src/pages/Ordermanagementpage"
 import CustomerDirectorypage from "./src/pages/CustomerDirectorypage"
 import Addnewcakepage from "./src/pages/Addnewcakepage"
 import Ordertrackingpage from "./src/pages/Ordertrackingpage"
+import Profilepage from "./src/pages/Profilepage"
 import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
 import {
   SafeAreaProvider, useSafeAreaInsets,
@@ -16,6 +17,8 @@ import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -57,9 +60,27 @@ const TabScreens = () => {
         }}
       />
       <Tab.Screen name="Ordermanage" component={Ordermanagementpage}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="receipt" color={color} size={size} />
+          )
+        }}
+      />
+
+      <Tab.Screen name='Catalog' component={Catalogpage}
+        options={
+          {
+            tabBarIcon: ({ color, size }) => (
+              <MaterialIcons name="menu-book" color={color} size={size} />
+            )
+          }
+        }
+      />
+
+      <Tab.Screen name='Profile' component={Profilepage} 
       options={{
         tabBarIcon:({color,size})=>(
-          
+            <MaterialIcons name="person-outline" color={color} size={size} />
         )
       }}
       />
