@@ -1,9 +1,9 @@
 import { TouchableOpacity, StyleSheet } from "react-native"
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-const Plusbutton = () => {
+const Plusbutton = ({onPress}) => {
     return (
-        <TouchableOpacity style={Plusbuttonstyle.fixedbutton} >
+        <TouchableOpacity onPress={onPress} style={Plusbuttonstyle.fixedbutton} >
             <AntDesign name="plus" color="#fff" size={24} />
         </TouchableOpacity>
     )
@@ -16,12 +16,9 @@ const Plusbuttonstyle = StyleSheet.create({
         position: "absolute",
         bottom: 20,
         right: 30,
-
         width: 60,
         height: 60,
-
         backgroundColor: "#7a5b52",
-
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 999,

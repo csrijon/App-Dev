@@ -6,8 +6,9 @@ import Dashboardpage from "./src/pages/Dashboardpage"
 import Catalogpage from "./src/pages/Catalogpage"
 import Ordermanagementpage from "./src/pages/Ordermanagementpage"
 import CustomerDirectorypage from "./src/pages/CustomerDirectorypage"
-import Addnewcakepage from "./src/pages/Addnewcakepage"
+// import Addnewcakepage from "./src/pages/Addnewcakepage"
 import Ordertrackingpage from "./src/pages/Ordertrackingpage"
+import Addnewcakepage from "./src/pages/Addnewcakepage"
 import Profilepage from "./src/pages/Profilepage"
 import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
 import {
@@ -31,7 +32,6 @@ function App() {
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Stackscreens />
     </NavigationContainer>
-
   );
 }
 
@@ -46,9 +46,28 @@ const Stackscreens = () => {
   )
 }
 
+const Catalogstack = () => {
+  return (
+    <Stack.Navigator screenOptions={{headerShown:false}} initialRouteName='Catalog'>
+      <Stack.Screen name='Catalog' component={Catalogpage} />
+      <Stack.Screen name='Addnewpage' component={Addnewcakepage} />
+    </Stack.Navigator>
+  )
+}
+
 const TabScreens = () => {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
+    <Tab.Navigator screenOptions={{
+      headerShown: false, tabBarStyle: {
+        backgroundColor: "#faf4d6f2",
+        paddingVertical: 12,
+        paddingHorizontal: 15,
+        height: 70,
+        borderTopLeftRadius: 44,
+        borderTopRightRadius: 44
+      },
+      tabBarActiveTintColor: "#f6cfc2"
+    }}>
 
       <Tab.Screen
         name="Dashboard"
@@ -67,7 +86,7 @@ const TabScreens = () => {
         }}
       />
 
-      <Tab.Screen name='Catalog' component={Catalogpage}
+      <Tab.Screen name='Catalog' component={Catalogstack}
         options={
           {
             tabBarIcon: ({ color, size }) => (
@@ -77,12 +96,12 @@ const TabScreens = () => {
         }
       />
 
-      <Tab.Screen name='Profile' component={Profilepage} 
-      options={{
-        tabBarIcon:({color,size})=>(
+      <Tab.Screen name='Profile' component={Profilepage}
+        options={{
+          tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="person-outline" color={color} size={size} />
-        )
-      }}
+          )
+        }}
       />
 
     </Tab.Navigator>

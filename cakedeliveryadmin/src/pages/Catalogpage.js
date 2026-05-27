@@ -5,6 +5,7 @@ import Search from "../components/Search"
 import { useState } from "react"
 import Catalogcard from "../components/Catalogcard"
 import Plusbutton from "../components/Plusbutton"
+import { Screen } from "react-native-screens"
 
 
 let bardata = [
@@ -75,7 +76,7 @@ const catalogData = [
 
 
 
-const Catalogpage = () => {
+const Catalogpage = ({navigation}) => {
 
     const [active, setactive] = useState(null)
 
@@ -107,7 +108,7 @@ const Catalogpage = () => {
             {/* <TouchableOpacity style={Catalogstyle.fixedbutton} >
                 <AntDesign name="plus" color="#fff" size={24} />
             </TouchableOpacity> */}
-            <Plusbutton/>
+            <Plusbutton onPress={()=>navigation.navigate("Addnewpage")}  />
         </SafeAreaView>
     )
 }

@@ -12,14 +12,14 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
-const Addnewcakepage = () => {
+const Addnewcakepage = ({navigation}) => {
 
     const [activeoffer, setnotactiveoffer] = useState(false)
 
     return (
         <SafeAreaView style={styles.Addnewcakecontainer} >
             <StatusBar backgroundColor="#fff8e6" barStyle="dark-content" />
-            <BakeryHeader />
+            <BakeryHeader onPress={()=>navigation.goBack()} />
             <ScrollView vertical showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 32, paddingBottom: 40 }} >
                 <View style={styles.screenContainer}>
 

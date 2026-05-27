@@ -8,12 +8,12 @@ import {
 } from "react-native";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-const BakeryHeader = () => {
+const BakeryHeader = ({onPress}) => {
     return (
         <View style={styles.headerContainer}>
 
-            <TouchableOpacity style={styles.closeButton}>
-                <Text style={styles.closeIcon}>✕</Text>
+            <TouchableOpacity onPress={onPress} style={styles.closeButton}>
+                <MaterialIcons  name="arrow-back-ios" color="#75584e" size={26} />
             </TouchableOpacity>
 
             <Text style={styles.headerTitle}>
@@ -43,11 +43,6 @@ const styles = StyleSheet.create({
     },
 
     closeButton: {
-        width: 34,
-        height: 34,
-        borderRadius: 17,
-        backgroundColor: "#EFE4D3",
-        justifyContent: "center",
         alignItems: "center",
     },
 

@@ -1,278 +1,338 @@
 <!DOCTYPE html>
 
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Delivery Tracking | The Artisanal Pâtisserie</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
-          darkMode: "class",
-          theme: {
-            extend: {
-              "colors": {
-                      "inverse-on-surface": "#a29d88",
-                      "background": "#fff9e6",
-                      "tertiary-dim": "#734557",
-                      "on-surface-variant": "#646040",
-                      "primary-dim": "#684d43",
-                      "surface-container-lowest": "#ffffff",
-                      "surface-container-low": "#faf4d6",
-                      "secondary-container": "#f4dce4",
-                      "surface-variant": "#eae3bb",
-                      "surface-tint": "#75584e",
-                      "error-dim": "#67040d",
-                      "on-secondary-fixed": "#4b3b41",
-                      "on-tertiary-container": "#623648",
-                      "outline": "#807c59",
-                      "error-container": "#fa746f",
-                      "tertiary": "#815163",
-                      "surface-dim": "#e2dbb3",
-                      "on-primary-fixed-variant": "#6a4e44",
-                      "inverse-primary": "#f6cfc2",
-                      "error": "#a83836",
-                      "surface-container-high": "#f0e9c5",
-                      "on-secondary": "#fff7f8",
-                      "primary-container": "#f6cfc2",
-                      "surface-bright": "#fff9e6",
-                      "secondary-fixed-dim": "#e6ced6",
-                      "surface-container": "#f5efcd",
-                      "on-tertiary": "#fff7f7",
-                      "secondary-fixed": "#f4dce4",
-                      "primary-fixed-dim": "#e7c1b4",
-                      "outline-variant": "#b9b38d",
-                      "secondary-dim": "#5f4f55",
-                      "on-secondary-container": "#5e4d54",
-                      "on-surface": "#363317",
-                      "primary": "#75584e",
-                      "on-tertiary-fixed": "#4b2334",
-                      "on-primary-fixed": "#4b3229",
-                      "surface-container-highest": "#eae3bb",
-                      "secondary": "#6c5a61",
-                      "tertiary-container": "#f8bbd0",
-                      "on-secondary-fixed-variant": "#68575e",
-                      "on-error-container": "#6e0a12",
-                      "on-tertiary-fixed-variant": "#6c3f51",
-                      "inverse-surface": "#100e03",
-                      "tertiary-fixed-dim": "#e9aec3",
-                      "tertiary-fixed": "#f8bbd0",
-                      "surface": "#fff9e6",
-                      "on-primary-container": "#5f453b",
-                      "primary-fixed": "#f6cfc2",
-                      "on-primary": "#fff7f5",
-                      "on-error": "#fff7f6",
-                      "on-background": "#363317"
-              },
-              "borderRadius": {
-                      "DEFAULT": "1rem",
-                      "lg": "2rem",
-                      "xl": "3rem",
-                      "full": "9999px"
-              },
-              "fontFamily": {
-                      "headline": ["Plus Jakarta Sans"],
-                      "display": ["Plus Jakarta Sans"],
-                      "body": ["Plus Jakarta Sans"],
-                      "label": ["Plus Jakarta Sans"]
-              }
-            },
+<html class="light" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport" />
+  <title>Profile | The Pâtisserie</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-fixed": "#f6cfc2",
+            "surface-container-highest": "#eae3bb",
+            "surface-container-high": "#f0e9c5",
+            "error-dim": "#67040d",
+            "surface-variant": "#eae3bb",
+            "on-primary": "#fff7f5",
+            "primary": "#75584e",
+            "secondary-fixed-dim": "#e6ced6",
+            "on-primary-fixed-variant": "#6a4e44",
+            "primary-dim": "#684d43",
+            "on-tertiary": "#fff7f7",
+            "on-secondary-fixed-variant": "#68575e",
+            "on-error": "#fff7f6",
+            "primary-container": "#f6cfc2",
+            "on-secondary-fixed": "#4b3b41",
+            "tertiary-container": "#f8bbd0",
+            "on-tertiary-fixed-variant": "#6c3f51",
+            "surface-container-low": "#faf4d6",
+            "on-tertiary-fixed": "#4b2334",
+            "on-background": "#363317",
+            "surface-container": "#f5efcd",
+            "on-primary-container": "#5f453b",
+            "on-secondary": "#fff7f8",
+            "error-container": "#fa746f",
+            "primary-fixed-dim": "#e7c1b4",
+            "on-primary-fixed": "#4b3229",
+            "tertiary-fixed": "#f8bbd0",
+            "tertiary-dim": "#734557",
+            "tertiary-fixed-dim": "#e9aec3",
+            "on-secondary-container": "#5e4d54",
+            "outline-variant": "#b9b38d",
+            "surface-dim": "#e2dbb3",
+            "tertiary": "#815163",
+            "background": "#fff9e6",
+            "on-error-container": "#6e0a12",
+            "inverse-primary": "#f6cfc2",
+            "surface-container-lowest": "#ffffff",
+            "on-surface": "#363317",
+            "surface": "#fff9e6",
+            "outline": "#807c59",
+            "on-tertiary-container": "#623648",
+            "secondary": "#6c5a61",
+            "secondary-container": "#f4dce4",
+            "error": "#a83836",
+            "secondary-fixed": "#f4dce4",
+            "surface-tint": "#75584e",
+            "secondary-dim": "#5f4f55",
+            "surface-bright": "#fff9e6",
+            "inverse-on-surface": "#a29d88",
+            "on-surface-variant": "#646040",
+            "inverse-surface": "#100e03"
           },
+          "borderRadius": {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          "fontFamily": {
+            "headline": ["Plus Jakarta Sans"],
+            "display": ["Plus Jakarta Sans"],
+            "body": ["Plus Jakarta Sans"],
+            "label": ["Plus Jakarta Sans"]
+          }
         }
-      </script>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .editorial-shadow {
-            box-shadow: 0px 24px 48px rgba(117, 88, 78, 0.08);
-        }
-    </style>
-<style>
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #fff9e6;
+      /* surface */
+      color: #363317;
+      /* on-surface */
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      line-height: 1;
+    }
+
+    .glass-header {
+      background: rgba(255, 249, 230, 0.8);
+      backdrop-filter: blur(20px);
+    }
+
+    .custom-shadow {
+      box-shadow: 0px 24px 48px rgba(117, 88, 78, 0.08);
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+  <style>
     body {
       min-height: max(884px, 100dvh);
     }
   </style>
-  </head>
-<body class="bg-surface font-body text-on-surface selection:bg-primary-container selection:text-on-primary-container">
-<!-- TopAppBar -->
-<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-xl flex justify-between items-center px-6 h-16 w-full">
-<div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">bakery_dining</span>
-<h1 class="font-display text-headline-md tracking-tight font-bold text-primary">The Artisanal Pâtisserie</h1>
-</div>
-<div class="flex items-center gap-4">
-<button class="hover:bg-primary-container/20 transition-colors p-2 rounded-full active:scale-95 duration-200">
-<span class="material-symbols-outlined text-primary">notifications</span>
-</button>
-</div>
-</header>
-<main class="pt-20 pb-32 px-4 md:px-8 max-w-7xl mx-auto space-y-8">
-<!-- Hero Section: Map Visualization -->
-<section class="relative h-80 md:h-[450px] w-full rounded-xl overflow-hidden editorial-shadow bg-surface-container-low">
-<div class="absolute inset-0 z-0">
-<img class="w-full h-full object-cover grayscale opacity-40 brightness-110" data-alt="A stylized, minimalist map view of a historic European city district with narrow cobblestone streets and cream-colored buildings. A single, elegant brown route line weaves through the neighborhood, with a small delivery scooter icon moving along the path. The lighting is soft morning gold, reflecting the premium artisanal bakery brand's warm and organic aesthetic." data-location="Paris" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEWzPDtWdVWbg9-L6FzHU1gUT1HuvFOi1psNx42Hltu99_yDJLdPC8V19FIyeuANG5mstHy3_-XTxiZegjiX4gwxItwPZEoRutOpIUVQWI61egBYMBHBcLUTicmPUOkPeKVJjKwhKYgKy08Vp8P8Wi2C6TLlapfV58lLCglVuxaVK-nugP107thYLl1dc83RTUqXIICadMHVt2O1q8uNHrT15jslvVGyfKFr0cfwg98Jq7HUbbvgz5KWazeZjsgYjg1qho4-XAD4Fs"/>
-<!-- Overlay Gradient for editorial feel -->
-<div class="absolute inset-0 bg-gradient-to-t from-surface/40 to-transparent"></div>
-</div>
-<!-- Map Overlay Controls -->
-<div class="absolute top-6 left-6 z-10 space-y-3">
-<div class="bg-surface-container-lowest/90 backdrop-blur-md px-5 py-3 rounded-lg editorial-shadow flex items-center gap-3">
-<div class="w-3 h-3 rounded-full bg-primary animate-pulse"></div>
-<p class="font-display font-bold text-primary tracking-tight">Active Delivery: #ORD-9921</p>
-</div>
-</div>
-<!-- Route Info Floating Card -->
-<div class="absolute bottom-6 right-6 z-10 max-w-xs w-full bg-surface-container-lowest/95 backdrop-blur-lg p-6 rounded-lg editorial-shadow">
-<div class="flex justify-between items-start mb-4">
-<div>
-<p class="text-label-md text-on-surface-variant font-medium">Estimated Arrival</p>
-<h2 class="text-headline-md font-bold text-primary">12:45 PM</h2>
-</div>
-<div class="bg-primary-container text-on-primary-container px-3 py-1 rounded-full text-label-md font-bold">
-                        ON TIME
-                    </div>
-</div>
-<div class="space-y-1">
-<p class="text-label-md text-on-surface-variant">Current Location</p>
-<p class="text-body-md font-medium">Avenue des Champs-Élysées</p>
-</div>
-</div>
-</section>
-<!-- Status Cards Bento Grid -->
-<section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-<!-- Status Detail -->
-<div class="md:col-span-1 bg-surface-container-low p-8 rounded-xl flex flex-col justify-between">
-<div>
-<span class="material-symbols-outlined text-primary mb-4 block" style="font-size: 40px; font-variation-settings: 'FILL' 1;">local_shipping</span>
-<h3 class="text-headline-md font-bold tracking-tight mb-2">Out for Delivery</h3>
-<p class="text-on-surface-variant body-lg leading-relaxed">Your curated selection of hand-laminated croissants and seasonal tarts is currently in transit.</p>
-</div>
-<div class="mt-8 pt-6 border-t border-outline-variant/15">
-<div class="flex items-center gap-4">
-<div class="bg-primary-container p-3 rounded-full">
-<span class="material-symbols-outlined text-on-primary-container">schedule</span>
-</div>
-<div>
-<p class="text-label-md text-on-surface-variant">Baking Finished</p>
-<p class="font-bold">11:30 AM</p>
-</div>
-</div>
-</div>
-</div>
-<!-- Driver Info Card -->
-<div class="md:col-span-2 bg-surface-container-lowest p-8 rounded-xl editorial-shadow relative overflow-hidden">
-<!-- Background decoration -->
-<div class="absolute -right-12 -top-12 w-64 h-64 bg-secondary-container/20 rounded-full blur-3xl"></div>
-<div class="relative z-10 flex flex-col md:flex-row gap-8 items-center">
-<div class="w-32 h-32 rounded-xl overflow-hidden flex-shrink-0 border-4 border-surface-container-low">
-<img class="w-full h-full object-cover" data-alt="A professional portrait of a friendly delivery rider named Marc, wearing a clean, minimalist brown apron over a white shirt. He is smiling warmly at the camera, set against a blurred background of a high-end bakery interior with warm lighting. The image captures a sense of reliability, craftsmanship, and premium service." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAQ-tX5R6SjJOkfDy275DF8bbu4IJYji5ClwIiJpV8ZXXg4hba-aBNR4pR9aR9crwE7xQGOS3x_0PJrXzM2areiRKgLPhr7yopS38hnrQp0MVZWKc0Ag2Hxggl5l3HNw7MC0UWAxT38t0eEu8o1zboJuTVxPL9zupNyvjXCVUkoR17S0Of9F2YQvGfvqXVo1Tsm8O75ajdGdJOq8fyoUD-9Fp5RhFBJsEu0ZUs6ziM1lLC2odmxdUT9CjkNimq-kuJ9Z3DsBfzjOke"/>
-</div>
-<div class="flex-grow text-center md:text-left">
-<div class="mb-4">
-<p class="text-label-md text-on-surface-variant font-bold tracking-widest uppercase mb-1">Assigned Courier</p>
-<h3 class="text-headline-md font-bold text-primary">Marc Beaulieu</h3>
-<p class="text-body-md text-on-surface-variant">Expert Delivery Partner since 2021</p>
-</div>
-<div class="flex flex-wrap justify-center md:justify-start gap-3">
-<div class="bg-surface-container-low px-4 py-2 rounded-full flex items-center gap-2">
-<span class="material-symbols-outlined text-on-surface-variant text-sm">electric_moped</span>
-<span class="text-label-md font-medium uppercase tracking-wider">Electric Vespa</span>
-</div>
-<div class="bg-tertiary-container/30 px-4 py-2 rounded-full flex items-center gap-2">
-<span class="material-symbols-outlined text-on-tertiary-container text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-label-md font-bold text-on-tertiary-container">4.9 Rating</span>
-</div>
-</div>
-</div>
-<div class="flex flex-col gap-3 w-full md:w-auto">
-<button class="bg-primary text-on-primary font-bold px-8 py-4 rounded-full flex items-center justify-center gap-2 active:scale-95 transition-transform">
-<span class="material-symbols-outlined text-sm">call</span>
-                            Contact Marc
-                        </button>
-<button class="bg-surface-container-highest text-on-surface font-bold px-8 py-4 rounded-full flex items-center justify-center gap-2 active:scale-95 transition-transform">
-<span class="material-symbols-outlined text-sm">chat_bubble</span>
-                            Send Message
-                        </button>
-</div>
-</div>
-</div>
-</section>
-<!-- Delivery Timeline Section -->
-<section class="bg-surface-container-low rounded-xl p-8 md:p-12 overflow-hidden relative">
-<h3 class="text-headline-md font-bold mb-12 tracking-tight">Delivery Milestones</h3>
-<div class="relative max-w-2xl">
-<!-- Vertical Line -->
-<div class="absolute left-6 top-0 bottom-0 w-0.5 bg-outline-variant/30"></div>
-<div class="space-y-12">
-<!-- Step 1: Complete -->
-<div class="relative flex items-start gap-8 group">
-<div class="relative z-10 w-12 h-12 rounded-full bg-primary flex items-center justify-center text-on-primary flex-shrink-0">
-<span class="material-symbols-outlined">check</span>
-</div>
-<div>
-<h4 class="text-body-lg font-bold">Order Handcrafted</h4>
-<p class="text-on-surface-variant text-body-md mt-1">Our chefs completed your order at the main atelier.</p>
-<p class="text-label-md text-primary font-bold mt-2 uppercase tracking-tighter">09:15 AM</p>
-</div>
-</div>
-<!-- Step 2: Complete -->
-<div class="relative flex items-start gap-8 group">
-<div class="relative z-10 w-12 h-12 rounded-full bg-primary flex items-center justify-center text-on-primary flex-shrink-0">
-<span class="material-symbols-outlined">check</span>
-</div>
-<div>
-<h4 class="text-body-lg font-bold">Order Picked Up</h4>
-<p class="text-on-surface-variant text-body-md mt-1">Marc has securely loaded your pastries for transit.</p>
-<p class="text-label-md text-primary font-bold mt-2 uppercase tracking-tighter">11:45 AM</p>
-</div>
-</div>
-<!-- Step 3: Current -->
-<div class="relative flex items-start gap-8 group">
-<div class="relative z-10 w-12 h-12 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container flex-shrink-0 ring-4 ring-surface">
-<span class="material-symbols-outlined animate-bounce">location_on</span>
-</div>
-<div class="bg-surface-container-lowest p-6 rounded-lg editorial-shadow -mt-4 border-l-4 border-primary">
-<h4 class="text-body-lg font-bold text-primary">In Transit</h4>
-<p class="text-on-surface-variant text-body-md mt-1">The rider is currently 1.2km away from your destination.</p>
-<div class="mt-4 bg-secondary-container/20 p-2 rounded-md flex items-center gap-2">
-<span class="material-symbols-outlined text-secondary text-sm">traffic</span>
-<span class="text-label-md text-secondary font-medium">Light traffic ahead</span>
-</div>
-</div>
-</div>
-<!-- Step 4: Pending -->
-<div class="relative flex items-start gap-8 group opacity-40">
-<div class="relative z-10 w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant flex-shrink-0">
-<span class="material-symbols-outlined">flag</span>
-</div>
-<div>
-<h4 class="text-body-lg font-bold">Delivery Complete</h4>
-<p class="text-on-surface-variant text-body-md mt-1">Estimated delivery by 12:45 PM.</p>
-</div>
-</div>
-</div>
-</div>
-</section>
-</main>
-<!-- BottomNavBar -->
-<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-surface dark:bg-surface-dim z-50 rounded-t-xl shadow-[0px_-24px_48px_rgba(117,88,78,0.08)]">
-<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary active:scale-90 transition-transform">
-<span class="material-symbols-outlined mb-1">dashboard</span>
-<span class="font-label text-label-md">Dashboard</span>
-</button>
-<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-5 py-1.5 transition-all active:scale-90">
-<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">receipt_long</span>
-<span class="font-label text-label-md">Orders</span>
-</button>
-<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary active:scale-90 transition-transform">
-<span class="material-symbols-outlined mb-1">menu_book</span>
-<span class="font-label text-label-md">Catalog</span>
-</button>
-<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary active:scale-90 transition-transform">
-<span class="material-symbols-outlined mb-1">person_outline</span>
-<span class="font-label text-label-md">Profile</span>
-</button>
-</nav>
-</body></html>
+</head>
+
+<body class="min-h-screen pb-32">
+  <!-- Top App Bar -->
+  <header
+    class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-lg shadow-[0px_10px_30px_rgba(117,88,78,0.04)] h-20 flex items-center justify-between px-6">
+    <div class="flex items-center gap-4">
+      <button class="text-primary active:scale-95 transition-transform duration-200">
+        <span class="material-symbols-outlined text-[28px]">menu</span>
+      </button>
+      <h1 class="font-display text-[22px] font-bold text-primary tracking-tight">The Pâtisserie</h1>
+    </div>
+    <div class="flex items-center gap-2">
+      <button
+        class="text-primary active:scale-95 transition-transform duration-200 p-2 bg-primary-container/30 rounded-full">
+        <span class="material-symbols-outlined">shopping_bag</span>
+      </button>
+    </div>
+  </header>
+  <main class="pt-28 px-6 max-w-2xl mx-auto space-y-10">
+    <!-- Profile Header Section -->
+    <section class="flex flex-col items-center text-center space-y-4">
+      <div class="relative group">
+        <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-surface-container-lowest custom-shadow">
+          <img class="w-full h-full object-cover"
+            data-alt="A high-end editorial portrait of a sophisticated woman with elegant styling, set against a warm, cream-colored studio background. The lighting is soft and golden, reflecting the premium artisanal aesthetic of a luxury pâtisserie brand. The color palette features rich browns and soft tans to align with the brand identity."
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7EBUotm1gqPoz57p_yGf5zHDFd0ScOpuX-BnFDZPx8W-F9EZmS1dlb965w1uiwhh-OoOXwiENY7Bo1Qsd4zq0N13zpfwYswL-lXfaeV-0Rhj8SebMHE-BAGpEjrPPOxnDWO691TdNWE2KOzHwcAUAXvRUjAtvRKHYgwpo0wYRisHgeZ8Bj76UFul7ssXFx-gz3Et7FOkyEIs2gPT84plRahLwFEi3hVLzV5oRHbNswf9zqEIx5_ubXAzoHF4gp9kRnyI1kM6swfB7" />
+        </div>
+        <button
+          class="absolute bottom-1 right-1 bg-primary text-on-primary p-2 rounded-full shadow-lg hover:scale-105 active:scale-90 transition-all">
+          <span class="material-symbols-outlined text-sm">edit</span>
+        </button>
+      </div>
+      <div class="space-y-1">
+        <h2 class="text-display font-bold text-[28px] tracking-tight text-on-surface">Eloise Beaumont</h2>
+        <div
+          class="inline-flex items-center gap-1.5 px-4 py-1 bg-primary-container text-on-primary-container rounded-full text-[13px] font-semibold tracking-wide">
+          <span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">stars</span>
+          GOLD MEMBER
+        </div>
+      </div>
+    </section>
+    <!-- Personal Information Section -->
+    <section class="space-y-6">
+      <div class="flex items-center justify-between">
+        <h3 class="font-headline font-bold text-lg text-primary">Personal Details</h3>
+        <button class="text-sm font-semibold text-primary/70 hover:text-primary transition-colors">Edit All</button>
+      </div>
+      <div class="bg-surface-container-low rounded-xl p-6 space-y-6">
+        <!-- Field -->
+        <div class="space-y-2">
+          <label class="text-label-md font-semibold text-on-surface-variant ml-1">Full Name</label>
+          <div
+            class="flex items-center bg-surface-container-highest rounded-lg px-4 py-3 group focus-within:ring-2 ring-primary/20 transition-all">
+            <span class="material-symbols-outlined text-on-surface-variant mr-3">person</span>
+            <input class="bg-transparent border-none p-0 focus:ring-0 text-on-surface w-full font-medium" type="text"
+              value="Eloise Beaumont" />
+          </div>
+        </div>
+        <!-- Field -->
+        <div class="space-y-2">
+          <label class="text-label-md font-semibold text-on-surface-variant ml-1">Email Address</label>
+          <div
+            class="flex items-center bg-surface-container-highest rounded-lg px-4 py-3 group focus-within:ring-2 ring-primary/20 transition-all">
+            <span class="material-symbols-outlined text-on-surface-variant mr-3">mail</span>
+            <input class="bg-transparent border-none p-0 focus:ring-0 text-on-surface w-full font-medium" type="email"
+              value="eloise.beaumont@luxury.com" />
+          </div>
+        </div>
+        <!-- Field -->
+        <div class="space-y-2">
+          <label class="text-label-md font-semibold text-on-surface-variant ml-1">Phone Number</label>
+          <div
+            class="flex items-center bg-surface-container-highest rounded-lg px-4 py-3 group focus-within:ring-2 ring-primary/20 transition-all">
+            <span class="material-symbols-outlined text-on-surface-variant mr-3">call</span>
+            <input class="bg-transparent border-none p-0 focus:ring-0 text-on-surface w-full font-medium" type="tel"
+              value="+33 6 12 34 56 78" />
+          </div>
+        </div>
+        <!-- Field -->
+        <div class="space-y-2">
+          <label class="text-label-md font-semibold text-on-surface-variant ml-1">Default Delivery Address</label>
+          <div
+            class="flex items-start bg-surface-container-highest rounded-lg px-4 py-3 group focus-within:ring-2 ring-primary/20 transition-all">
+            <span class="material-symbols-outlined text-on-surface-variant mr-3 mt-1">location_on</span>
+            <textarea class="bg-transparent border-none p-0 focus:ring-0 text-on-surface w-full font-medium resize-none"
+              rows="2">12 Rue de la Paix, 75002 Paris, France</textarea>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Account Settings -->
+    <section class="space-y-4">
+      <h3 class="font-headline font-bold text-lg text-primary ml-1">Account Settings</h3>
+      <div class="space-y-3">
+        <button
+          class="w-full flex items-center justify-between p-5 bg-surface-container-lowest rounded-xl hover:bg-white transition-colors custom-shadow group">
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-secondary">
+              <span class="material-symbols-outlined">notifications</span>
+            </div>
+            <div class="text-left">
+              <span class="block font-bold text-on-surface">Notifications</span>
+              <span class="text-xs text-on-surface-variant">Order updates and offers</span>
+            </div>
+          </div>
+          <span
+            class="material-symbols-outlined text-outline-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
+        </button>
+        <button
+          class="w-full flex items-center justify-between p-5 bg-surface-container-lowest rounded-xl hover:bg-white transition-colors custom-shadow group">
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-tertiary-container flex items-center justify-center text-tertiary">
+              <span class="material-symbols-outlined">payments</span>
+            </div>
+            <div class="text-left">
+              <span class="block font-bold text-on-surface">Payment Methods</span>
+              <span class="text-xs text-on-surface-variant">Visa ending in •••• 4242</span>
+            </div>
+          </div>
+          <span
+            class="material-symbols-outlined text-outline-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
+        </button>
+        <button
+          class="w-full flex items-center justify-between p-5 bg-surface-container-lowest rounded-xl hover:bg-white transition-colors custom-shadow group">
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-primary-container/40 flex items-center justify-center text-primary">
+              <span class="material-symbols-outlined">shield</span>
+            </div>
+            <div class="text-left">
+              <span class="block font-bold text-on-surface">Privacy &amp; Security</span>
+              <span class="text-xs text-on-surface-variant">Manage your data</span>
+            </div>
+          </div>
+          <span
+            class="material-symbols-outlined text-outline-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
+        </button>
+      </div>
+    </section>
+    <!-- Account Actions -->
+    <section class="space-y-4">
+      <h3 class="font-headline font-bold text-lg text-primary ml-1">Account Actions</h3>
+      <div class="grid grid-cols-2 gap-4">
+        <button
+          class="p-4 bg-surface-container-low border border-outline-variant/10 rounded-xl flex flex-col items-center gap-2 hover:bg-surface-container transition-colors">
+          <span class="material-symbols-outlined text-primary">key</span>
+          <span class="text-sm font-bold text-on-surface-variant">Change Password</span>
+        </button>
+        <button
+          class="p-4 bg-surface-container-low border border-outline-variant/10 rounded-xl flex flex-col items-center gap-2 hover:bg-surface-container transition-colors">
+          <span class="material-symbols-outlined text-primary">group_add</span>
+          <span class="text-sm font-bold text-on-surface-variant">Refer a Friend</span>
+        </button>
+      </div>
+      <button
+        class="w-full mt-6 py-4 rounded-full border-2 border-error/20 text-error font-bold hover:bg-error/5 transition-colors flex items-center justify-center gap-2 active:scale-[0.98]">
+        <span class="material-symbols-outlined text-xl">logout</span>
+        Logout
+      </button>
+    </section>
+    <!-- Promo Banner -->
+    <section class="relative h-48 rounded-xl overflow-hidden custom-shadow">
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-primary/80 to-transparent z-10 p-8 flex flex-col justify-center">
+        <span class="text-on-primary text-xs font-bold tracking-[0.2em] mb-2 uppercase">Exclusive Gift</span>
+        <h4 class="text-on-primary font-bold text-2xl leading-tight max-w-[200px]">Send a box of joy to a friend.</h4>
+        <button
+          class="mt-4 bg-on-primary text-primary w-fit px-6 py-2 rounded-full font-bold text-sm hover:opacity-90 active:scale-95 transition-all">Get
+          Code</button>
+      </div>
+      <img class="absolute inset-0 w-full h-full object-cover"
+        data-alt="Close-up of a beautifully packaged artisanal cake box with silk ribbons, featuring elegant pastry details. The scene is bathed in warm, soft sunlight, highlighting the textures of high-quality paper and delicate confections. The color theme is cream, rose, and cocoa brown."
+        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTa_agmypaPFp70JvxPtGymVvbxNwUBonGWhILBZC1Am6LUwOqtM-PlsEWMNdJQxSTSUBqtn59ONWP92K0az1lTuRw4eP0APTiZOESXACAP8ri5iBxYfigWtbx7duawJnR3DS3980_ExlpECq4rzYqAdqGsFSmBT04IgkzK0SdfpFVo8MhCGW696zz9nTel4CANPvDX6CJaazzYIZVFD4l7d4yGCSxK4DsjHV5o0rOLgXarpk5ZQ8ASb3bY3SpdaExuY6pahZeIB3t" />
+    </section>
+  </main>
+  <!-- Navigation Shell -->
+  <nav
+    class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-surface-container-low/95 dark:bg-surface-dim/95 backdrop-blur-md shadow-[0px_-10px_40px_rgba(117,88,78,0.06)] rounded-t-xl z-50">
+    <a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:text-primary transition-colors active:scale-90 duration-300"
+      href="#">
+      <span class="material-symbols-outlined">home</span>
+      <span class="font-label text-label-md mt-1">Home</span>
+    </a>
+    <a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:text-primary transition-colors active:scale-90 duration-300"
+      href="#">
+      <span class="material-symbols-outlined">storefront</span>
+      <span class="font-label text-label-md mt-1">Shop</span>
+    </a>
+    <a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:text-primary transition-colors active:scale-90 duration-300"
+      href="#">
+      <span class="material-symbols-outlined">receipt_long</span>
+      <span class="font-label text-label-md mt-1">Orders</span>
+    </a>
+    <a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-6 py-2 active:scale-90 transition-transform duration-300 ease-out"
+      href="#">
+      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+      <span class="font-label text-label-md mt-0.5">Profile</span>
+    </a>
+  </nav>
+  <script>
+    // Simple micro-interaction for input focus
+    document.querySelectorAll('input, textarea').forEach(input => {
+      input.addEventListener('focus', () => {
+        input.parentElement.classList.add('shadow-md');
+      });
+      input.addEventListener('blur', () => {
+        input.parentElement.classList.remove('shadow-md');
+      });
+    });
+  </script>
+</body>
+
+</html>
