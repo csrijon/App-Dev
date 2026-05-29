@@ -49,7 +49,7 @@ const Profilepage = () => {
                     <View style={styles.personalDetailsHeader}>
                         <Text style={styles.personalDetailsHeading}>Personal Details</Text>
                         <TouchableOpacity onPress={() => seteditabletext(!editabletext)} >
-                            <Text style={styles.personalDetailsEdit}>Edit All</Text>
+                            <Text style={styles.personalDetailsEdit}>{editabletext?"Save":"Edit"}</Text>
                         </TouchableOpacity>
 
                     </View>
@@ -225,8 +225,6 @@ const styles = StyleSheet.create({
 
     },
     profilecard: {
-        // flex: 1,
-        // backgroundColor: "#F5F0E5",
         justifyContent: "center",
         alignItems: "center",
     },

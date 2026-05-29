@@ -12,14 +12,16 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
-const Addnewcakepage = ({navigation}) => {
+
+const Addnewcakepage = ({ navigation }) => {
 
     const [activeoffer, setnotactiveoffer] = useState(false)
+    // const [imageuri,setimageuri] = useState(null)
 
     return (
         <SafeAreaView style={styles.Addnewcakecontainer} >
             <StatusBar backgroundColor="#fff8e6" barStyle="dark-content" />
-            <BakeryHeader onPress={()=>navigation.goBack()} />
+            <BakeryHeader onPress={() => navigation.goBack()} />
             <ScrollView vertical showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 32, paddingBottom: 40 }} >
                 <View style={styles.screenContainer}>
 
@@ -38,24 +40,24 @@ const Addnewcakepage = ({navigation}) => {
                     </Text>
 
                     {/* Upload Box */}
-                    <TouchableOpacity style={styles.uploadBox}>
+                  
+                        <TouchableOpacity style={styles.uploadBox}>
 
-                        <View style={styles.iconCircle}>
-                            <MaterialIcons name="add-a-photo" color="#75584e" size={26} />
-                        </View>
+                            <View style={styles.iconCircle}>
+                                <MaterialIcons name="add-a-photo" color="#75584e" size={26} />
+                            </View>
 
-                        <Text style={styles.uploadTitle}>
-                            Upload Hero Image
-                        </Text>
+                            <Text style={styles.uploadTitle}>
+                                Upload Hero Image
+                            </Text>
 
-                        <Text style={styles.uploadDescription}>
-                            Drop your high-resolution confectionery
-                            photography here. Minimum 1200px wide
-                            recommended.
-                        </Text>
+                            <Text style={styles.uploadDescription}>
+                                Drop your high-resolution confectionery
+                                photography here. Minimum 1200px wide
+                                recommended.
+                            </Text>
 
-                    </TouchableOpacity>
-
+                        </TouchableOpacity>
                     {/* Bottom Card */}
                     <View style={styles.previewCard}>
 
