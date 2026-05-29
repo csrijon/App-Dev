@@ -48,7 +48,7 @@ const Stackscreens = () => {
 
 const Catalogstack = () => {
   return (
-    <Stack.Navigator screenOptions={{headerShown:false}} initialRouteName='Catalog'>
+    <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Catalog'>
       <Stack.Screen name='Catalog' component={Catalogpage} />
       <Stack.Screen name='Addnewpage' component={Addnewcakepage} />
     </Stack.Navigator>
@@ -66,7 +66,8 @@ const TabScreens = () => {
         borderTopLeftRadius: 44,
         borderTopRightRadius: 44
       },
-      tabBarActiveTintColor: "#f6cfc2"
+      tabBarActiveTintColor: "#f6cfc2",
+      tabBarHideOnKeyboard: true
     }}>
 
       <Tab.Screen

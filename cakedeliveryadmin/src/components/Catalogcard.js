@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import {
   View,
   Text,
@@ -7,13 +7,17 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import Ionicons from "react-native-vector-icons/Ionicons";
+import Fontisto from 'react-native-vector-icons/Fontisto';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
-const Catalogcard = ({title,tag,price,image}) => {
+const Catalogcard = ({ title, tag, price, image }) => {
+
+  const [toggleswitch,settoggleswitch]  = useState(false)
+  const [editlogo,seteditlogo] = useState(false)
+
   return (
     <View style={styles.card}>
-      
+
       {/* Cake Image */}
       <View style={styles.imageContainer}>
         <Image
@@ -35,18 +39,20 @@ const Catalogcard = ({title,tag,price,image}) => {
 
       {/* Bottom Section */}
       <View style={styles.bottomSection}>
-        
+
         {/* Active Toggle */}
         <View style={styles.activeContainer}>
-          <Ionicons name="toggle" size={38} color="#7a5b52" />
-          <Text style={styles.activeText}>Active</Text>
+          <TouchableOpacity onPress={()=>settoggleswitch(!toggleswitch)} >
+            <Fontisto name={toggleswitch?"toggle-off":"toggle-on"} color={toggleswitch?"#000":"#7a5b52"} size={38} />
+          </TouchableOpacity>
+          <Text style={styles.activeText}>{toggleswitch?"DeActive":"Active"}</Text>
         </View>
 
         {/* Icons */}
         <View style={styles.iconContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>seteditlogo(!editlogo)} >
             <MaterialIcons
-              name="edit"
+              name={editlogo?"check":"edit"}
               size={22}
               color="#7a5b52"
             />
@@ -73,9 +79,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 40,
     padding: 16,
-    // alignSelf: "center",
     marginTop: 20,
-    height:"auto"
+    height: "auto"
   },
 
   imageContainer: {
@@ -116,7 +121,7 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: 18,
-    lineHeight:28,
+    lineHeight: 28,
     fontWeight: "700",
     color: "#363317",
     // width: "70%",
@@ -149,7 +154,7 @@ const styles = StyleSheet.create({
   },
 
   iconContainer: {
-    marginTop:20,
+    marginTop: 20,
     flexDirection: "row",
     alignItems: "center",
     gap: 18,
