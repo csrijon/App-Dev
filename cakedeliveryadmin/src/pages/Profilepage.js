@@ -117,7 +117,7 @@ const Profilepage = ({navigation}) => {
                 <View style={styles.oasisFrame}>
                     <Text style={styles.realmHeading}>Account Settings</Text>
 
-                    <TouchableOpacity style={styles.frostPanel}>
+                    <TouchableOpacity onPress={()=>navigation.navigate("Notificationpage")} style={styles.frostPanel}>
                         <View style={styles.orbitZone}>
                             <View style={[styles.emblemNest, { backgroundColor: "#F7E2E8" }]}>
                                 <Ionicons name="notifications-outline" size={20} color="#8D5C72" />
@@ -134,7 +134,7 @@ const Profilepage = ({navigation}) => {
                         <Ionicons name="chevron-forward" size={18} color="#A89572" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.frostPanel}>
+                    <TouchableOpacity onPress={()=>navigation.navigate("Paymentadmin")} style={styles.frostPanel}>
                         <View style={styles.orbitZone}>
                             <View style={[styles.emblemNest, { backgroundColor: "#F4CAD7" }]}>
                                 <Ionicons name="card-outline" size={20} color="#9A496A" />

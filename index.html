@@ -3,262 +3,236 @@
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Baker Admin Panel - Payment Methods</title>
+<title>The Pâtisserie - Notifications</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "surface-container-low": "#faf4d6",
-                        "on-primary-fixed": "#4b3229",
-                        "tertiary-container": "#f8bbd0",
-                        "on-secondary": "#fff7f8",
-                        "secondary-container": "#f4dce4",
-                        "surface-variant": "#eae3bb",
-                        "surface-tint": "#75584e",
-                        "on-secondary-fixed-variant": "#68575e",
-                        "tertiary": "#815163",
-                        "on-error": "#fff7f6",
-                        "secondary-fixed-dim": "#e6ced6",
-                        "error": "#a83836",
-                        "on-tertiary-fixed": "#4b2334",
-                        "on-primary-container": "#5f453b",
-                        "surface-container-highest": "#eae3bb",
-                        "on-primary-fixed-variant": "#6a4e44",
-                        "primary-container": "#f6cfc2",
-                        "surface-container-lowest": "#ffffff",
-                        "error-container": "#fa746f",
-                        "primary": "#75584e",
-                        "tertiary-fixed-dim": "#e9aec3",
-                        "on-secondary-fixed": "#4b3b41",
-                        "surface-dim": "#e2dbb3",
-                        "primary-dim": "#684d43",
-                        "primary-fixed": "#f6cfc2",
-                        "secondary-dim": "#5f4f55",
-                        "inverse-primary": "#f6cfc2",
-                        "on-background": "#363317",
-                        "error-dim": "#67040d",
-                        "on-tertiary-fixed-variant": "#6c3f51",
-                        "on-surface": "#363317",
-                        "outline-variant": "#b9b38d",
-                        "surface-container-high": "#f0e9c5",
-                        "surface-container": "#f5efcd",
-                        "background": "#fff9e6",
-                        "secondary": "#6c5a61",
-                        "surface": "#fff9e6",
-                        "inverse-surface": "#100e03",
-                        "on-secondary-container": "#5e4d54",
-                        "on-tertiary-container": "#623648",
-                        "on-primary": "#fff7f5",
-                        "primary-fixed-dim": "#e7c1b4",
-                        "on-surface-variant": "#646040",
-                        "outline": "#807c59",
-                        "on-tertiary": "#fff7f7",
-                        "secondary-fixed": "#f4dce4",
-                        "inverse-on-surface": "#a29d88",
-                        "tertiary-fixed": "#f8bbd0",
-                        "surface-bright": "#fff9e6",
-                        "on-error-container": "#6e0a12",
-                        "tertiary-dim": "#734557"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "1rem",
-                        "lg": "2rem",
-                        "xl": "3rem",
-                        "full": "9999px"
-                    },
-                    "fontFamily": {
-                        "headline": ["Plus Jakarta Sans"],
-                        "display": ["Plus Jakarta Sans"],
-                        "body": ["Plus Jakarta Sans"],
-                        "label": ["Plus Jakarta Sans"]
-                    }
-                }
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-surface": "#100e03",
+                    "error-container": "#fa746f",
+                    "on-error": "#fff7f6",
+                    "on-primary-container": "#5f453b",
+                    "surface-container-highest": "#eae3bb",
+                    "surface-dim": "#e2dbb3",
+                    "secondary": "#6c5a61",
+                    "surface-container-high": "#f0e9c5",
+                    "tertiary": "#815163",
+                    "on-tertiary-fixed": "#4b2334",
+                    "on-error-container": "#6e0a12",
+                    "background": "#fff9e6",
+                    "on-primary": "#fff7f5",
+                    "on-tertiary-container": "#623648",
+                    "on-tertiary": "#fff7f7",
+                    "secondary-fixed-dim": "#e6ced6",
+                    "surface": "#fff9e6",
+                    "surface-container-low": "#faf4d6",
+                    "on-secondary-container": "#5e4d54",
+                    "primary-fixed-dim": "#e7c1b4",
+                    "outline-variant": "#b9b38d",
+                    "primary-dim": "#684d43",
+                    "on-background": "#363317",
+                    "surface-tint": "#75584e",
+                    "secondary-fixed": "#f4dce4",
+                    "on-secondary-fixed-variant": "#68575e",
+                    "surface-bright": "#fff9e6",
+                    "inverse-primary": "#f6cfc2",
+                    "secondary-container": "#f4dce4",
+                    "on-secondary": "#fff7f8",
+                    "on-secondary-fixed": "#4b3b41",
+                    "on-surface": "#363317",
+                    "tertiary-fixed": "#f8bbd0",
+                    "primary": "#75584e",
+                    "secondary-dim": "#5f4f55",
+                    "primary-fixed": "#f6cfc2",
+                    "error-dim": "#67040d",
+                    "tertiary-dim": "#734557",
+                    "on-tertiary-fixed-variant": "#6c3f51",
+                    "on-surface-variant": "#646040",
+                    "inverse-on-surface": "#a29d88",
+                    "error": "#a83836",
+                    "outline": "#807c59",
+                    "primary-container": "#f6cfc2",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-fixed": "#4b3229",
+                    "on-primary-fixed-variant": "#6a4e44",
+                    "tertiary-container": "#f8bbd0",
+                    "surface-container": "#f5efcd",
+                    "tertiary-fixed-dim": "#e9aec3",
+                    "surface-variant": "#eae3bb"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Plus Jakarta Sans"],
+                    "display": ["Plus Jakarta Sans"],
+                    "body": ["Plus Jakarta Sans"],
+                    "label": ["Plus Jakarta Sans"]
             }
-        }
+          },
+        },
+      }
     </script>
 <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
         }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .glass-header { backdrop-filter: blur(20px); }
-        .artisanal-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .artisanal-card:hover { transform: translateY(-4px); }
-        .qr-placeholder-pattern {
-            background-color: #faf4d6;
-            background-image: radial-gradient(#b9b38d 0.5px, transparent 0.5px);
-            background-size: 10px 10px;
+        .backdrop-blur-nav {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
         }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 <style>
     body {
       min-height: max(884px, 100dvh);
     }
   </style>
-  </head>
-<body class="bg-surface text-on-surface selection:bg-primary-container min-h-screen pb-24">
-<!-- TopAppBar -->
-<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl flex justify-between items-center px-6 h-16 w-full">
+</head>
+<body class="bg-background text-on-surface min-h-screen pb-24">
+<!-- Top App Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-lg shadow-[0px_10px_30px_rgba(117,88,78,0.04)] flex items-center justify-between px-6 h-20">
 <div class="flex items-center gap-4">
-<button class="active:scale-95 transition-transform hover:bg-primary-container/20 p-2 rounded-full">
-<span class="material-symbols-outlined text-primary">menu</span>
+<button class="hover:opacity-80 transition-opacity active:scale-95 transition-transform duration-200 text-primary">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
 </button>
-<h1 class="font-headline font-bold text-primary text-headline-md tracking-tight">Baker Admin Panel</h1>
+<h1 class="font-display text-headline-md font-bold text-primary tracking-tight">Baker Notifications</h1>
 </div>
-<div class="flex items-center gap-3">
-<span class="hidden md:block font-label text-label-md text-on-surface-variant">Welcome back, Baker</span>
-<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden border-2 border-primary-fixed">
-<img alt="Baker Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMpaUnDAjz7Ro2FeLAYUEqjyeYtoAt85Dt6rDvFpLjakef_Y8YgveNLx2iU9uQaAmnr7YuKUUJM1V-qKqvpMwq576ZBbXKQ208GRznTekn_32H6LaQKcnUU320f8a29od1rqp01wmhYxeQFQvk3Ew3OQfbfpszyHqJVSSFMqFGdV9JyymXJ0KC21aUg3DSvTw1Cvdiis8qm4Ud_KLdeaMd_5X4RsYHaJmKa977-TZloCjo7EY2MVwq45vLCzhPjC4qKpKO3PBa7SR3"/>
-</div>
-</div>
+<button class="hover:opacity-80 transition-opacity active:scale-95 transition-transform duration-200 text-primary">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
 </header>
-<!-- Main Canvas -->
-<main class="pt-24 px-6 max-w-4xl mx-auto space-y-8">
-<!-- Header Section -->
-<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
-<div>
-<nav class="flex gap-2 mb-2">
-<span class="text-on-surface-variant font-label text-label-md">Dashboard</span>
-<span class="text-on-surface-variant/40 font-label text-label-md">/</span>
-<span class="text-primary font-bold font-label text-label-md">Payment Methods</span>
-</nav>
-<h2 class="font-display text-4xl font-extrabold tracking-tight text-primary">Payment Methods</h2>
+<main class="pt-24 px-6 max-w-2xl mx-auto">
+<!-- Filter Chips -->
+<div class="flex gap-3 overflow-x-auto no-scrollbar pb-6">
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-label text-label-md transition-all active:scale-95">
+                All
+            </button>
+<button class="bg-secondary-container text-on-secondary-container px-6 py-2 rounded-full font-label text-label-md hover:bg-secondary hover:text-on-secondary transition-all active:scale-95">Orders</button>
+<button class="bg-secondary-container text-on-secondary-container px-6 py-2 rounded-full font-label text-label-md hover:bg-secondary hover:text-on-secondary transition-all active:scale-95">Inventory</button>
+<button class="bg-secondary-container text-on-secondary-container px-6 py-2 rounded-full font-label text-label-md hover:bg-secondary hover:text-on-secondary transition-all active:scale-95">Account</button>
 </div>
-<div class="flex items-center gap-2 px-4 py-2 bg-secondary-container text-on-secondary-container rounded-full w-fit">
-<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
-<span class="font-label text-label-md font-bold">Active</span>
+<!-- Notification List -->
+<div class="space-y-4" id="notification-container"><!-- New Order Card -->
+<div class="bg-surface-container-lowest p-5 rounded-xl flex gap-4 items-start shadow-[0px_24px_48px_rgba(117,88,78,0.04)] transition-transform hover:scale-[1.01] duration-300">
+<div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary" data-icon="receipt_long">receipt_long</span>
 </div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-headline font-semibold text-on-surface">New Order #8821</h3>
+<span class="font-label text-label-md text-on-surface-variant">Just now</span>
 </div>
-<!-- Asymmetric Layout Grid -->
-<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-<!-- Left Column: UPI Management -->
-<div class="md:col-span-7 space-y-6">
-<section class="bg-surface-container-lowest p-8 rounded-xl artisanal-card shadow-[0px_24px_48px_rgba(117,88,78,0.04)]">
-<div class="flex items-center gap-3 mb-6">
-<div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center">
-<span class="material-symbols-outlined text-primary">account_balance_wallet</span>
-</div>
-<h3 class="font-headline text-xl font-bold text-primary">UPI Management</h3>
-</div>
-<div class="space-y-4">
-<label class="block">
-<span class="font-label text-label-md text-on-surface-variant ml-1 mb-2 block uppercase tracking-wider">Your Virtual Payment Address</span>
-<div class="relative">
-<input class="w-full bg-surface-container-highest border-none focus:ring-2 focus:ring-primary/20 rounded-lg py-4 px-5 font-body text-on-surface placeholder:text-on-surface-variant/40" placeholder="baker@upi" type="text" value="artisanal.bakes@okhdfc"/>
-<div class="absolute right-4 top-1/2 -translate-y-1/2 text-primary">
-<span class="material-symbols-outlined">edit</span>
+<p class="text-on-surface-variant leading-relaxed text-body-lg mb-3">Classic Almond Croissants (x6) ready for prep.</p>
+<div class="flex gap-3">
+<button class="px-4 py-1.5 bg-secondary-container text-on-secondary-container text-sm font-bold rounded-full hover:bg-secondary hover:text-on-secondary transition-colors">View Order</button>
+<span class="px-3 py-1 bg-tertiary-container text-on-tertiary-container text-xs font-bold rounded-sm uppercase tracking-wider flex items-center">Orders</span>
 </div>
 </div>
-</label>
-<p class="font-body text-sm text-on-surface-variant/70 leading-relaxed">
-                            This VPA will be used to generate your dynamic QR codes and accept direct bank transfers from customers.
-                        </p>
 </div>
-<div class="mt-8 pt-6 border-t border-outline-variant/15 flex justify-end">
-<button class="bg-primary text-on-primary px-8 py-3 rounded-full font-label font-bold hover:bg-primary-dim active:scale-95 transition-all shadow-lg shadow-primary/20">
-                            Save Changes
-                        </button>
+<!-- Low Stock Card -->
+<div class="bg-surface-container-lowest p-5 rounded-xl flex gap-4 items-start shadow-[0px_24px_48px_rgba(117,88,78,0.04)] transition-transform hover:scale-[1.01] duration-300">
+<div class="w-12 h-12 rounded-full bg-error-container/20 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-error" data-icon="inventory_2">inventory_2</span>
 </div>
-</section>
-<section class="bg-surface-container-low p-8 rounded-xl border border-outline-variant/10">
-<div class="flex gap-4">
-<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
-<div>
-<h4 class="font-headline font-bold text-on-surface text-lg">Security Note</h4>
-<p class="font-body text-sm text-on-surface-variant mt-1">
-                                All your payment data is encrypted using 256-bit SSL protocols. We do not store your bank credentials. Transactions are processed directly through secure NPCI-approved UPI gateways.
-                            </p>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-headline font-semibold text-on-surface">Low Stock Alert</h3>
+<span class="font-label text-label-md text-on-surface-variant">45m ago</span>
+</div>
+<p class="text-on-surface-variant leading-relaxed text-body-lg mb-3">Madagascar Vanilla Beans fallen below 10 units.</p>
+<div class="flex gap-3">
+<button class="px-4 py-1.5 bg-secondary-container text-on-secondary-container text-sm font-bold rounded-full hover:bg-secondary hover:text-on-secondary transition-colors">Restock</button>
+<span class="px-3 py-1 bg-tertiary-container text-on-tertiary-container text-xs font-bold rounded-sm uppercase tracking-wider flex items-center">Inventory</span>
 </div>
 </div>
-</section>
 </div>
-<!-- Right Column: QR Generation -->
-<div class="md:col-span-5">
-<section class="bg-surface-container-highest p-8 rounded-xl flex flex-col items-center text-center sticky top-24">
-<h3 class="font-headline text-xl font-bold text-primary mb-6">Payment QR</h3>
-<div class="w-full aspect-square max-w-[280px] bg-surface-container-lowest rounded-xl mb-8 flex items-center justify-center relative overflow-hidden group" id="qr-container">
-<!-- QR Placeholder -->
-<div class="qr-placeholder-pattern absolute inset-0 flex flex-col items-center justify-center p-8" id="qr-placeholder">
-<span class="material-symbols-outlined text-6xl text-outline-variant mb-4 opacity-50">qr_code_2</span>
-<p class="text-on-surface-variant text-sm font-medium">Ready to generate</p>
+<!-- Payment Card -->
+<div class="bg-surface-container-lowest p-5 rounded-xl flex gap-4 items-start shadow-[0px_24px_48px_rgba(117,88,78,0.04)] transition-transform hover:scale-[1.01] duration-300">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary" data-icon="payments">payments</span>
 </div>
-<!-- Generated QR Image (Hidden initially) -->
-<img class="w-full h-full object-contain p-6 opacity-0 scale-95 transition-all duration-500" data-alt="A clean, professional UPI QR code centered on a cream-colored minimalist digital card. The QR code is surrounded by subtle branding for 'The Artisanal Pâtisserie' with elegant typography in cocoa brown. The overall aesthetic is bright, high-end, and secure, with soft ambient shadows and no harsh borders." id="qr-image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPUDvqvfCDdUnb96BnAaQhASDBsvJzGHvZRUzQEXzLUDpIeYnoHNxIqkPiLZ0o3NTZEtUzzODkee3FR8OE10-fqFDQ-45gOs6ViBjcwJ0zcIA5BhedtAnxffDpp29N-8T5kKs33kZP9M0fqlRSv4s65ysVg7I_XIkRMiGCFE0pK_lusF5EdU5eeIyvQ5Kd7lcLZf5-Y4bTREYQl0OHjTLyCxQDObDnb8atqe3jobdEbQMhe78tINJpJhP14H5MWF3I4r3Yp4DSQ4_y"/>
-<div class="absolute inset-0 bg-surface-container-highest/80 flex items-center justify-center opacity-0 pointer-events-none transition-opacity" id="qr-loader">
-<div class="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h3 class="font-headline font-semibold text-on-surface">Payment Confirmed</h3>
+<span class="font-label text-label-md text-on-surface-variant">2h ago</span>
+</div>
+<p class="text-on-surface-variant leading-relaxed text-body-lg mb-3">Weekly payout of $1,240.50 initiated.</p>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-tertiary-container text-on-tertiary-container text-xs font-bold rounded-sm uppercase tracking-wider">Account</span>
 </div>
 </div>
-<button class="w-full bg-primary-container text-on-primary-container hover:bg-primary-container/80 font-bold py-4 rounded-full transition-all flex items-center justify-center gap-2 active:scale-95 group mb-4" id="gen-btn" onclick="generateQR()">
-<span class="material-symbols-outlined group-hover:rotate-12 transition-transform">bolt</span>
-<span>Generate Payment QR</span>
-</button>
-<button class="w-full bg-transparent border-2 border-outline-variant/30 text-on-surface-variant font-bold py-4 rounded-full transition-all flex items-center justify-center gap-2 opacity-30 cursor-not-allowed" disabled="" id="dl-btn">
-<span class="material-symbols-outlined">download</span>
-<span>Download QR</span>
-</button>
-<div class="mt-6 flex items-center gap-2 text-on-surface-variant/50">
-<span class="material-symbols-outlined text-[16px]">info</span>
-<span class="text-[11px] uppercase tracking-[0.1em] font-bold">Dynamic QR valid for 24h</span>
+</div></div>
+<!-- Empty State (Hidden by default, used for logic demonstration) -->
+<div class="hidden flex flex-col items-center justify-center pt-20 text-center px-10" id="empty-state">
+<div class="w-64 h-64 mb-8 relative">
+<img alt="Empty Notifications" class="w-full h-full object-cover rounded-xl" data-alt="A soft-focus, minimalist still life featuring a single empty ceramic plate with a few delicate cake crumbs and a silver fork resting beside it. The background is a creamy off-white marble surface with warm, afternoon sunlight casting long, gentle shadows. The overall aesthetic is clean, sophisticated, and editorial, perfectly matching a premium bakery brand's palette of creams and subtle cocoa tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbp39PC8Q90k6gM808HIQLX120M6_xC-I3x6F0i5T2CHhxBf5om3kuSPNaq1irui3uNsTWJo5F11oTqQH3EhC5s089SQty-tgmFoU4Ph9hz_Yzd6YPrE36xmnLtyy_CWTEQStCpNOqZNWiaACBjwBv2vENXtTOQbJF47lGb4hePfVPO5e6j9vBuJnoTsD5w3rCm_0fe5XmitleBi-1tKXG_q-vFLYjbxcvOrEedgzyTIkpzCMZCUYBPgVq9Sx4ALlbVgwnvYj-jYtl"/>
+<div class="absolute inset-0 bg-primary/10 rounded-xl backdrop-blur-[2px] flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-6xl opacity-40" style="font-variation-settings: 'FILL' 1;">notifications_off</span>
 </div>
-</section>
 </div>
+<h2 class="font-display text-headline-md font-bold text-primary mb-2">No new updates</h2>
+<p class="text-on-surface-variant text-body-lg max-w-xs mx-auto">Your notification box is as clean as a fresh batch of sugar cookies. We'll let you know when something sweet happens.</p>
+<button class="mt-8 bg-primary text-on-primary px-8 py-3 rounded-full font-label text-label-md font-bold hover:shadow-lg transition-all active:scale-95">
+                Go to Shop
+            </button>
 </div>
 </main>
-<!-- BottomNavBar -->
-<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl flex justify-around items-center px-4 pb-4 pt-2 shadow-[0px_-24px_48px_rgba(117,88,78,0.08)]">
-<a class="flex flex-col items-center justify-center text-on-surface-variant px-5 py-1.5 hover:bg-secondary-container/30 transition-all active:scale-90 transition-transform" href="#">
-<span class="material-symbols-outlined">receipt_long</span>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-surface-container-low/95 dark:bg-surface-dim/95 backdrop-blur-md rounded-t-xl shadow-[0px_-10px_40px_rgba(117,88,78,0.06)] z-50">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline p-2 hover:text-primary dark:hover:text-primary-fixed transition-colors active:scale-90 transition-transform duration-300 ease-out" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="home_sweet_home">home</span>
+<span class="font-label text-label-md">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline p-2 hover:text-primary dark:hover:text-primary-fixed transition-colors active:scale-90 transition-transform duration-300 ease-out" href="#"><span class="material-symbols-outlined mb-1" data-icon="inventory_2">inventory_2</span><span class="font-label text-label-md">Inventory</span></a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline p-2 hover:text-primary dark:hover:text-primary-fixed transition-colors active:scale-90 transition-transform duration-300 ease-out" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="receipt_long">receipt_long</span>
 <span class="font-label text-label-md">Orders</span>
 </a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant px-5 py-1.5 hover:bg-secondary-container/30 transition-all active:scale-90 transition-transform" href="#">
-<span class="material-symbols-outlined">bakery_dining</span>
-<span class="font-label text-label-md">Products</span>
-</a>
-<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-5 py-1.5 hover:bg-secondary-container/30 transition-all active:scale-90 transition-transform" href="#">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">payments</span>
-<span class="font-label text-label-md">Payments</span>
-</a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant px-5 py-1.5 hover:bg-secondary-container/30 transition-all active:scale-90 transition-transform" href="#">
-<span class="material-symbols-outlined">settings</span>
-<span class="font-label text-label-md">Settings</span>
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-full px-6 py-2 active:scale-90 transition-transform duration-300 ease-out" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="person" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label text-label-md">Profile</span>
 </a>
 </nav>
 <script>
-        function generateQR() {
-            const loader = document.getElementById('qr-loader');
-            const placeholder = document.getElementById('qr-placeholder');
-            const qrImage = document.getElementById('qr-image');
-            const genBtn = document.getElementById('gen-btn');
-            const dlBtn = document.getElementById('dl-btn');
-
-            // Show loader
-            loader.classList.remove('opacity-0');
-            genBtn.classList.add('opacity-50', 'pointer-events-none');
-
-            setTimeout(() => {
-                // Hide placeholder & loader
-                placeholder.style.display = 'none';
-                loader.classList.add('opacity-0');
-                
-                // Show QR with animation
-                qrImage.classList.remove('opacity-0', 'scale-95');
-                qrImage.classList.add('opacity-100', 'scale-100');
-                
-                // Enable download
-                dlBtn.classList.remove('opacity-30', 'cursor-not-allowed');
-                dlBtn.classList.add('hover:bg-surface-container-low', 'border-primary/40', 'text-primary');
-                dlBtn.disabled = false;
-                
-                // Update Gen Button
-                genBtn.innerHTML = '<span class="material-symbols-outlined">refresh</span><span>Refresh QR</span>';
-                genBtn.classList.remove('opacity-50', 'pointer-events-none');
-            }, 1200);
+        // Simple logic to toggle empty state for demonstration
+        function toggleEmptyState() {
+            const container = document.getElementById('notification-container');
+            const empty = document.getElementById('empty-state');
+            
+            if (container.classList.contains('hidden')) {
+                container.classList.remove('hidden');
+                empty.classList.add('hidden');
+            } else {
+                container.classList.add('hidden');
+                empty.classList.remove('hidden');
+            }
         }
+
+        // Add swipe-to-dismiss visual cue or logic here if needed for interactive feel
+        document.querySelectorAll('#notification-container > div').forEach(card => {
+            card.addEventListener('click', () => {
+                card.style.opacity = '0.5';
+                setTimeout(() => card.style.opacity = '1', 300);
+            });
+        });
     </script>
 </body></html>

@@ -9,6 +9,8 @@ import Securitypage from "./src/pages/Securitypage"
 import CustomerDirectorypage from "./src/pages/CustomerDirectorypage"
 // import Addnewcakepage from "./src/pages/Addnewcakepage"
 import Ordertrackingpage from "./src/pages/Ordertrackingpage"
+import Paymentgatwaypage from "./src/pages/Paymentgatwaypage"
+import Notificationpage from "./src/pages/Notificationpage"
 import Addnewcakepage from "./src/pages/Addnewcakepage"
 import Profilepage from "./src/pages/Profilepage"
 import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
@@ -43,7 +45,9 @@ const Stackscreens = () => {
       <Stack.Screen name='Signup' component={Signuppage} />
       <Stack.Screen name='Login' component={Loginpage} />
       <Stack.Screen name='TabScreens' component={TabScreens} />
-      <Stack.Screen name='Securityscreen' component={Securitypage}/>
+      <Stack.Screen name='Securityscreen' component={Securitypage} />
+      <Stack.Screen name='Paymentadmin' component={Paymentgatwaypage} />
+      <Stack.Screen name='Notificationpage' component={Notificationpage} />
     </Stack.Navigator>
   )
 }

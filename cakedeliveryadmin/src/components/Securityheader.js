@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native"
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from "@react-navigation/native";
 
-const Securityheader = () => {
+const Securityheader = ({title}) => {
     const navigation = useNavigation()
     return (
         <View style={styles.Securityheadercontainer} >
@@ -10,7 +10,7 @@ const Securityheader = () => {
                 <TouchableOpacity onPress={()=>navigation.goBack()} >
                     <MaterialIcons name="arrow-back-ios" color="#75584e" size={26} />
                 </TouchableOpacity>
-                <Text style={styles.securityheadertext} >Privacy & Security</Text>
+                <Text style={styles.securityheadertext} >{title}</Text>
             </View>
         </View>
     )

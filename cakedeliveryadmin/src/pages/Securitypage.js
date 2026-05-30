@@ -9,7 +9,7 @@ const Securitypage = () => {
     return (
         <SafeAreaView style={styles.securitypage} >
             <StatusBar backgroundColor="#fff9e6cc" barStyle={"dark-content"} />
-            <Securityheader />
+            <Securityheader title={"Privacy & Security"} />
             <ScrollView vertical contentContainerStyle={{ paddingHorizontal: 24, paddingVertical: 20 }} >
                 <ImageBackground
                     source={{

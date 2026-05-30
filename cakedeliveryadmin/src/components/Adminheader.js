@@ -11,7 +11,7 @@ const Adminheader = () => {
                 The Patisserie
             </Text>
             <View style={headerstyle.headersubheading} >
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>naviagtion.navigate("Notificationpage")} >
                     <Ionicons name="notifications" color="#7B5A4E" size={24} />
                 </TouchableOpacity>
 
