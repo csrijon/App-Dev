@@ -79,14 +79,15 @@ const styles = StyleSheet.create({
         width: "100%",
         backgroundColor: "#FFFFFF",
         borderRadius: 35,
-        padding: 22,
+        paddingVertical:22,
+        paddingHorizontal:10,
         alignSelf: "center",
         marginTop: 30,
     },
 
     header: {
         flexDirection: "row",
-        justifyContent: "space-between",
+        justifyContent: "space-evenly",
         alignItems: "center",
     },
 
@@ -103,8 +104,9 @@ const styles = StyleSheet.create({
     },
 
     badge: {
+        // flex:1,
         backgroundColor: "#F5F1EF",
-        paddingHorizontal: 16,
+        paddingHorizontal: 5,
         paddingVertical: 8,
         borderRadius: 20,
     },
@@ -126,7 +128,7 @@ const styles = StyleSheet.create({
     },
 
     bar: {
-        width: 28,
+        width: 20,
         borderRadius: 20,
     },
 

@@ -1,338 +1,264 @@
 <!DOCTYPE html>
 
-<html class="light" lang="en">
-
-<head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport" />
-  <title>Profile | The Pâtisserie</title>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap"
-    rel="stylesheet" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-    rel="stylesheet" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-    rel="stylesheet" />
-  <script id="tailwind-config">
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          "colors": {
-            "primary-fixed": "#f6cfc2",
-            "surface-container-highest": "#eae3bb",
-            "surface-container-high": "#f0e9c5",
-            "error-dim": "#67040d",
-            "surface-variant": "#eae3bb",
-            "on-primary": "#fff7f5",
-            "primary": "#75584e",
-            "secondary-fixed-dim": "#e6ced6",
-            "on-primary-fixed-variant": "#6a4e44",
-            "primary-dim": "#684d43",
-            "on-tertiary": "#fff7f7",
-            "on-secondary-fixed-variant": "#68575e",
-            "on-error": "#fff7f6",
-            "primary-container": "#f6cfc2",
-            "on-secondary-fixed": "#4b3b41",
-            "tertiary-container": "#f8bbd0",
-            "on-tertiary-fixed-variant": "#6c3f51",
-            "surface-container-low": "#faf4d6",
-            "on-tertiary-fixed": "#4b2334",
-            "on-background": "#363317",
-            "surface-container": "#f5efcd",
-            "on-primary-container": "#5f453b",
-            "on-secondary": "#fff7f8",
-            "error-container": "#fa746f",
-            "primary-fixed-dim": "#e7c1b4",
-            "on-primary-fixed": "#4b3229",
-            "tertiary-fixed": "#f8bbd0",
-            "tertiary-dim": "#734557",
-            "tertiary-fixed-dim": "#e9aec3",
-            "on-secondary-container": "#5e4d54",
-            "outline-variant": "#b9b38d",
-            "surface-dim": "#e2dbb3",
-            "tertiary": "#815163",
-            "background": "#fff9e6",
-            "on-error-container": "#6e0a12",
-            "inverse-primary": "#f6cfc2",
-            "surface-container-lowest": "#ffffff",
-            "on-surface": "#363317",
-            "surface": "#fff9e6",
-            "outline": "#807c59",
-            "on-tertiary-container": "#623648",
-            "secondary": "#6c5a61",
-            "secondary-container": "#f4dce4",
-            "error": "#a83836",
-            "secondary-fixed": "#f4dce4",
-            "surface-tint": "#75584e",
-            "secondary-dim": "#5f4f55",
-            "surface-bright": "#fff9e6",
-            "inverse-on-surface": "#a29d88",
-            "on-surface-variant": "#646040",
-            "inverse-surface": "#100e03"
-          },
-          "borderRadius": {
-            "DEFAULT": "1rem",
-            "lg": "2rem",
-            "xl": "3rem",
-            "full": "9999px"
-          },
-          "fontFamily": {
-            "headline": ["Plus Jakarta Sans"],
-            "display": ["Plus Jakarta Sans"],
-            "body": ["Plus Jakarta Sans"],
-            "label": ["Plus Jakarta Sans"]
-          }
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Baker Admin Panel - Payment Methods</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#faf4d6",
+                        "on-primary-fixed": "#4b3229",
+                        "tertiary-container": "#f8bbd0",
+                        "on-secondary": "#fff7f8",
+                        "secondary-container": "#f4dce4",
+                        "surface-variant": "#eae3bb",
+                        "surface-tint": "#75584e",
+                        "on-secondary-fixed-variant": "#68575e",
+                        "tertiary": "#815163",
+                        "on-error": "#fff7f6",
+                        "secondary-fixed-dim": "#e6ced6",
+                        "error": "#a83836",
+                        "on-tertiary-fixed": "#4b2334",
+                        "on-primary-container": "#5f453b",
+                        "surface-container-highest": "#eae3bb",
+                        "on-primary-fixed-variant": "#6a4e44",
+                        "primary-container": "#f6cfc2",
+                        "surface-container-lowest": "#ffffff",
+                        "error-container": "#fa746f",
+                        "primary": "#75584e",
+                        "tertiary-fixed-dim": "#e9aec3",
+                        "on-secondary-fixed": "#4b3b41",
+                        "surface-dim": "#e2dbb3",
+                        "primary-dim": "#684d43",
+                        "primary-fixed": "#f6cfc2",
+                        "secondary-dim": "#5f4f55",
+                        "inverse-primary": "#f6cfc2",
+                        "on-background": "#363317",
+                        "error-dim": "#67040d",
+                        "on-tertiary-fixed-variant": "#6c3f51",
+                        "on-surface": "#363317",
+                        "outline-variant": "#b9b38d",
+                        "surface-container-high": "#f0e9c5",
+                        "surface-container": "#f5efcd",
+                        "background": "#fff9e6",
+                        "secondary": "#6c5a61",
+                        "surface": "#fff9e6",
+                        "inverse-surface": "#100e03",
+                        "on-secondary-container": "#5e4d54",
+                        "on-tertiary-container": "#623648",
+                        "on-primary": "#fff7f5",
+                        "primary-fixed-dim": "#e7c1b4",
+                        "on-surface-variant": "#646040",
+                        "outline": "#807c59",
+                        "on-tertiary": "#fff7f7",
+                        "secondary-fixed": "#f4dce4",
+                        "inverse-on-surface": "#a29d88",
+                        "tertiary-fixed": "#f8bbd0",
+                        "surface-bright": "#fff9e6",
+                        "on-error-container": "#6e0a12",
+                        "tertiary-dim": "#734557"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Plus Jakarta Sans"],
+                        "display": ["Plus Jakarta Sans"],
+                        "body": ["Plus Jakarta Sans"],
+                        "label": ["Plus Jakarta Sans"]
+                    }
+                }
+            }
         }
-      }
-    }
-  </script>
-  <style>
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: #fff9e6;
-      /* surface */
-      color: #363317;
-      /* on-surface */
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-      display: inline-block;
-      line-height: 1;
-    }
-
-    .glass-header {
-      background: rgba(255, 249, 230, 0.8);
-      backdrop-filter: blur(20px);
-    }
-
-    .custom-shadow {
-      box-shadow: 0px 24px 48px rgba(117, 88, 78, 0.08);
-    }
-
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-  </style>
-  <style>
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass-header { backdrop-filter: blur(20px); }
+        .artisanal-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .artisanal-card:hover { transform: translateY(-4px); }
+        .qr-placeholder-pattern {
+            background-color: #faf4d6;
+            background-image: radial-gradient(#b9b38d 0.5px, transparent 0.5px);
+            background-size: 10px 10px;
+        }
+    </style>
+<style>
     body {
       min-height: max(884px, 100dvh);
     }
   </style>
-</head>
+  </head>
+<body class="bg-surface text-on-surface selection:bg-primary-container min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl flex justify-between items-center px-6 h-16 w-full">
+<div class="flex items-center gap-4">
+<button class="active:scale-95 transition-transform hover:bg-primary-container/20 p-2 rounded-full">
+<span class="material-symbols-outlined text-primary">menu</span>
+</button>
+<h1 class="font-headline font-bold text-primary text-headline-md tracking-tight">Baker Admin Panel</h1>
+</div>
+<div class="flex items-center gap-3">
+<span class="hidden md:block font-label text-label-md text-on-surface-variant">Welcome back, Baker</span>
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden border-2 border-primary-fixed">
+<img alt="Baker Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMpaUnDAjz7Ro2FeLAYUEqjyeYtoAt85Dt6rDvFpLjakef_Y8YgveNLx2iU9uQaAmnr7YuKUUJM1V-qKqvpMwq576ZBbXKQ208GRznTekn_32H6LaQKcnUU320f8a29od1rqp01wmhYxeQFQvk3Ew3OQfbfpszyHqJVSSFMqFGdV9JyymXJ0KC21aUg3DSvTw1Cvdiis8qm4Ud_KLdeaMd_5X4RsYHaJmKa977-TZloCjo7EY2MVwq45vLCzhPjC4qKpKO3PBa7SR3"/>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="pt-24 px-6 max-w-4xl mx-auto space-y-8">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<nav class="flex gap-2 mb-2">
+<span class="text-on-surface-variant font-label text-label-md">Dashboard</span>
+<span class="text-on-surface-variant/40 font-label text-label-md">/</span>
+<span class="text-primary font-bold font-label text-label-md">Payment Methods</span>
+</nav>
+<h2 class="font-display text-4xl font-extrabold tracking-tight text-primary">Payment Methods</h2>
+</div>
+<div class="flex items-center gap-2 px-4 py-2 bg-secondary-container text-on-secondary-container rounded-full w-fit">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-label text-label-md font-bold">Active</span>
+</div>
+</div>
+<!-- Asymmetric Layout Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Left Column: UPI Management -->
+<div class="md:col-span-7 space-y-6">
+<section class="bg-surface-container-lowest p-8 rounded-xl artisanal-card shadow-[0px_24px_48px_rgba(117,88,78,0.04)]">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">account_balance_wallet</span>
+</div>
+<h3 class="font-headline text-xl font-bold text-primary">UPI Management</h3>
+</div>
+<div class="space-y-4">
+<label class="block">
+<span class="font-label text-label-md text-on-surface-variant ml-1 mb-2 block uppercase tracking-wider">Your Virtual Payment Address</span>
+<div class="relative">
+<input class="w-full bg-surface-container-highest border-none focus:ring-2 focus:ring-primary/20 rounded-lg py-4 px-5 font-body text-on-surface placeholder:text-on-surface-variant/40" placeholder="baker@upi" type="text" value="artisanal.bakes@okhdfc"/>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 text-primary">
+<span class="material-symbols-outlined">edit</span>
+</div>
+</div>
+</label>
+<p class="font-body text-sm text-on-surface-variant/70 leading-relaxed">
+                            This VPA will be used to generate your dynamic QR codes and accept direct bank transfers from customers.
+                        </p>
+</div>
+<div class="mt-8 pt-6 border-t border-outline-variant/15 flex justify-end">
+<button class="bg-primary text-on-primary px-8 py-3 rounded-full font-label font-bold hover:bg-primary-dim active:scale-95 transition-all shadow-lg shadow-primary/20">
+                            Save Changes
+                        </button>
+</div>
+</section>
+<section class="bg-surface-container-low p-8 rounded-xl border border-outline-variant/10">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
+<div>
+<h4 class="font-headline font-bold text-on-surface text-lg">Security Note</h4>
+<p class="font-body text-sm text-on-surface-variant mt-1">
+                                All your payment data is encrypted using 256-bit SSL protocols. We do not store your bank credentials. Transactions are processed directly through secure NPCI-approved UPI gateways.
+                            </p>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: QR Generation -->
+<div class="md:col-span-5">
+<section class="bg-surface-container-highest p-8 rounded-xl flex flex-col items-center text-center sticky top-24">
+<h3 class="font-headline text-xl font-bold text-primary mb-6">Payment QR</h3>
+<div class="w-full aspect-square max-w-[280px] bg-surface-container-lowest rounded-xl mb-8 flex items-center justify-center relative overflow-hidden group" id="qr-container">
+<!-- QR Placeholder -->
+<div class="qr-placeholder-pattern absolute inset-0 flex flex-col items-center justify-center p-8" id="qr-placeholder">
+<span class="material-symbols-outlined text-6xl text-outline-variant mb-4 opacity-50">qr_code_2</span>
+<p class="text-on-surface-variant text-sm font-medium">Ready to generate</p>
+</div>
+<!-- Generated QR Image (Hidden initially) -->
+<img class="w-full h-full object-contain p-6 opacity-0 scale-95 transition-all duration-500" data-alt="A clean, professional UPI QR code centered on a cream-colored minimalist digital card. The QR code is surrounded by subtle branding for 'The Artisanal Pâtisserie' with elegant typography in cocoa brown. The overall aesthetic is bright, high-end, and secure, with soft ambient shadows and no harsh borders." id="qr-image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPUDvqvfCDdUnb96BnAaQhASDBsvJzGHvZRUzQEXzLUDpIeYnoHNxIqkPiLZ0o3NTZEtUzzODkee3FR8OE10-fqFDQ-45gOs6ViBjcwJ0zcIA5BhedtAnxffDpp29N-8T5kKs33kZP9M0fqlRSv4s65ysVg7I_XIkRMiGCFE0pK_lusF5EdU5eeIyvQ5Kd7lcLZf5-Y4bTREYQl0OHjTLyCxQDObDnb8atqe3jobdEbQMhe78tINJpJhP14H5MWF3I4r3Yp4DSQ4_y"/>
+<div class="absolute inset-0 bg-surface-container-highest/80 flex items-center justify-center opacity-0 pointer-events-none transition-opacity" id="qr-loader">
+<div class="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+</div>
+</div>
+<button class="w-full bg-primary-container text-on-primary-container hover:bg-primary-container/80 font-bold py-4 rounded-full transition-all flex items-center justify-center gap-2 active:scale-95 group mb-4" id="gen-btn" onclick="generateQR()">
+<span class="material-symbols-outlined group-hover:rotate-12 transition-transform">bolt</span>
+<span>Generate Payment QR</span>
+</button>
+<button class="w-full bg-transparent border-2 border-outline-variant/30 text-on-surface-variant font-bold py-4 rounded-full transition-all flex items-center justify-center gap-2 opacity-30 cursor-not-allowed" disabled="" id="dl-btn">
+<span class="material-symbols-outlined">download</span>
+<span>Download QR</span>
+</button>
+<div class="mt-6 flex items-center gap-2 text-on-surface-variant/50">
+<span class="material-symbols-outlined text-[16px]">info</span>
+<span class="text-[11px] uppercase tracking-[0.1em] font-bold">Dynamic QR valid for 24h</span>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl flex justify-around items-center px-4 pb-4 pt-2 shadow-[0px_-24px_48px_rgba(117,88,78,0.08)]">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-5 py-1.5 hover:bg-secondary-container/30 transition-all active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-label text-label-md">Orders</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-5 py-1.5 hover:bg-secondary-container/30 transition-all active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">bakery_dining</span>
+<span class="font-label text-label-md">Products</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-5 py-1.5 hover:bg-secondary-container/30 transition-all active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">payments</span>
+<span class="font-label text-label-md">Payments</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-5 py-1.5 hover:bg-secondary-container/30 transition-all active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label text-label-md">Settings</span>
+</a>
+</nav>
+<script>
+        function generateQR() {
+            const loader = document.getElementById('qr-loader');
+            const placeholder = document.getElementById('qr-placeholder');
+            const qrImage = document.getElementById('qr-image');
+            const genBtn = document.getElementById('gen-btn');
+            const dlBtn = document.getElementById('dl-btn');
 
-<body class="min-h-screen pb-32">
-  <!-- Top App Bar -->
-  <header
-    class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-lg shadow-[0px_10px_30px_rgba(117,88,78,0.04)] h-20 flex items-center justify-between px-6">
-    <div class="flex items-center gap-4">
-      <button class="text-primary active:scale-95 transition-transform duration-200">
-        <span class="material-symbols-outlined text-[28px]">menu</span>
-      </button>
-      <h1 class="font-display text-[22px] font-bold text-primary tracking-tight">The Pâtisserie</h1>
-    </div>
-    <div class="flex items-center gap-2">
-      <button
-        class="text-primary active:scale-95 transition-transform duration-200 p-2 bg-primary-container/30 rounded-full">
-        <span class="material-symbols-outlined">shopping_bag</span>
-      </button>
-    </div>
-  </header>
-  <main class="pt-28 px-6 max-w-2xl mx-auto space-y-10">
-    <!-- Profile Header Section -->
-    <section class="flex flex-col items-center text-center space-y-4">
-      <div class="relative group">
-        <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-surface-container-lowest custom-shadow">
-          <img class="w-full h-full object-cover"
-            data-alt="A high-end editorial portrait of a sophisticated woman with elegant styling, set against a warm, cream-colored studio background. The lighting is soft and golden, reflecting the premium artisanal aesthetic of a luxury pâtisserie brand. The color palette features rich browns and soft tans to align with the brand identity."
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7EBUotm1gqPoz57p_yGf5zHDFd0ScOpuX-BnFDZPx8W-F9EZmS1dlb965w1uiwhh-OoOXwiENY7Bo1Qsd4zq0N13zpfwYswL-lXfaeV-0Rhj8SebMHE-BAGpEjrPPOxnDWO691TdNWE2KOzHwcAUAXvRUjAtvRKHYgwpo0wYRisHgeZ8Bj76UFul7ssXFx-gz3Et7FOkyEIs2gPT84plRahLwFEi3hVLzV5oRHbNswf9zqEIx5_ubXAzoHF4gp9kRnyI1kM6swfB7" />
-        </div>
-        <button
-          class="absolute bottom-1 right-1 bg-primary text-on-primary p-2 rounded-full shadow-lg hover:scale-105 active:scale-90 transition-all">
-          <span class="material-symbols-outlined text-sm">edit</span>
-        </button>
-      </div>
-      <div class="space-y-1">
-        <h2 class="text-display font-bold text-[28px] tracking-tight text-on-surface">Eloise Beaumont</h2>
-        <div
-          class="inline-flex items-center gap-1.5 px-4 py-1 bg-primary-container text-on-primary-container rounded-full text-[13px] font-semibold tracking-wide">
-          <span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">stars</span>
-          GOLD MEMBER
-        </div>
-      </div>
-    </section>
-    <!-- Personal Information Section -->
-    <section class="space-y-6">
-      <div class="flex items-center justify-between">
-        <h3 class="font-headline font-bold text-lg text-primary">Personal Details</h3>
-        <button class="text-sm font-semibold text-primary/70 hover:text-primary transition-colors">Edit All</button>
-      </div>
-      <div class="bg-surface-container-low rounded-xl p-6 space-y-6">
-        <!-- Field -->
-        <div class="space-y-2">
-          <label class="text-label-md font-semibold text-on-surface-variant ml-1">Full Name</label>
-          <div
-            class="flex items-center bg-surface-container-highest rounded-lg px-4 py-3 group focus-within:ring-2 ring-primary/20 transition-all">
-            <span class="material-symbols-outlined text-on-surface-variant mr-3">person</span>
-            <input class="bg-transparent border-none p-0 focus:ring-0 text-on-surface w-full font-medium" type="text"
-              value="Eloise Beaumont" />
-          </div>
-        </div>
-        <!-- Field -->
-        <div class="space-y-2">
-          <label class="text-label-md font-semibold text-on-surface-variant ml-1">Email Address</label>
-          <div
-            class="flex items-center bg-surface-container-highest rounded-lg px-4 py-3 group focus-within:ring-2 ring-primary/20 transition-all">
-            <span class="material-symbols-outlined text-on-surface-variant mr-3">mail</span>
-            <input class="bg-transparent border-none p-0 focus:ring-0 text-on-surface w-full font-medium" type="email"
-              value="eloise.beaumont@luxury.com" />
-          </div>
-        </div>
-        <!-- Field -->
-        <div class="space-y-2">
-          <label class="text-label-md font-semibold text-on-surface-variant ml-1">Phone Number</label>
-          <div
-            class="flex items-center bg-surface-container-highest rounded-lg px-4 py-3 group focus-within:ring-2 ring-primary/20 transition-all">
-            <span class="material-symbols-outlined text-on-surface-variant mr-3">call</span>
-            <input class="bg-transparent border-none p-0 focus:ring-0 text-on-surface w-full font-medium" type="tel"
-              value="+33 6 12 34 56 78" />
-          </div>
-        </div>
-        <!-- Field -->
-        <div class="space-y-2">
-          <label class="text-label-md font-semibold text-on-surface-variant ml-1">Default Delivery Address</label>
-          <div
-            class="flex items-start bg-surface-container-highest rounded-lg px-4 py-3 group focus-within:ring-2 ring-primary/20 transition-all">
-            <span class="material-symbols-outlined text-on-surface-variant mr-3 mt-1">location_on</span>
-            <textarea class="bg-transparent border-none p-0 focus:ring-0 text-on-surface w-full font-medium resize-none"
-              rows="2">12 Rue de la Paix, 75002 Paris, France</textarea>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- Account Settings -->
-    <section class="space-y-4">
-      <h3 class="font-headline font-bold text-lg text-primary ml-1">Account Settings</h3>
-      <div class="space-y-3">
-        <button
-          class="w-full flex items-center justify-between p-5 bg-surface-container-lowest rounded-xl hover:bg-white transition-colors custom-shadow group">
-          <div class="flex items-center gap-4">
-            <div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-secondary">
-              <span class="material-symbols-outlined">notifications</span>
-            </div>
-            <div class="text-left">
-              <span class="block font-bold text-on-surface">Notifications</span>
-              <span class="text-xs text-on-surface-variant">Order updates and offers</span>
-            </div>
-          </div>
-          <span
-            class="material-symbols-outlined text-outline-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
-        </button>
-        <button
-          class="w-full flex items-center justify-between p-5 bg-surface-container-lowest rounded-xl hover:bg-white transition-colors custom-shadow group">
-          <div class="flex items-center gap-4">
-            <div class="w-10 h-10 rounded-full bg-tertiary-container flex items-center justify-center text-tertiary">
-              <span class="material-symbols-outlined">payments</span>
-            </div>
-            <div class="text-left">
-              <span class="block font-bold text-on-surface">Payment Methods</span>
-              <span class="text-xs text-on-surface-variant">Visa ending in •••• 4242</span>
-            </div>
-          </div>
-          <span
-            class="material-symbols-outlined text-outline-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
-        </button>
-        <button
-          class="w-full flex items-center justify-between p-5 bg-surface-container-lowest rounded-xl hover:bg-white transition-colors custom-shadow group">
-          <div class="flex items-center gap-4">
-            <div class="w-10 h-10 rounded-full bg-primary-container/40 flex items-center justify-center text-primary">
-              <span class="material-symbols-outlined">shield</span>
-            </div>
-            <div class="text-left">
-              <span class="block font-bold text-on-surface">Privacy &amp; Security</span>
-              <span class="text-xs text-on-surface-variant">Manage your data</span>
-            </div>
-          </div>
-          <span
-            class="material-symbols-outlined text-outline-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
-        </button>
-      </div>
-    </section>
-    <!-- Account Actions -->
-    <section class="space-y-4">
-      <h3 class="font-headline font-bold text-lg text-primary ml-1">Account Actions</h3>
-      <div class="grid grid-cols-2 gap-4">
-        <button
-          class="p-4 bg-surface-container-low border border-outline-variant/10 rounded-xl flex flex-col items-center gap-2 hover:bg-surface-container transition-colors">
-          <span class="material-symbols-outlined text-primary">key</span>
-          <span class="text-sm font-bold text-on-surface-variant">Change Password</span>
-        </button>
-        <button
-          class="p-4 bg-surface-container-low border border-outline-variant/10 rounded-xl flex flex-col items-center gap-2 hover:bg-surface-container transition-colors">
-          <span class="material-symbols-outlined text-primary">group_add</span>
-          <span class="text-sm font-bold text-on-surface-variant">Refer a Friend</span>
-        </button>
-      </div>
-      <button
-        class="w-full mt-6 py-4 rounded-full border-2 border-error/20 text-error font-bold hover:bg-error/5 transition-colors flex items-center justify-center gap-2 active:scale-[0.98]">
-        <span class="material-symbols-outlined text-xl">logout</span>
-        Logout
-      </button>
-    </section>
-    <!-- Promo Banner -->
-    <section class="relative h-48 rounded-xl overflow-hidden custom-shadow">
-      <div
-        class="absolute inset-0 bg-gradient-to-r from-primary/80 to-transparent z-10 p-8 flex flex-col justify-center">
-        <span class="text-on-primary text-xs font-bold tracking-[0.2em] mb-2 uppercase">Exclusive Gift</span>
-        <h4 class="text-on-primary font-bold text-2xl leading-tight max-w-[200px]">Send a box of joy to a friend.</h4>
-        <button
-          class="mt-4 bg-on-primary text-primary w-fit px-6 py-2 rounded-full font-bold text-sm hover:opacity-90 active:scale-95 transition-all">Get
-          Code</button>
-      </div>
-      <img class="absolute inset-0 w-full h-full object-cover"
-        data-alt="Close-up of a beautifully packaged artisanal cake box with silk ribbons, featuring elegant pastry details. The scene is bathed in warm, soft sunlight, highlighting the textures of high-quality paper and delicate confections. The color theme is cream, rose, and cocoa brown."
-        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTa_agmypaPFp70JvxPtGymVvbxNwUBonGWhILBZC1Am6LUwOqtM-PlsEWMNdJQxSTSUBqtn59ONWP92K0az1lTuRw4eP0APTiZOESXACAP8ri5iBxYfigWtbx7duawJnR3DS3980_ExlpECq4rzYqAdqGsFSmBT04IgkzK0SdfpFVo8MhCGW696zz9nTel4CANPvDX6CJaazzYIZVFD4l7d4yGCSxK4DsjHV5o0rOLgXarpk5ZQ8ASb3bY3SpdaExuY6pahZeIB3t" />
-    </section>
-  </main>
-  <!-- Navigation Shell -->
-  <nav
-    class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-surface-container-low/95 dark:bg-surface-dim/95 backdrop-blur-md shadow-[0px_-10px_40px_rgba(117,88,78,0.06)] rounded-t-xl z-50">
-    <a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:text-primary transition-colors active:scale-90 duration-300"
-      href="#">
-      <span class="material-symbols-outlined">home</span>
-      <span class="font-label text-label-md mt-1">Home</span>
-    </a>
-    <a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:text-primary transition-colors active:scale-90 duration-300"
-      href="#">
-      <span class="material-symbols-outlined">storefront</span>
-      <span class="font-label text-label-md mt-1">Shop</span>
-    </a>
-    <a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:text-primary transition-colors active:scale-90 duration-300"
-      href="#">
-      <span class="material-symbols-outlined">receipt_long</span>
-      <span class="font-label text-label-md mt-1">Orders</span>
-    </a>
-    <a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-6 py-2 active:scale-90 transition-transform duration-300 ease-out"
-      href="#">
-      <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
-      <span class="font-label text-label-md mt-0.5">Profile</span>
-    </a>
-  </nav>
-  <script>
-    // Simple micro-interaction for input focus
-    document.querySelectorAll('input, textarea').forEach(input => {
-      input.addEventListener('focus', () => {
-        input.parentElement.classList.add('shadow-md');
-      });
-      input.addEventListener('blur', () => {
-        input.parentElement.classList.remove('shadow-md');
-      });
-    });
-  </script>
-</body>
+            // Show loader
+            loader.classList.remove('opacity-0');
+            genBtn.classList.add('opacity-50', 'pointer-events-none');
 
-</html>
+            setTimeout(() => {
+                // Hide placeholder & loader
+                placeholder.style.display = 'none';
+                loader.classList.add('opacity-0');
+                
+                // Show QR with animation
+                qrImage.classList.remove('opacity-0', 'scale-95');
+                qrImage.classList.add('opacity-100', 'scale-100');
+                
+                // Enable download
+                dlBtn.classList.remove('opacity-30', 'cursor-not-allowed');
+                dlBtn.classList.add('hover:bg-surface-container-low', 'border-primary/40', 'text-primary');
+                dlBtn.disabled = false;
+                
+                // Update Gen Button
+                genBtn.innerHTML = '<span class="material-symbols-outlined">refresh</span><span>Refresh QR</span>';
+                genBtn.classList.remove('opacity-50', 'pointer-events-none');
+            }, 1200);
+        }
+    </script>
+</body></html>

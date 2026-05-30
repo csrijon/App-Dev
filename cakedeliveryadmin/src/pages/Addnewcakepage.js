@@ -10,13 +10,21 @@ import {
 import BakeryHeader from "../components/BakeryHeader"
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import { launchImageLibrary } from "react-native-image-picker";
 
 
 const Addnewcakepage = ({ navigation }) => {
 
     const [activeoffer, setnotactiveoffer] = useState(false)
     // const [imageuri,setimageuri] = useState(null)
+
+    const selectImage = async ()=>{
+        const imageresult = await launchImageLibrary({
+            mediaType:"photo",
+            includeBase64:true
+        })
+        console.log(imageresult)
+    }
 
     return (
         <SafeAreaView style={styles.Addnewcakecontainer} >
@@ -41,7 +49,7 @@ const Addnewcakepage = ({ navigation }) => {
 
                     {/* Upload Box */}
                   
-                        <TouchableOpacity style={styles.uploadBox}>
+                        <TouchableOpacity onPress={selectImage} style={styles.uploadBox}>
 
                             <View style={styles.iconCircle}>
                                 <MaterialIcons name="add-a-photo" color="#75584e" size={26} />

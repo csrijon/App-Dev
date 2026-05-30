@@ -1,12 +1,14 @@
 import QRCode from"qrcode"
 
+
 const qrgen = async (text)=>{
    try{
-   let qr= QRCode.create(text)
+   let qr= await QRCode.toDataURL(text)
    console.log(qr)
+   return qr
    }catch{
     console.log("not generate")
    }
 }
 
-console.log(qrgen("iamsrijon"))
+qrgen("csrijon92@oksbi")

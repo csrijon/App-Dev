@@ -114,6 +114,7 @@ const Dashboardstyle = StyleSheet.create({
     },
     buttonsection: {
         flexDirection: "row",
+        flexWrap:"wrap",
         gap: 20,
         marginTop: 20,
         width: "100%"

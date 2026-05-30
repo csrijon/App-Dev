@@ -20,7 +20,7 @@ export default Dashboardbutton;
 
 const pastryButtonStyles = StyleSheet.create({
   outerShell: {
-    width: 170,
+    flex:1,
     height: 72,
     backgroundColor: "#F4F2F0",
     borderRadius: 32,

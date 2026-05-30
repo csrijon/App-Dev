@@ -5,7 +5,7 @@ import Adminheader from "../components/Adminheader"
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
-const Profilepage = () => {
+const Profilepage = ({navigation}) => {
 
     const [editabletext, seteditabletext] = useState(false)
 
@@ -49,7 +49,7 @@ const Profilepage = () => {
                     <View style={styles.personalDetailsHeader}>
                         <Text style={styles.personalDetailsHeading}>Personal Details</Text>
                         <TouchableOpacity onPress={() => seteditabletext(!editabletext)} >
-                            <Text style={styles.personalDetailsEdit}>{editabletext?"Save":"Edit"}</Text>
+                            <Text style={styles.personalDetailsEdit}>{editabletext ? "Save" : "Edit"}</Text>
                         </TouchableOpacity>
 
                     </View>
@@ -151,7 +151,7 @@ const Profilepage = () => {
                         <Ionicons name="chevron-forward" size={18} color="#A89572" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.frostPanel}>
+                    <TouchableOpacity onPress={()=>navigation.navigate("Securityscreen")} style={styles.frostPanel}>
                         <View style={styles.orbitZone}>
                             <View style={[styles.emblemNest, { backgroundColor: "#F7ECE7" }]}>
                                 <Ionicons name="shield-outline" size={20} color="#8B6B57" />
@@ -172,32 +172,7 @@ const Profilepage = () => {
                 <View style={styles.summitWrapper}>
                     <Text style={styles.crownTitle}>Account Actions</Text>
 
-                    <View style={styles.dualActionRow}>
-                        {/* Change Password */}
-                        <TouchableOpacity style={styles.actionCapsule}>
-                            <Ionicons
-                                name="key-outline"
-                                size={20}
-                                color="#6F6248"
-                            />
-                            <Text style={styles.actionCaption}>
-                                Change Password
-                            </Text>
-                        </TouchableOpacity>
-
-                        {/* Refer Friend */}
-                        <TouchableOpacity style={styles.actionCapsule}>
-                            <Ionicons
-                                name="person-add-outline"
-                                size={20}
-                                color="#6F6248"
-                            />
-                            <Text style={styles.actionCaption}>
-                                Refer a Friend
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-
+              
                     {/* Logout Button */}
                     <TouchableOpacity style={styles.exitPortal}>
                         <Ionicons
@@ -393,29 +368,6 @@ const styles = StyleSheet.create({
         fontWeight: "700",
         color: "#4A4030",
         marginBottom: 16,
-    },
-
-    dualActionRow: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginBottom: 14,
-    },
-
-    actionCapsule: {
-        width: "48%",
-        backgroundColor: "#EEE8D2",
-        borderRadius: 24,
-        alignItems: "center",
-        justifyContent: "center",
-        paddingVertical: 18,
-    },
-
-    actionCaption: {
-        marginTop: 8,
-        fontSize: 13,
-        fontWeight: "600",
-        color: "#4A4030",
-        textAlign: "center",
     },
 
     exitPortal: {

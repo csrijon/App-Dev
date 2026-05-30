@@ -5,6 +5,7 @@ import Signuppage from "./src/pages/Signuppage"
 import Dashboardpage from "./src/pages/Dashboardpage"
 import Catalogpage from "./src/pages/Catalogpage"
 import Ordermanagementpage from "./src/pages/Ordermanagementpage"
+import Securitypage from "./src/pages/Securitypage"
 import CustomerDirectorypage from "./src/pages/CustomerDirectorypage"
 // import Addnewcakepage from "./src/pages/Addnewcakepage"
 import Ordertrackingpage from "./src/pages/Ordertrackingpage"
@@ -42,6 +43,7 @@ const Stackscreens = () => {
       <Stack.Screen name='Signup' component={Signuppage} />
       <Stack.Screen name='Login' component={Loginpage} />
       <Stack.Screen name='TabScreens' component={TabScreens} />
+      <Stack.Screen name='Securityscreen' component={Securitypage}/>
     </Stack.Navigator>
   )
 }

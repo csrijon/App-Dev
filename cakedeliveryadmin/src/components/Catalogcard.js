@@ -16,7 +16,7 @@ const Catalogcard = ({ title, tag, price, image }) => {
   const [editlogo,seteditlogo] = useState(false)
 
   return (
-    <View style={styles.card}>
+    <View style={[styles.card,{opacity:toggleswitch?0.6:1}]}>
 
       {/* Cake Image */}
       <View style={styles.imageContainer}>
@@ -27,7 +27,7 @@ const Catalogcard = ({ title, tag, price, image }) => {
 
         {/* Tag */}
         <View style={styles.tag}>
-          <Text style={styles.tagText}>{tag}</Text>
+          <Text  style={styles.tagText}>{tag}</Text>
         </View>
       </View>
 
@@ -45,7 +45,7 @@ const Catalogcard = ({ title, tag, price, image }) => {
           <TouchableOpacity onPress={()=>settoggleswitch(!toggleswitch)} >
             <Fontisto name={toggleswitch?"toggle-off":"toggle-on"} color={toggleswitch?"#000":"#7a5b52"} size={38} />
           </TouchableOpacity>
-          <Text style={styles.activeText}>{toggleswitch?"DeActive":"Active"}</Text>
+          <Text style={styles.activeText}>{toggleswitch?"Inactive":"Active"}</Text>
         </View>
 
         {/* Icons */}
