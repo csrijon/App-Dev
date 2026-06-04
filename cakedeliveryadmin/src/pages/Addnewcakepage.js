@@ -17,11 +17,13 @@ const Addnewcakepage = ({ navigation }) => {
 
     const [activeoffer, setnotactiveoffer] = useState(false)
     // const [imageuri,setimageuri] = useState(null)
+    const [isAvailable, setIsAvailable] = useState(true);
+    const [isCouponActive, setIsCouponActive] = useState(true);
 
-    const selectImage = async ()=>{
+    const selectImage = async () => {
         const imageresult = await launchImageLibrary({
-            mediaType:"photo",
-            includeBase64:true
+            mediaType: "photo",
+            includeBase64: true
         })
         console.log(imageresult)
     }
@@ -48,24 +50,24 @@ const Addnewcakepage = ({ navigation }) => {
                     </Text>
 
                     {/* Upload Box */}
-                  
-                        <TouchableOpacity onPress={selectImage} style={styles.uploadBox}>
 
-                            <View style={styles.iconCircle}>
-                                <MaterialIcons name="add-a-photo" color="#75584e" size={26} />
-                            </View>
+                    <TouchableOpacity onPress={selectImage} style={styles.uploadBox}>
 
-                            <Text style={styles.uploadTitle}>
-                                Upload Hero Image
-                            </Text>
+                        <View style={styles.iconCircle}>
+                            <MaterialIcons name="add-a-photo" color="#75584e" size={26} />
+                        </View>
 
-                            <Text style={styles.uploadDescription}>
-                                Drop your high-resolution confectionery
-                                photography here. Minimum 1200px wide
-                                recommended.
-                            </Text>
+                        <Text style={styles.uploadTitle}>
+                            Upload Hero Image
+                        </Text>
 
-                        </TouchableOpacity>
+                        <Text style={styles.uploadDescription}>
+                            Drop your high-resolution confectionery
+                            photography here. Minimum 1200px wide
+                            recommended.
+                        </Text>
+
+                    </TouchableOpacity>
                     {/* Bottom Card */}
                     <View style={styles.previewCard}>
 
@@ -225,14 +227,14 @@ const Addnewcakepage = ({ navigation }) => {
 
                         </View>
 
-                        <TouchableOpacity>
-
-                            <Ionicons
-                                name="toggle"
+                        <TouchableOpacity
+                            onPress={() => setIsAvailable(!isAvailable)}
+                        >
+                            <MaterialIcons
+                                name={isAvailable ? "toggle-on" : "toggle-off"}
                                 color="#7B5A4E"
                                 size={52}
                             />
-
                         </TouchableOpacity>
 
                     </View>
@@ -298,13 +300,6 @@ const Addnewcakepage = ({ navigation }) => {
 
                     </View>
 
-                    {/* <TouchableOpacity style={styles.skipCouponButton}>
-
-                        <Text style={styles.skipCouponButtonText}>
-                            Continue Without Coupon
-                        </Text>
-
-                    </TouchableOpacity> */}
 
                 </View>
 
@@ -375,12 +370,6 @@ const Addnewcakepage = ({ navigation }) => {
                                     <Text style={styles.couponCodeText}>
                                         SWEET10
                                     </Text>
-                                    {/* 
-                                    <View style={styles.flavorTagBadge}>
-                                        <Text style={styles.flavorTagText}>
-                                            FLAVOR{"\n"}TAG
-                                        </Text>
-                                    </View> */}
 
                                 </View>
 
@@ -397,9 +386,11 @@ const Addnewcakepage = ({ navigation }) => {
                             {/* Right Actions */}
                             <View style={styles.couponActionSection}>
 
-                                <TouchableOpacity>
-                                    <Ionicons
-                                        name="toggle"
+                                <TouchableOpacity
+                                    onPress={() => setIsCouponActive(!isCouponActive)}
+                                >
+                                    <MaterialIcons
+                                        name={isCouponActive ? "toggle-on" : "toggle-off"}
                                         size={46}
                                         color="#7A5C50"
                                     />
@@ -437,7 +428,7 @@ const Addnewcakepage = ({ navigation }) => {
                 </TouchableOpacity>
 
                 {/* Add to Catalog */}
-                <TouchableOpacity style={styles.catalogButton}>
+                <TouchableOpacity onPress={()=>navigation.navigate("CatalogUpdatedScreen")} style={styles.catalogButton}>
 
                     <Ionicons
                         name="checkmark-circle-outline"

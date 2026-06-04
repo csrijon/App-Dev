@@ -7,12 +7,13 @@ import Catalogpage from "./src/pages/Catalogpage"
 import Ordermanagementpage from "./src/pages/Ordermanagementpage"
 import Securitypage from "./src/pages/Securitypage"
 import CustomerDirectorypage from "./src/pages/CustomerDirectorypage"
-// import Addnewcakepage from "./src/pages/Addnewcakepage"
 import Ordertrackingpage from "./src/pages/Ordertrackingpage"
 import Paymentgatwaypage from "./src/pages/Paymentgatwaypage"
 import Notificationpage from "./src/pages/Notificationpage"
 import Addnewcakepage from "./src/pages/Addnewcakepage"
 import Profilepage from "./src/pages/Profilepage"
+import RecentOrdersScreen from "./src/pages/RecentOrdersScreen"
+import CatalogUpdatedScreen from "./src/pages/CatalogUpdatedScreen"
 import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
 import {
   SafeAreaProvider, useSafeAreaInsets,
@@ -48,6 +49,8 @@ const Stackscreens = () => {
       <Stack.Screen name='Securityscreen' component={Securitypage} />
       <Stack.Screen name='Paymentadmin' component={Paymentgatwaypage} />
       <Stack.Screen name='Notificationpage' component={Notificationpage} />
+      <Stack.Screen name='RecentOrdersScreen' component={RecentOrdersScreen} />
+      <Stack.Screen name='CatalogUpdatedScreen' component={CatalogUpdatedScreen}/>
     </Stack.Navigator>
   )
 }
@@ -72,7 +75,13 @@ const TabScreens = () => {
         borderTopLeftRadius: 44,
         borderTopRightRadius: 44
       },
-      tabBarActiveTintColor: "#f6cfc2",
+      tabBarActiveTintColor: "#75584e",
+      tabBarActiveBackgroundColor: "#f6cfc2",
+      tabBarItemStyle: {
+        borderRadius: 999,
+        marginHorizontal: 5,
+        marginVertical: 5,
+      },
       tabBarHideOnKeyboard: true
     }}>
 

@@ -5,7 +5,7 @@ import Adminheader from "../components/Adminheader"
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
-const Profilepage = ({navigation}) => {
+const Profilepage = ({ navigation }) => {
 
     const [editabletext, seteditabletext] = useState(false)
 
@@ -117,7 +117,7 @@ const Profilepage = ({navigation}) => {
                 <View style={styles.oasisFrame}>
                     <Text style={styles.realmHeading}>Account Settings</Text>
 
-                    <TouchableOpacity onPress={()=>navigation.navigate("Notificationpage")} style={styles.frostPanel}>
+                    <TouchableOpacity onPress={() => navigation.navigate("Notificationpage")} style={styles.frostPanel}>
                         <View style={styles.orbitZone}>
                             <View style={[styles.emblemNest, { backgroundColor: "#F7E2E8" }]}>
                                 <Ionicons name="notifications-outline" size={20} color="#8D5C72" />
@@ -134,7 +134,7 @@ const Profilepage = ({navigation}) => {
                         <Ionicons name="chevron-forward" size={18} color="#A89572" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={()=>navigation.navigate("Paymentadmin")} style={styles.frostPanel}>
+                    <TouchableOpacity onPress={() => navigation.navigate("Paymentadmin")} style={styles.frostPanel}>
                         <View style={styles.orbitZone}>
                             <View style={[styles.emblemNest, { backgroundColor: "#F4CAD7" }]}>
                                 <Ionicons name="card-outline" size={20} color="#9A496A" />
@@ -151,7 +151,7 @@ const Profilepage = ({navigation}) => {
                         <Ionicons name="chevron-forward" size={18} color="#A89572" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={()=>navigation.navigate("Securityscreen")} style={styles.frostPanel}>
+                    <TouchableOpacity onPress={() => navigation.navigate("Securityscreen")} style={styles.frostPanel}>
                         <View style={styles.orbitZone}>
                             <View style={[styles.emblemNest, { backgroundColor: "#F7ECE7" }]}>
                                 <Ionicons name="shield-outline" size={20} color="#8B6B57" />
@@ -172,9 +172,11 @@ const Profilepage = ({navigation}) => {
                 <View style={styles.summitWrapper}>
                     <Text style={styles.crownTitle}>Account Actions</Text>
 
-              
+
                     {/* Logout Button */}
-                    <TouchableOpacity style={styles.exitPortal}>
+                    <TouchableOpacity onPress={() => navigation.reset({
+                        routes: [{ name: "Welcome" }]
+                    })} style={styles.exitPortal}>
                         <Ionicons
                             name="log-out-outline"
                             size={18}

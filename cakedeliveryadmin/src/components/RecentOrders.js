@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const ordersData = [
   {
@@ -39,7 +40,9 @@ const ordersData = [
   },
 ];
 
+
 const RecentOrders = () => {
+  const navigation = useNavigation()
   return (
     <View style={styles.container}>
 
@@ -89,7 +92,7 @@ const RecentOrders = () => {
       })}
 
       {/* button */}
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity onPress={()=>navigation.navigate("RecentOrdersScreen")} style={styles.button}>
         <Text style={styles.buttonText}>
           View All Orders
         </Text>
