@@ -1,11 +1,31 @@
 import { SafeAreaView } from "react-native-safe-area-context"
-import { StyleSheet, ScrollView, StatusBar, ImageBackground, TouchableOpacity, View, Text, Switch } from "react-native"
+import { StyleSheet, ScrollView, Alert, StatusBar, ImageBackground, TouchableOpacity, View, Text, Switch } from "react-native"
 import Securityheader from "../components/Securityheader"
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import { useState } from "react";
 
 
-const Securitypage = () => {
+const Securitypage = ({navigation}) => {
+
+    const [permission, setpermission] = useState(false)
+    const [twofactor, settwofactor] = useState(false)
+
+
+    const delacc = () => {
+        Alert.alert("Delete Account", "Do You Want to Delete Account?", [
+            {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed")
+            },
+            {
+                text: "Ok",
+                onPress: () => console.log("Ok Press")
+            }
+        ])
+    }
+
     return (
         <SafeAreaView style={styles.securitypage} >
             <StatusBar backgroundColor="#fff9e6cc" barStyle={"dark-content"} />
@@ -65,23 +85,27 @@ const Securitypage = () => {
                                 </Text>
                             </View>
 
-                            <Switch
+                            {/* <Switch
                                 value={false}
                                 trackColor={{
                                     false: "#E8E1B8",
                                     true: "#E8E1B8",
                                 }}
                                 thumbColor="#6E6641"
-                            />
+                            /> */}
+                            <TouchableOpacity onPress={() => settwofactor(!twofactor)} >
+                                <Fontisto name={twofactor ? "toggle-on" : "toggle-off"} color={twofactor ? "#000" : "#8B6A5B"} size={34} />
+                            </TouchableOpacity>
                         </View>
 
                         {/* Change Password */}
-                        <View style={styles.securityOptionContainer}>
+                        <TouchableOpacity onPress={()=>navigation.navigate("Passwordchangespage")} style={styles.securityOptionContainer}>
                             <View style={styles.securityOptionTextWrapper}>
-                                <Text style={styles.securityOptionHeading}>
-                                    Change Password
-                                </Text>
-
+                                
+                                    <Text style={styles.securityOptionHeading}>
+                                        Change Password
+                                    </Text>
+                               
                                 <Text style={styles.securityOptionSubHeading}>
                                     Last updated 3 months ago
                                 </Text>
@@ -92,7 +116,7 @@ const Securitypage = () => {
                                 size={26}
                                 color="#C5B98B"
                             />
-                        </View>
+                        </TouchableOpacity>
 
                         {/* Recent Activity */}
                         <View style={styles.securityRecentActivityWrapper}>
@@ -174,14 +198,10 @@ const Securitypage = () => {
                             </Text>
                         </View>
 
-                        <Switch
-                            value={true}
-                            trackColor={{
-                                false: "#D6D6D6",
-                                true: "#D6D6D6",
-                            }}
-                            thumbColor="#FFFFFF"
-                        />
+                        <TouchableOpacity onPress={() => setpermission(!permission)} >
+                            <Fontisto name={permission ? "toggle-on" : "toggle-off"} color={permission ? "#8B6A5B" : "#000"} size={34} />
+                        </TouchableOpacity>
+
                     </View>
 
                 </View>
@@ -226,34 +246,12 @@ const Securitypage = () => {
                             </Text>
                         </TouchableOpacity>
 
-                        {/* Notification Settings */}
-                        {/* <TouchableOpacity
-                            style={styles.permissionItemRow}
-                            activeOpacity={0.8}
-                        >
-                            <View style={styles.permissionLeftSection}>
-                                <Ionicons
-                                    name="notifications-outline"
-                                    size={24}
-                                    color="#8C744F"
-                                />
 
-                                <Text style={styles.permissionItemTitle}>
-                                    Notification Settings
-                                </Text>
-                            </View>
-
-                            <MaterialCommunityIcons
-                                name="chevron-right"
-                                size={26}
-                                color="#C3B58A"
-                            />
-                        </TouchableOpacity> */}
 
                     </View>
 
                     {/* Delete Account */}
-                    <TouchableOpacity
+                    <TouchableOpacity onPress={delacc}
                         style={styles.deleteAccountAction}
                         activeOpacity={0.8}
                     >

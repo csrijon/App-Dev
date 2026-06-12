@@ -14,6 +14,7 @@ import Addnewcakepage from "./src/pages/Addnewcakepage"
 import Profilepage from "./src/pages/Profilepage"
 import RecentOrdersScreen from "./src/pages/RecentOrdersScreen"
 import CatalogUpdatedScreen from "./src/pages/CatalogUpdatedScreen"
+import Passwordchangespage from "./src/pages/Passwordchangespage"
 import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
 import {
   SafeAreaProvider, useSafeAreaInsets,
@@ -32,10 +33,12 @@ function App() {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
+     <SafeAreaProvider>
     <NavigationContainer>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Stackscreens />
     </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
 
@@ -50,7 +53,8 @@ const Stackscreens = () => {
       <Stack.Screen name='Paymentadmin' component={Paymentgatwaypage} />
       <Stack.Screen name='Notificationpage' component={Notificationpage} />
       <Stack.Screen name='RecentOrdersScreen' component={RecentOrdersScreen} />
-      <Stack.Screen name='CatalogUpdatedScreen' component={CatalogUpdatedScreen}/>
+      <Stack.Screen name='CatalogUpdatedScreen' component={CatalogUpdatedScreen} />
+      <Stack.Screen name='Passwordchangespage' component={Passwordchangespage}/>
     </Stack.Navigator>
   )
 }
@@ -63,65 +67,100 @@ const Catalogstack = () => {
     </Stack.Navigator>
   )
 }
-
 const TabScreens = () => {
   return (
-    <Tab.Navigator screenOptions={{
-      headerShown: false, tabBarStyle: {
-        backgroundColor: "#faf4d6f2",
-        paddingVertical: 12,
-        paddingHorizontal: 15,
-        height: 70,
-        borderTopLeftRadius: 44,
-        borderTopRightRadius: 44
-      },
-      tabBarActiveTintColor: "#75584e",
-      tabBarActiveBackgroundColor: "#f6cfc2",
-      tabBarItemStyle: {
-        borderRadius: 999,
-        marginHorizontal: 5,
-        marginVertical: 5,
-      },
-      tabBarHideOnKeyboard: true
-    }}>
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
 
+        tabBarStyle: {
+          backgroundColor: "#faf4d6f2",
+          height: 70,
+
+          borderTopWidth: 0,
+          elevation: 0,
+          shadowOpacity: 0,
+
+          borderTopLeftRadius: 35,
+          borderTopRightRadius: 35,
+
+          overflow: "hidden",
+        },
+
+        tabBarActiveTintColor: "#75584e",
+        tabBarInactiveTintColor: "#8c8c8c",
+
+        tabBarActiveBackgroundColor: "#f6cfc2",
+
+        tabBarItemStyle: {
+          borderRadius: 999,
+          overflow: "hidden",
+          marginVertical: 5,
+        },
+
+        tabBarLabelStyle: {
+          fontSize: 11,
+        },
+
+        tabBarHideOnKeyboard: true,
+      }}
+    >
       <Tab.Screen
         name="Dashboard"
         component={Dashboardpage}
         options={{
-          tabBarIcon: ({ size, color }) => (
-            <FontAwesome name="dashboard" color={color} size={size} />
-          )
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome
+              name="dashboard"
+              color={color}
+              size={size}
+            />
+          ),
         }}
       />
-      <Tab.Screen name="Ordermanage" component={Ordermanagementpage}
+
+      <Tab.Screen
+        name="Ordermanage"
+        component={Ordermanagementpage}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="receipt" color={color} size={size} />
-          )
+            <Ionicons
+              name="receipt"
+              color={color}
+              size={size}
+            />
+          ),
         }}
       />
 
-      <Tab.Screen name='Catalog' component={Catalogstack}
-        options={
-          {
-            tabBarIcon: ({ color, size }) => (
-              <MaterialIcons name="menu-book" color={color} size={size} />
-            )
-          }
-        }
-      />
-
-      <Tab.Screen name='Profile' component={Profilepage}
+      <Tab.Screen
+        name="Catalog"
+        component={Catalogstack}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="person-outline" color={color} size={size} />
-          )
+            <MaterialIcons
+              name="menu-book"
+              color={color}
+              size={size}
+            />
+          ),
         }}
       />
 
+      <Tab.Screen
+        name="Profile"
+        component={Profilepage}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons
+              name="person-outline"
+              color={color}
+              size={size}
+            />
+          ),
+        }}
+      />
     </Tab.Navigator>
-  )
-}
-
+  );
+};
 export default App;

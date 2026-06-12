@@ -3,9 +3,17 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import { ScrollView, View, Text, Image, StyleSheet, TouchableOpacity, TextInput } from "react-native"
 import Adminheader from "../components/Adminheader"
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {launchImageLibrary} from "react-native-image-picker"
 
 
 const Profilepage = ({ navigation }) => {
+
+   const pickimage = async ()=>{
+      const images = await launchImageLibrary({
+        mediatype:"photo",
+        includeBase64:true
+      })
+   }
 
     const [editabletext, seteditabletext] = useState(false)
 
@@ -25,7 +33,7 @@ const Profilepage = ({ navigation }) => {
                         />
 
                         {/* Edit Button */}
-                        <TouchableOpacity style={styles.editButton}>
+                        <TouchableOpacity onPress={pickimage} style={styles.editButton}>
                             <Ionicons name="pencil" size={15} color="#FFFFFF" />
                         </TouchableOpacity>
                     </View>

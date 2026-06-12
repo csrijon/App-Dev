@@ -14,7 +14,7 @@ export default Plusbutton
 const Plusbuttonstyle = StyleSheet.create({
     fixedbutton: {
         position: "absolute",
-        bottom: 20,
+        bottom: 30,
         right: 30,
         width: 60,
         height: 60,

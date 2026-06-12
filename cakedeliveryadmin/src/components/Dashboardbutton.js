@@ -6,9 +6,9 @@ import {
   StyleSheet,
 } from "react-native";
 
-const Dashboardbutton = ({title,name,buttonstyle,Textstyle}) => {
+const Dashboardbutton = ({title,name,buttonstyle,Textstyle,onPress}) => {
   return (
-    <TouchableOpacity  style={[pastryButtonStyles.outerShell,buttonstyle]}>
+    <TouchableOpacity onPress={onPress} style={[pastryButtonStyles.outerShell,buttonstyle]}>
       <Text style={[pastryButtonStyles.buttonLabel,Textstyle]}>
         {title}{"\n"}{name}
       </Text>

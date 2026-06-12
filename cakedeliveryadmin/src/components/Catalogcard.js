@@ -1,10 +1,11 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   Image,
   StyleSheet,
   TouchableOpacity,
+  Alert
 } from "react-native";
 
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -12,11 +13,11 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const Catalogcard = ({ title, tag, price, image }) => {
 
-  const [toggleswitch,settoggleswitch]  = useState(false)
-  const [editlogo,seteditlogo] = useState(false)
+  const [toggleswitch, settoggleswitch] = useState(false)
+  const [editlogo, seteditlogo] = useState(false)
 
   return (
-    <View style={[styles.card,{opacity:toggleswitch?0.6:1}]}>
+    <View style={[styles.card, { opacity: toggleswitch ? 0.6 : 1 }]}>
 
       {/* Cake Image */}
       <View style={styles.imageContainer}>
@@ -27,7 +28,7 @@ const Catalogcard = ({ title, tag, price, image }) => {
 
         {/* Tag */}
         <View style={styles.tag}>
-          <Text  style={styles.tagText}>{tag}</Text>
+          <Text style={styles.tagText}>{tag}</Text>
         </View>
       </View>
 
@@ -42,23 +43,44 @@ const Catalogcard = ({ title, tag, price, image }) => {
 
         {/* Active Toggle */}
         <View style={styles.activeContainer}>
-          <TouchableOpacity onPress={()=>settoggleswitch(!toggleswitch)} >
-            <Fontisto name={toggleswitch?"toggle-off":"toggle-on"} color={toggleswitch?"#000":"#7a5b52"} size={38} />
+          <TouchableOpacity onPress={() => settoggleswitch(!toggleswitch)} >
+            <Fontisto name={toggleswitch ? "toggle-off" : "toggle-on"} color={toggleswitch ? "#000" : "#7a5b52"} size={38} />
           </TouchableOpacity>
-          <Text style={styles.activeText}>{toggleswitch?"Inactive":"Active"}</Text>
+          <Text style={styles.activeText}>{toggleswitch ? "Inactive" : "Active"}</Text>
         </View>
 
         {/* Icons */}
         <View style={styles.iconContainer}>
-          <TouchableOpacity onPress={()=>seteditlogo(!editlogo)} >
+          <TouchableOpacity onPress={() => seteditlogo(!editlogo)} >
             <MaterialIcons
-              name={editlogo?"check":"edit"}
+              name={editlogo ? "check" : "edit"}
               size={22}
               color="#7a5b52"
             />
           </TouchableOpacity>
 
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              Alert.alert(
+                "Delete Product",
+                "Are you sure you want to delete this product?",
+                [
+                  {
+                    text: "Cancel",
+                    style: "cancel",
+                  },
+                  {
+                    text: "Delete",
+                    onPress: () =>
+                      Alert.alert(
+                        "Success",
+                        "Product deleted successfully!"
+                      ),
+                  },
+                ]
+              )
+            }
+          >
             <MaterialIcons
               name="delete-outline"
               size={22}

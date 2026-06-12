@@ -5,9 +5,10 @@ import {
     StyleSheet,
     Image,
     TouchableOpacity,
+    Alert
 } from "react-native";
 
-const OrderCard = ({orderNumber,customerName,deliveryTime,price,tag,buttonText,image,buttonColor}) => {
+const OrderCard = ({ orderNumber, customerName, deliveryTime, price, tag, buttonText, image, buttonColor }) => {
     return (
         <View style={designStyles.screen}>
             <View style={designStyles.orderCardBox}>
@@ -30,7 +31,7 @@ const OrderCard = ({orderNumber,customerName,deliveryTime,price,tag,buttonText,i
                 <View style={designStyles.detailsWrapper}>
 
                     <Text style={designStyles.orderNumberText}>
-                       {orderNumber}
+                        {orderNumber}
                     </Text>
 
                     <Text style={designStyles.customerName}>
@@ -50,12 +51,22 @@ const OrderCard = ({orderNumber,customerName,deliveryTime,price,tag,buttonText,i
                     {/* Bottom Section */}
                     <View style={designStyles.actionArea}>
 
-                        <TouchableOpacity style={[designStyles.acceptButtonStyle,{backgroundColor:buttonColor}]}>
+                        <TouchableOpacity
+                            onPress={() =>
+                                Alert.alert(
+                                    "Success",
+                                    "Order accepted successfully!"
+                                )
+                            }
+                            style={[
+                                designStyles.acceptButtonStyle,
+                                { backgroundColor: buttonColor },
+                            ]}
+                        >
                             <Text style={designStyles.acceptButtonText}>
                                 {buttonText}
                             </Text>
                         </TouchableOpacity>
-
                         <TouchableOpacity style={designStyles.menuButtonCircle}>
                             <Text style={designStyles.menuDotsText}>
                                 •••

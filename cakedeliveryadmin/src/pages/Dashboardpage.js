@@ -1,5 +1,5 @@
 import { SafeAreaView } from "react-native-safe-area-context"
-import { StatusBar, ScrollView, View, Text, StyleSheet } from "react-native"
+import { StatusBar, ScrollView, View, Text, StyleSheet, Alert } from "react-native"
 import Adminheader from "../components/Adminheader"
 import Dashboardbutton from "../components/Dashboardbutton"
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -39,7 +39,7 @@ const dashboardData = [
 ];
 
 
-const Dashboardpage = () => {
+const Dashboardpage = ({ navigation }) => {
     return (
         <SafeAreaView style={Dashboardstyle.Dashboardcontainer} >
             <StatusBar backgroundColor="#fff9e6cc" barStyle="dark-content" />
@@ -50,8 +50,17 @@ const Dashboardpage = () => {
                     <Text style={Dashboardstyle.headingparagraph} >Your artisanal gallery is bustling today.Here is the morning's oversight for your confectionary empire</Text>
                 </View>
                 <View style={Dashboardstyle.buttonsection} >
-                    <Dashboardbutton title="Download" name="Reports" />
-                    <Dashboardbutton title="New" name="Product" buttonstyle={Dashboardstyle.chococolor} Textstyle={Dashboardstyle.chococolortext} />
+                    <Dashboardbutton
+                        title="Download"
+                        name="Reports"
+                        onPress={() => {
+                            Alert.alert(
+                                "Download Completed",
+                                "The report has been downloaded successfully."
+                            );
+                        }}
+                    />
+                    <Dashboardbutton onPress={() => navigation.navigate("Catalog")} title="New" name="Product" buttonstyle={Dashboardstyle.chococolor} Textstyle={Dashboardstyle.chococolortext} />
                 </View>
 
                 {/* {card section start} */}
@@ -81,10 +90,10 @@ const Dashboardpage = () => {
                     }
                 </View>
                 {/* {Card section end } */}
-                 <AnalyticsCard/>
-                 <RecentOrders/>
-                 <BakingCard/>
-                 <Footer/>
+                <AnalyticsCard />
+                <RecentOrders />
+                <BakingCard />
+                <Footer />
             </ScrollView>
         </SafeAreaView>
     )
@@ -114,7 +123,7 @@ const Dashboardstyle = StyleSheet.create({
     },
     buttonsection: {
         flexDirection: "row",
-        flexWrap:"wrap",
+        flexWrap: "wrap",
         gap: 20,
         marginTop: 20,
         width: "100%"
