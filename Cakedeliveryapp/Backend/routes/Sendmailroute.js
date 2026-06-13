@@ -29,6 +29,7 @@ router.post("/", async (req, res) => {
         }
 
         await transpoter.sendMail(sendoption)
+        
         res.send("mailsend done")
     } catch (error) {
         res.send("mail sending error")

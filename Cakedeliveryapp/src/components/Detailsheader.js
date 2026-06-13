@@ -1,12 +1,15 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native"
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useNavigation } from "@react-navigation/native";
 
 const Detailsheader = () => {
+
+    const navigation = useNavigation()
     return (
         <View style={styles.Detailsheader} >
             <View style={styles.headerContent} >
-                <TouchableOpacity  >
+                <TouchableOpacity onPress={()=>navigation.goBack()} >
                     <AntDesign name="arrowleft" color="#75584e" size={24} />
                 </TouchableOpacity>
                 <Text style={styles.headercontenttext} >The Artisanal Patisserie</Text>

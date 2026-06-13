@@ -4,35 +4,48 @@ import Detailsheader from "../components/Detailsheader";
 import { useState } from "react";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Calendar } from "react-native-calendars"
+import Button from "../components/Button"
 
 
+const deliverySlots = [
+    {
+        id: 1,
+        icon: "☀️",
+        title: "Morning",
+        time: "09:00 AM - 12:00 PM",
+        label: "Standard",
+        price: "FREE",
+    },
+    {
+        id: 2,
+        icon: "☀️",
+        title: "Afternoon",
+        time: "12:00 PM - 04:00 PM",
+        label: "Peak Time",
+        price: "+$5.00",
+    },
+    {
+        id: 3,
+        icon: "🌙",
+        title: "Evening",
+        time: "04:00 PM - 08:00 PM",
+        label: "Late Slot",
+        price: "+$2.00",
+    },
+];
 
 const DeliveryMoment = ({ navigation, route }) => {
-
-    const [selected, setselected] = useState(null)
+    const [deliverysoltid, setdeliverysoltid] = useState(null)
     const [selecteddate, setselecteddate] = useState("")
     const [datetime, setdatetime] = useState("")
     return (
         <SafeAreaView style={styles.container}>
-            <StatusBar backgroundColor="#f5ecd9" barStyle="dark-content" />
+            <StatusBar backgroundColor="#fff9e6" barStyle="dark-content" />
             <Detailsheader />
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }} style={styles.scrollcontainer} >
                 {/* Header */}
                 <Text style={styles.step}>ORDER STEP 02</Text>
                 <Text style={styles.title}>Choose Your Delivery Moment</Text>
-
-                {/* Date Card */}
-                {/* <View style={styles.dateCard}>
-                    <View>
-                        <Text style={styles.dateLabel}>Collection Date</Text>
-                        <Text style={styles.date}>{route.params.date} </Text>
-     
-                    </View>
-                    <TouchableOpacity onPress={() => navigation.navigate("Calender")} style={styles.calendarIcon}>
-                       
-                        <AntDesign name="calendar" color="#000" size={24} />
-                    </TouchableOpacity>
-                </View> */}
 
                 <View style={styles.maincalender} >
                     <Calendar onDayPress={(day) => {
@@ -57,51 +70,45 @@ const DeliveryMoment = ({ navigation, route }) => {
                     />
                 </View>
 
-
-
                 {/* Time Options */}
-                <TouchableOpacity onPress={() => setselected(!selected)} style={[styles.option, { borderColor: selected ? "#6b4f4f" : "white" }]}>
-                    <View style={styles.iconCircle}>
-                        <Text>☀️</Text>
-                    </View>
-                    <View style={{ flex: 1 }}>
-                        <Text style={styles.optionTitle}>Morning</Text>
-                        <Text style={styles.time}>09:00 AM - 12:00 PM</Text>
-                    </View>
-                    <View>
-                        <Text style={styles.priceLabel}>Standard</Text>
-                        <Text style={styles.free}>FREE</Text>
-                    </View>
-                </TouchableOpacity>
 
-                <TouchableOpacity style={[styles.option]}>
-                    <View style={styles.iconCircleDark}>
-                        <Text style={{ color: "#fff" }}>☀️</Text>
-                    </View>
-                    <View style={{ flex: 1 }}>
-                        <Text style={styles.optionTitle}>Afternoon</Text>
-                        <Text style={styles.time}>12:00 PM - 04:00 PM</Text>
-                    </View>
-                    <View>
-                        <Text style={styles.priceLabel}>Peak Time</Text>
-                        <Text style={styles.price}>+$5.00</Text>
-                    </View>
-                </TouchableOpacity>
+                {
+                    deliverySlots.map((item) => (
+                        <TouchableOpacity
+                            onPress={() => setdeliverysoltid(item.id)}
+                            key={item.id}
+                            style={[styles.option, {
+                                borderColor: deliverysoltid === item.id ? "#f6cfc2" : "#75584e"
+                            }]}
+                        >
+                            <View style={[styles.iconStyle, { backgroundColor: deliverysoltid === item.id ? "#f3c6d3" : "#6b4f4f" }]}>
+                                <Text style={item.textStyle}>
+                                    {item.icon}
+                                </Text>
+                            </View>
 
-                <TouchableOpacity style={styles.option}>
-                    <View style={styles.iconCirclePink}>
-                        <Text>🌙</Text>
-                    </View>
-                    <View style={{ flex: 1 }}>
-                        <Text style={styles.optionTitle}>Evening</Text>
-                        <Text style={styles.time}>04:00 PM - 08:00 PM</Text>
-                    </View>
-                    <View>
-                        <Text style={styles.priceLabel}>Late Slot</Text>
-                        <Text style={styles.price}>+$2.00</Text>
-                    </View>
-                </TouchableOpacity>
+                            <View style={{ flex: 1 }}>
+                                <Text style={styles.optionTitle}>
+                                    {item.title}
+                                </Text>
 
+                                <Text style={styles.time}>
+                                    {item.time}
+                                </Text>
+                            </View>
+
+                            <View>
+                                <Text style={styles.priceLabel}>
+                                    {item.label}
+                                </Text>
+
+                                <Text style={item.price === "FREE" ? styles.free : styles.price}>
+                                    {item.price}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    ))
+                }
                 {/* Cake Card */}
                 <View style={styles.cakeCard}>
                     <Image
@@ -192,26 +199,21 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 48,
         marginBottom: 12,
         borderWidth: 2,
-        borderColor: "white"
+
     },
 
     maincalender: {
         marginBottom: 30
     },
 
-    iconCircle: {
-        backgroundColor: "#f3d9dc",
+    iconStyle: {
+        // backgroundColor: "#f3d9dc",
+        backgroundColor: "#6b4f4f",
         padding: 10,
         borderRadius: 9999,
         marginRight: 12,
     },
 
-    iconCircleDark: {
-        backgroundColor: "#6b4f4f",
-        padding: 10,
-        borderRadius: 20,
-        marginRight: 12,
-    },
 
     iconCirclePink: {
         backgroundColor: "#f3c6d3",
@@ -259,12 +261,14 @@ const styles = StyleSheet.create({
         height: 200,
         borderRadius: 20,
         marginBottom: 10,
-        transform: [{ rotate: "5deg" }]
+        transform: [{ rotate: "5deg" }],
+      
     },
 
     badge: {
         marginTop: 15,
         backgroundColor: "#e7b6c7",
+        textAlign:"left",
         paddingHorizontal: 10,
         paddingVertical: 4,
         borderRadius: 10,
@@ -286,7 +290,7 @@ const styles = StyleSheet.create({
     },
 
     nextBtn: {
-        backgroundColor: "#6b4f4f",
+        backgroundColor: "#75584e",
         padding: 18,
         borderRadius: 30,
         marginTop: 25,
@@ -301,8 +305,8 @@ const styles = StyleSheet.create({
 
     footer: {
         textAlign: "center",
-        fontSize: 10,
-        color: "#8b7d6b",
-        marginTop: 10,
+        fontSize: 12,
+        color: "#646040",
+        marginTop: 16,
     },
 });

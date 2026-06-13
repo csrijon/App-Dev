@@ -183,7 +183,7 @@ const CategoryListing = ({ navigation }) => {
         <SafeAreaView style={styles.Categorycontainer} >
 
             <StatusBar
-                backgroundColor="#FFF9E6"
+                backgroundColor="#f8f1df"
                 barStyle={'dark-content'}
             />
 

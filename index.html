@@ -3,11 +3,13 @@
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Cake Haven | The Artisanal Pâtisserie</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<title>Order Summary - Cake Haven</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
       tailwind.config = {
         darkMode: "class",
@@ -65,9 +67,9 @@
               "primary": "#75584e",
             },
             fontFamily: {
-              "headline": ["Plus Jakarta Sans"],
-              "body": ["Plus Jakarta Sans"],
-              "label": ["Plus Jakarta Sans"]
+              "headline": ["Plus Jakarta Sans", "sans-serif"],
+              "body": ["Plus Jakarta Sans", "sans-serif"],
+              "label": ["Plus Jakarta Sans", "sans-serif"]
             },
             borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
           },
@@ -75,12 +77,10 @@
       }
     </script>
 <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      body { font-family: 'Plus Jakarta Sans', sans-serif; }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
     </style>
 <style>
     body {
@@ -88,198 +88,150 @@
     }
   </style>
   </head>
-<body class="bg-surface text-on-surface selection:bg-primary-container min-h-screen pb-32">
+<body class="bg-surface text-on-surface min-h-screen pb-32">
 <!-- TopAppBar -->
 <header class="fixed top-0 w-full z-50 bg-[#FFF9E6]/80 backdrop-blur-md shadow-[0px_24px_48px_rgba(117,88,78,0.08)]">
 <div class="flex justify-between items-center px-6 py-4 w-full">
-<div class="flex items-center gap-4">
-<div class="w-10 h-10 rounded-full bg-primary-container overflow-hidden">
-<img alt="User profile photo" class="w-full h-full object-cover" data-alt="close-up portrait of a smiling young man in a modern kitchen setting with warm natural sunlight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmdMxeIHHIBaDkIPZqM7MvJJ-XulK6b-AUiJIeEc6syiAKV0_ckpTKMfmk1vrh9f6-ruZAMoyBjAfh9LRc0qnwNx31H95GkzOaOKy-j4h2ELubv04VfuE2BKL1U5sVlOu2umZlos0WiU-aG2lqR-OPZzXx96pyeCcBriasx-CFDeDK0AuSiMbPUm-CB3uF0XvWKuHpDKXMUKZWody8MgXQmL1m2Emb-5oWnwCMz3Q8FP0HTSB3beRLVLhzF3eeqP3wnkfjitcriRQW"/>
-</div>
-<div>
-<p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Welcome back</p>
-<h1 class="font-plus-jakarta text-xl font-extrabold tracking-tight text-primary">Alex Chen</h1>
-</div>
-</div>
 <div class="flex items-center gap-3">
-<button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-low hover:opacity-80 transition-opacity active:scale-95 transition-transform">
-<span class="material-symbols-outlined text-primary" data-icon="search">search</span>
-</button>
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
+<img alt="Profile" class="w-full h-full object-cover" data-alt="close-up portrait of a smiling young man in a minimalist studio setting with soft warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCo2x78cxrT_sy8RFyXkZKOMlcXqOGQ-c4l613C0Z-npgclEOsEyK8QSeQSeQ4KLgmZITHHSjPRq0DMN9Y4ZbIon-H3o0JoyP8x_ZfSOV1HqKKYVJELKqVXtRNuAQcclnyTmhyS8B9UMnD9QRbWVI1AgJtCOxxxYyRvxEqbn4WzheuW7Zn9iZ8YNCqAH0JAnQE8fCXRqchacbImRagJqXh7pJIziOPxzC9by_mN5ik0uiYt2kQgeIdNM8dfHCKdFo5WT0fP7-wNXEEj"/>
+</div>
+</div>
+<h1 class="font-headline text-2xl font-bold tracking-tight text-primary">The Artisanal Pâtisserie</h1>
+<div class="p-2 active:scale-95 transition-transform hover:opacity-80">
+<span class="material-symbols-outlined text-primary text-2xl">search</span>
 </div>
 </div>
 </header>
-<main class="pt-24 space-y-10">
-<!-- Hero Search Section (Visual Enhancement) -->
-<section class="px-6">
-<div class="bg-surface-container-highest rounded-xl p-4 flex items-center gap-3 shadow-sm">
-<span class="material-symbols-outlined text-on-surface-variant" data-icon="search">search</span>
-<input class="bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-on-surface-variant/60 w-full font-medium" placeholder="Search for artisanal bakes..." type="text"/>
+<main class="pt-24 px-6 max-w-2xl mx-auto space-y-8">
+<!-- Page Title -->
+<div class="space-y-1">
+<h2 class="text-display-md font-extrabold tracking-tight text-primary">Order Summary</h2>
+<p class="text-on-surface-variant font-medium">Review your sweet selection</p>
 </div>
-</section>
-<!-- Featured Cakes Carousel -->
-<section>
-<div class="px-6 flex justify-between items-end mb-4">
-<h2 class="text-display-md font-extrabold tracking-tight text-primary">Featured Bakes</h2>
-<span class="text-label-md font-bold text-on-surface-variant hover:underline cursor-pointer">View All</span>
+<!-- Order Item Card (Bento/Editorial Style) -->
+<section class="bg-surface-container-lowest rounded-xl p-1 overflow-hidden transition-all shadow-[0px_24px_48px_rgba(117,88,78,0.04)]">
+<div class="flex flex-col md:flex-row gap-6 p-5">
+<div class="w-full md:w-40 h-40 shrink-0">
+<img alt="Chocolate Ganache Cake" class="w-full h-full object-cover rounded-tl-xl rounded-br-xl" data-alt="luxury multi-layered chocolate ganache cake decorated with gold leaf and fresh berries on a soft cream background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnzVBU4tduROVbW6Ksj1Rj4LMNNXX8bNOiTCpoN-JgMJncbEyVv8exqq8Mn-1vsS8Ss9CFBzZ4Q55DcGIP6H5yHpHO9gyYfRUnbk2IAQNap2r6NnThV9zEuF9QphI6j5xGdjp59XKuZYqVMDettz-cfdrw8_JmYqMsNNnSSJngI2Ne59h2jCljzU7-1H2_vnQRqzWXIoOXB9xx61A6A7M9bf6GWx1S8PFYONJujQyd-2moZpPqvTYjVrzMTof2pbnnVBxSSL5jvu2M"/>
 </div>
-<div class="flex overflow-x-auto hide-scrollbar gap-6 px-6 snap-x">
-<!-- Featured Card 1 -->
-<div class="flex-shrink-0 w-72 snap-center group">
-<div class="relative h-96 rounded-tl-xl rounded-br-xl overflow-hidden shadow-xl mb-4 transition-transform duration-500 group-hover:scale-[1.02]">
-<img alt="Berry Velvet Cake" class="w-full h-full object-cover" data-alt="high-end editorial shot of a deep red velvet cake topped with fresh raspberries and gold leaf on a marble pedestal" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCchdLhA2eDl_Xaq0CTdXcperpfwS6ulIyqlBAkG_FNVf4K3Z8qNeeBdQSAXbcSQ6owPS4s3ImlqkvuoVgAiDDpDu7BKD-VL7i70ZGz48UMXpevmACKUinDllJ5AXfoAsbsfC2ITvrw0H-rYSVQoVivYImx-GyN9iQSlrqcua_MULC2G8M08jne7H2hQh22wqNjf_xsRHnevV9WWs-KStFtxj4drKufcdJEcAX7Bp-u7OxR6RLzi6XFo2J5A612vWKATfUqmuCbY4om"/>
-<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-<div class="absolute bottom-6 left-6">
-<span class="bg-tertiary-container text-on-tertiary-container text-[10px] font-bold px-3 py-1 rounded-sm mb-2 inline-block">TRENDING</span>
-<h3 class="text-white text-2xl font-bold">Berry Velvet Luxe</h3>
-<p class="text-white/80 text-sm">$48.00</p>
-</div>
-</div>
-</div>
-<!-- Featured Card 2 -->
-<div class="flex-shrink-0 w-72 snap-center group">
-<div class="relative h-96 rounded-tr-xl rounded-bl-xl overflow-hidden shadow-xl mb-4 transition-transform duration-500 group-hover:scale-[1.02]">
-<img alt="Matcha Cloud Cake" class="w-full h-full object-cover" data-alt="minimalist aesthetic photo of a soft green matcha layer cake with whipped cream peaks in a bright airy studio" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLWolFtkyOZ_bLg2FsS_t3O5mBfXiQqtxg5d1-glKI-CSejJjgJJ3ELsqcLIMd_dxe2nPcpNBLXrqTqVGhmNfGWsOGIjG2B3aiASGuuFlGmV-fmz70ans21xmIOIeSDiASwttQLpXn4Th1roqKwmlDaCzf3EzptsOv9fOsxrHcRzslvCrSN41z74hdF1d29qaOdcPoy0fCQ3q_3FENwgfuJl8yVFfqsKI9xrH1jzAUcHqtbu640EOwCugG5meDWHZf5_hqR-WEbHlC"/>
-<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-<div class="absolute bottom-6 left-6">
-<span class="bg-primary-container text-on-primary-container text-[10px] font-bold px-3 py-1 rounded-sm mb-2 inline-block">CHEF'S PICK</span>
-<h3 class="text-white text-2xl font-bold">Matcha Silk Cloud</h3>
-<p class="text-white/80 text-sm">$42.00</p>
-</div>
-</div>
-</div>
-<!-- Featured Card 3 -->
-<div class="flex-shrink-0 w-72 snap-center group">
-<div class="relative h-96 rounded-tl-xl rounded-br-xl overflow-hidden shadow-xl mb-4 transition-transform duration-500 group-hover:scale-[1.02]">
-<img alt="Gold Leaf Chocolate" class="w-full h-full object-cover" data-alt="macro shot of a dark chocolate cake with smooth ganache and edible gold leaf accents under warm dramatic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAw9QZLDM3H2CiEQGdXrysmn54IVudtpNFaQAuwCIq7VBgZ22ej5m4Yi7yrN0yKCL-XPOD5x4N67v2NnpxzEBaCKTEmSD3sP10nEree97TqTTo9rdi6yyAiazameixQfDwhmFStdMl3bkCB1kLBa4xDsfRrsEF2slz0C719pEnunSG4xLcO7S1deF25sqQZAVbFIqwQGaS4mLaz39_34cDwwnW7eo1dAV7S_JQGgx-GAwguFuho7EZ9xRWEsgxk76SwNsuGmPdSMA01"/>
-<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-<div class="absolute bottom-6 left-6">
-<span class="bg-secondary-container text-on-secondary-container text-[10px] font-bold px-3 py-1 rounded-sm mb-2 inline-block">LIMITED EDITION</span>
-<h3 class="text-white text-2xl font-bold">24K Cocoa Noir</h3>
-<p class="text-white/80 text-sm">$55.00</p>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- Categories Bento Grid -->
-<section class="px-6">
-<h2 class="text-xl font-extrabold tracking-tight text-primary mb-6">Explore Collections</h2>
-<div class="grid grid-cols-4 gap-4">
-<div class="col-span-2 row-span-2 bg-primary-container/30 rounded-xl p-6 flex flex-col justify-between hover:bg-primary-container/40 transition-colors cursor-pointer group">
-<span class="material-symbols-outlined text-primary text-4xl group-hover:scale-110 transition-transform" data-icon="cake">cake</span>
+<div class="flex flex-col justify-between py-1">
 <div>
-<h4 class="font-extrabold text-primary text-lg leading-tight">Wedding masterpieces</h4>
-<p class="text-[10px] font-bold text-on-surface-variant/60 uppercase mt-1">12 Artists</p>
-</div>
-</div>
-<div class="col-span-2 bg-secondary-container/30 rounded-xl p-4 flex items-center gap-4 hover:bg-secondary-container/40 transition-colors cursor-pointer">
-<div class="w-12 h-12 rounded-full bg-white flex items-center justify-center">
-<span class="material-symbols-outlined text-secondary" data-icon="celebration">celebration</span>
-</div>
-<h4 class="font-bold text-secondary text-sm">Birthday Bash</h4>
-</div>
-<div class="col-span-2 bg-tertiary-container/30 rounded-xl p-4 flex items-center gap-4 hover:bg-tertiary-container/40 transition-colors cursor-pointer">
-<div class="w-12 h-12 rounded-full bg-white flex items-center justify-center">
-<span class="material-symbols-outlined text-tertiary" data-icon="bakery_dining">bakery_dining</span>
-</div>
-<h4 class="font-bold text-tertiary text-sm">Cupcakes</h4>
-</div>
-</div>
-</section>
-<!-- Nearby Bakers (Asymmetric List) -->
-<section class="px-6 pb-12">
-<h2 class="text-xl font-extrabold tracking-tight text-primary mb-6">Nearby Artists</h2>
-<div class="space-y-6">
-<!-- Baker Card 1 -->
-<div class="flex items-center gap-6 group cursor-pointer">
-<div class="relative flex-shrink-0">
-<img alt="Baker's Creation" class="w-32 h-32 object-cover rounded-tl-xl rounded-br-xl shadow-md group-hover:shadow-lg transition-shadow" data-alt="close-up of pastel blue macaroons arranged on a rustic wooden tray with scattered flour and lavender" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLOuOuMmgdm7_C-O7nddIbX424tqp-emhmzdOj1_qX69abr7s4wXZcPl9jfa_ZvQqW1PWTZUoG3KUV64TVvQ3QVvmyZhE5vylqhuUfHTJQfef59xReo_AS4yqOHTD3J2sbGZjlzjCVCPj_zWzUHgBJ1CPE3LTth3Eu_8ban0gYKE4wEs6iW0BT0T_YLDKvyFrmA-hKnesTHbvZaP3rvRkv8GMtHBm_ovLyjwLy5RFLViExsDgdL_RqYeEawv-_jux5oQ-wHHefhhn1"/>
-</div>
-<div class="flex-grow">
 <div class="flex justify-between items-start">
-<div>
-<h3 class="font-bold text-lg text-primary leading-tight">The Flour Atelier</h3>
-<p class="text-on-surface-variant text-xs mt-1 font-medium">French Patisserie • 0.8 miles</p>
+<h3 class="text-headline-md font-bold text-primary">Velvet Chocolate Ganache</h3>
+<span class="bg-tertiary-container text-on-tertiary-container text-xs px-3 py-1 rounded-sm font-bold uppercase tracking-wider">Best Seller</span>
 </div>
-<div class="flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded-full">
-<span class="material-symbols-outlined text-[14px] text-primary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-[10px] font-bold text-primary">4.9</span>
+<p class="text-on-surface-variant text-sm mt-2 leading-relaxed">Rich 70% dark chocolate layers with whipped truffle filling and madagascar vanilla bean sponge.</p>
 </div>
+<div class="flex gap-4 mt-4">
+<div class="flex flex-col">
+<span class="text-[10px] uppercase font-bold text-outline tracking-widest">Weight</span>
+<span class="text-sm font-semibold">1.5 kg</span>
 </div>
-<div class="flex gap-2 mt-4">
-<span class="bg-surface-container text-on-surface-variant text-[10px] px-3 py-1 rounded-full font-bold">GLUTEN-FREE</span>
-<span class="bg-surface-container text-on-surface-variant text-[10px] px-3 py-1 rounded-full font-bold">ORGANIC</span>
-</div>
-</div>
-</div>
-<!-- Baker Card 2 -->
-<div class="flex items-center gap-6 group cursor-pointer">
-<div class="relative flex-shrink-0">
-<img alt="Baker's Creation" class="w-32 h-32 object-cover rounded-tr-xl rounded-bl-xl shadow-md group-hover:shadow-lg transition-shadow" data-alt="overhead shot of freshly baked artisanal sourdough bread with intricate crust patterns on a linen cloth" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqdk6wZUfCnKB0V29Eqy7Se1lGL6wMVhbbBqaYA9ueHAyvklb7l-6PTLFmqSRjXk_S8UlzoDcc4C0WdnPsEoPCOn3hIobMh-1pz_VVbFjpe3mnBiagN1Mj0M6N8zQ1j9PQ1QDo_OTc9cfBqe11ocY09gDnn9qjM4YLbbSLItwlU93cPdyV6YyPVu90uCaC2ydiVqv1np1kT3EFYpJD-oivWCyk0t5nDJPCTZc_Z7hQRE-GSdxkrYw5NjninOX7hu3JnIF8dAkjbaTU"/>
-</div>
-<div class="flex-grow">
-<div class="flex justify-between items-start">
-<div>
-<h3 class="font-bold text-lg text-primary leading-tight">Maison du Sucre</h3>
-<p class="text-on-surface-variant text-xs mt-1 font-medium">Bespoke Weddings • 1.2 miles</p>
-</div>
-<div class="flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded-full">
-<span class="material-symbols-outlined text-[14px] text-primary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-[10px] font-bold text-primary">4.8</span>
-</div>
-</div>
-<div class="flex gap-2 mt-4">
-<span class="bg-surface-container text-on-surface-variant text-[10px] px-3 py-1 rounded-full font-bold">CUSTOM DESIGN</span>
-<span class="bg-surface-container text-on-surface-variant text-[10px] px-3 py-1 rounded-full font-bold">DELIVERY</span>
-</div>
-</div>
-</div>
-<!-- Baker Card 3 -->
-<div class="flex items-center gap-6 group cursor-pointer">
-<div class="relative flex-shrink-0">
-<img alt="Baker's Creation" class="w-32 h-32 object-cover rounded-tl-xl rounded-br-xl shadow-md group-hover:shadow-lg transition-shadow" data-alt="whimsical cupcakes with swirls of pink frosting and colorful sprinkles against a soft pastel yellow background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZJ369LEFNfGdiVY1MooFOBn4N-4i36HFN784qNdkZAbhfK1phD4K0qolxGDPK0mf7c7kkO_Dz5oB0klYiCwjCnSr7GslgKK_4H4Hj3ST6gtHGDHRDBjKSGv57F806FJL1k76wV2P5lMWHwVjFTPnXqQkYz3hbQv5wrLlEVxLgpWbvZObsO7hJoYwvAXQHrKuMmTMNqt6BhlG7scYKStpK04QRImGeqvTfDbiZDfqb51XuFRWA4WDDiewh5HPqse1Vr3QyqmbsYsYr"/>
-</div>
-<div class="flex-grow">
-<div class="flex justify-between items-start">
-<div>
-<h3 class="font-bold text-lg text-primary leading-tight">Sweet Whispers</h3>
-<p class="text-on-surface-variant text-xs mt-1 font-medium">Cupcake Studio • 0.5 miles</p>
-</div>
-<div class="flex items-center gap-1 bg-surface-container-high px-2 py-1 rounded-full">
-<span class="material-symbols-outlined text-[14px] text-primary" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
-<span class="text-[10px] font-bold text-primary">4.7</span>
-</div>
-</div>
-<div class="flex gap-2 mt-4">
-<span class="bg-surface-container text-on-surface-variant text-[10px] px-3 py-1 rounded-full font-bold">PARTY FAVORS</span>
-<span class="bg-surface-container text-on-surface-variant text-[10px] px-3 py-1 rounded-full font-bold">VEGAN OPTIONS</span>
+<div class="flex flex-col border-l border-outline-variant/15 pl-4">
+<span class="text-[10px] uppercase font-bold text-outline tracking-widest">Flavor</span>
+<span class="text-sm font-semibold">Dark Truffle</span>
 </div>
 </div>
 </div>
 </div>
 </section>
+<!-- Customizations & Logistics Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Custom Message Card -->
+<div class="bg-surface-container-low rounded-lg p-6 space-y-3">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-xl">edit_note</span>
+<h4 class="font-bold">Personal Message</h4>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-lg italic text-on-surface-variant text-sm border border-outline-variant/10">
+                    "Happy 30th Birthday Sarah! Here's to many more sweet adventures together. Love, Mark."
+                </div>
+</div>
+<!-- Delivery Slot Card -->
+<div class="bg-surface-container-low rounded-lg p-6 space-y-3">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-xl">schedule</span>
+<h4 class="font-bold">Delivery Slot</h4>
+</div>
+<div class="space-y-1">
+<p class="text-lg font-bold">Tuesday, Oct 24</p>
+<p class="text-on-surface-variant text-sm">Between 2:00 PM - 4:00 PM</p>
+</div>
+</div>
+</div>
+<!-- Delivery Address -->
+<div class="bg-surface-container-low rounded-lg p-6 space-y-4">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-xl">location_on</span>
+<h4 class="font-bold">Delivery Address</h4>
+</div>
+<button class="text-primary text-xs font-bold uppercase tracking-widest hover:opacity-70 transition-opacity">Change</button>
+</div>
+<div class="flex gap-4 items-start">
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary">home</span>
+</div>
+<div class="space-y-1">
+<p class="font-bold">Home</p>
+<p class="text-on-surface-variant text-sm leading-relaxed">124 Baker Street, West Wing Apartments<br/>Suite 4B, London, NW1 6XE</p>
+</div>
+</div>
+</div>
+<!-- Price Breakdown -->
+<div class="bg-surface-container-high rounded-xl p-8 space-y-6">
+<h4 class="text-primary font-bold text-lg">Billing Details</h4>
+<div class="space-y-3">
+<div class="flex justify-between items-center text-on-surface-variant">
+<span class="text-sm">Velvet Chocolate Ganache (1.5kg)</span>
+<span class="font-medium">£54.00</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant">
+<span class="text-sm">Premium Packaging</span>
+<span class="font-medium text-primary">Included</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant">
+<span class="text-sm">Hand-delivered Shipping</span>
+<span class="font-medium">£8.50</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant">
+<span class="text-sm">VAT (20%)</span>
+<span class="font-medium">£10.80</span>
+</div>
+<div class="pt-4 border-t border-outline-variant/20 flex justify-between items-center">
+<span class="font-bold text-lg">Total Amount</span>
+<span class="text-2xl font-extrabold text-primary">£73.30</span>
+</div>
+</div>
+<!-- CTA -->
+<button class="w-full bg-primary text-on-primary py-5 rounded-full font-bold text-lg shadow-[0px_10px_20px_rgba(117,88,78,0.2)] hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-3">
+                Proceed to Payment
+                <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
 </main>
 <!-- BottomNavBar -->
-<nav class="fixed bottom-0 left-0 w-full bg-[#FFF9E6] dark:bg-[#363317] flex justify-around items-center px-4 pb-6 pt-3 z-50 rounded-t-xl shadow-[0px_-10px_30px_rgba(117,88,78,0.05)] border-t border-[#B9B38D]/15">
-<a class="flex flex-col items-center justify-center bg-[#F6CFC2] dark:bg-[#75584E] text-[#75584E] dark:text-[#FFF7P5] rounded-full px-6 py-2 transition-all duration-300 ease-out active:scale-90" href="#">
-<span class="material-symbols-outlined" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<nav class="fixed bottom-0 left-0 w-full z-50 rounded-t-[3rem] bg-[#FFF9E6] shadow-[0px_-10px_30px_rgba(117,88,78,0.05)] border-t border-[#B9B38D]/15 flex justify-around items-center px-4 pb-6 pt-3">
+<!-- Home -->
+<a class="flex flex-col items-center justify-center text-[#646040] px-6 py-2 hover:bg-[#FAF4D6] transition-all duration-300 rounded-full group" href="#">
+<span class="material-symbols-outlined mb-1 transition-transform group-active:scale-90">home</span>
 <span class="font-plus-jakarta text-[10px] font-medium tracking-wide">Home</span>
 </a>
-<a class="flex flex-col items-center justify-center text-[#646040] dark:text-[#EAE3BB] px-6 py-2 hover:bg-[#FAF4D6] dark:hover:bg-[#4E4A2F] rounded-full transition-all duration-300 ease-out active:scale-90" href="#">
-<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
-<span class="font-plus-jakarta text-[10px] font-medium tracking-wide">My Orders</span>
+<!-- My Orders (ACTIVE) -->
+<a class="flex flex-col items-center justify-center bg-[#F6CFC2] text-[#75584E] rounded-full px-6 py-2 transition-all duration-300 scale-105" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">shopping_bag</span>
+<span class="font-plus-jakarta text-[10px] font-bold tracking-wide">My Orders</span>
 </a>
-<a class="flex flex-col items-center justify-center text-[#646040] dark:text-[#EAE3BB] px-6 py-2 hover:bg-[#FAF4D6] dark:hover:bg-[#4E4A2F] rounded-full transition-all duration-300 ease-out active:scale-90" href="#">
-<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+<!-- Calendar -->
+<a class="flex flex-col items-center justify-center text-[#646040] px-6 py-2 hover:bg-[#FAF4D6] transition-all duration-300 rounded-full group" href="#">
+<span class="material-symbols-outlined mb-1 transition-transform group-active:scale-90">calendar_month</span>
 <span class="font-plus-jakarta text-[10px] font-medium tracking-wide">Calendar</span>
 </a>
-<a class="flex flex-col items-center justify-center text-[#646040] dark:text-[#EAE3BB] px-6 py-2 hover:bg-[#FAF4D6] dark:hover:bg-[#4E4A2F] rounded-full transition-all duration-300 ease-out active:scale-90" href="#">
-<span class="material-symbols-outlined" data-icon="person">person</span>
+<!-- Profile -->
+<a class="flex flex-col items-center justify-center text-[#646040] px-6 py-2 hover:bg-[#FAF4D6] transition-all duration-300 rounded-full group" href="#">
+<span class="material-symbols-outlined mb-1 transition-transform group-active:scale-90">person</span>
 <span class="font-plus-jakarta text-[10px] font-medium tracking-wide">Profile</span>
 </a>
 </nav>
-<!-- Floating Action Button - Only on Home -->
-<button class="fixed bottom-24 right-6 w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center active:scale-90 transition-transform z-40">
-<span class="material-symbols-outlined" data-icon="add">add</span>
-</button>
 </body></html>

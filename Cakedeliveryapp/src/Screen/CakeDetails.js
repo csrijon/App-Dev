@@ -1,14 +1,15 @@
-import { View, Text, StyleSheet, StatusBar, ScrollView, Image,TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, StatusBar, ScrollView, Image, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context"
 import Detailsheader from "../components/Detailsheader";
+import Feather from 'react-native-vector-icons/Feather';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
-
-const CakeDetails = ({navigation}) => {
+const CakeDetails = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.CakeDetails} >
             <StatusBar backgroundColor="#fff9e6" barStyle="dark-content" />
             <Detailsheader />
-            <ScrollView style={styles.scrollViewcakedetails} >
+            <ScrollView contentContainerStyle={{paddingBottom:40}} style={styles.scrollViewcakedetails} >
                 <View>
                     <View style={styles.cakemaindetails} >
                         <Image source={require("../images/cakeimage.jpeg")} style={styles.cakeImage} />
@@ -23,7 +24,10 @@ const CakeDetails = ({navigation}) => {
 
                         {/* Rating */}
                         <View style={styles.ratingRow}>
-                            <Text style={styles.rating}>⭐ 4.9</Text>
+                            <View style={styles.ratingcircle} >
+                                <Text style={styles.rating}>⭐ 4.9</Text>
+                            </View>
+
                             <Text style={styles.review}>(128 Reviews)</Text>
                         </View>
 
@@ -41,11 +45,14 @@ const CakeDetails = ({navigation}) => {
                                 source={require("../images/cakeimage.jpeg")}
                                 style={styles.chefImage}
                             />
-                            <View style={{ flex: 1 }}>
+                            <View style={{ flex: 1, gap: 5 }}>
                                 <Text style={styles.chefLabel}>Crafted by</Text>
                                 <Text style={styles.chefName}>Master Baker Elena Rossi</Text>
                             </View>
-                            <Text style={styles.portfolio}>View Portfolio</Text>
+                            <TouchableOpacity activeOpacity={0.5} >
+                                <Text style={styles.portfolio}>View Portfolio</Text>
+                            </TouchableOpacity>
+
                         </View>
 
                         {/* Flavor Profile */}
@@ -61,11 +68,11 @@ const CakeDetails = ({navigation}) => {
 
                         {/* Buttons */}
                         <View style={styles.buttonContainer}>
-                            <TouchableOpacity onPress={()=>navigation.navigate("Ordersummary")}  style={styles.primaryBtn}>
+                            <TouchableOpacity onPress={() => navigation.navigate("Ordersummary")} style={styles.primaryBtn}>
                                 <Text style={styles.primaryText}>Add to Cart</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={()=>navigation.navigate("Customorder")} style={styles.secondaryBtn}>
+                            <TouchableOpacity onPress={() => navigation.navigate("Customorder")} style={styles.secondaryBtn}>
                                 <Text style={styles.secondaryText}>Custom Order</Text>
                             </TouchableOpacity>
                         </View>
@@ -79,8 +86,8 @@ const CakeDetails = ({navigation}) => {
 
                     {/* Item 1 */}
                     <View style={styles.processItem}>
-                        <Text style={styles.icon}>🕒</Text>
-                        <View style={{ flex: 1 }}>
+                        <Text style={styles.icon}><Feather name="clock" color="#75584e" size={24} /></Text>
+                        <View style={{ flex: 1,gap:10 }}>
                             <Text style={styles.processHeading}>48–Hour Curing</Text>
                             <Text style={styles.processText}>
                                 Each layer is cured to perfection for optimal texture and moisture retention.
@@ -90,8 +97,8 @@ const CakeDetails = ({navigation}) => {
 
                     {/* Item 2 */}
                     <View style={styles.processItem}>
-                        <Text style={styles.icon}>🌿</Text>
-                        <View style={{ flex: 1 }}>
+                        <Text style={styles.icon}>  <MaterialIcons name="eco" color="#75584e" size={24} /></Text>
+                        <View style={{ flex: 1,gap:10 }}>
                             <Text style={styles.processHeading}>Organic Sourcing</Text>
                             <Text style={styles.processText}>
                                 We only use grass-fed dairy and organic vanilla pods from local sustainable farms.
@@ -140,8 +147,6 @@ const styles = StyleSheet.create({
         resizeMode: "cover",
         borderTopLeftRadius: 50,
         borderBottomRightRadius: 50,
-        borderTopRightRadius: 20,
-        borderBottomLeftRadius: 20,
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 10 },
         shadowOpacity: 0.15,
@@ -182,15 +187,22 @@ const styles = StyleSheet.create({
     detailsContainer: {
         marginTop: 20,
     },
-
+    ratingcircle: {
+        paddingVertical: 4,
+        paddingHorizontal: 12,
+        backgroundColor: "#f8bbd0",
+        borderRadius: 9999
+    },
     ratingRow: {
         flexDirection: "row",
         alignItems: "center",
-        marginBottom: 8,
+        marginBottom: 16,
+        gap: 10
     },
     rating: {
         fontWeight: "bold",
         marginRight: 6,
+        color: "#623648"
     },
 
     review: {
@@ -198,25 +210,27 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        fontSize: 24,
+        fontSize: 30,
         fontWeight: "bold",
         color: "#5c4033",
-        marginBottom: 10,
+        marginBottom: 15,
     },
 
     description: {
-        color: "#6e5a4f",
+        color: "#363317",
         lineHeight: 20,
         marginBottom: 20,
+        letterSpacing: 0.6
     },
 
     chefCard: {
         flexDirection: "row",
         alignItems: "center",
         backgroundColor: "#f3e8d9",
-        padding: 12,
+        padding: 16,
         borderRadius: 20,
         marginBottom: 20,
+        borderRadius: 9999
     },
 
     chefImage: {
@@ -228,11 +242,13 @@ const styles = StyleSheet.create({
 
     chefLabel: {
         fontSize: 12,
-        color: "#777",
+        color: "#646040",
+        fontWeight: 500
     },
 
     chefName: {
-        fontWeight: "bold",
+        fontWeight: "700",
+        color: "#75584e"
     },
 
     portfolio: {
@@ -241,9 +257,10 @@ const styles = StyleSheet.create({
     },
 
     sectionTitle: {
-        fontSize: 12,
+        fontSize: 15,
+        fontWeight:"700",
         letterSpacing: 1,
-        color: "#777",
+        color: "#646040",
         marginBottom: 10,
     },
 
@@ -255,15 +272,16 @@ const styles = StyleSheet.create({
     },
 
     tag: {
-        backgroundColor: "#e7b6c7",
-        paddingVertical: 6,
-        paddingHorizontal: 10,
-        borderRadius: 8,
+        backgroundColor: "#f8bbd0",
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        borderRadius: 5,
     },
 
     tagText: {
-        fontSize: 12,
-        color: "#5c4033",
+        fontSize: 14,
+        color: "#623648",
+        fontWeight:600
     },
 
     buttonContainer: {
@@ -272,7 +290,8 @@ const styles = StyleSheet.create({
 
     primaryBtn: {
         backgroundColor: "#6b4f4f",
-        padding: 16,
+        paddingVertical:20,
+        paddingHorizontal:32,
         borderRadius: 25,
         alignItems: "center",
     },
@@ -284,7 +303,8 @@ const styles = StyleSheet.create({
 
     secondaryBtn: {
         backgroundColor: "#e6c7b8",
-        padding: 16,
+        paddingVertical:20,
+        paddingHorizontal:32,
         borderRadius: 25,
         alignItems: "center",
     },
@@ -294,71 +314,74 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     processCard: {
-    backgroundColor: "#e8dec2",
-    padding: 20,
-    borderRadius: 30,
-    marginTop: 60,
-},
+        backgroundColor: "#faf4d6",
+        padding: 32,
+        borderRadius: 30,
+        marginTop: 60,
+    },
 
-processTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#5c4033",
-    marginBottom: 15,
-},
+    processTitle: {
+        fontSize: 20,
+        fontWeight: "bold",
+        color: "#75584e",
+        marginBottom: 15,
+    },
 
-processItem: {
-    flexDirection: "row",
-    marginBottom: 15,
-},
+    processItem: {
+        // flexDirection: "row",
+        gap:10,
+        marginBottom: 15,
+    },
 
-icon: {
-    fontSize: 18,
-    marginRight: 10,
-},
+    icon: {
+        fontSize: 18,
+        marginRight: 10,
+    },
 
-processHeading: {
-    fontWeight: "bold",
-    color: "#5c4033",
-    marginBottom: 4,
-},
+    processHeading: {
+        fontWeight: "700",
+        color: "#000",
+        marginBottom: 4,
+        fontSize:15
+    },
 
-processText: {
-    color: "#6e5a4f",
-    fontSize: 13,
-},
+    processText: {
+        color: "#646040",
+        fontSize: 14,
+        lineHeight:20
+    },
 
-handcraftedCard: {
-    backgroundColor: "#6b4f4f",
-    padding: 25,
-    borderRadius: 30,
-    marginTop: 20,
-    alignItems: "center",
-},
+    handcraftedCard: {
+        backgroundColor: "#6b4f4f",
+        padding: 25,
+        borderRadius: 30,
+        marginTop: 20,
+        alignItems: "center",
+    },
 
-percent: {
-    fontSize: 36,
-    fontWeight: "bold",
-    color: "#fff",
-},
+    percent: {
+        fontSize: 36,
+        fontWeight: "bold",
+        color: "#fff",
+    },
 
-handcraftedTitle: {
-    color: "#ddd",
-    letterSpacing: 1,
-    marginVertical: 8,
-},
+    handcraftedTitle: {
+        color: "#ddd",
+        letterSpacing: 1,
+        marginVertical: 8,
+    },
 
-divider: {
-    width: "80%",
-    height: 1,
-    backgroundColor: "#aaa",
-    marginVertical: 10,
-},
+    divider: {
+        width: "80%",
+        height: 1,
+        backgroundColor: "#aaa",
+        marginVertical: 10,
+    },
 
-handcraftedText: {
-    color: "#eee",
-    textAlign: "center",
-    fontSize: 13,
-    lineHeight: 18,
-},
+    handcraftedText: {
+        color: "#eee",
+        textAlign: "center",
+        fontSize: 13,
+        lineHeight: 18,
+    },
 });

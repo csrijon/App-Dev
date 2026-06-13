@@ -175,22 +175,24 @@ const styles = StyleSheet.create({
     },
 
     microLabel: {
-        fontSize: 14,
+        fontSize: 15,
         color: "#75584e",
         fontWeight: "800",
-        letterSpacing: 1
+        letterSpacing: 1,
+        marginBottom:4
     },
 
     heroLine: {
         fontSize: 14,
-        color: "#8b7d6b",
+        color: "#646040",
         marginBottom: 20,
+        fontWeight:"500"
     },
 
     creamPanel: {
-        backgroundColor: "#f8f4ee",
+        backgroundColor: "#ffffff",
         borderRadius: 30,
-        padding: 15,
+        padding: 20,
         overflow: "hidden",
     },
 
@@ -213,8 +215,8 @@ const styles = StyleSheet.create({
 
     cakeTitle: {
         fontSize: 16,
-        fontWeight: "bold",
-        color: "#5c4033",
+        fontWeight: "700",
+        color: "#75584e",
         flex: 1,
     },
 
