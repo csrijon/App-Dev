@@ -141,6 +141,7 @@ const menuItems = [
 const CategoryListing = ({ navigation }) => {
 
     const [isOpen, setIsOpen] = useState(false);
+    const [selectid,setselectid] = useState(null)
 
     // animation value
     const translateX = useSharedValue(-width);
@@ -235,7 +236,7 @@ const CategoryListing = ({ navigation }) => {
                         data={categories}
                         keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => (
-                            <CategoryCard title={item.title} />
+                            <CategoryCard setselectid={setselectid} selectid={selectid} id={item.id} title={item.title} />
                         )}
                     />
 

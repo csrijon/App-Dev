@@ -29,17 +29,17 @@ const Loginscreen = ({ navigation }) => {
 
             const idToken = userinfo.data.idToken
             console.log(idToken)
-            let response = await fetch("http://10.0.2.2:5000/googleAuth",{
-               method:"POST",
-               headers:{
-                "Content-Type":"application/json"
-               },
-               body:JSON.stringify({idToken: idToken})
+            let response = await fetch("http://10.0.2.2:5000/googleAuth", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ idToken: idToken })
             })
             let resdata = await response.json()
             console.log(resdata)
         } catch (error) {
-         console.log(error)
+            console.log(error)
         }
     }
 
@@ -74,8 +74,8 @@ const Loginscreen = ({ navigation }) => {
                     <View style={styles.mailinput} >
                         <Text style={styles.mailinputtext} >Mobile Number</Text>
                         <View style={styles.mailtextinput} >
-                          <FontAwesome name="mobile-phone" color="#000" size={24} />
-                            <TextInput keyboardType="numeric"  value={loginemail} onChangeText={(text) => {
+                            <FontAwesome name="mobile-phone" color="#000" size={24} />
+                            <TextInput keyboardType="numeric" value={loginemail} onChangeText={(text) => {
                                 setloginemail(text)
                             }} require placeholder="7029046473" maxLength={10} />
                         </View>
@@ -85,7 +85,7 @@ const Loginscreen = ({ navigation }) => {
                         <View style={styles.passwordforget} >
                             <Text>PASSWORD</Text>
                             <TouchableOpacity onPress={() => navigation.navigate("Reset")} >
-                                <Text>FORGOT?</Text>
+                                <Text style={styles.signupText} >FORGOT?</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={styles.passwordinput} >
@@ -172,20 +172,33 @@ const styles = StyleSheet.create({
     mailinputtext: {
         paddingLeft: 10
     },
-
     mailtextinput: {
         flexDirection: "row",
         alignItems: "center",
-        backgroundColor: "#faf4d6",
-        paddingLeft: 30,
-        paddingRight: 24,
+
+        backgroundColor: "#FFFDF8",
+
+        borderWidth: 1,
+        borderColor: "#E9E2D8",
+
+        paddingHorizontal: 18,
         paddingVertical: 16,
-        borderRadius: 32,
-        gap: 15
+
+        borderRadius: 18,
+
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.05,
+        shadowRadius: 8,
+
+        elevation: 2,
+        gap: 12,
     },
 
     passwordsection: {
-        // ❌ removed flex: 1 (important fix)
         gap: 10
     },
 
@@ -198,13 +211,28 @@ const styles = StyleSheet.create({
     passwordinput: {
         flexDirection: "row",
         alignItems: "center",
-        backgroundColor: "#faf4d6",
-        paddingLeft: 30,
-        paddingRight: 24,
+
+        backgroundColor: "#FFFDF8",
+
+        borderWidth: 1,
+        borderColor: "#E9E2D8",
+
+        paddingHorizontal: 18,
         paddingVertical: 16,
-        borderRadius: 32,
-        gap: 15,
-        marginTop: 10   // 🔧 balanced spacing
+
+        borderRadius: 18,
+
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.05,
+        shadowRadius: 8,
+
+        elevation: 2,
+
+        gap: 12,
     },
 
     loginbutton: {

@@ -1,47 +1,72 @@
+import React from "react";
 import {
   View,
   Text,
   StyleSheet,
   Image,
-  TouchableOpacity,
   StatusBar,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Button from "../components/Button.jsx";
 import { useNavigation } from "@react-navigation/native";
 
+import Button from "../components/Button.jsx";
+
 const WelcomeScreen = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
+
   return (
     <SafeAreaView style={styles.safeArea}>
-      <StatusBar backgroundColor="#efe3d3" barStyle="dark-content" />
+      <StatusBar backgroundColor="#F6F0E7" barStyle="dark-content" />
 
-      <View style={styles.container}>
-        {/* Logo Box */}
-        <View style={styles.logoBox}>
-          <Text style={styles.logoIcon}>🎂</Text>
-          <View style={styles.estBox}>
-            <Text style={styles.estText}>EST. 2024</Text>
+      <View style={styles.mainContainer}>
+        <Text style={styles.topLabel}>
+          ARTISANAL PATISSERIE
+        </Text>
+
+        <Text style={styles.mainTitle}>
+          Cake Haven
+        </Text>
+
+        <View style={styles.titleDivider} />
+
+        <View style={styles.outerCircle}>
+          <View style={styles.innerCircle}>
+            <Image
+              source={require("../images/cakeimage.jpeg")}
+              style={styles.cakeImage}
+            />
+          </View>
+
+          <View style={styles.sinceBadge}>
+            <Text style={styles.starIcon}>★</Text>
+
+            <Text style={styles.sinceText}>
+              SINCE 2026
+            </Text>
           </View>
         </View>
 
-        {/* Title */}
-        <Text style={styles.title}>Cake Haven</Text>
-        <Text style={styles.subtitle}>
-          Where every bite is a piece of artisanal heaven.
+        <Text style={styles.descriptionText}>
+          Where every bite is a piece{"\n"}
+          of artisanal heaven.
         </Text>
 
-        {/* Cake Image */}
-        <Image
-          source={require("../images/cakeimage.jpeg")}
-          style={styles.cakeImage}
-        />
+        <View style={styles.buttonContainer}>
+          <Button
+            title="Get Started"
+            onPress={() => navigation.navigate("Signup")}
+          />
+        </View>
 
-        {/* Button */}
-        <Button onPress={() => navigation.navigate("Signup")} title="Get Started" />
+        <View style={styles.footerContainer}>
+          <View style={styles.footerLine} />
 
-        {/* Footer */}
-        <Text style={styles.footer}>Created By Srijon</Text>
+          <Text style={styles.footerText}>
+            CREATED BY SRIJON
+          </Text>
+
+          <View style={styles.footerLine} />
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -52,76 +77,120 @@ export default WelcomeScreen;
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#efe3d3",
+    backgroundColor: "#F6F0E7",
   },
 
-  container: {
+  mainContainer: {
     flex: 1,
-    backgroundColor: "#efe3d3",
     alignItems: "center",
-    justifyContent: "center",
-    padding: 20,
+    paddingHorizontal: 25,
+    paddingTop: 40,
   },
 
-  logoBox: {
-    width: 140,
-    height: 140,
-    backgroundColor: "#f5f0ea",
-    borderRadius: 30,
+  topLabel: {
+    fontSize: 10,
+    letterSpacing: 4,
+    color: "#B7ADA3",
+    fontWeight: "600",
+    marginTop: 10,
+  },
+
+  mainTitle: {
+    fontSize: 42,
+    fontWeight: "700",
+    color: "#7B6259",
+    marginTop: 10,
+  },
+
+  titleDivider: {
+    width: 70,
+    height: 2,
+    backgroundColor: "#DDD2C7",
+    marginTop: 8,
+    marginBottom: 30,
+  },
+
+  outerCircle: {
+    width: 280,
+    height: 280,
+    borderRadius: 140,
+    borderWidth: 1,
+    borderColor: "#E4DCD1",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 20,
-    transform: [{ rotate: "-10deg" }],
-    elevation: 5, // shadow for Android
+    position: "relative",
   },
 
-  logoIcon: {
-    fontSize: 40,
-  },
-
-  estBox: {
-    position: "absolute",
-    bottom: -10,
-    backgroundColor: "#e7a9b4",
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 6,
-    transform: [{ rotate: "15deg" }],
-  },
-
-  estText: {
-    fontSize: 12,
-    fontWeight: "bold",
-    color: "#5a3e36",
-  },
-
-  title: {
-    fontSize: 26,
-    fontWeight: "bold",
-    marginTop: 20,
-    color: "#5a3e36",
-  },
-
-  subtitle: {
-    fontSize: 14,
-    textAlign: "center",
-    marginVertical: 10,
-    color: "#7a6a5f",
-    paddingHorizontal: 30,
+  innerCircle: {
+    width: 245,
+    height: 245,
+    borderRadius: 122.5,
+    overflow: "hidden",
   },
 
   cakeImage: {
-    width: 220,
-    height: 160,
-    borderRadius: 20,
-    marginVertical: 40,
+    width: "100%",
+    height: "100%",
   },
 
-  footer: {
+  sinceBadge: {
     position: "absolute",
-    bottom: 20,
+    right: 5,
+    bottom: 40,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    borderRadius: 30,
+    elevation: 6,
+  },
+
+  starIcon: {
+    color: "#B48A69",
+    marginRight: 6,
+    fontSize: 12,
+  },
+
+  sinceText: {
     fontSize: 10,
-    color: "#8c7b70",
+    color: "#8A7F75",
+    fontWeight: "700",
+    letterSpacing: 1,
+  },
+
+  descriptionText: {
+    marginTop: 35,
+    textAlign: "center",
+    color: "#AAA095",
+    fontSize: 22,
+    lineHeight: 34,
+    fontStyle: "italic",
+  },
+
+  buttonContainer: {
+    width: "100%",
+    marginTop: 50,
+  },
+
+  footerContainer: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 60,
+  },
+
+  footerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: "#DDD3C8",
+  },
+
+  footerText: {
+    marginHorizontal: 12,
+    fontSize: 10,
+    color: "#B6ABA0",
     letterSpacing: 2,
+    fontWeight: "600",
   },
 });

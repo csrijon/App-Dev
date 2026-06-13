@@ -107,8 +107,6 @@ const foodData = [
 
 const Homescreen = ({ navigation }) => {
    
-      
-
     const { width, height } = useWindowDimensions()
     return (
         <SafeAreaView style={styles.Homecontainer} >
@@ -118,11 +116,11 @@ const Homescreen = ({ navigation }) => {
             <Header  />
 
             {/* Scrollable Content */}
-            <ScrollView contentContainerStyle={{ paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
-
-                <View style={styles.searchContainer} >
+            <ScrollView contentContainerStyle={{ paddingBottom: 40, }} showsVerticalScrollIndicator={false}>
+          <View style={styles.subhomecontainer} >
+                {/* <View style={styles.searchContainer} > */}
                     <Search />
-                </View>
+                {/* </View> */}
 
                 <View style={styles.featuredBakesContainer} >
                     <Text style={styles.featuredBakesText} >Featured Bakes</Text>
@@ -185,6 +183,7 @@ const Homescreen = ({ navigation }) => {
                         }
                     />
                 </View>
+                </View>
             </ScrollView>
         </SafeAreaView>
     )
@@ -199,33 +198,31 @@ const styles = StyleSheet.create({
         borderBottomColor: "#e5e7eb",
         borderBottomWidth: 1,
     },
-    searchContainer: {
-        paddingHorizontal: 20,
-        marginVertical: 20,
+    subhomecontainer:{
+     paddingHorizontal:18
     },
     featuredBakesContainer: {
         flexDirection: "row",
-        paddingHorizontal: 20,
+        // paddingHorizontal: 20,
         justifyContent: "space-between",
         alignItems: "center",
     },
     featuredBakesText: {
         fontSize: 18,
-        fontWeight: "bold",
+        fontWeight: "700",
         color: "#75584e",
-        curser: "pointer"
     },
     exploreCollectionsText: {
         fontSize: 18,
         fontWeight: "bold",
         color: "#75584e",
-        paddingHorizontal: 20,
+        // paddingHorizontal: 20,
         marginVertical: 10,
         letterSpacing: 0.4,
     },
     container: {
         flexDirection: "row",
-        marginHorizontal: 20,
+        // marginHorizontal: 20,
         marginTop: 20,
         gap: 15,
     },
@@ -281,7 +278,7 @@ const styles = StyleSheet.create({
         // alignItems: "center",
         width: "100%",
         // paddingLeft: 0,
-        paddingHorizontal: 20,
+        // paddingHorizontal: 20,
         overflow: "hidden"
     }
 })

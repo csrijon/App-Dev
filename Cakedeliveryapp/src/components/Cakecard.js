@@ -1,15 +1,15 @@
-import { View, Image, Text, StyleSheet } from "react-native"
+import { View, Image, Text, StyleSheet,TouchableOpacity } from "react-native"
 
 const Cakecard = ({image,trend,name,price}) => {
     return (
-        <View style={styles.Cakecard} >
+        <TouchableOpacity activeOpacity={0.8} style={styles.Cakecard} >
             <Image style={styles.Cakeimage} source={image} />
             <View style={styles.cakedetails} >
                 <Text style={styles.caketexttrend} >{trend}</Text>
                 <Text style={styles.caketextname} >{name}</Text>
                 <Text style={styles.caketextprice} >{price}</Text>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 export default Cakecard;

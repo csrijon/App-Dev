@@ -1,12 +1,12 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useState } from "react";
 
-const CategoryCard = ({ title}) => {
-  const [isPressed, setIsPressed] = useState(null);
+const CategoryCard = ({ title,id,setselectid,selectid}) => {
+
 
 
   return (
-    <TouchableOpacity onPress={()=>setIsPressed(!isPressed)} style={[styles.card,{backgroundColor:isPressed?'#fff':'#f4dce4'}]}>
+    <TouchableOpacity onPress={()=>setselectid(id)} style={[styles.card,{backgroundColor:selectid===id?'#fff':'#f4dce4'}]}>
       <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>
   );

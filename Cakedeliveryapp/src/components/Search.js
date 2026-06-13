@@ -21,14 +21,28 @@ const styles = StyleSheet.create({
         backgroundColor: "#F3EFD9",
         flexDirection: "row",
         alignItems: "center",
-        paddingHorizontal: 15,
+
         height: 50,
         borderRadius: 25,
-        // marginTop: 20,
+        marginTop: 10,
+        marginBottom: 10,
+        paddingLeft: 16,
+
+        shadowColor: "#0000000d",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 2,
+
+        elevation: 4,
     },
     searchInput: {
         marginLeft: 10,
         fontSize: 14,
         flex: 1,
+        paddingRight: 16,
+
     }
 });

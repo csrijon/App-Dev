@@ -16,10 +16,10 @@ const Signupscreen = ({ navigation }) => {
     const [password, setpassword] = useState("")
     const [confirmpassword, setconfirmpassword] = useState("")
 
-    const onclickcreateaccount=()=>{
+    const onclickcreateaccount = () => {
         if (checkbox && fullname && fullemail && password && confirmpassword) {
             console.log("all statement is true")
-        }else{
+        } else {
             console.log("some statement is false")
         }
     }
@@ -37,6 +37,24 @@ const Signupscreen = ({ navigation }) => {
                     {/*signup top end*/}
                     {/*signup form start*/}
                     <View style={styles.signupform} >
+
+                        <View style={styles.welcomeBanner}>
+                            <View style={styles.welcomeIconContainer}>
+                                <Text style={styles.welcomeIcon}>🍰</Text>
+                            </View>
+
+                            <View style={styles.welcomeContent}>
+                                <Text style={styles.welcomeTitle}>
+                                    Welcome to Cake Haven
+                                </Text>
+
+                                <Text style={styles.welcomeDescription}>
+                                    Create your account and enjoy exclusive desserts, special offers and delightful experiences.
+                                </Text>
+                            </View>
+                        </View>
+
+
                         <View style={styles.signupformtop} >
                             <Text style={styles.signupformtopText} >Create Account</Text>
                             <Text style={styles.signupformtopDescription} >Join our community of dessert lovers today.</Text>
@@ -57,8 +75,8 @@ const Signupscreen = ({ navigation }) => {
                         <View style={styles.signupforminput} >
                             <Text>Mobile Number</Text>
                             <View style={styles.inputcontainer} >
-                              
-                                 <FontAwesome  style={styles.iconcolor} name="mobile-phone" color="#000" size={24} />
+
+                                <FontAwesome style={styles.iconcolor} name="mobile-phone" color="#000" size={24} />
                                 <TextInput onChangeText={(text) => {
                                     setfullemail(text)
                                     console.log(text)
@@ -139,7 +157,8 @@ const styles = StyleSheet.create({
         flex: 1,
         height: "100%",
         backgroundColor: "#ffffff",
-        borderRadius: 48,
+        borderTopLeftRadius: 40,
+        borderTopRightRadius: 40
     },
     signupview: {
         flex: 1,
@@ -149,11 +168,13 @@ const styles = StyleSheet.create({
     signuptop: {
         flexDirection: "row",
         alignItems: "center",
-        gap: 15,
+        gap: 12,
+        marginBottom: 15
     },
     cakehaventext: {
-        fontSize: 20,
-        fontWeight: "bold",
+        fontSize: 24,
+        fontWeight: "700",
+        color: "#4B3425",
     },
     signupform: {
         flex: 1,
@@ -165,44 +186,64 @@ const styles = StyleSheet.create({
         marginBottom: 30,
     },
     signupformtopText: {
-        fontSize: 34,
-        fontWeight: "bold",
+        fontSize: 32,
+        fontWeight: "800",
+        color: "#2C1810",
     },
     signupformtopDescription: {
-        fontSize: 18,
-        color: "#646040",
-        letterSpacing: 0.5,
+        fontSize: 15,
+        color: "#8B7D6B",
+        lineHeight: 22,
     },
     signupforminput: {
-        gap: 10,
-        marginBottom: 20,
+        gap: 8,
+        marginBottom: 18,
     },
     inputcontainer: {
         flexDirection: "row",
         alignItems: "center",
-        gap: 10,
-        backgroundColor: "#faf4d6",
-        paddingHorizontal: 20,
+        backgroundColor: "#FFFDF8",
+
+        borderWidth: 1,
+        borderColor: "#E9E2D8",
+
+        paddingHorizontal: 18,
         paddingVertical: 16,
-        borderRadius: 20,
+
+        borderRadius: 18,
+
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.05,
+        shadowRadius: 8,
+
+        elevation: 2,
     },
     iconcolor: {
-        color: "#646040",
+        color: "#A67C52",
     },
     termsandcondition: {
         flexDirection: "row",
         alignItems: "center",
-        gap: 15,
+        gap: 12,
+        marginTop: 5,
     },
     termsandconditionText: {
-        lineHeight: 20,
+        lineHeight: 22,
+        color: "#7A6A58",
+        flex: 1
     },
     signupbutton: {
         marginVertical: 20,
     },
     quickaccesstext: {
         textAlign: "center",
-        color: "#646040",
+        color: "#B6A18B",
+        letterSpacing: 3,
+        fontWeight: "600",
         marginBottom: 20,
     },
     socialmediabuttons: {
@@ -215,20 +256,60 @@ const styles = StyleSheet.create({
         gap: 10,
     },
     lastelementText: {
-        fontSize: 16,
-        lineHeight: 24,
+        fontSize: 15,
+        color: "#777",
     },
     loginelementText: {
-        fontSize: 16,
-        lineHeight: 24,
-        color: "#6b4a3f",
-        fontWeight: "bold",
-        cursor: "pointer",
+        color: "#8B5E3C",
+        fontWeight: "700",
+        fontSize: 15,
     },
     textinput: {
-        color: "#000",
         flex: 1,
-    }
+        color: "#2C1810",
+        fontSize: 15,
+        marginLeft: 10,
+    },
+    welcomeBanner: {
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#FFF3E6",
+        borderRadius: 24,
+        padding: 18,
+        marginBottom: 25,
+        borderWidth: 1,
+        borderColor: "#F4D7BF",
+    },
 
+    welcomeIconContainer: {
+        width: 55,
+        height: 55,
+        borderRadius: 27.5,
+        backgroundColor: "#FFFFFF",
+        justifyContent: "center",
+        alignItems: "center",
+        marginRight: 15,
+    },
+
+    welcomeIcon: {
+        fontSize: 26,
+    },
+
+    welcomeContent: {
+        flex: 1,
+    },
+
+    welcomeTitle: {
+        fontSize: 17,
+        fontWeight: "700",
+        color: "#5A3E2B",
+        marginBottom: 4,
+    },
+
+    welcomeDescription: {
+        fontSize: 13,
+        lineHeight: 20,
+        color: "#8B7D6B",
+    },
 
 })

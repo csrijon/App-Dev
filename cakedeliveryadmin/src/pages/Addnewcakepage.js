@@ -5,7 +5,11 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
-    StatusBar, ScrollView, TextInput
+    StatusBar,
+    ScrollView,
+    TextInput,
+    Image,
+    Alert
 } from "react-native";
 import BakeryHeader from "../components/BakeryHeader"
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -15,18 +19,76 @@ import { launchImageLibrary } from "react-native-image-picker";
 
 const Addnewcakepage = ({ navigation }) => {
 
-    const [activeoffer, setnotactiveoffer] = useState(false)
-    // const [imageuri,setimageuri] = useState(null)
+    const [cakeName, setCakeName] = useState("");
+    const [description, setDescription] = useState("");
+    const [price, setPrice] = useState("");
+    const [discount, setDiscount] = useState("");
+    const [weight, setWeight] = useState("");
+    const [couponCode, setCouponCode] = useState("");
+    const [couponDiscount, setCouponDiscount] = useState("");
+    const [imageUri, setImageUri] = useState(null);
+    const [activeoffer, setnotactiveoffer] = useState(false);
+    const [offers, setOffers] = useState([]);
     const [isAvailable, setIsAvailable] = useState(true);
+
     const [isCouponActive, setIsCouponActive] = useState(true);
 
+
     const selectImage = async () => {
-        const imageresult = await launchImageLibrary({
+        const result = await launchImageLibrary({
             mediaType: "photo",
-            includeBase64: true
-        })
-        console.log(imageresult)
-    }
+        });
+
+        if (!result.didCancel && result.assets?.length > 0) {
+            setImageUri(result.assets[0].uri);
+        }
+    };
+
+    const validateForm = () => {
+
+        if (!cakeName.trim()) {
+            Alert.alert("Error", "Cake Name Required");
+            return false;
+        }
+
+        if (!price.trim()) {
+            Alert.alert("Error", "Price Required");
+            return false;
+        }
+
+        if (!imageUri) {
+            Alert.alert("Error", "Upload Cake Image");
+            return false;
+        }
+
+        return true;
+    };
+
+    const addCake = () => {
+
+        if (!validateForm()) return;
+
+        const cakeData = {
+            cakeName,
+            description,
+            price,
+            discount,
+            weight,
+            couponCode,
+            couponDiscount,
+            imageUri,
+            isAvailable
+        };
+
+        console.log(cakeData);
+
+        Alert.alert(
+            "Success",
+            "Cake Added Successfully"
+        );
+
+        navigation.navigate("CatalogUpdatedScreen");
+    };
 
     return (
         <SafeAreaView style={styles.Addnewcakecontainer} >
@@ -70,11 +132,18 @@ const Addnewcakepage = ({ navigation }) => {
                     </TouchableOpacity>
                     {/* Bottom Card */}
                     <View style={styles.previewCard}>
-
-                        <Text style={styles.plusIcon}>
-                            +
-                        </Text>
-
+                        {imageUri ? (
+                            <Image
+                                source={{ uri: imageUri }}
+                                style={{
+                                    width: "100%",
+                                    height: "100%",
+                                    borderRadius: 34,
+                                }}
+                            />
+                        ) : (
+                            <Text style={styles.plusIcon}>+</Text>
+                        )}
                     </View>
 
                 </View>
@@ -87,6 +156,8 @@ const Addnewcakepage = ({ navigation }) => {
                     </Text>
 
                     <TextInput
+                        value={cakeName}
+                        onChangeText={setCakeName}
                         placeholder="e.g. Midnight Truffle Rose"
                         placeholderTextColor="#B4AA8D"
                         style={styles.cakeNameInputField}
@@ -96,15 +167,14 @@ const Addnewcakepage = ({ navigation }) => {
                     <Text style={styles.formSectionLabel}>
                         Description
                     </Text>
-
                     <TextInput
+                        value={description}
+                        onChangeText={setDescription}
                         multiline
                         textAlignVertical="top"
-                        placeholder="Describe the textures, aromatics, and inspiration behind this creation..."
-                        placeholderTextColor="#B4AA8D"
+                        placeholder="Describe..."
                         style={styles.cakeDescriptionInput}
                     />
-
                     {/* Economics Section */}
                     <View style={styles.economicsInfoCard}>
 
@@ -121,8 +191,10 @@ const Addnewcakepage = ({ navigation }) => {
                                 </Text>
 
                                 <TextInput
+                                    value={price}
+                                    onChangeText={setPrice}
+                                    keyboardType="numeric"
                                     style={styles.priceTextInput}
-                                    placeholderTextColor="#B4AA8D"
                                 />
                             </View>
 
@@ -132,8 +204,10 @@ const Addnewcakepage = ({ navigation }) => {
                                 </Text>
 
                                 <TextInput
+                                    value={discount}
+                                    onChangeText={setDiscount}
+                                    keyboardType="numeric"
                                     style={styles.discountTextInput}
-                                    placeholderTextColor="#B4AA8D"
                                 />
                             </View>
 
@@ -147,8 +221,10 @@ const Addnewcakepage = ({ navigation }) => {
                             </Text>
 
                             <TextInput
+                                value={weight}
+                                onChangeText={setWeight}
+                                keyboardType="numeric"
                                 style={styles.weightTextInput}
-                                placeholderTextColor="#B4AA8D"
                             />
 
                         </View>
@@ -266,40 +342,41 @@ const Addnewcakepage = ({ navigation }) => {
 
                     </View>
 
-                    <View style={styles.couponInputRow}>
+                    {!activeoffer && (
+                        <View style={styles.couponInputRow}>
 
-                        <View style={styles.couponCodeWrapper}>
+                            <View style={styles.couponCodeWrapper}>
 
-                            <Text style={styles.couponLabel}>
-                                Coupon Code
-                            </Text>
+                                <Text style={styles.couponLabel}>
+                                    Coupon Code
+                                </Text>
 
-                            <TextInput
-                                placeholder="e.g. SWEET20"
-                                placeholderTextColor="#B4AA8D"
-                                style={styles.couponTextInput}
-                            />
+                                <TextInput
+                                    value={couponCode}
+                                    onChangeText={setCouponCode}
+                                    placeholder="e.g. SWEET20"
+                                    style={styles.couponTextInput}
+                                />
+
+                            </View>
+
+                            <View style={styles.discountWrapper}>
+
+                                <Text style={styles.couponLabel}>
+                                    OFF (%)
+                                </Text>
+
+                                <TextInput
+                                    value={couponDiscount}
+                                    onChangeText={setCouponDiscount}
+                                    placeholder="20"
+                                    keyboardType="numeric"
+                                    style={styles.discountTextInputField}
+                                />
+                            </View>
 
                         </View>
-
-                        <View style={styles.discountWrapper}>
-
-                            <Text style={styles.couponLabel}>
-                                OFF (%)
-                            </Text>
-
-                            <TextInput
-                                placeholder="20"
-                                placeholderTextColor="#B4AA8D"
-                                style={styles.discountTextInputField}
-                                keyboardType="numeric"
-
-                            />
-
-                        </View>
-
-                    </View>
-
+                    )}
 
                 </View>
 
@@ -332,7 +409,7 @@ const Addnewcakepage = ({ navigation }) => {
                                 />
 
                                 <Text style={styles.activeOfferCount}>
-                                    4
+                                    {offers.length}
                                 </Text>
                             </View>
 
@@ -428,7 +505,7 @@ const Addnewcakepage = ({ navigation }) => {
                 </TouchableOpacity>
 
                 {/* Add to Catalog */}
-                <TouchableOpacity onPress={()=>navigation.navigate("CatalogUpdatedScreen")} style={styles.catalogButton}>
+                <TouchableOpacity onPress={addCake} style={styles.catalogButton}>
 
                     <Ionicons
                         name="checkmark-circle-outline"
