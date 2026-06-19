@@ -1,10 +1,51 @@
-import { View, Text, StyleSheet, StatusBar, ScrollView, Image, TouchableOpacity } from "react-native";
+import { useState } from "react";
+import { View, Text, StyleSheet, StatusBar, ScrollView, Image, TouchableOpacity, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context"
 import Detailsheader from "../components/Detailsheader";
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const CakeDetails = ({ navigation }) => {
+
+    const [isFavorite, setIsFavorite] = useState(false);
+    const [quantity, setQuantity] = useState(1);
+    const [showFullDescription, setShowFullDescription] = useState(false);
+
+    const description = "A masterpiece of confectionary art, this three-tier wedding cake features layers of Tahitian vanilla bean sponge infused with a delicate rosewater syrup. Hand-sculpted sugar peonies cascade down a smooth Swiss meringue buttercream canvas, accented by 24k gold leaf details.";
+
+    const shortDescription = description.slice(0, 100) + "...";
+
+    const pricePerCake = 850;
+    const totalPrice = pricePerCake * quantity;
+
+    const increaseQuantity = () => {
+        setQuantity(prev => prev + 1);
+    };
+
+    const decreaseQuantity = () => {
+        if (quantity > 1) {
+            setQuantity(prev => prev - 1);
+        }
+    };
+
+    const handleAddToCart = () => {
+        Alert.alert(
+            "Added to Cart 🎉",
+            `${quantity} x The Celestial Peony added to your cart.\nTotal: $${totalPrice}`,
+            [
+                {
+                    text: "OK",
+                    onPress: () => navigation.navigate("Ordersummary")
+                }
+            ]
+        );
+    };
+
+    const toggleFavorite = () => {
+        setIsFavorite(prev => !prev);
+    };
+
     return (
         <SafeAreaView style={styles.CakeDetails} >
             <StatusBar backgroundColor="#fff9e6" barStyle="dark-content" />
@@ -13,9 +54,23 @@ const CakeDetails = ({ navigation }) => {
                 <View>
                     <View style={styles.cakemaindetails} >
                         <Image source={require("../images/cakeimage.jpeg")} style={styles.cakeImage} />
+
+                        {/* Favorite Button */}
+                        <TouchableOpacity
+                            activeOpacity={0.7}
+                            style={styles.favoriteBtn}
+                            onPress={toggleFavorite}
+                        >
+                            <AntDesign
+                                name={isFavorite ? "heart" : "hearto"}
+                                size={22}
+                                color={isFavorite ? "#e63946" : "#5c4033"}
+                            />
+                        </TouchableOpacity>
+
                         <View style={styles.cakeinfo} >
-                            <Text>Starting From</Text>
-                            <Text>$850</Text>
+                            <Text style={styles.cakeinfoTitle}>Starting From</Text>
+                            <Text style={styles.cakeinfoPrice}>${pricePerCake}</Text>
                         </View>
                     </View>
                 </View>
@@ -34,10 +89,18 @@ const CakeDetails = ({ navigation }) => {
                         {/* Title */}
                         <Text style={styles.title}>The Celestial Peony</Text>
 
-                        {/* Description */}
+                        {/* Description with Read More */}
                         <Text style={styles.description}>
-                            A masterpiece of confectionary art, this three-tier wedding cake features layers of Tahitian vanilla bean sponge infused with a delicate rosewater syrup. Hand-sculpted sugar peonies cascade down a smooth Swiss meringue buttercream canvas, accented by 24k gold leaf details.
+                            {showFullDescription ? description : shortDescription}
                         </Text>
+                        <TouchableOpacity
+                            activeOpacity={0.6}
+                            onPress={() => setShowFullDescription(prev => !prev)}
+                        >
+                            <Text style={styles.readMore}>
+                                {showFullDescription ? "Read Less" : "Read More"}
+                            </Text>
+                        </TouchableOpacity>
 
                         {/* Chef Card */}
                         <View style={styles.chefCard}>
@@ -66,9 +129,33 @@ const CakeDetails = ({ navigation }) => {
                             ))}
                         </View>
 
+                        {/* Quantity Selector */}
+                        <Text style={styles.sectionTitle}>QUANTITY</Text>
+                        <View style={styles.quantityRow}>
+                            <TouchableOpacity
+                                style={styles.quantityBtn}
+                                onPress={decreaseQuantity}
+                                activeOpacity={0.6}
+                            >
+                                <Feather name="minus" size={18} color="#5c4033" />
+                            </TouchableOpacity>
+
+                            <Text style={styles.quantityText}>{quantity}</Text>
+
+                            <TouchableOpacity
+                                style={styles.quantityBtn}
+                                onPress={increaseQuantity}
+                                activeOpacity={0.6}
+                            >
+                                <Feather name="plus" size={18} color="#5c4033" />
+                            </TouchableOpacity>
+
+                            <Text style={styles.totalPriceText}>Total: ${totalPrice}</Text>
+                        </View>
+
                         {/* Buttons */}
                         <View style={styles.buttonContainer}>
-                            <TouchableOpacity onPress={() => navigation.navigate("Ordersummary")} style={styles.primaryBtn}>
+                            <TouchableOpacity onPress={handleAddToCart} style={styles.primaryBtn}>
                                 <Text style={styles.primaryText}>Add to Cart</Text>
                             </TouchableOpacity>
 
@@ -154,6 +241,20 @@ const styles = StyleSheet.create({
         elevation: 10,
     },
 
+    favoriteBtn: {
+        position: "absolute",
+        top: 20,
+        right: 20,
+        backgroundColor: "#ffffff",
+        padding: 10,
+        borderRadius: 9999,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.15,
+        shadowRadius: 6,
+        elevation: 6,
+    },
+
     cakeinfo: {
         position: "absolute",
         bottom: 20,
@@ -219,8 +320,14 @@ const styles = StyleSheet.create({
     description: {
         color: "#363317",
         lineHeight: 20,
-        marginBottom: 20,
         letterSpacing: 0.6
+    },
+
+    readMore: {
+        color: "#75584e",
+        fontWeight: "700",
+        marginTop: 6,
+        marginBottom: 20,
     },
 
     chefCard: {
@@ -284,6 +391,36 @@ const styles = StyleSheet.create({
         fontWeight:600
     },
 
+    quantityRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 15,
+        marginBottom: 25,
+    },
+
+    quantityBtn: {
+        backgroundColor: "#f3e8d9",
+        padding: 10,
+        borderRadius: 9999,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+
+    quantityText: {
+        fontSize: 18,
+        fontWeight: "700",
+        color: "#5c4033",
+        minWidth: 25,
+        textAlign: "center",
+    },
+
+    totalPriceText: {
+        marginLeft: "auto",
+        fontSize: 15,
+        fontWeight: "700",
+        color: "#6b4f4f",
+    },
+
     buttonContainer: {
         gap: 12,
     },
@@ -328,7 +465,6 @@ const styles = StyleSheet.create({
     },
 
     processItem: {
-        // flexDirection: "row",
         gap:10,
         marginBottom: 15,
     },

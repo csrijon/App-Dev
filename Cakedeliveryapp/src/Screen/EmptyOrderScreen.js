@@ -5,24 +5,64 @@ import {
     StyleSheet,
     Image,
     TouchableOpacity,
-    ScrollView
+    ScrollView,
+    RefreshControl,
+    ActivityIndicator
 } from "react-native";
+import { useState } from "react";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Header from "../components/Header";
 
-const EmptyOrderScreen = () => {
+const EmptyOrderScreen = ({ navigation }) => {
+    const [refreshing, setRefreshing] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const onRefresh = () => {
+        setRefreshing(true);
+
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 1500);
+    };
     return (
         <SafeAreaView style={styles.container}>
             <Header name={"Srijon chowdhury"} />
-            <ScrollView Vertical contentContainerStyle={styles.mainContainer} >
-
+            <ScrollView
+                contentContainerStyle={styles.mainContainer}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
+            >
                 <View style={styles.imageContainer}>
+
                     <Image
                         source={require("../images/james-coleman-5HR1gItc7Gs-unsplash.jpg")}
                         style={styles.image}
                     />
+
+                    <TouchableOpacity
+                        style={styles.favoriteBtn}
+                    >
+                        <Ionicons
+                            name="heart-outline"
+                            size={24}
+                            color="#fff"
+                        />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={styles.shareBtn}
+                    >
+                        <Ionicons
+                            name="share-social-outline"
+                            size={22}
+                            color="#fff"
+                        />
+                    </TouchableOpacity>
                 </View>
 
                 <View style={styles.badge}>
@@ -38,10 +78,64 @@ const EmptyOrderScreen = () => {
                     cakes, they'll appear here for quick reordering.
                 </Text>
 
-                <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText}>Explore the Gallery</Text>
+                <View style={styles.statsRow}>
 
-                    <Ionicons name="arrow-forward" size={20} color="#fff" />
+                    <View style={styles.statCard}>
+                        <Text style={styles.statNumber}>50+</Text>
+                        <Text style={styles.statLabel}>Cakes</Text>
+                    </View>
+
+                    <View style={styles.statCard}>
+                        <Text style={styles.statNumber}>4.9★</Text>
+                        <Text style={styles.statLabel}>Rating</Text>
+                    </View>
+
+                    <View style={styles.statCard}>
+                        <Text style={styles.statNumber}>24h</Text>
+                        <Text style={styles.statLabel}>Delivery</Text>
+                    </View>
+
+                </View>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => {
+
+                        setLoading(true);
+
+                        setTimeout(() => {
+
+                            setLoading(false);
+
+                            navigation.navigate("Home");
+
+                        }, 1000);
+
+                    }}
+                >
+
+                    {
+                        loading ?
+
+                            <ActivityIndicator
+                                color="#fff"
+                            />
+
+                            :
+
+                            <>
+                                <Text style={styles.buttonText}>
+                                    Explore the Gallery
+                                </Text>
+
+                                <Ionicons
+                                    name="arrow-forward"
+                                    size={20}
+                                    color="#fff"
+                                />
+                            </>
+
+                    }
+
                 </TouchableOpacity>
 
             </ScrollView>
@@ -64,13 +158,54 @@ const styles = StyleSheet.create({
         paddingTop: 25,
         paddingBottom: 40
     },
+    statsRow: {
+        flexDirection: "row",
+        marginTop: 30,
+        gap: 15,
+    },
 
+    statCard: {
+        backgroundColor: "#fff",
+        paddingVertical: 15,
+        paddingHorizontal: 20,
+        borderRadius: 20,
+        alignItems: "center",
+
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.05,
+        shadowRadius: 8,
+        elevation: 3,
+    },
+
+    statNumber: {
+        fontSize: 18,
+        fontWeight: "800",
+        color: "#75584e",
+    },
+
+    statLabel: {
+        fontSize: 12,
+        color: "#8B7D6B",
+        marginTop: 4,
+    },
     imageContainer: {
         width: "100%",
-        height: 400,
-        borderTopLeftRadius: 50,
-        borderBottomRightRadius: 50,
+        height: 320,
+        borderRadius: 35,
         overflow: "hidden",
+
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 10,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 15,
+        elevation: 8,
     },
 
     image: {
@@ -80,11 +215,21 @@ const styles = StyleSheet.create({
     },
 
     badge: {
-        backgroundColor: "#f4dce4",
-        paddingHorizontal: 18,
-        paddingVertical: 8,
-        borderRadius: 999,
-        marginTop: 28,
+        position: "absolute",
+        top: 285,
+        backgroundColor: "#FFF5D9",
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderRadius: 50,
+
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.08,
+        shadowRadius: 6,
+        elevation: 4,
     },
 
     badgeText: {
@@ -101,26 +246,33 @@ const styles = StyleSheet.create({
         marginTop: 22,
         lineHeight: 42,
     },
-
     description: {
         textAlign: "center",
-        fontSize: 20,
-        color: "#646040",
-        marginTop: 20,
-        lineHeight: 34,
-        paddingHorizontal: 10,
+        fontSize: 17,
+        color: "#7A6A58",
+        marginTop: 18,
+        lineHeight: 30,
+        maxWidth: 320,
     },
-
     button: {
         marginTop: 40,
-        backgroundColor: "#7D6157",
+        backgroundColor: "#75584e",
         width: "100%",
         paddingVertical: 18,
-        borderRadius: 999,
+        borderRadius: 30,
+
+        shadowColor: "#75584e",
+        shadowOffset: {
+            width: 0,
+            height: 8,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 12,
+        elevation: 8,
+
         flexDirection: "row",
-        alignItems: "center",
         justifyContent: "center",
-        gap: 10,
+        alignItems: "center",
     },
 
     buttonText: {
@@ -128,4 +280,20 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: "bold",
     },
+    favoriteBtn: {
+        position: "absolute",
+        top: 15,
+        right: 15,
+        backgroundColor: "rgba(0,0,0,0.4)",
+        padding: 10,
+        borderRadius: 30
+    },
+    shareBtn:{
+    position:"absolute",
+    top:15,
+    left:15,
+    backgroundColor:"rgba(0,0,0,0.4)",
+    padding:10,
+    borderRadius:30
+},
 });

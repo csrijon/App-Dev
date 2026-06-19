@@ -159,20 +159,28 @@ const styles = StyleSheet.create({
   togglebuttongray: {
     backgroundColor: "#75584e",
   },
-  shellWrapper: {
-    flexDirection: "row",
-    backgroundColor: "#F6EFD9",
-    borderRadius: 25,
-    padding: 15,
-    marginBottom: 20,
-    alignItems: "center",
-  },
+  shellWrapper:{
+   flexDirection:"row",
+   backgroundColor:"#fff",
+   borderRadius:28,
+   padding:16,
+   marginBottom:20,
 
-  visualThumb: {
-    width: 80,
-    height: 80,
-    borderRadius: 15,
-  },
+   shadowColor:"#000",
+   shadowOffset:{
+      width:0,
+      height:5,
+   },
+   shadowOpacity:0.08,
+   shadowRadius:10,
+   elevation:5,
+},
+
+ visualThumb:{
+   width:95,
+   height:95,
+   borderRadius:20,
+},
 
   metaCluster: {
     marginLeft: 15,
@@ -209,12 +217,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  productHeading: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#3A2E2A",
-    flex: 1,
-  },
+ productHeading:{
+   fontSize:17,
+   fontWeight:"800",
+   color:"#2f241d",
+   flex:1,
+},
 
   priceTag: {
     fontSize: 14,

@@ -35,9 +35,65 @@ const deliverySlots = [
 ];
 
 const DeliveryMoment = ({ navigation, route }) => {
-    const [deliverysoltid, setdeliverysoltid] = useState(null)
-    const [selecteddate, setselecteddate] = useState("")
+    const [deliverysoltid, setdeliverysoltid] = useState(1)
+    const [selecteddate, setselecteddate] = useState(
+        new Date().toISOString().split("T")[0]
+    )
     const [datetime, setdatetime] = useState("")
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState("")
+    const selectedSlot = deliverySlots.find(
+        item => item.id === deliverysoltid
+    )
+    const getDeliveryCharge = () => {
+        if (!selectedSlot) return 0;
+
+        switch (selectedSlot.price) {
+            case "FREE":
+                return 0;
+            case "+$5.00":
+                return 5;
+            case "+$2.00":
+                return 2;
+            default:
+                return 0;
+        }
+    };
+    const handleNext = () => {
+
+        if (!selecteddate) {
+            setError("Please Select Date")
+            return
+        }
+
+        if (!deliverysoltid) {
+            setError("Please Select Delivery Slot")
+            return
+        }
+
+        setError("")
+        setLoading(true)
+
+        const orderData = {
+            title: route.params.title,
+            image: route.params.image,
+            description: route.params.description,
+            deliveryDate: selecteddate,
+            deliverySlot: selectedSlot,
+            deliveryCharge: getDeliveryCharge()
+        }
+
+        setTimeout(() => {
+
+            setLoading(false)
+
+            navigation.navigate("Cakedetails", {
+                orderData
+            })
+
+        }, 1000)
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar backgroundColor="#fff9e6" barStyle="dark-content" />
@@ -48,14 +104,8 @@ const DeliveryMoment = ({ navigation, route }) => {
                 <Text style={styles.title}>Choose Your Delivery Moment</Text>
 
                 <View style={styles.maincalender} >
-                    <Calendar onDayPress={(day) => {
-                        setselecteddate(day.dateString)
-                        setdatetime(new Date(day.dateString).toDateString())
-                    }} style={{
-                        padding: 20,
-                        borderRadius: 48,
-                        arrowColor: "#fff"
-                    }}
+                    <Calendar
+                        minDate={new Date().toISOString().split("T")[0]}
                         theme={{
                             backgroundColor: '#fff',
                             calendarBackground: '#fff',
@@ -68,21 +118,84 @@ const DeliveryMoment = ({ navigation, route }) => {
                         }}
 
                     />
+
+                    <View
+                        style={{
+                            backgroundColor: "#fff",
+                            padding: 15,
+                            borderRadius: 20,
+                            marginBottom: 20
+                        }}
+                    >
+
+                        <Text>
+                            Selected Date:
+                        </Text>
+
+                        <Text>
+                            {selecteddate}
+                        </Text>
+
+                        <Text
+                            style={{
+                                marginTop: 10
+                            }}
+                        >
+                            Delivery Slot:
+                        </Text>
+
+                        <Text>
+                            {selectedSlot?.title}
+                        </Text>
+
+                    </View>
+
                 </View>
 
                 {/* Time Options */}
+
+                {
+                    error ? (
+                        <Text
+                            style={{
+                                color: "red",
+                                marginBottom: 20,
+                                textAlign: "center",
+                                fontWeight: "600"
+                            }}
+                        >
+                            {error}
+                        </Text>
+                    ) : null
+                }
 
                 {
                     deliverySlots.map((item) => (
                         <TouchableOpacity
                             onPress={() => setdeliverysoltid(item.id)}
                             key={item.id}
-                            style={[styles.option, {
-                                borderColor: deliverysoltid === item.id ? "#f6cfc2" : "#75584e"
-                            }]}
+                            style={[
+                                styles.option,
+                                {
+                                    borderColor:
+                                        deliverysoltid === item.id
+                                            ? "#f6cfc2"
+                                            : "#75584e"
+                                }
+                            ]}
                         >
-                            <View style={[styles.iconStyle, { backgroundColor: deliverysoltid === item.id ? "#f3c6d3" : "#6b4f4f" }]}>
-                                <Text style={item.textStyle}>
+                            <View
+                                style={[
+                                    styles.iconStyle,
+                                    {
+                                        backgroundColor:
+                                            deliverysoltid === item.id
+                                                ? "#f3c6d3"
+                                                : "#6b4f4f"
+                                    }
+                                ]}
+                            >
+                                <Text>
                                     {item.icon}
                                 </Text>
                             </View>
@@ -102,13 +215,20 @@ const DeliveryMoment = ({ navigation, route }) => {
                                     {item.label}
                                 </Text>
 
-                                <Text style={item.price === "FREE" ? styles.free : styles.price}>
+                                <Text
+                                    style={
+                                        item.price === "FREE"
+                                            ? styles.free
+                                            : styles.price
+                                    }
+                                >
                                     {item.price}
                                 </Text>
                             </View>
                         </TouchableOpacity>
                     ))
                 }
+
                 {/* Cake Card */}
                 <View style={styles.cakeCard}>
                     <Image
@@ -126,8 +246,23 @@ const DeliveryMoment = ({ navigation, route }) => {
                 </View>
 
                 {/* Button */}
-                <TouchableOpacity onPress={() => navigation.navigate("Cakedetails")} style={styles.nextBtn}>
-                    <Text style={styles.nextText}>Next: Summary →</Text>
+                <TouchableOpacity
+                    onPress={handleNext}
+                    disabled={loading}
+                    style={[
+                        styles.nextBtn,
+                        {
+                            opacity: loading ? 0.7 : 1
+                        }
+                    ]}
+                >
+                    <Text style={styles.nextText}>
+                        {
+                            loading
+                                ? "Processing..."
+                                : "Next: Summary →"
+                        }
+                    </Text>
                 </TouchableOpacity>
 
                 <Text style={styles.footer}>
@@ -262,13 +397,13 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         marginBottom: 10,
         transform: [{ rotate: "5deg" }],
-      
+
     },
 
     badge: {
         marginTop: 15,
         backgroundColor: "#e7b6c7",
-        textAlign:"left",
+        textAlign: "left",
         paddingHorizontal: 10,
         paddingVertical: 4,
         borderRadius: 10,

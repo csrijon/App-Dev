@@ -1,18 +1,67 @@
 import { SafeAreaView } from "react-native-safe-area-context"
-import { View, StyleSheet, StatusBar, TouchableOpacity, Text, Image, TextInput, ScrollView } from "react-native"
+import {
+    View,
+    Text,
+    ScrollView,
+    TouchableOpacity,
+    TextInput,
+    Image,
+    RefreshControl,
+    ActivityIndicator,
+    Alert,
+    StyleSheet,
+    StatusBar
+} from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Simpleheader from "../components/Simpleheader"
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useState } from "react";
 
-const Profilescreen = ({navigation}) => {
+const Profilescreen = ({ navigation }) => {
+    const [refreshing, setRefreshing] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [fullName, setFullName] = useState("");
+    const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
+    const [currentPassword, setCurrentPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+    const [showNewPassword, setShowNewPassword] = useState(false);
+    const onRefresh = () => {
+
+        setRefreshing(true);
+
+        setTimeout(() => {
+
+            setRefreshing(false);
+
+        }, 1500);
+
+    };
     return (
         <SafeAreaView style={styles.Profilecontainer} >
             <StatusBar backgroundColor="#fff9e6" barStyle="dark-content" />
             <Simpleheader />
-            <ScrollView contentContainerStyle={{ paddingBottom: 40 }} style={styles.profilesection} >
+            <ScrollView
+                contentContainerStyle={{ paddingBottom: 40 }}
+                style={styles.profilesection}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
+            >
                 {/* {edit text section} */}
                 <View style={styles.profileedittext} >
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() =>
+                            Alert.alert(
+                                "Profile Photo",
+                                "Upload Image Feature Coming Soon"
+                            )
+                        }
+                    >
                         <Text style={styles.edittext} >
                             Edit Profile
                         </Text>
@@ -51,15 +100,33 @@ const Profilescreen = ({navigation}) => {
                 <View style={styles.profileinputwrappr} >
                     <View style={styles.inputsection} >
                         <Text style={styles.textinput} >Full Name</Text>
-                        <TextInput style={styles.inputtext} placeholder="Enter Your Name" />
+                        <TextInput
+                            style={styles.inputtext}
+                            placeholder="Enter Your Name"
+                            value={fullName}
+                            onChangeText={setFullName}
+                        />
                     </View>
                     <View style={styles.inputsection} >
                         <Text style={styles.textinput} >Email Address</Text>
-                        <TextInput keyboardType="default" style={styles.inputtext} placeholder="Enter Your Email" />
+                        <TextInput
+                            keyboardType="email-address"
+                            style={styles.inputtext}
+                            placeholder="Enter Your Email"
+                            value={email}
+                            onChangeText={setEmail}
+                        />
                     </View>
                     <View style={styles.inputsection} >
                         <Text style={styles.textinput} >Phone Number</Text>
-                        <TextInput maxLength={10} keyboardType="number-pad" style={styles.inputtext} placeholder="Enter Mobile Number" />
+                        <TextInput
+                            maxLength={10}
+                            keyboardType="phone-pad"
+                            style={styles.inputtext}
+                            placeholder="Enter Mobile Number"
+                            value={phone}
+                            onChangeText={setPhone}
+                        />
                     </View>
                 </View>
 
@@ -88,24 +155,100 @@ const Profilescreen = ({navigation}) => {
                         {/* New Password */}
                         <Text style={styles.inputTag}>New Password</Text>
                         <TextInput
-                            style={styles.inputBubble}
+                            style={[styles.inputBubble, { flex: 1 }]}
                             placeholder="Enter new password"
-                            placeholderTextColor="#7a7a7a"
-                            secureTextEntry
-                        //   editable={false}
+                            secureTextEntry={!showNewPassword}
+                            value={newPassword}
+                            onChangeText={setNewPassword}
                         />
+
+                        <TouchableOpacity
+                            onPress={() =>
+                                setShowNewPassword(
+                                    !showNewPassword
+                                )
+                            }
+                        >
+
+                            <Ionicons
+                                name={
+                                    showNewPassword
+                                        ? "eye-off-outline"
+                                        : "eye-outline"
+                                }
+                                size={22}
+                                color="#555"
+                            />
+                        </TouchableOpacity>
                     </View>
 
                     {/* Save Button */}
-                    <TouchableOpacity onPress={()=>navigation.navigate("Adressscreen")} style={styles.primaryPill}>
-                        <Text style={styles.primaryText}>Save Changes</Text>
+                    <TouchableOpacity
+                        style={styles.primaryPill}
+                        onPress={() => {
+
+                            if (
+                                !fullName ||
+                                !email ||
+                                !phone
+                            ) {
+                                Alert.alert(
+                                    "Required",
+                                    "Please fill all fields"
+                                );
+                                return;
+                            }
+
+                            setLoading(true);
+
+                            setTimeout(() => {
+
+                                setLoading(false);
+
+                                Alert.alert(
+                                    "Success",
+                                    "Profile Updated"
+                                );
+
+                                navigation.navigate(
+                                    "Adressscreen"
+                                );
+
+                            }, 1000);
+
+                        }}
+                    >
+                        {
+                            loading ?
+
+                                <ActivityIndicator
+                                    color="#fff"
+                                />
+
+                                :
+
+                                <Text style={styles.primaryText}>
+                                    Save Changes
+                                </Text>
+
+                        }
                     </TouchableOpacity>
 
                     {/* Discard */}
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+
+                            setFullName("");
+                            setEmail("");
+                            setPhone("");
+                            setCurrentPassword("");
+                            setNewPassword("");
+
+                        }}
+                    >
                         <Text style={styles.discardText}>Discard Edits</Text>
                     </TouchableOpacity>
-                    
+
                 </View>
                 {/* {end of password wrapper section} */}
 
@@ -119,6 +262,7 @@ export default Profilescreen
 const styles = StyleSheet.create({
     Profilecontainer: {
         flex: 1,
+        backgroundColor: "#FAF8F2",
     },
     profilesection: {
         flex: 1,
@@ -136,9 +280,9 @@ const styles = StyleSheet.create({
         color: "#75584e"
     },
     editnormaltext: {
-        fontWeight: 500,
-        color: "#646040",
-        fontSize: 16
+        marginTop: 8,
+        fontSize: 15,
+        color: "#8B7D6B",
     },
     cardShell: {
         backgroundColor: "#E9DFC3",
@@ -165,8 +309,6 @@ const styles = StyleSheet.create({
         borderWidth: 3,
         borderColor: "#FFFFFF",
     },
-
-    /* Floating camera button */
     floatingAction: {
         position: "absolute",
         right: -6,
@@ -356,6 +498,7 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         color: "#4B3B33",
     },
+    
 
     discardText: {
         marginTop: 18,

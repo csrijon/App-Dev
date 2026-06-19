@@ -1,4 +1,4 @@
-import { View, Text, StatusBar, StyleSheet, ScrollView, TouchableOpacity, FlatList } from "react-native"
+import { View, Text, StatusBar, StyleSheet, ScrollView,TextInput, TouchableOpacity, FlatList, RefreshControl, } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../components/Header"
 import Search from "../components/Search";
@@ -6,6 +6,7 @@ import Cakecard from "../components/Cakecard";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FoodCard from "../components/FoodCard";
 import { useWindowDimensions } from "react-native";
+import { useState,useMemo } from "react";
 
 
 
@@ -106,83 +107,205 @@ const foodData = [
 ];
 
 const Homescreen = ({ navigation }) => {
-   
+
     const { width, height } = useWindowDimensions()
+    const [searchText, setSearchText] = useState("");
+    const [refreshing, setRefreshing] = useState(false);
+    const onRefresh = () => {
+        setRefreshing(true);
+
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 1500);
+    };
+
+    const filteredFoodData = useMemo(() => {
+        return foodData.filter(item =>
+            item.title
+                .toLowerCase()
+                .includes(searchText.toLowerCase())
+        );
+    }, [searchText]);
     return (
-        <SafeAreaView style={styles.Homecontainer} >
+        <SafeAreaView style={styles.Homecontainer}>
             <StatusBar backgroundColor="#f8f1df" barStyle="dark-content" />
 
-            {/* Header Fixed */}
-            <Header  />
+            <Header />
 
-            {/* Scrollable Content */}
-            <ScrollView contentContainerStyle={{ paddingBottom: 40, }} showsVerticalScrollIndicator={false}>
-          <View style={styles.subhomecontainer} >
-                {/* <View style={styles.searchContainer} > */}
-                    <Search />
-                {/* </View> */}
+            <ScrollView
+                contentContainerStyle={{ paddingBottom: 40 }}
+                showsVerticalScrollIndicator={false}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
+            >
+                <View style={styles.subhomecontainer}>
 
-                <View style={styles.featuredBakesContainer} >
-                    <Text style={styles.featuredBakesText} >Featured Bakes</Text>
-                    <TouchableOpacity onPress={() => navigation.navigate("Categorys")} >
-                        <Text style={styles.featuredBakesText} >View ALL</Text>
-                    </TouchableOpacity>
-                </View>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}  >
+                    {/* Search Bar */}
+                    <View style={styles.searchBox}>
+                        <Ionicons
+                            name="search-outline"
+                            size={22}
+                            color="#75584e"
+                        />
+
+                        <TextInput
+                            placeholder="Search bakery..."
+                            placeholderTextColor="#999"
+                            value={searchText}
+                            onChangeText={setSearchText}
+                            style={styles.searchInput}
+                        />
+                    </View>
+
+                    {/* Featured Bakes */}
+                    <View style={styles.featuredBakesContainer}>
+                        <Text style={styles.featuredBakesText}>
+                            Featured Bakes
+                        </Text>
+
+                        <TouchableOpacity
+                            onPress={() =>
+                                navigation.navigate("Categorys")
+                            }
+                        >
+                            <Text style={styles.featuredBakesText}>
+                                View ALL
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
 
                     <FlatList
-                        contentContainerStyle={{ flexDirection: "row" }}
+                        horizontal
                         data={cakeData}
-                        keyExtractor={(item) => item.id.toString()}
-                        renderItem={({ item }) =>
-                            <Cakecard image={item.image} trend={item.trend} name={item.name} price={item.price} />
+                        showsHorizontalScrollIndicator={false}
+                        keyExtractor={(item) =>
+                            item.id.toString()
                         }
+                        renderItem={({ item }) => (
+                            <Cakecard
+                                image={item.image}
+                                trend={item.trend}
+                                name={item.name}
+                                price={item.price}
+                            />
+                        )}
                     />
 
-                </ScrollView>
-                <Text style={styles.exploreCollectionsText} >
-                    Explore Collections
-                </Text>
+                    {/* Explore Collections */}
+                    <Text style={styles.exploreCollectionsText}>
+                        Explore Collections
+                    </Text>
 
-                <View style={styles.container}>
-                    <View style={styles.bigCard}>
-                        <Ionicons name="restaurant-outline" size={28} color="#6D4C41" />
-                        <Text style={styles.bigTitle}>Wedding masterpieces</Text>
-                        <Text style={styles.subText}>12 ARTISTS</Text>
+                    <View style={styles.container}>
+
+                        <TouchableOpacity
+                            activeOpacity={0.8}
+                            style={styles.bigCard}
+                        >
+                            <Ionicons
+                                name="restaurant-outline"
+                                size={28}
+                                color="#6D4C41"
+                            />
+
+                            <Text style={styles.bigTitle}>
+                                Wedding masterpieces
+                            </Text>
+
+                            <Text style={styles.subText}>
+                                12 ARTISTS
+                            </Text>
+                        </TouchableOpacity>
+
+                        <View style={styles.rightContainer}>
+
+                            <TouchableOpacity
+                                activeOpacity={0.8}
+                                style={[
+                                    styles.smallCard,
+                                    { height: height * 0.08 }
+                                ]}
+                            >
+                                <View style={styles.iconCircle}>
+                                    <Ionicons
+                                        name="gift-outline"
+                                        size={22}
+                                        color="#6D4C41"
+                                    />
+                                </View>
+
+                                <Text style={styles.smallText}>
+                                    Birthday
+                                </Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                activeOpacity={0.8}
+                                style={[
+                                    styles.smallCard,
+                                    styles.pinkCard,
+                                    { height: height * 0.08 }
+                                ]}
+                            >
+                                <View style={styles.iconCircle}>
+                                    <Ionicons
+                                        name="cafe-outline"
+                                        size={20}
+                                        color="#6D4C41"
+                                    />
+                                </View>
+
+                                <Text style={styles.smallText}>
+                                    Cupcakes
+                                </Text>
+                            </TouchableOpacity>
+
+                        </View>
                     </View>
 
-                    <View style={styles.rightContainer}>
-                        <View style={[styles.smallCard, { height: height * 0.08 }]}>
-                            <View style={styles.iconCircle} >
-                                <Ionicons name="gift-outline" size={22} color="#6D4C41" />
-                            </View>
-                            <Text style={styles.smallText}>Birthday </Text>
-                        </View>
+                    {/* Nearby Artists */}
+                    <Text style={styles.exploreCollectionsText}>
+                        Nearby Artists
+                    </Text>
 
-                        <View style={[styles.smallCard, styles.pinkCard, { height: height * 0.08 }]}>
-                            <View style={styles.iconCircle}>
-                                <Ionicons name="cafe-outline" size={20} color="#6D4C41" />
+                    <View style={styles.foodCardContainer}>
+                        {filteredFoodData.length === 0 ? (
+                            <View style={styles.emptyContainer}>
+                                <Ionicons
+                                    name="search-outline"
+                                    size={50}
+                                    color="#999"
+                                />
+
+                                <Text style={styles.emptyText}>
+                                    No bakery found
+                                </Text>
                             </View>
-                            <Text style={styles.smallText}>Cupcakes</Text>
-                        </View>
+                        ) : (
+                            <FlatList
+                                scrollEnabled={false}
+                                data={filteredFoodData}
+                                keyExtractor={(item) =>
+                                    item.id.toString()
+                                }
+                                renderItem={({ item }) => (
+                                    <FoodCard
+                                        image={item.image}
+                                        title={item.title}
+                                        rating={item.rating}
+                                        subtitle={item.subtitle}
+                                        tags={item.tags[0]}
+                                        tag={item.tags[1]}
+                                    />
+                                )}
+                            />
+                        )}
                     </View>
-                </View>
 
-                <Text style={styles.exploreCollectionsText} >Nearby Artists</Text>
-                <View style={styles.foodCardContainer} >
-                    <FlatList
-                        data={foodData}
-                        keyExtractor={(item) => item.id.toString()}
-                        renderItem={({ item }) =>
-                            <FoodCard image={item.image}
-                                title={item.title}
-                                rating={item.rating}
-                                subtitle={item.subtitle}
-                                tags={item.tags[0]}
-                                tag={item.tags[1]} />
-                        }
-                    />
-                </View>
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -198,8 +321,8 @@ const styles = StyleSheet.create({
         borderBottomColor: "#e5e7eb",
         borderBottomWidth: 1,
     },
-    subhomecontainer:{
-     paddingHorizontal:18
+    subhomecontainer: {
+        paddingHorizontal: 18
     },
     featuredBakesContainer: {
         flexDirection: "row",
@@ -280,5 +403,45 @@ const styles = StyleSheet.create({
         // paddingLeft: 0,
         // paddingHorizontal: 20,
         overflow: "hidden"
-    }
+    },
+    searchBox: {
+  flexDirection: "row",
+  alignItems: "center",
+  backgroundColor: "#ffffff",
+  borderRadius: 18,
+  paddingHorizontal: 15,
+  marginBottom: 18,
+  marginTop: 10,
+
+  shadowColor: "#000",
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+  shadowOpacity: 0.08,
+  shadowRadius: 4,
+
+  elevation: 3,
+},
+
+searchInput: {
+  flex: 1,
+  height: 50,
+  marginLeft: 10,
+  color: "#333",
+  fontSize: 15,
+},
+
+emptyContainer: {
+  justifyContent: "center",
+  alignItems: "center",
+  paddingVertical: 40,
+},
+
+emptyText: {
+  marginTop: 10,
+  fontSize: 16,
+  color: "#999",
+  fontWeight: "600",
+},
 })

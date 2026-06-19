@@ -9,6 +9,8 @@ import {
     TouchableOpacity,
     FlatList,
     Dimensions,
+    TextInput,
+    RefreshControl
 } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -141,7 +143,35 @@ const menuItems = [
 const CategoryListing = ({ navigation }) => {
 
     const [isOpen, setIsOpen] = useState(false);
-    const [selectid,setselectid] = useState(null)
+    const [selectid, setselectid] = useState(null)
+    const [searchText, setSearchText] = useState("");
+    const [refreshing, setRefreshing] = useState(false);
+    const [sortOrder, setSortOrder] = useState("default");
+
+    const onRefresh = () => {
+
+        setRefreshing(true);
+
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 1500);
+
+    };
+    const filteredItems = menuItems.filter(item =>
+        item.title
+            .toLowerCase()
+            .includes(searchText.toLowerCase())
+    );
+
+    const sortedItems = [...filteredItems];
+
+    if (sortOrder === "low") {
+        sortedItems.sort((a, b) => a.price - b.price);
+    }
+
+    if (sortOrder === "high") {
+        sortedItems.sort((a, b) => b.price - a.price);
+    }
 
     // animation value
     const translateX = useSharedValue(-width);
@@ -197,6 +227,12 @@ const CategoryListing = ({ navigation }) => {
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ paddingBottom: 40 }}
                 style={styles.CategoryListing}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
+                }
             >
 
                 {/* filter section start */}
@@ -222,6 +258,23 @@ const CategoryListing = ({ navigation }) => {
                 </View>
                 {/* filter section end */}
 
+                <View style={styles.searchContainer}>
+
+                    <Ionicons
+                        name="search"
+                        size={18}
+                        color="#777"
+                    />
+
+                    <TextInput
+                        placeholder="Search Cakes..."
+                        value={searchText}
+                        onChangeText={setSearchText}
+                        style={styles.searchInput}
+                    />
+
+                </View>
+
                 <ScrollView
                     horizontal
                     showsHorizontalScrollIndicator={false}
@@ -236,29 +289,68 @@ const CategoryListing = ({ navigation }) => {
                         data={categories}
                         keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => (
-                            <CategoryCard setselectid={setselectid} selectid={selectid} id={item.id} title={item.title} />
+                            <CategoryCard
+                                setselectid={setselectid}
+                                selectid={selectid}
+                                id={item.id}
+                                title={item.title}
+                                onPress={() => {
+                                    setselectid(item.id);
+                                }}
+                            />
                         )}
                     />
 
                 </ScrollView>
 
-                <View style={styles.MenuCardsContainer} >
+                <View style={styles.MenuCardsContainer}>
 
-                    <FlatList
-                        contentContainerStyle={{
-                            gap: 20,
-                            paddingBottom: 40,
-                        }}
-                        data={menuItems}
-                        keyExtractor={(item) => item.id.toString()}
-                        renderItem={({ item }) => (
-                            <MenuCard onPress={() => navigation.navigate("Delivery", {
-                                    title: item.title,
-                                    description: item.description,
-                                    image: item.image
-                            })} rating={item.rating} image={item.image} bakingTime={item.bakingTime} title={item.title} description={item.description} price={item.price} />
-                        )}
-                    />
+                    {
+                        sortedItems.length === 0 ?
+
+                            <View style={styles.emptyContainer}>
+
+                                <Ionicons
+                                    name="search-outline"
+                                    size={60}
+                                    color="#999"
+                                />
+
+                                <Text style={styles.emptyText}>
+                                    No Cakes Found
+                                </Text>
+
+                            </View>
+
+                            :
+
+                            <FlatList
+                                contentContainerStyle={{
+                                    gap: 20,
+                                    paddingBottom: 40
+                                }}
+                                data={sortedItems}
+                                keyExtractor={(item) => item.id.toString()}
+                                renderItem={({ item }) => (
+                                    <MenuCard
+                                        onPress={() =>
+                                            navigation.navigate("Delivery", {
+                                                title: item.title,
+                                                description: item.description,
+                                                image: item.image
+                                            })
+                                        }
+                                        rating={item.rating}
+                                        image={item.image}
+                                        bakingTime={item.bakingTime}
+                                        title={item.title}
+                                        description={item.description}
+                                        price={item.price}
+                                    />
+                                )}
+                            />
+
+                    }
 
                 </View>
 
@@ -354,4 +446,37 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 10,
     },
+    searchContainer:{
+    flexDirection:"row",
+    alignItems:"center",
+    backgroundColor:"#fff",
+    borderRadius:20,
+    paddingHorizontal:15,
+    marginVertical:15,
+    height:50
+},
+
+searchInput:{
+    flex:1,
+    marginLeft:10
+},
+
+countText:{
+    fontSize:14,
+    color:"#75584e",
+    fontWeight:"600",
+    marginBottom:15
+},
+
+emptyContainer:{
+    justifyContent:"center",
+    alignItems:"center",
+    paddingVertical:50
+},
+
+emptyText:{
+    marginTop:10,
+    color:"#999",
+    fontSize:16
+},
 });

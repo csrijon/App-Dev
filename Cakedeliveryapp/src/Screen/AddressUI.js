@@ -129,6 +129,15 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     padding: 18,
     marginBottom: 20,
+    shadowColor: "#75584e",
+    shadowOffset: {
+        width: 0,
+        height: 8,
+    },
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+
+    elevation: 6,
   },
 
   magicTitle: {
@@ -148,22 +157,37 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 
-  fieldLabel: {
-    fontSize: 12,
-    fontWeight: 700,
+ fieldLabel: {
+    fontSize: 13,
+    fontWeight: "700",
     letterSpacing: 1.2,
-    color: "#646040b3",
-    marginTop: 14,
-    marginBottom: 6,
-  },
+    color: "#75584e",
+    marginTop: 18,
+    marginBottom: 8,
+},
+inputCloud: {
+    backgroundColor: "#FFFFFF",
 
-  inputCloud: {
-    backgroundColor: "#F1F1F1",
-    borderRadius: 26,
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-    fontSize: 14,
-  },
+    borderWidth: 1,
+    borderColor: "#EEE5D4",
+
+    borderRadius: 18,
+
+    paddingVertical: 18,
+    paddingHorizontal: 18,
+
+    fontSize: 16,
+
+    shadowColor: "#000",
+    shadowOffset: {
+        width: 0,
+        height: 2,
+    },
+    shadowOpacity: 0.03,
+    shadowRadius: 5,
+
+    elevation: 2,
+},
 
   dropdownShell: {
     backgroundColor: "#F1F1F1",
@@ -185,17 +209,30 @@ const styles = StyleSheet.create({
     color: "#7A7A7A",
   },
 
-  toggleCardShell: {
-    backgroundColor: "#E6DDBF",
-    borderRadius: 26,
-    paddingHorizontal:14,
-    paddingVertical:14,
-    marginTop: 22,
-    width:"100%",
+ toggleCardShell: {
+    backgroundColor: "#FFFFFF",
+
+    borderRadius: 25,
+
+    paddingHorizontal: 18,
+    paddingVertical: 18,
+
+    marginTop: 25,
+
     flexDirection: "row",
-    // justifyContent: "space-arround",
+    justifyContent: "space-between",
     alignItems: "center",
-  },
+
+    shadowColor: "#000",
+    shadowOffset: {
+        width: 0,
+        height: 4,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+
+    elevation: 4,
+},
 
   toggleRowFlex: {
     flexDirection: "row",
@@ -203,14 +240,18 @@ const styles = StyleSheet.create({
   },
 
   iconBubble: {
-    // width: 24,
-    // height: 24,
-    borderRadius: 17,
-    // backgroundColor: "#E8B8A8",
+    width: 48,
+    height: 48,
+
+    borderRadius: 24,
+
+    backgroundColor: "#FFF5D9",
+
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 10,
-  },
+
+    marginRight: 12,
+},
 
   toggleTextWrap: {},
 
@@ -240,13 +281,27 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
   },
 
-  primaryButtonAura: {
-    marginTop: 26,
-    backgroundColor: "#6D5448",
-    paddingVertical: 16,
-    borderRadius: 30,
+ primaryButtonAura: {
+    marginTop: 30,
+
+    backgroundColor: "#75584e",
+
+    paddingVertical: 18,
+
+    borderRadius: 22,
+
     alignItems: "center",
-  },
+
+    shadowColor: "#75584e",
+    shadowOffset: {
+        width: 0,
+        height: 8,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
+
+    elevation: 8,
+},
 
   primaryButtonText: {
     color: "#FFF",
