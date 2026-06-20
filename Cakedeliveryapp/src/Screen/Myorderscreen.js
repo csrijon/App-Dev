@@ -3,125 +3,122 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import { StatusBar, ScrollView, View, Text, TouchableOpacity, StyleSheet, useWindowDimensions, Image } from "react-native"
 import { useState } from "react"
 
+const ORDERS = [
+  {
+    id: "CH-92831",
+    status: "PENDING",
+    title: "Midnight Truffle Gâteau",
+    price: "$48.00",
+    date: "Oct 24, 2023 • 2:30 PM",
+    action: "TRACK ORDER",
+    isActive: true,
+  },
+  {
+    id: "CH-92810",
+    status: "ACCEPTED",
+    title: "Wild Berry Chantilly",
+    price: "$35.50",
+    date: "Oct 23, 2023 • 11:15 AM",
+    action: "VIEW DETAILS",
+    isActive: true,
+  },
+  {
+    id: "CH-92755",
+    status: "DELIVERED",
+    title: "Citron Meringue Bloom",
+    price: "$29.00",
+    date: "Oct 20, 2023 • 4:45 PM",
+    action: "REORDER",
+    isActive: false,
+  },
+]
+
+const PILL_STYLES = {
+  PENDING: { backgroundColor: "#F4B6C2" },
+  ACCEPTED: { backgroundColor: "#FAD4C0" },
+  DELIVERED: { backgroundColor: "#D3D3D3" },
+}
 
 const Myorderscreen = () => {
   const { width } = useWindowDimensions()
-  const [selectbg, setbg] = useState(null)
-  console.log(width)
+  const [activeTab, setActiveTab] = useState("active") // "active" | "past"
+
+  const filteredOrders = ORDERS.filter((order) =>
+    activeTab === "active" ? order.isActive : !order.isActive
+  )
+
   return (
-    <SafeAreaView style={styles.myordercontainer} >
+    <SafeAreaView style={styles.myordercontainer}>
       <StatusBar backgroundColor="#fff9e6" barStyle="dark-content" />
       <Simpleheader />
-      <ScrollView vertical showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollmyordercontainer}  >
-        <View style={styles.ordertextsection} >
-          <Text style={[styles.myordertext, { fontSize: width * 0.08 }]} >My Orders</Text>
-          <View style={styles.togglebuttonsection} >
-            <TouchableOpacity style={[styles.togglebutton, styles.togglebuttongray]} >
-              <Text>Active</Text>
+      <ScrollView
+        vertical
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollmyordercontainer}
+      >
+        <View style={styles.ordertextsection}>
+          <Text style={[styles.myordertext, { fontSize: width * 0.08 }]}>My Orders</Text>
+
+          <View style={styles.togglebuttonsection}>
+            <TouchableOpacity
+              onPress={() => setActiveTab("active")}
+              style={[
+                styles.togglebutton,
+                { backgroundColor: activeTab === "active" ? "#75584e" : "#faf4d6" },
+              ]}
+            >
+              <Text style={{ color: activeTab === "active" ? "#fff" : "#363317", fontWeight: "600" }}>
+                Active
+              </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => setbg(!selectbg)} style={[styles.togglebutton, { backgroundColor: selectbg ? "#75584e" : "#faf4d6" }]} >
-              <Text>Past</Text>
+
+            <TouchableOpacity
+              onPress={() => setActiveTab("past")}
+              style={[
+                styles.togglebutton,
+                { backgroundColor: activeTab === "past" ? "#75584e" : "#faf4d6" },
+              ]}
+            >
+              <Text style={{ color: activeTab === "past" ? "#fff" : "#363317", fontWeight: "600" }}>
+                Past
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
 
         <View>
-
-          {/* Card 1 */}
-          <View style={styles.shellWrapper}>
-
-            <Image
-              source={require("../images/cakeimage.jpeg")}
-              style={styles.visualThumb}
-            />
-
-            <View style={styles.metaCluster}>
-
-              <View style={[styles.statePill, styles.pillPending]}>
-                <Text style={styles.pillText}>PENDING</Text>
-              </View>
-
-              <View style={styles.headerRow}>
-                <Text style={styles.productHeading}>
-                  Midnight Truffle Gâteau
-                </Text>
-                <Text style={styles.priceTag}>$48.00</Text>
-              </View>
-
-              <Text style={styles.orderRef}>Order #CH-92831</Text>
-              <Text style={styles.timeStamp}>Oct 24, 2023 • 2:30 PM</Text>
-
-              <TouchableOpacity style={styles.actionTrigger}>
-                <Text style={styles.triggerText}>TRACK ORDER</Text>
-              </TouchableOpacity>
-
+          {filteredOrders.length === 0 ? (
+            <View style={styles.emptyState}>
+              <Text style={styles.emptyText}>No {activeTab} orders found</Text>
             </View>
-          </View>
+          ) : (
+            filteredOrders.map((order) => (
+              <View style={styles.shellWrapper} key={order.id}>
+                <Image source={require("../images/cakeimage.jpeg")} style={styles.visualThumb} />
 
-          {/* Card 2 */}
-          <View style={styles.shellWrapper}>
+                <View style={styles.metaCluster}>
+                  <View style={[styles.statePill, PILL_STYLES[order.status]]}>
+                    <Text style={styles.pillText}>{order.status}</Text>
+                  </View>
 
-            <Image
-              source={require("../images/cakeimage.jpeg")}
-              style={styles.visualThumb}
-            />
+                  <View style={styles.headerRow}>
+                    <Text style={styles.productHeading} numberOfLines={1}>
+                      {order.title}
+                    </Text>
+                    <Text style={styles.priceTag}>{order.price}</Text>
+                  </View>
 
-            <View style={styles.metaCluster}>
+                  <Text style={styles.orderRef}>Order #{order.id}</Text>
+                  <Text style={styles.timeStamp}>{order.date}</Text>
 
-              <View style={[styles.statePill, styles.pillAccepted]}>
-                <Text style={styles.pillText}>ACCEPTED</Text>
+                  <TouchableOpacity style={styles.actionTrigger}>
+                    <Text style={styles.triggerText}>{order.action}</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-
-              <View style={styles.headerRow}>
-                <Text style={styles.productHeading}>
-                  Wild Berry Chantilly
-                </Text>
-                <Text style={styles.priceTag}>$35.50</Text>
-              </View>
-
-              <Text style={styles.orderRef}>Order #CH-92810</Text>
-              <Text style={styles.timeStamp}>Oct 23, 2023 • 11:15 AM</Text>
-
-              <TouchableOpacity style={styles.actionTrigger}>
-                <Text style={styles.triggerText}>VIEW DETAILS</Text>
-              </TouchableOpacity>
-
-            </View>
-          </View>
-
-          {/* Card 3 */}
-          <View style={styles.shellWrapper}>
-
-            <Image
-              source={require("../images/cakeimage.jpeg")}
-              style={styles.visualThumb}
-            />
-
-            <View style={styles.metaCluster}>
-
-              <View style={[styles.statePill, styles.pillDelivered]}>
-                <Text style={styles.pillText}>DELIVERED</Text>
-              </View>
-
-              <View style={styles.headerRow}>
-                <Text style={styles.productHeading}>
-                  Citron Meringue Bloom
-                </Text>
-                <Text style={styles.priceTag}>$29.00</Text>
-              </View>
-
-              <Text style={styles.orderRef}>Order #CH-92755</Text>
-              <Text style={styles.timeStamp}>Oct 20, 2023 • 4:45 PM</Text>
-
-              <TouchableOpacity style={styles.actionTrigger}>
-                <Text style={styles.triggerText}>REORDER</Text>
-              </TouchableOpacity>
-
-            </View>
-          </View>
-
+            ))
+          )}
         </View>
-
       </ScrollView>
     </SafeAreaView>
   )
@@ -132,58 +129,56 @@ export default Myorderscreen
 const styles = StyleSheet.create({
   myordercontainer: {
     flex: 1,
-    backgroundColor: "#fff9e6"
+    backgroundColor: "#fff9e6",
   },
   scrollmyordercontainer: {
     padding: 20,
   },
   myordertext: {
-    fontWeight: 700,
+    fontWeight: "700",
     color: "#363317",
     marginBottom: 20,
   },
   ordertextsection: {
-    flex: 1
+    flex: 1,
   },
   togglebuttonsection: {
     flexDirection: "row",
     gap: 25,
     alignSelf: "flex-start",
-    marginBottom:15,
+    marginBottom: 15,
   },
   togglebutton: {
     paddingHorizontal: 30,
     paddingVertical: 10,
-    borderRadius: 22
+    borderRadius: 22,
   },
-  togglebuttongray: {
-    backgroundColor: "#75584e",
+  shellWrapper: {
+    flexDirection: "row",
+    backgroundColor: "#fff",
+    borderRadius: 28,
+    padding: 16,
+    marginBottom: 20,
+
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    elevation: 5,
   },
-  shellWrapper:{
-   flexDirection:"row",
-   backgroundColor:"#fff",
-   borderRadius:28,
-   padding:16,
-   marginBottom:20,
 
-   shadowColor:"#000",
-   shadowOffset:{
-      width:0,
-      height:5,
-   },
-   shadowOpacity:0.08,
-   shadowRadius:10,
-   elevation:5,
-},
-
- visualThumb:{
-   width:95,
-   height:95,
-   borderRadius:20,
-},
+  visualThumb: {
+    width: 95,
+    height: 95,
+    borderRadius: 20,
+  },
 
   metaCluster: {
     marginLeft: 15,
+    flex: 1,
   },
 
   statePill: {
@@ -192,18 +187,6 @@ const styles = StyleSheet.create({
     paddingVertical: 3,
     borderRadius: 10,
     marginBottom: 6,
-  },
-
-  pillPending: {
-    backgroundColor: "#F4B6C2",
-  },
-
-  pillAccepted: {
-    backgroundColor: "#FAD4C0",
-  },
-
-  pillDelivered: {
-    backgroundColor: "#D3D3D3",
   },
 
   pillText: {
@@ -217,12 +200,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
- productHeading:{
-   fontSize:17,
-   fontWeight:"800",
-   color:"#2f241d",
-   flex:1,
-},
+  productHeading: {
+    fontSize: 17,
+    fontWeight: "800",
+    color: "#2f241d",
+    flex: 1,
+    marginRight: 8,
+  },
 
   priceTag: {
     fontSize: 14,
@@ -253,4 +237,14 @@ const styles = StyleSheet.create({
     color: "#8B5E3C",
   },
 
+  emptyState: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 60,
+  },
+
+  emptyText: {
+    color: "#8B7D6B",
+    fontSize: 14,
+  },
 })

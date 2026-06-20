@@ -1,10 +1,12 @@
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const Resetheader = ({ onPress }) => {
+const Resetheader = () => {
+    const navigation = useNavigation()
     return (
         <View style={styles.Resetpagetop}>
-            <TouchableOpacity onPress={onPress}>
+            <TouchableOpacity onPress={()=>navigation.goBack()}>
                 <AntDesign name="arrowleft" color="#000" size={24} />
             </TouchableOpacity>
             <Text style={styles.topresettext}>Reset Password</Text>
