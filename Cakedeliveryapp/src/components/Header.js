@@ -3,8 +3,10 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, PermissionsAndroid, Al
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Geolocation from '@react-native-community/geolocation';
 import { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 const Header = () => {
+    const navigation = useNavigation()
 
     const [city, setcity] = useState("")
     const [suburb, setsuburb] = useState("")
@@ -114,7 +116,7 @@ const Header = () => {
                     />
                 </TouchableOpacity>
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>navigation.navigate("Blog")} >
                     <Image
                         source={{
                             uri: "https://i.pravatar.cc/150?img=12",

@@ -139,10 +139,10 @@ const CategoryListing = ({ navigation }) => {
         };
     });
 
-    const openRefine = () => {
-        setIsOpen(true);
-        translateX.value = withTiming(0, { duration: 400 });
-    };
+    // const openRefine = () => {
+    //     setIsOpen(true);
+    //     translateX.value = withTiming(0, { duration: 400 });
+    // };
 
     const closeRefine = () => {
         translateX.value = withTiming(-width, { duration: 400 });
@@ -184,13 +184,13 @@ const CategoryListing = ({ navigation }) => {
                         Curated Collections
                     </Text>
 
-                    <TouchableOpacity
-                        onPress={openRefine}
+                    {/* <TouchableOpacity
+                        // onPress={openRefine}
                         style={styles.FilterButtons}
                     >
                         <Ionicons name="filter" color="#000" size={20} />
                         <Text>Refine</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
 
                 </View>
                 {/* filter section end */}
@@ -391,11 +391,11 @@ const styles = StyleSheet.create({
         color: "#363317",
     },
 
-    FilterButtons: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 5,
-    },
+    // FilterButtons: {
+    //     flexDirection: "row",
+    //     alignItems: "center",
+    //     gap: 5,
+    // },
 
     CategoryCardsContainer: {
         marginTop: 16,

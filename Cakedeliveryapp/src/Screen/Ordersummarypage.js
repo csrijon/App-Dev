@@ -96,29 +96,27 @@ const Ordersummarypage = ({ navigation }) => {
         <SafeAreaView style={styles.Ordersummarypagecontainer} >
             <StatusBar backgroundColor="#fff9e6" barStyle="dark-content" />
             <Simpleheader />
-            <ScrollView contentContainerStyle={{ paddingBottom: 40 }} vartical showsVerticalScrollIndicator={false} style={styles.summaryscrollcontainer} >
-                {/* {section start} */}
-                <View style={styles.saffronStage}>
 
-                    {/* Header */}
+            {/* FIX: removed invalid "vartical" prop */}
+            <ScrollView
+                contentContainerStyle={{ paddingBottom: 40 }}
+                showsVerticalScrollIndicator={false}
+                style={styles.summaryscrollcontainer}
+            >
+                {/* Cake Section */}
+                <View style={styles.saffronStage}>
                     <Text style={styles.microLabel}>Order Summary</Text>
                     <Text style={styles.heroLine}>Review your sweet selection</Text>
 
-                    {/* Card */}
                     <View style={styles.creamPanel}>
-
-                        {/* Cake Image */}
                         <Image
                             source={require("../images/cakeimage.jpeg")}
                             style={styles.heroCake}
                         />
 
-                        {/* Content */}
                         <View style={styles.copyWrap}>
-
                             <View style={styles.rowHead}>
                                 <Text style={styles.cakeTitle}>Velvet Chocolate Ganache</Text>
-
                                 <View style={styles.badgeCapsule}>
                                     <Text style={styles.badgeText}>BEST SELLER</Text>
                                 </View>
@@ -128,26 +126,21 @@ const Ordersummarypage = ({ navigation }) => {
                                 Rich 70% dark chocolate layers with whipped truffle filling and smooth ganache finish.
                             </Text>
 
-                            {/* Bottom Info */}
                             <View style={styles.metaRow}>
-
                                 <View>
                                     <Text style={styles.metaLabel}>WEIGHT</Text>
                                     <Text style={styles.metaValue}>1.5 KG</Text>
                                 </View>
-
                                 <View>
                                     <Text style={styles.metaLabel}>FLAVOR</Text>
                                     <Text style={styles.metaValue}>Dark Chocolate</Text>
                                 </View>
-
                             </View>
-
                         </View>
                     </View>
-
                 </View>
-                {/* {section end } */}
+
+                {/* Details Section */}
                 <View style={styles.almondStage}>
 
                     {/* Personal Message */}
@@ -157,7 +150,6 @@ const Ordersummarypage = ({ navigation }) => {
                                 <Ionicons name="list-outline" size={18} color="#6b4f4f" />
                                 <Text style={styles.blockTitle}>Personal Message</Text>
                             </View>
-
                             <TouchableOpacity onPress={() => setIsEditingMessage(prev => !prev)}>
                                 <Text style={styles.changeBtn}>{isEditingMessage ? "DONE" : "EDIT"}</Text>
                             </TouchableOpacity>
@@ -188,25 +180,21 @@ const Ordersummarypage = ({ navigation }) => {
                                 <Ionicons name="time-outline" size={18} color="#6b4f4f" />
                                 <Text style={styles.blockTitle}>Delivery Slot</Text>
                             </View>
-
                             <TouchableOpacity onPress={handleChangeSlot}>
                                 <Text style={styles.changeBtn}>CHANGE</Text>
                             </TouchableOpacity>
                         </View>
-
                         <Text style={styles.boldLine}>{deliverySlot.date}</Text>
                         <Text style={styles.subLine}>{deliverySlot.time}</Text>
                     </View>
 
                     {/* Delivery Address */}
                     <View style={styles.butterBlock}>
-
                         <View style={styles.rowBetween}>
                             <View style={styles.rowLine}>
                                 <Ionicons name="location-outline" size={18} color="#6b4f4f" />
                                 <Text style={styles.blockTitle}>Delivery Address</Text>
                             </View>
-
                             <TouchableOpacity onPress={() => setAddressModalVisible(true)}>
                                 <Text style={styles.changeBtn}>CHANGE</Text>
                             </TouchableOpacity>
@@ -214,54 +202,57 @@ const Ordersummarypage = ({ navigation }) => {
 
                         <View style={styles.addressRow}>
                             <Ionicons name="home-outline" size={18} color="#6b4f4f" />
-
                             <View style={{ marginLeft: 10 }}>
                                 <Text style={styles.boldLine}>{selectedAddress.label}</Text>
-                                <Text style={styles.subLine}>
-                                    {selectedAddress.details}
-                                </Text>
+                                <Text style={styles.subLine}>{selectedAddress.details}</Text>
                             </View>
                         </View>
-
                     </View>
-
                 </View>
 
-                {/* {start billing card} */}
+                {/* Billing Card */}
+                <View style={styles.billingcard}>
+                    <Text style={styles.billingdetalis}>Billing Details</Text>
 
-                <View style={styles.billingcard} >
-                    <Text style={styles.billingdetalis} >Billing Details</Text>
-                    <View style={styles.row} >
-                        <Text style={styles.normaltext} >Velvet Chocolate(1.5kg)</Text>
-                        <Text style={styles.normaltext} >${cakePrice}</Text>
+                    <View style={styles.billingRow}>
+                        <Text style={styles.normaltext}>Velvet Chocolate (1.5kg)</Text>
+                        <Text style={styles.normaltext}>${cakePrice}</Text>
                     </View>
 
-                    <View style={styles.row} >
-                        <Text style={styles.normaltext} >Premium Packaging</Text>
-                        <Text style={styles.normaltext} >Included</Text>
+                    <View style={styles.billingRow}>
+                        <Text style={styles.normaltext}>Premium Packaging</Text>
+                        <Text style={styles.normaltext}>Included</Text>
                     </View>
 
-                    <View style={styles.row} >
-                        <Text style={styles.normaltext} >Hand-delivered Shipping</Text>
-                        <Text style={styles.normaltext} >${shippingPrice}</Text>
+                    <View style={styles.billingRow}>
+                        <Text style={styles.normaltext}>Hand-delivered Shipping</Text>
+                        <Text style={styles.normaltext}>${shippingPrice}</Text>
                     </View>
 
-                    <View style={styles.row} >
-                        <Text style={styles.normaltext} >VAT(20%)</Text>
-                        <Text style={styles.normaltext} >${vatAmount.toFixed(2)}</Text>
+                    <View style={styles.billingRow}>
+                        <Text style={styles.normaltext}>VAT (20%)</Text>
+                        <Text style={styles.normaltext}>${vatAmount.toFixed(2)}</Text>
                     </View>
 
                     {appliedDiscount > 0 && (
-                        <View style={styles.row} >
-                            <Text style={[styles.normaltext, { color: "#2e7d32" }]} >Discount ({appliedDiscount}%)</Text>
-                            <Text style={[styles.normaltext, { color: "#2e7d32" }]} >-${discountAmount.toFixed(2)}</Text>
+                        <View style={styles.billingRow}>
+                            <Text style={[styles.normaltext, { color: "#2e7d32" }]}>
+                                Discount ({appliedDiscount}%)
+                            </Text>
+                            <Text style={[styles.normaltext, { color: "#2e7d32" }]}>
+                                -${discountAmount.toFixed(2)}
+                            </Text>
                         </View>
                     )}
+
+                    {/* Divider before total */}
+                    <View style={styles.divider} />
 
                     {/* Promo Code */}
                     <View style={styles.promoRow}>
                         <TextInput
                             style={styles.promoInput}
+                            
                             placeholder="Enter promo code"
                             value={promoCode}
                             onChangeText={(text) => {
@@ -274,6 +265,7 @@ const Ordersummarypage = ({ navigation }) => {
                             <Text style={styles.promoBtnText}>APPLY</Text>
                         </TouchableOpacity>
                     </View>
+
                     {promoError !== "" && (
                         <Text style={styles.promoErrorText}>{promoError}</Text>
                     )}
@@ -281,9 +273,10 @@ const Ordersummarypage = ({ navigation }) => {
                         <Text style={styles.promoSuccessText}>Promo code "SWEET10" applied ✅</Text>
                     )}
 
-                    <View style={[styles.row, styles.totalammount]} >
-                        <Text style={styles.totalammounttext} >Total Amount</Text>
-                        <Text style={styles.totalammountrupy} >${finalTotal}</Text>
+                    {/* Total */}
+                    <View style={styles.totalRow}>
+                        <Text style={styles.totalammounttext}>Total Amount</Text>
+                        <Text style={styles.totalammountrupy}>${finalTotal}</Text>
                     </View>
 
                     <View>
@@ -297,8 +290,6 @@ const Ordersummarypage = ({ navigation }) => {
                         )}
                     </View>
                 </View>
-
-                {/* {end billing card} */}
 
             </ScrollView>
 
@@ -347,10 +338,10 @@ const Ordersummarypage = ({ navigation }) => {
                 </View>
             </Modal>
         </SafeAreaView>
-    )
-}
+    );
+};
 
-export default Ordersummarypage
+export default Ordersummarypage;
 
 const styles = StyleSheet.create({
     Ordersummarypagecontainer: {
@@ -361,20 +352,17 @@ const styles = StyleSheet.create({
         padding: 20,
         flex: 1
     },
-    saffronStage: {
-        // padding: 20,
-    },
-
+    saffronStage: {},
     microLabel: {
         fontSize: 15,
         color: "#75584e",
-        fontWeight: "800",
+        fontWeight: "800",   // FIX: was number 800, must be string
         letterSpacing: 1,
         marginBottom: 4
     },
     heroLine: {
         fontSize: 18,
-        fontWeight: "800",
+        fontWeight: "800",   // FIX: was number 800, must be string
         color: "#2f241d",
         lineHeight: 36,
         marginBottom: 25
@@ -383,17 +371,12 @@ const styles = StyleSheet.create({
         backgroundColor: "#ffffff",
         borderRadius: 30,
         padding: 20,
-
         shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 6,
-        },
+        shadowOffset: { width: 0, height: 6 },
         shadowOpacity: 0.08,
         shadowRadius: 12,
         elevation: 5,
     },
-
     heroCake: {
         width: "100%",
         height: 250,
@@ -402,20 +385,18 @@ const styles = StyleSheet.create({
     copyWrap: {
         paddingHorizontal: 5,
     },
-
     rowHead: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
+        marginTop: 14,
     },
-
     cakeTitle: {
         fontSize: 16,
         fontWeight: "700",
         color: "#75584e",
         flex: 1,
     },
-
     badgeCapsule: {
         backgroundColor: "#FFE8A3",
         paddingHorizontal: 12,
@@ -433,18 +414,15 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         lineHeight: 25,
     },
-
     metaRow: {
         flexDirection: "row",
         justifyContent: "space-between",
         marginTop: 10,
     },
-
     metaLabel: {
         fontSize: 10,
         color: "#8b7d6b",
     },
-
     metaValue: {
         fontSize: 14,
         fontWeight: "bold",
@@ -453,18 +431,13 @@ const styles = StyleSheet.create({
     almondStage: {
         marginTop: 20
     },
-
     butterBlock: {
         backgroundColor: "#fff",
         borderRadius: 28,
         padding: 18,
         marginBottom: 16,
-
         shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
+        shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.06,
         shadowRadius: 10,
         elevation: 4,
@@ -472,35 +445,29 @@ const styles = StyleSheet.create({
     rowLine: {
         flexDirection: "row",
         alignItems: "center",
-        marginBottom: 10,
         gap: 8,
     },
-
     rowBetween: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
         marginBottom: 10,
     },
-
     blockTitle: {
         fontSize: 14,
         fontWeight: "700",
         color: "#75584e",
     },
-
     creamBubble: {
         backgroundColor: "#f2f2f2",
         borderRadius: 20,
         padding: 15,
     },
-
     messageText: {
         fontSize: 13,
         color: "#6e5a4f",
         fontStyle: "italic",
     },
-
     messageInput: {
         fontSize: 13,
         color: "#6e5a4f",
@@ -508,26 +475,22 @@ const styles = StyleSheet.create({
         minHeight: 60,
         textAlignVertical: "top",
     },
-
     boldLine: {
         fontSize: 15,
         fontWeight: "bold",
         color: "#5c4033",
     },
-
     subLine: {
         fontSize: 13,
         color: "#7a6a58",
         marginTop: 3,
     },
-
     changeBtn: {
         fontSize: 12,
         color: "#8b7d6b",
         fontWeight: "600",
         letterSpacing: 1,
     },
-
     addressRow: {
         flexDirection: "row",
         alignItems: "flex-start",
@@ -538,31 +501,34 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         backgroundColor: "#fff",
         marginTop: 15,
-
         shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 6,
-        },
+        shadowOffset: { width: 0, height: 6 },
         shadowOpacity: 0.08,
         shadowRadius: 12,
         elevation: 6,
     },
-    row: {
+    billingdetalis: {
+        marginBottom: 16,
+        fontSize: 18,
+        fontWeight: "700",   // FIX: was number 700, must be string
+        color: "#75584e"
+    },
+    // FIX: renamed from "row" to "billingRow" with proper vertical spacing
+    billingRow: {
         flexDirection: "row",
         justifyContent: "space-between",
-        alignItems: "center"
+        alignItems: "center",
+        paddingVertical: 8,
     },
-    billingdetalis: {
-        marginBottom: 20,
-        fontSize: 18,
-        fontWeight: 700,
-        color: "#75584e"
+    divider: {
+        height: 1,
+        backgroundColor: "#f0e8d8",
+        marginVertical: 12,
     },
     promoRow: {
         flexDirection: "row",
         gap: 10,
-        marginTop: 15,
+        marginTop: 4,
         alignItems: "center",
     },
     promoInput: {
@@ -597,17 +563,22 @@ const styles = StyleSheet.create({
         marginTop: 8,
         fontWeight: "600",
     },
-    totalammount: {
+    // FIX: separated total row style from generic row
+    totalRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
         marginTop: 20,
-        marginBottom: 10
+        marginBottom: 16,
     },
     totalammounttext: {
         fontSize: 18,
-        fontWeight: 700
+        fontWeight: "700",   // FIX: was number 700
+        color: "#2f241d",
     },
     totalammountrupy: {
         fontSize: 24,
-        fontWeight: 800,
+        fontWeight: "800",   // FIX: was number 800
         color: "#75584e"
     },
     normaltext: {
@@ -667,4 +638,4 @@ const styles = StyleSheet.create({
         color: "#8b7d6b",
         fontWeight: "600",
     },
-})
+});

@@ -234,7 +234,7 @@ const DeliveryMoment = ({ navigation, route }) => {
                 {/* Cake Card */}
                 <View style={styles.cakeCard}>
                     <Image
-                        source={{ uri: route?.params?.image }}
+                        source={require("../images/cakeimage.jpeg")}
                         style={styles.cakeImg}
                     />
 

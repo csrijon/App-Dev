@@ -63,7 +63,7 @@ const Customorderpage = ({ navigation }) => {
 
     const handleNext = () => {
         if (!selectedWeight) {
-            Alert.alert("Select Weight", "Please select a cake weight to continue.");
+            Alert.alert("Select Weight", "Please select a cake weight &  to continue.");
             return;
         }
         if (!selectedFlavorId) {

@@ -1,4 +1,4 @@
-import { SafeAreaView } from "react-native-safe-area-context"
+import { SafeAreaView } from "react-native-safe-area-context";
 import {
     View,
     Text,
@@ -10,12 +10,11 @@ import {
     ActivityIndicator,
     Alert,
     StyleSheet,
-    StatusBar
+    StatusBar,
+    Animated,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import Simpleheader from "../components/Simpleheader"
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const Profilescreen = ({ navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
@@ -27,484 +26,471 @@ const Profilescreen = ({ navigation }) => {
     const [newPassword, setNewPassword] = useState("");
     const [showCurrentPassword, setShowCurrentPassword] = useState(false);
     const [showNewPassword, setShowNewPassword] = useState(false);
+    const [focusedField, setFocusedField] = useState(null);
+
     const onRefresh = () => {
-
         setRefreshing(true);
-
-        setTimeout(() => {
-
-            setRefreshing(false);
-
-        }, 1500);
-
+        setTimeout(() => setRefreshing(false), 1500);
     };
+
+    const handleSave = () => {
+        if (!fullName.trim() || !email.trim() || !phone.trim()) {
+            Alert.alert("Required", "Please fill in all fields before saving.");
+            return;
+        }
+        setLoading(true);
+        setTimeout(() => {
+            setLoading(false);
+            Alert.alert("Saved", "Your profile has been updated.");
+            navigation.navigate("Adressscreen");
+        }, 1200);
+    };
+
+    const handleDiscard = () => {
+        setFullName("");
+        setEmail("");
+        setPhone("");
+        setCurrentPassword("");
+        setNewPassword("");
+        setFocusedField(null);
+    };
+
+    const getBorderColor = (fieldName) =>
+        focusedField === fieldName ? "#9B7A65" : "#E6D9BA";
+
     return (
-        <SafeAreaView style={styles.Profilecontainer} >
-            <StatusBar backgroundColor="#fff9e6" barStyle="dark-content" />
-            <Simpleheader />
+        <SafeAreaView style={styles.container}>
+            <StatusBar backgroundColor="#FAF6EE" barStyle="dark-content" />
+
+            {/* Header */}
+            <View style={styles.header}>
+                <TouchableOpacity
+                    onPress={() => navigation.goBack()}
+                    style={styles.backBtn}
+                >
+                    <Ionicons name="arrow-back-outline" size={22} color="#7B5E57" />
+                </TouchableOpacity>
+                <Text style={styles.headerTitle}>Edit Profile</Text>
+                <View style={{ width: 36 }} />
+            </View>
+
             <ScrollView
-                contentContainerStyle={{ paddingBottom: 40 }}
-                style={styles.profilesection}
+                contentContainerStyle={styles.scrollContent}
+                style={styles.scroll}
+                showsVerticalScrollIndicator={false}
                 refreshControl={
-                    <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                    />
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
             >
-                {/* {edit text section} */}
-                <View style={styles.profileedittext} >
-                    <TouchableOpacity
-                        onPress={() =>
-                            Alert.alert(
-                                "Profile Photo",
-                                "Upload Image Feature Coming Soon"
-                            )
-                        }
-                    >
-                        <Text style={styles.edittext} >
-                            Edit Profile
-                        </Text>
-                    </TouchableOpacity>
-                    <Text style={styles.editnormaltext} >
-                        Keep your sweet details up to date
-                    </Text>
+                {/* Page heading */}
+                <View style={styles.pageHeading}>
+                    <Text style={styles.pageTitle}>Your Pâtisserie Identity</Text>
+                    <Text style={styles.pageSubtitle}>Keep your sweet details up to date</Text>
                 </View>
-                {/* {edit text section end} */}
-                <View style={styles.cardShell}>
 
-                    {/* Avatar Block */}
-                    <View style={styles.avatarBlock}>
+                {/* Hero / Avatar Card */}
+                <View style={styles.heroCard}>
+                    <View style={styles.avatarWrap}>
                         <Image
-                            source={{ uri: "https://images.unsplash.com/photo-1556740738-b6a63e27c4df" }}
-                            style={styles.avatarFrame}
+                            source={{ uri: "https://images.unsplash.com/photo-1556740738-b6a63e27c4df?w=300" }}
+                            style={styles.avatarImg}
                         />
-
-                        <View style={styles.floatingAction}>
-                            <Ionicons name="camera-outline" size={16} color="#fff" />
-                        </View>
-                    </View>
-
-                    {/* Content Block */}
-                    <View style={styles.contentStack}>
-                        <Text style={styles.headingText}>Your Pâtisserie Identity</Text>
-                        <Text style={styles.bodyText}>
-                            This information will be displayed on your invoices and used for
-                            personalized recommendations.
-                        </Text>
-                    </View>
-
-                </View>
-
-                {/* {start of profile inputsection} */}
-                <View style={styles.profileinputwrappr} >
-                    <View style={styles.inputsection} >
-                        <Text style={styles.textinput} >Full Name</Text>
-                        <TextInput
-                            style={styles.inputtext}
-                            placeholder="Enter Your Name"
-                            value={fullName}
-                            onChangeText={setFullName}
-                        />
-                    </View>
-                    <View style={styles.inputsection} >
-                        <Text style={styles.textinput} >Email Address</Text>
-                        <TextInput
-                            keyboardType="email-address"
-                            style={styles.inputtext}
-                            placeholder="Enter Your Email"
-                            value={email}
-                            onChangeText={setEmail}
-                        />
-                    </View>
-                    <View style={styles.inputsection} >
-                        <Text style={styles.textinput} >Phone Number</Text>
-                        <TextInput
-                            maxLength={10}
-                            keyboardType="phone-pad"
-                            style={styles.inputtext}
-                            placeholder="Enter Mobile Number"
-                            value={phone}
-                            onChangeText={setPhone}
-                        />
-                    </View>
-                </View>
-
-                {/* {password edit section start} */}
-                <View style={styles.rootCanvas}>
-
-                    {/* Card */}
-                    <View style={styles.softCardShell}>
-
-                        {/* Header */}
-                        <View style={styles.headerFlexRow}>
-                            <Text style={styles.headerIcon}>🔒</Text>
-                            <Text style={styles.headerLabel}>Security</Text>
-                        </View>
-
-                        {/* Current Password */}
-                        <Text style={styles.inputTag}>Current Password</Text>
-                        <TextInput
-                            style={styles.inputBubble}
-                            secureTextEntry
-                            //   editable={false}
-                            //   value="••••••••"
-                            placeholder="••••••••"
-                        />
-
-                        {/* New Password */}
-                        <Text style={styles.inputTag}>New Password</Text>
-                        <TextInput
-                            style={[styles.inputBubble, { flex: 1 }]}
-                            placeholder="Enter new password"
-                            secureTextEntry={!showNewPassword}
-                            value={newPassword}
-                            onChangeText={setNewPassword}
-                        />
-
                         <TouchableOpacity
+                            style={styles.camBtn}
                             onPress={() =>
-                                setShowNewPassword(
-                                    !showNewPassword
-                                )
+                                Alert.alert("Profile Photo", "Upload image feature coming soon.")
                             }
                         >
+                            <Ionicons name="camera-outline" size={14} color="#fff" />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.heroTextWrap}>
+                        <Text style={styles.heroName}>Artisan Baker</Text>
+                        <Text style={styles.heroSub}>
+                            Shown on your invoices and{"\n"}personalized recommendations
+                        </Text>
+                    </View>
+                </View>
 
+                {/* Personal Info Section */}
+                <Text style={styles.sectionLabel}>Personal info</Text>
+                <View style={styles.fieldsCard}>
+
+                    {/* Full Name */}
+                    <View style={[styles.fieldRow, { borderBottomWidth: 0.5, borderBottomColor: "#F0E8D8" }]}>
+                        <View style={styles.fieldIconWrap}>
+                            <Ionicons name="person-outline" size={17} color="#9B6E55" />
+                        </View>
+                        <View style={styles.fieldContent}>
+                            <Text style={styles.fieldLabel}>Full name</Text>
+                            <TextInput
+                                style={styles.fieldInput}
+                                placeholder="Enter your name"
+                                placeholderTextColor="#C4B8A4"
+                                value={fullName}
+                                onChangeText={setFullName}
+                                onFocus={() => setFocusedField("name")}
+                                onBlur={() => setFocusedField(null)}
+                            />
+                        </View>
+                    </View>
+
+                    {/* Email */}
+                    <View style={[styles.fieldRow, { borderBottomWidth: 0.5, borderBottomColor: "#F0E8D8" }]}>
+                        <View style={styles.fieldIconWrap}>
+                            <Ionicons name="mail-outline" size={17} color="#9B6E55" />
+                        </View>
+                        <View style={styles.fieldContent}>
+                            <Text style={styles.fieldLabel}>Email address</Text>
+                            <TextInput
+                                style={styles.fieldInput}
+                                placeholder="Enter your email"
+                                placeholderTextColor="#C4B8A4"
+                                keyboardType="email-address"
+                                autoCapitalize="none"
+                                value={email}
+                                onChangeText={setEmail}
+                                onFocus={() => setFocusedField("email")}
+                                onBlur={() => setFocusedField(null)}
+                            />
+                        </View>
+                    </View>
+
+                    {/* Phone */}
+                    <View style={styles.fieldRow}>
+                        <View style={styles.fieldIconWrap}>
+                            <Ionicons name="call-outline" size={17} color="#9B6E55" />
+                        </View>
+                        <View style={styles.fieldContent}>
+                            <Text style={styles.fieldLabel}>Phone number</Text>
+                            <TextInput
+                                style={styles.fieldInput}
+                                placeholder="Enter mobile number"
+                                placeholderTextColor="#C4B8A4"
+                                keyboardType="phone-pad"
+                                maxLength={10}
+                                value={phone}
+                                onChangeText={setPhone}
+                                onFocus={() => setFocusedField("phone")}
+                                onBlur={() => setFocusedField(null)}
+                            />
+                        </View>
+                    </View>
+                </View>
+
+                {/* Security Section */}
+                <Text style={styles.sectionLabel}>Security</Text>
+                <View style={styles.securityCard}>
+
+                    <View style={styles.secHeader}>
+                        <View style={styles.secBadge}>
+                            <Ionicons name="lock-closed-outline" size={16} color="#7B5230" />
+                        </View>
+                        <Text style={styles.secTitle}>Change password</Text>
+                    </View>
+
+                    {/* Current Password */}
+                    <Text style={styles.pwLabel}>Current password</Text>
+                    <View style={[styles.pwInputWrap, { borderColor: getBorderColor("currentPw") }]}>
+                        <Ionicons name="key-outline" size={16} color="#9B7A65" style={{ marginRight: 8 }} />
+                        <TextInput
+                            style={styles.pwInput}
+                            placeholder="••••••••"
+                            placeholderTextColor="#C4B0A0"
+                            secureTextEntry={!showCurrentPassword}
+                            value={currentPassword}
+                            onChangeText={setCurrentPassword}
+                            onFocus={() => setFocusedField("currentPw")}
+                            onBlur={() => setFocusedField(null)}
+                        />
+                        <TouchableOpacity onPress={() => setShowCurrentPassword(!showCurrentPassword)}>
                             <Ionicons
-                                name={
-                                    showNewPassword
-                                        ? "eye-off-outline"
-                                        : "eye-outline"
-                                }
-                                size={22}
-                                color="#555"
+                                name={showCurrentPassword ? "eye-off-outline" : "eye-outline"}
+                                size={18}
+                                color="#9B7A65"
                             />
                         </TouchableOpacity>
                     </View>
 
-                    {/* Save Button */}
-                    <TouchableOpacity
-                        style={styles.primaryPill}
-                        onPress={() => {
-
-                            if (
-                                !fullName ||
-                                !email ||
-                                !phone
-                            ) {
-                                Alert.alert(
-                                    "Required",
-                                    "Please fill all fields"
-                                );
-                                return;
-                            }
-
-                            setLoading(true);
-
-                            setTimeout(() => {
-
-                                setLoading(false);
-
-                                Alert.alert(
-                                    "Success",
-                                    "Profile Updated"
-                                );
-
-                                navigation.navigate(
-                                    "Adressscreen"
-                                );
-
-                            }, 1000);
-
-                        }}
-                    >
-                        {
-                            loading ?
-
-                                <ActivityIndicator
-                                    color="#fff"
-                                />
-
-                                :
-
-                                <Text style={styles.primaryText}>
-                                    Save Changes
-                                </Text>
-
-                        }
-                    </TouchableOpacity>
-
-                    {/* Discard */}
-                    <TouchableOpacity
-                        onPress={() => {
-
-                            setFullName("");
-                            setEmail("");
-                            setPhone("");
-                            setCurrentPassword("");
-                            setNewPassword("");
-
-                        }}
-                    >
-                        <Text style={styles.discardText}>Discard Edits</Text>
-                    </TouchableOpacity>
-
+                    {/* New Password */}
+                    <Text style={[styles.pwLabel, { marginTop: 14 }]}>New password</Text>
+                    <View style={[styles.pwInputWrap, { borderColor: getBorderColor("newPw") }]}>
+                        <Ionicons name="lock-closed-outline" size={16} color="#9B7A65" style={{ marginRight: 8 }} />
+                        <TextInput
+                            style={styles.pwInput}
+                            placeholder="Enter new password"
+                            placeholderTextColor="#C4B0A0"
+                            secureTextEntry={!showNewPassword}
+                            value={newPassword}
+                            onChangeText={setNewPassword}
+                            onFocus={() => setFocusedField("newPw")}
+                            onBlur={() => setFocusedField(null)}
+                        />
+                        <TouchableOpacity onPress={() => setShowNewPassword(!showNewPassword)}>
+                            <Ionicons
+                                name={showNewPassword ? "eye-off-outline" : "eye-outline"}
+                                size={18}
+                                color="#9B7A65"
+                            />
+                        </TouchableOpacity>
+                    </View>
                 </View>
-                {/* {end of password wrapper section} */}
+
+                {/* Action Buttons */}
+                <TouchableOpacity style={styles.saveBtn} onPress={handleSave} activeOpacity={0.85}>
+                    {loading ? (
+                        <ActivityIndicator color="#fff" size="small" />
+                    ) : (
+                        <>
+                            <Ionicons name="checkmark-outline" size={18} color="#fff" style={{ marginRight: 6 }} />
+                            <Text style={styles.saveBtnText}>Save changes</Text>
+                        </>
+                    )}
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={handleDiscard} style={styles.discardBtn} activeOpacity={0.7}>
+                    <Text style={styles.discardText}>Discard edits</Text>
+                </TouchableOpacity>
 
             </ScrollView>
         </SafeAreaView>
-    )
-}
+    );
+};
 
-export default Profilescreen
+export default Profilescreen;
 
 const styles = StyleSheet.create({
-    Profilecontainer: {
+    /* ── Root ── */
+    container: {
         flex: 1,
-        backgroundColor: "#FAF8F2",
+        backgroundColor: "#FAF6EE",
     },
-    profilesection: {
-        flex: 1,
-        paddingHorizontal: 20,
-        paddingVertical: 20
-    },
-    profileedittext: {
+
+    /* ── Header ── */
+    header: {
+        flexDirection: "row",
         alignItems: "center",
-        gap: 15,
-        marginBottom: 40
+        justifyContent: "space-between",
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        backgroundColor: "#FAF6EE",
+        borderBottomWidth: 0.5,
+        borderBottomColor: "#E8DFC8",
     },
-    edittext: {
+    backBtn: {
+        width: 36,
+        height: 36,
+        borderRadius: 12,
+        backgroundColor: "#F0E8D8",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    headerTitle: {
+        fontSize: 16,
+        fontWeight: "600",
+        color: "#5C4535",
+    },
+
+    /* ── Scroll ── */
+    scroll: {
+        flex: 1,
+    },
+    scrollContent: {
+        paddingHorizontal: 20,
+        paddingTop: 24,
+        paddingBottom: 48,
+        gap: 16,
+    },
+
+    /* ── Page heading ── */
+    pageHeading: {
+        alignItems: "center",
+        marginBottom: 4,
+    },
+    pageTitle: {
         fontSize: 20,
-        fontWeight: 800,
-        color: "#75584e"
+        fontWeight: "700",
+        color: "#5C3D2E",
+        marginBottom: 4,
     },
-    editnormaltext: {
-        marginTop: 8,
-        fontSize: 15,
-        color: "#8B7D6B",
+    pageSubtitle: {
+        fontSize: 13,
+        color: "#9B8070",
     },
-    cardShell: {
+
+    /* ── Hero Card ── */
+    heroCard: {
         backgroundColor: "#E9DFC3",
-        borderRadius: 32,
+        borderRadius: 28,
         paddingVertical: 24,
         paddingHorizontal: 20,
         alignItems: "center",
-        maxWidth: 360,
-        width: "100%",
-        alignSelf: "center",
+        gap: 14,
+        borderWidth: 0.5,
+        borderColor: "#D4C8A4",
     },
-
-    /* Avatar section */
-    avatarBlock: {
+    avatarWrap: {
         position: "relative",
-        marginBottom: 18,
+        width: 96,
+        height: 96,
     },
-
-    avatarFrame: {
-        width: 110,
-        height: 110,
-        borderTopLeftRadius: 48,
-        borderBottomRightRadius: 48,
+    avatarImg: {
+        width: 96,
+        height: 96,
+        borderRadius: 28,
         borderWidth: 3,
-        borderColor: "#FFFFFF",
+        borderColor: "#fff",
     },
-    floatingAction: {
+    camBtn: {
         position: "absolute",
-        right: -6,
         bottom: -6,
+        right: -6,
+        width: 30,
+        height: 30,
+        borderRadius: 15,
+        backgroundColor: "#7B5E57",
+        alignItems: "center",
+        justifyContent: "center",
+        borderWidth: 2,
+        borderColor: "#FAF6EE",
+        elevation: 3,
+    },
+    heroTextWrap: {
+        alignItems: "center",
+        gap: 4,
+    },
+    heroName: {
+        fontSize: 15,
+        fontWeight: "600",
+        color: "#5C3D2E",
+    },
+    heroSub: {
+        fontSize: 12,
+        color: "#8B7055",
+        lineHeight: 18,
+        textAlign: "center",
+    },
 
+    /* ── Section label ── */
+    sectionLabel: {
+        fontSize: 11,
+        fontWeight: "600",
+        color: "#8B7055",
+        letterSpacing: 0.8,
+        textTransform: "uppercase",
+        marginBottom: -8,
+        paddingLeft: 4,
+    },
+
+    /* ── Fields Card ── */
+    fieldsCard: {
+        backgroundColor: "#fff",
+        borderRadius: 20,
+        borderWidth: 0.5,
+        borderColor: "#E0D5BE",
+        overflow: "hidden",
+    },
+    fieldRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 12,
+        paddingHorizontal: 16,
+        paddingVertical: 14,
+    },
+    fieldIconWrap: {
+        width: 36,
+        height: 36,
+        borderRadius: 12,
+        backgroundColor: "#F5EDD8",
+        alignItems: "center",
+        justifyContent: "center",
+        flexShrink: 0,
+    },
+    fieldContent: {
+        flex: 1,
+        gap: 2,
+    },
+    fieldLabel: {
+        fontSize: 11,
+        color: "#A0907A",
+    },
+    fieldInput: {
+        fontSize: 14,
+        color: "#3D2B1F",
+        paddingVertical: 0,
+    },
+
+    /* ── Security Card ── */
+    securityCard: {
+        backgroundColor: "#FDF7E8",
+        borderRadius: 20,
+        borderWidth: 0.5,
+        borderColor: "#E6D9BA",
+        padding: 18,
+        gap: 8,
+    },
+    secHeader: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 10,
+        marginBottom: 6,
+    },
+    secBadge: {
         width: 32,
         height: 32,
-        borderRadius: 999, // full circle (pro trick)
+        borderRadius: 10,
+        backgroundColor: "#EDD9C4",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    secTitle: {
+        fontSize: 14,
+        fontWeight: "600",
+        color: "#5C3D2E",
+    },
+    pwLabel: {
+        fontSize: 12,
+        color: "#8B7055",
+        marginBottom: 4,
+    },
+    pwInputWrap: {
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#FAEBD8",
+        borderRadius: 14,
+        paddingHorizontal: 14,
+        paddingVertical: 12,
+        borderWidth: 1,
+    },
+    pwInput: {
+        flex: 1,
+        fontSize: 14,
+        color: "#3D2B1F",
+        paddingVertical: 0,
+    },
 
+    /* ── Action Buttons ── */
+    saveBtn: {
         backgroundColor: "#7B5E57",
-        justifyContent: "center",
+        borderRadius: 18,
+        paddingVertical: 16,
+        marginTop: 8,
+        flexDirection: "row",
         alignItems: "center",
-
-        elevation: 5,
+        justifyContent: "center",
     },
-
-    /* Text layout */
-    contentStack: {
-        alignItems: "baseline",
-        rowGap: 6, // uncommon but supported in latest RN
-    },
-
-    headingText: {
-        fontSize: 16,
+    saveBtnText: {
+        fontSize: 15,
         fontWeight: "600",
-        color: "#6A4E42",
-        letterSpacing: 0.2,
+        color: "#fff",
     },
-
-    bodyText: {
+    discardBtn: {
+        alignItems: "center",
+        paddingVertical: 8,
+    },
+    discardText: {
         fontSize: 13,
-        lineHeight: 28,
-        color: "#6A4E42",
-        textAlign: "left",
-        opacity: 0.85,
-        // paddingHorizontal: 10,
+        color: "#9B7A65",
+        textDecorationLine: "underline",
     },
-    profileinputwrappr: {
-        maxWidth: 360,
-        width: "100%",
-        paddingHorizontal: 20,
-        marginTop: 30,
-        paddingVertical: 20,
-        gap: 20
-    },
-    inputsection: {
-        gap: 10
-    },
-    inputtext: {
-        backgroundColor: "#eae3bb",
-        paddingHorizontal: 24,
-        paddingVertical: 20,
-        borderRadius: 999,
-        color: "black"
-    },
-    textinput: {
-        fontWeight: 700,
-        color: "#646040",
-        fontSize: 18
-    },
-    passwordwrapper: {
-        width: "100%",
-        maxWidth: 360
-    },
-    rootCanvas: {
-        flex: 1,
-        paddingHorizontal: 20,
-        justifyContent: "center",
-    },
-
-    softCardShell: {
-        // backgroundColor: "#E3D9BD",
-        borderRadius: 32,
-        paddingVertical: 24,
-        paddingHorizontal: 20,
-    },
-
-    headerFlexRow: {
-        flexDirection: "row",
-        alignItems: "center",
-        marginBottom: 16,
-    },
-
-    headerIcon: {
-        fontSize: 18,
-        marginRight: 8,
-    },
-
-    headerLabel: {
-        fontSize: 16,
-        fontWeight: "600",
-        color: "#5C4A3F",
-    },
-
-    inputTag: {
-        marginTop: 12,
-        marginBottom: 6,
-        fontSize: 14,
-        fontWeight: "500",
-        color: "#5C4A3F",
-    },
-
-    inputBubble: {
-        backgroundColor: "#F1F1F1",
-        borderRadius: 26,
-        paddingVertical: 14,
-        paddingHorizontal: 16,
-        fontSize: 14,
-    },
-
-    primaryPill: {
-        marginTop: 30,
-        // backgroundColor: "#D9B3A5",
-        paddingVertical: 16,
-        borderRadius: 32,
-        alignItems: "center",
-    },
-
-    primaryText: {
-        fontSize: 16,
-        fontWeight: "600",
-        color: "#4B3B33",
-    },
-
-    discardText: {
-        marginTop: 18,
-        textAlign: "center",
-        color: "#6E5B52",
-        fontSize: 14,
-    }, rootCanvas: {
-        flex: 1,
-        // backgroundColor: "#EEE6D7",
-        paddingHorizontal: 20,
-        justifyContent: "center",
-    },
-
-    softCardShell: {
-        backgroundColor: "#FAF4D6",
-        borderRadius: 32,
-        paddingVertical: 24,
-        paddingHorizontal: 20,
-    },
-
-    headerFlexRow: {
-        flexDirection: "row",
-        alignItems: "center",
-        marginBottom: 16,
-    },
-
-    headerIcon: {
-        fontSize: 18,
-        marginRight: 8,
-    },
-
-    headerLabel: {
-        fontSize: 16,
-        fontWeight: "600",
-        color: "#5C4A3F",
-    },
-
-    inputTag: {
-        marginTop: 12,
-        marginBottom: 6,
-        fontSize: 14,
-        fontWeight: "500",
-        color: "#5C4A3F",
-    },
-
-    inputBubble: {
-        backgroundColor: "#F1F1F1",
-        borderRadius: 26,
-        paddingVertical: 14,
-        paddingHorizontal: 16,
-        fontSize: 14,
-    },
-
-    primaryPill: {
-        marginTop: 30,
-        backgroundColor: "#D9B3A5",
-        paddingVertical: 16,
-        borderRadius: 32,
-        alignItems: "center",
-    },
-
-    primaryText: {
-        fontSize: 16,
-        fontWeight: "600",
-        color: "#4B3B33",
-    },
-    
-
-    discardText: {
-        marginTop: 18,
-        textAlign: "center",
-        color: "#6E5B52",
-        fontSize: 14,
-    },
-
-})
+});

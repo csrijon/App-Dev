@@ -7,7 +7,8 @@ import {
     TouchableOpacity,
     ScrollView,
     RefreshControl,
-    ActivityIndicator
+    ActivityIndicator,
+    StatusBar
 } from "react-native";
 import { useState } from "react";
 
@@ -27,6 +28,7 @@ const EmptyOrderScreen = ({ navigation }) => {
     };
     return (
         <SafeAreaView style={styles.container}>
+            <StatusBar backgroundColor={"#f8f1df"} barStyle={"dark-content"} />
             <Header name={"Srijon chowdhury"} />
             <ScrollView
                 contentContainerStyle={styles.mainContainer}
