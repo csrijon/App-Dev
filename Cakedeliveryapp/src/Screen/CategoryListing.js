@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 import {
     View,
@@ -10,7 +10,8 @@ import {
     FlatList,
     Dimensions,
     TextInput,
-    RefreshControl
+    RefreshControl,
+    Modal,
 } from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -98,7 +99,13 @@ const menuItems = [
     },
 ];
 
-// 🔹 helper to convert "$500.00" -> 500
+const SORT_OPTIONS = [
+    { key: "default", label: "Default", icon: "apps-outline" },
+    { key: "low",     label: "Price: Low to High", icon: "arrow-up-outline" },
+    { key: "high",    label: "Price: High to Low", icon: "arrow-down-outline" },
+    { key: "rating",  label: "Top Rated", icon: "star-outline" },
+];
+
 const parsePrice = (price) => parseFloat(price.replace(/[^0-9.]/g, "")) || 0;
 
 const CategoryListing = ({ navigation }) => {
@@ -107,13 +114,14 @@ const CategoryListing = ({ navigation }) => {
     const [selectid, setselectid] = useState(null);
     const [searchText, setSearchText] = useState("");
     const [refreshing, setRefreshing] = useState(false);
-    const [sortOrder, setSortOrder] = useState("default"); // "default" | "low" | "high"
+    const [sortOrder, setSortOrder] = useState("default");
+    const [showSortDropdown, setShowSortDropdown] = useState(false);
+
+    const activeSortLabel = SORT_OPTIONS.find(o => o.key === sortOrder)?.label || "Sort";
 
     const onRefresh = () => {
         setRefreshing(true);
-        setTimeout(() => {
-            setRefreshing(false);
-        }, 1500);
+        setTimeout(() => setRefreshing(false), 1500);
     };
 
     const filteredItems = menuItems.filter(item =>
@@ -124,146 +132,146 @@ const CategoryListing = ({ navigation }) => {
 
     if (sortOrder === "low") {
         sortedItems.sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
-    }
-
-    if (sortOrder === "high") {
+    } else if (sortOrder === "high") {
         sortedItems.sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
+    } else if (sortOrder === "rating") {
+        sortedItems.sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating));
     }
 
-    // animation value
     const translateX = useSharedValue(-width);
 
-    const animatedStyle = useAnimatedStyle(() => {
-        return {
-            transform: [{ translateX: translateX.value }],
-        };
-    });
-
-    // const openRefine = () => {
-    //     setIsOpen(true);
-    //     translateX.value = withTiming(0, { duration: 400 });
-    // };
+    const animatedStyle = useAnimatedStyle(() => ({
+        transform: [{ translateX: translateX.value }],
+    }));
 
     const closeRefine = () => {
         translateX.value = withTiming(-width, { duration: 400 });
-        setTimeout(() => {
-            setIsOpen(false);
-        }, 400);
+        setTimeout(() => setIsOpen(false), 400);
     };
 
     return (
-        <SafeAreaView style={styles.Categorycontainer} >
+        <SafeAreaView style={styles.Categorycontainer}>
 
-            <StatusBar
-                backgroundColor="#f8f1df"
-                barStyle={'dark-content'}
-            />
+            <StatusBar backgroundColor="#FAF6EE" barStyle="dark-content" />
 
-            <Header
-                name="Wedding Cakes"
-                title="Category Listing"
-            />
+            <Header name="Wedding Cakes" title="Category Listing" />
 
             <ScrollView
-                vertical
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ paddingBottom: 40 }}
                 style={styles.CategoryListing}
                 refreshControl={
-                    <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                    />
+                    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
                 }
             >
 
-                {/* filter section start */}
-                <View style={styles.FilterSection} >
+                {/* ── Section heading ── */}
+                <View style={styles.FilterSection}>
+                    <Text style={styles.FilterText}>Curated Collections</Text>
+                </View>
 
-                    <Text style={styles.FilterText} >
-                        Curated Collections
-                    </Text>
+                {/* ── Search + Sort Row ── */}
+                <View style={styles.searchSortRow}>
 
-                    {/* <TouchableOpacity
-                        // onPress={openRefine}
-                        style={styles.FilterButtons}
+                    {/* Search bar */}
+                    <View style={styles.searchContainer}>
+                        <Ionicons name="search-outline" size={18} color="#9B7A65" />
+                        <TextInput
+                            placeholder="Search cakes..."
+                            placeholderTextColor="#C4B8A4"
+                            value={searchText}
+                            onChangeText={setSearchText}
+                            style={styles.searchInput}
+                        />
+                        {searchText.length > 0 && (
+                            <TouchableOpacity
+                                onPress={() => setSearchText("")}
+                                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                            >
+                                <Ionicons name="close-circle" size={18} color="#C4B8A4" />
+                            </TouchableOpacity>
+                        )}
+                    </View>
+
+                    {/* Sort dropdown trigger */}
+                    <TouchableOpacity
+                        style={[styles.sortTrigger, showSortDropdown && styles.sortTriggerActive]}
+                        onPress={() => setShowSortDropdown(!showSortDropdown)}
+                        activeOpacity={0.8}
                     >
-                        <Ionicons name="filter" color="#000" size={20} />
-                        <Text>Refine</Text>
-                    </TouchableOpacity> */}
+                        <Ionicons
+                            name="funnel-outline"
+                            size={16}
+                            color={showSortDropdown || sortOrder !== "default" ? "#fff" : "#7B5E57"}
+                        />
+                        <Ionicons
+                            name={showSortDropdown ? "chevron-up-outline" : "chevron-down-outline"}
+                            size={14}
+                            color={showSortDropdown || sortOrder !== "default" ? "#fff" : "#7B5E57"}
+                        />
+                    </TouchableOpacity>
 
                 </View>
-                {/* filter section end */}
 
-                {/* search section start */}
-                <View style={styles.searchContainer}>
+                {/* ── Sort Dropdown Panel ── */}
+                {showSortDropdown && (
+                    <View style={styles.dropdownPanel}>
+                        <Text style={styles.dropdownHeader}>Sort by</Text>
+                        {SORT_OPTIONS.map((option, index) => (
+                            <TouchableOpacity
+                                key={option.key}
+                                style={[
+                                    styles.dropdownItem,
+                                    index < SORT_OPTIONS.length - 1 && styles.dropdownItemBorder,
+                                    sortOrder === option.key && styles.dropdownItemActive,
+                                ]}
+                                onPress={() => {
+                                    setSortOrder(option.key);
+                                    setShowSortDropdown(false);
+                                }}
+                                activeOpacity={0.7}
+                            >
+                                <View style={styles.dropdownItemLeft}>
+                                    <View style={[
+                                        styles.dropdownIconWrap,
+                                        sortOrder === option.key && styles.dropdownIconWrapActive,
+                                    ]}>
+                                        <Ionicons
+                                            name={option.icon}
+                                            size={15}
+                                            color={sortOrder === option.key ? "#7B5E57" : "#9B7A65"}
+                                        />
+                                    </View>
+                                    <Text style={[
+                                        styles.dropdownItemText,
+                                        sortOrder === option.key && styles.dropdownItemTextActive,
+                                    ]}>
+                                        {option.label}
+                                    </Text>
+                                </View>
+                                {sortOrder === option.key && (
+                                    <Ionicons name="checkmark-outline" size={16} color="#7B5E57" />
+                                )}
+                            </TouchableOpacity>
+                        ))}
+                    </View>
+                )}
 
-                    <Ionicons name="search" size={18} color="#777" />
-
-                    <TextInput
-                        placeholder="Search Cakes..."
-                        placeholderTextColor="#999"
-                        value={searchText}
-                        onChangeText={setSearchText}
-                        style={styles.searchInput}
-                    />
-
-                    {searchText.length > 0 && (
+                {/* Active sort badge */}
+                {sortOrder !== "default" && (
+                    <View style={styles.activeSortBadge}>
+                        <Ionicons name="funnel" size={12} color="#7B5230" />
+                        <Text style={styles.activeSortText}>{activeSortLabel}</Text>
                         <TouchableOpacity
-                            onPress={() => setSearchText("")}
-                            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                            onPress={() => setSortOrder("default")}
+                            hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
                         >
-                            <Ionicons name="close-circle" size={18} color="#bbb" />
+                            <Ionicons name="close-circle" size={14} color="#9B6E55" />
                         </TouchableOpacity>
-                    )}
+                    </View>
+                )}
 
-                </View>
-                {/* search section end */}
-
-                {/* quick sort chips start */}
-                <View style={styles.sortRow}>
-                    <TouchableOpacity
-                        onPress={() => setSortOrder("default")}
-                        style={[styles.sortChip, sortOrder === "default" && styles.sortChipActive]}
-                    >
-                        <Text style={[styles.sortChipText, sortOrder === "default" && styles.sortChipTextActive]}>
-                            Default
-                        </Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        onPress={() => setSortOrder("low")}
-                        style={[styles.sortChip, sortOrder === "low" && styles.sortChipActive]}
-                    >
-                        <Ionicons
-                            name="arrow-up"
-                            size={12}
-                            color={sortOrder === "low" ? "#fff" : "#75584e"}
-                            style={{ marginRight: 4 }}
-                        />
-                        <Text style={[styles.sortChipText, sortOrder === "low" && styles.sortChipTextActive]}>
-                            Price: Low to High
-                        </Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        onPress={() => setSortOrder("high")}
-                        style={[styles.sortChip, sortOrder === "high" && styles.sortChipActive]}
-                    >
-                        <Ionicons
-                            name="arrow-down"
-                            size={12}
-                            color={sortOrder === "high" ? "#fff" : "#75584e"}
-                            style={{ marginRight: 4 }}
-                        />
-                        <Text style={[styles.sortChipText, sortOrder === "high" && styles.sortChipTextActive]}>
-                            Price: High to Low
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-                {/* quick sort chips end */}
-
-                {/* categories — single FlatList, no nested ScrollView */}
+                {/* ── Category chips ── */}
                 <FlatList
                     horizontal
                     showsHorizontalScrollIndicator={false}
@@ -277,89 +285,82 @@ const CategoryListing = ({ navigation }) => {
                             selectid={selectid}
                             id={item.id}
                             title={item.title}
-                            onPress={() => {
-                                setselectid(item.id);
-                            }}
+                            onPress={() => setselectid(item.id)}
                         />
                     )}
                 />
 
-                {/* result count */}
+                {/* Result count */}
                 {sortedItems.length > 0 && (
                     <Text style={styles.countText}>
                         {sortedItems.length} {sortedItems.length === 1 ? "cake" : "cakes"} found
                     </Text>
                 )}
 
+                {/* ── Menu cards ── */}
                 <View style={styles.MenuCardsContainer}>
-
-                    {
-                        sortedItems.length === 0 ?
-
-                            <View style={styles.emptyContainer}>
-                                <Ionicons name="search-outline" size={60} color="#999" />
-                                <Text style={styles.emptyText}>No Cakes Found</Text>
-                            </View>
-
-                            :
-
-                            <FlatList
-                                contentContainerStyle={{ gap: 20, paddingBottom: 40 }}
-                                data={sortedItems}
-                                keyExtractor={(item) => item.id.toString()}
-                                renderItem={({ item }) => (
-                                    <MenuCard
-                                        onPress={() =>
-                                            navigation.navigate("Delivery", {
-                                                title: item.title,
-                                                description: item.description,
-                                                image: item.image
-                                            })
-                                        }
-                                        rating={item.rating}
-                                        image={item.image}
-                                        bakingTime={item.bakingTime}
-                                        title={item.title}
-                                        description={item.description}
-                                        price={item.price}
-                                    />
-                                )}
-                            />
-
-                    }
-
+                    {sortedItems.length === 0 ? (
+                        <View style={styles.emptyContainer}>
+                            <Ionicons name="search-outline" size={60} color="#C4B8A4" />
+                            <Text style={styles.emptyText}>No cakes found</Text>
+                            <Text style={styles.emptySubText}>Try a different search or category</Text>
+                        </View>
+                    ) : (
+                        <FlatList
+                            scrollEnabled={false}
+                            contentContainerStyle={{ gap: 20, paddingBottom: 40 }}
+                            data={sortedItems}
+                            keyExtractor={(item) => item.id.toString()}
+                            renderItem={({ item }) => (
+                                <MenuCard
+                                    onPress={() =>
+                                        navigation.navigate("Delivery", {
+                                            title: item.title,
+                                            description: item.description,
+                                            image: item.image,
+                                        })
+                                    }
+                                    rating={item.rating}
+                                    image={item.image}
+                                    bakingTime={item.bakingTime}
+                                    title={item.title}
+                                    description={item.description}
+                                    price={item.price}
+                                />
+                            )}
+                        />
+                    )}
                 </View>
 
             </ScrollView>
 
-            {/* overlay */}
-            {
-                isOpen && (
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        onPress={closeRefine}
-                        style={styles.overlay}
-                    />
-                )
-            }
+            {/* Tap outside dropdown to close */}
+            {showSortDropdown && (
+                <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={() => setShowSortDropdown(false)}
+                    style={styles.dropdownOverlay}
+                />
+            )}
 
-            {/* animated refine panel */}
-            {
-                isOpen && (
-                    <Animated.View
-                        style={[
-                            styles.refinePanel,
-                            animatedStyle,
-                        ]}
-                    >
-                        <RefineScreen
-                            sortOrder={sortOrder}
-                            setSortOrder={setSortOrder}
-                            onClose={closeRefine}
-                        />
-                    </Animated.View>
-                )
-            }
+            {/* Refine panel overlay */}
+            {isOpen && (
+                <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={closeRefine}
+                    style={styles.overlay}
+                />
+            )}
+
+            {isOpen && (
+                <Animated.View style={[styles.refinePanel, animatedStyle]}>
+                    <RefineScreen
+                        sortOrder={sortOrder}
+                        setSortOrder={setSortOrder}
+                        onClose={closeRefine}
+                    />
+                </Animated.View>
+            )}
 
         </SafeAreaView>
     );
@@ -370,50 +371,200 @@ export default CategoryListing;
 const styles = StyleSheet.create({
     Categorycontainer: {
         flex: 1,
-        backgroundColor: "#fcf5e3",
+        backgroundColor: "#FAF6EE",
     },
 
     CategoryListing: {
         flex: 1,
-        paddingHorizontal: 24,
-        paddingBottom: 20,
+        paddingHorizontal: 20,
         paddingTop: 20,
     },
 
+    /* ── Section heading ── */
     FilterSection: {
         flexDirection: "row",
         justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: 14,
     },
-
     FilterText: {
-        fontSize: 17,
-        fontWeight: "bold",
-        color: "#363317",
+        fontSize: 18,
+        fontWeight: "700",
+        color: "#5C3D2E",
     },
 
-    // FilterButtons: {
-    //     flexDirection: "row",
-    //     alignItems: "center",
-    //     gap: 5,
-    // },
+    /* ── Search + Sort row ── */
+    searchSortRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 10,
+        marginBottom: 12,
+    },
+    searchContainer: {
+        flex: 1,
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#fff",
+        borderRadius: 16,
+        paddingHorizontal: 14,
+        height: 48,
+        gap: 8,
+        borderWidth: 0.5,
+        borderColor: "#E0D5BE",
+    },
+    searchInput: {
+        flex: 1,
+        fontSize: 14,
+        color: "#3D2B1F",
+        paddingVertical: 0,
+    },
 
+    /* ── Sort trigger button ── */
+    sortTrigger: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 4,
+        backgroundColor: "#fff",
+        borderRadius: 16,
+        paddingHorizontal: 12,
+        height: 48,
+        borderWidth: 0.5,
+        borderColor: "#E0D5BE",
+    },
+    sortTriggerActive: {
+        backgroundColor: "#7B5E57",
+        borderColor: "#7B5E57",
+    },
+
+    /* ── Dropdown Panel ── */
+    dropdownPanel: {
+        backgroundColor: "#fff",
+        borderRadius: 18,
+        borderWidth: 0.5,
+        borderColor: "#E0D5BE",
+        marginBottom: 12,
+        overflow: "hidden",
+        zIndex: 100,
+        elevation: 10,
+        shadowColor: "#5C3D2E",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.08,
+        shadowRadius: 10,
+    },
+    dropdownHeader: {
+        fontSize: 11,
+        fontWeight: "600",
+        color: "#A0907A",
+        letterSpacing: 0.8,
+        textTransform: "uppercase",
+        paddingHorizontal: 16,
+        paddingTop: 14,
+        paddingBottom: 8,
+    },
+    dropdownItem: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        paddingHorizontal: 16,
+        paddingVertical: 13,
+    },
+    dropdownItemBorder: {
+        borderBottomWidth: 0.5,
+        borderBottomColor: "#F0E8D8",
+    },
+    dropdownItemActive: {
+        backgroundColor: "#FDF7E8",
+    },
+    dropdownItemLeft: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 10,
+    },
+    dropdownIconWrap: {
+        width: 30,
+        height: 30,
+        borderRadius: 10,
+        backgroundColor: "#F5EDD8",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    dropdownIconWrapActive: {
+        backgroundColor: "#EDD9C4",
+    },
+    dropdownItemText: {
+        fontSize: 14,
+        color: "#5C3D2E",
+    },
+    dropdownItemTextActive: {
+        fontWeight: "600",
+        color: "#7B5E57",
+    },
+
+    /* ── Active sort badge ── */
+    activeSortBadge: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 6,
+        backgroundColor: "#EDD9C4",
+        alignSelf: "flex-start",
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        borderRadius: 20,
+        marginBottom: 10,
+    },
+    activeSortText: {
+        fontSize: 12,
+        fontWeight: "600",
+        color: "#7B5230",
+    },
+
+    /* ── Categories ── */
     CategoryCardsContainer: {
-        marginTop: 16,
+        marginTop: 4,
+        marginBottom: 4,
         flexGrow: 0,
     },
 
-    MenuCardsContainer: {
-        marginTop: 10,
-        justifyContent: "center",
-        alignItems: "center",
-        gap: 20,
+    /* ── Count ── */
+    countText: {
+        fontSize: 13,
+        color: "#9B7A65",
+        fontWeight: "600",
+        marginTop: 12,
+        marginBottom: 8,
     },
 
+    /* ── Menu cards ── */
+    MenuCardsContainer: {
+        marginTop: 4,
+    },
+
+    /* ── Empty state ── */
+    emptyContainer: {
+        justifyContent: "center",
+        alignItems: "center",
+        paddingVertical: 60,
+        gap: 8,
+    },
+    emptyText: {
+        color: "#9B7A65",
+        fontSize: 16,
+        fontWeight: "600",
+    },
+    emptySubText: {
+        color: "#C4B8A4",
+        fontSize: 13,
+    },
+
+    /* ── Overlays ── */
+    dropdownOverlay: {
+        ...StyleSheet.absoluteFillObject,
+        zIndex: 50,
+    },
     overlay: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: "rgba(0,0,0,0.3)",
     },
-
     refinePanel: {
         position: "absolute",
         left: 0,
@@ -425,75 +576,5 @@ const styles = StyleSheet.create({
         shadowColor: "#000",
         shadowOpacity: 0.2,
         shadowRadius: 10,
-    },
-
-    searchContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        backgroundColor: "#fff",
-        borderRadius: 20,
-        paddingHorizontal: 15,
-        marginVertical: 15,
-        height: 50,
-        gap: 8,
-    },
-
-    searchInput: {
-        flex: 1,
-        marginLeft: 2,
-        color: "#333",
-    },
-
-    sortRow: {
-        flexDirection: "row",
-        gap: 8,
-        marginBottom: 8,
-        flexWrap: "wrap",
-    },
-
-    sortChip: {
-        flexDirection: "row",
-        alignItems: "center",
-        backgroundColor: "#fff",
-        paddingHorizontal: 12,
-        paddingVertical: 8,
-        borderRadius: 16,
-        borderWidth: 1,
-        borderColor: "#e9e2d8",
-    },
-
-    sortChipActive: {
-        backgroundColor: "#75584e",
-        borderColor: "#75584e",
-    },
-
-    sortChipText: {
-        fontSize: 12,
-        color: "#75584e",
-        fontWeight: "600",
-    },
-
-    sortChipTextActive: {
-        color: "#fff",
-    },
-
-    countText: {
-        fontSize: 14,
-        color: "#75584e",
-        fontWeight: "600",
-        marginBottom: 10,
-        marginTop: 4,
-    },
-
-    emptyContainer: {
-        justifyContent: "center",
-        alignItems: "center",
-        paddingVertical: 50
-    },
-
-    emptyText: {
-        marginTop: 10,
-        color: "#999",
-        fontSize: 16
     },
 });
