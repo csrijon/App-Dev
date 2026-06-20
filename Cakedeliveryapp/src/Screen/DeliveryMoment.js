@@ -1,11 +1,10 @@
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, StatusBar, Image } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, StatusBar, Image, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Detailsheader from "../components/Detailsheader";
 import { useState } from "react";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Calendar } from "react-native-calendars"
 import Button from "../components/Button"
-
 
 const deliverySlots = [
     {
@@ -39,12 +38,13 @@ const DeliveryMoment = ({ navigation, route }) => {
     const [selecteddate, setselecteddate] = useState(
         new Date().toISOString().split("T")[0]
     )
-    const [datetime, setdatetime] = useState("")
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
+
     const selectedSlot = deliverySlots.find(
         item => item.id === deliverysoltid
     )
+
     const getDeliveryCharge = () => {
         if (!selectedSlot) return 0;
 
@@ -59,6 +59,19 @@ const DeliveryMoment = ({ navigation, route }) => {
                 return 0;
         }
     };
+
+    // 🔹 Handles date selection from calendar — this was completely missing before
+    const onDayPress = (day) => {
+        setselecteddate(day.dateString)
+        if (error) setError("")
+    }
+
+    // 🔹 Clear error as soon as user picks a slot
+    const onSlotSelect = (id) => {
+        setdeliverysoltid(id)
+        if (error) setError("")
+    }
+
     const handleNext = () => {
 
         if (!selecteddate) {
@@ -75,22 +88,20 @@ const DeliveryMoment = ({ navigation, route }) => {
         setLoading(true)
 
         const orderData = {
-            title: route.params.title,
-            image: route.params.image,
-            description: route.params.description,
+            title: route?.params?.title,
+            image: route?.params?.image,
+            description: route?.params?.description,
             deliveryDate: selecteddate,
             deliverySlot: selectedSlot,
             deliveryCharge: getDeliveryCharge()
         }
 
         setTimeout(() => {
-
             setLoading(false)
 
             navigation.navigate("Cakedetails", {
                 orderData
             })
-
         }, 1000)
     }
 
@@ -106,73 +117,58 @@ const DeliveryMoment = ({ navigation, route }) => {
                 <View style={styles.maincalender} >
                     <Calendar
                         minDate={new Date().toISOString().split("T")[0]}
+                        onDayPress={onDayPress}
                         theme={{
                             backgroundColor: '#fff',
                             calendarBackground: '#fff',
                             todayTextColor: "red",
                             arrowColor: "#000",
-                            selectedDayTextColor: "black"
+                            selectedDayTextColor: "black",
+                            borderRadius:9999
                         }}
                         markedDates={{
                             [selecteddate]: { selected: true, selectedColor: "#f6cfc2", color: "black" }
                         }}
-
                     />
 
-                    <View
-                        style={{
-                            backgroundColor: "#fff",
-                            padding: 15,
-                            borderRadius: 20,
-                            marginBottom: 20
-                        }}
-                    >
+                    <View style={styles.summaryCard}>
 
-                        <Text>
+                        <Text style={styles.summaryLabel}>
                             Selected Date:
                         </Text>
 
-                        <Text>
+                        <Text style={styles.summaryValue}>
                             {selecteddate}
                         </Text>
 
-                        <Text
-                            style={{
-                                marginTop: 10
-                            }}
-                        >
+                        <Text style={[styles.summaryLabel, { marginTop: 10 }]}>
                             Delivery Slot:
                         </Text>
 
-                        <Text>
-                            {selectedSlot?.title}
+                        <Text style={styles.summaryValue}>
+                            {selectedSlot?.title || "Not selected"}
                         </Text>
 
                     </View>
 
                 </View>
 
-                {/* Time Options */}
-
+                {/* Error message */}
                 {
                     error ? (
-                        <Text
-                            style={{
-                                color: "red",
-                                marginBottom: 20,
-                                textAlign: "center",
-                                fontWeight: "600"
-                            }}
-                        >
-                            {error}
-                        </Text>
+                        <View style={styles.errorRow}>
+                            <Text style={styles.errorText}>
+                                {error}
+                            </Text>
+                        </View>
                     ) : null
                 }
 
+                {/* Time Options */}
                 {
                     deliverySlots.map((item) => (
                         <TouchableOpacity
-                            onPress={() => setdeliverysoltid(item.id)}
+                            onPress={() => onSlotSelect(item.id)}
                             key={item.id}
                             style={[
                                 styles.option,
@@ -210,7 +206,7 @@ const DeliveryMoment = ({ navigation, route }) => {
                                 </Text>
                             </View>
 
-                            <View>
+                            <View style={{ alignItems: "flex-end" }}>
                                 <Text style={styles.priceLabel}>
                                     {item.label}
                                 </Text>
@@ -225,6 +221,12 @@ const DeliveryMoment = ({ navigation, route }) => {
                                     {item.price}
                                 </Text>
                             </View>
+
+                            {deliverysoltid === item.id && (
+                                <View style={styles.checkBadge}>
+                                    <AntDesign name="check" size={12} color="#fff" />
+                                </View>
+                            )}
                         </TouchableOpacity>
                     ))
                 }
@@ -238,10 +240,10 @@ const DeliveryMoment = ({ navigation, route }) => {
 
                     <Text style={styles.badge}>CHEF'S RECOMMENDATION</Text>
 
-                    <Text style={styles.cakeTitle}>{route.params.title}</Text>
+                    <Text style={styles.cakeTitle}>{route?.params?.title || "Untitled Cake"}</Text>
 
                     <Text style={styles.cakeDesc}>
-                        {route.params.description}
+                        {route?.params?.description}
                     </Text>
                 </View>
 
@@ -249,20 +251,19 @@ const DeliveryMoment = ({ navigation, route }) => {
                 <TouchableOpacity
                     onPress={handleNext}
                     disabled={loading}
+                    activeOpacity={0.85}
                     style={[
                         styles.nextBtn,
-                        {
-                            opacity: loading ? 0.7 : 1
-                        }
+                        { opacity: loading ? 0.7 : 1 }
                     ]}
                 >
-                    <Text style={styles.nextText}>
-                        {
-                            loading
-                                ? "Processing..."
-                                : "Next: Summary →"
-                        }
-                    </Text>
+                    {loading ? (
+                        <ActivityIndicator color="#fff" />
+                    ) : (
+                        <Text style={styles.nextText}>
+                            Next: Summary →
+                        </Text>
+                    )}
                 </TouchableOpacity>
 
                 <Text style={styles.footer}>
@@ -280,7 +281,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#f5ecd9",
-        // padding: 20,
     },
     scrollcontainer: {
         padding: 20
@@ -298,33 +298,6 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
 
-    dateCard: {
-        backgroundColor: "#e8dec2",
-        borderRadius: 25,
-        padding: 25,
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginBottom: 20,
-    },
-
-    dateLabel: {
-        color: "#8b7d6b",
-        fontSize: 12,
-    },
-
-    date: {
-        fontSize: 24,
-        fontWeight: "bold",
-        color: "#5c4033",
-    },
-
-    calendarIcon: {
-        backgroundColor: "#f6cfc2",
-        padding: 12,
-        borderRadius: 20,
-    },
-
     option: {
         flexDirection: "row",
         alignItems: "center",
@@ -334,26 +307,49 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 48,
         marginBottom: 12,
         borderWidth: 2,
-
     },
 
     maincalender: {
         marginBottom: 30
     },
 
+    summaryCard: {
+        backgroundColor: "#fff",
+        padding: 15,
+        borderRadius: 20,
+        marginTop: 12,
+    },
+
+    summaryLabel: {
+        fontSize: 12,
+        color: "#8b7d6b",
+    },
+
+    summaryValue: {
+        fontSize: 15,
+        fontWeight: "600",
+        color: "#5c4033",
+        marginTop: 2,
+    },
+
+    errorRow: {
+        backgroundColor: "#fdeceb",
+        borderRadius: 14,
+        paddingVertical: 10,
+        paddingHorizontal: 14,
+        marginBottom: 16,
+    },
+
+    errorText: {
+        color: "#b94a3f",
+        textAlign: "center",
+        fontWeight: "600",
+    },
+
     iconStyle: {
-        // backgroundColor: "#f3d9dc",
         backgroundColor: "#6b4f4f",
         padding: 10,
         borderRadius: 9999,
-        marginRight: 12,
-    },
-
-
-    iconCirclePink: {
-        backgroundColor: "#f3c6d3",
-        padding: 10,
-        borderRadius: 20,
         marginRight: 12,
     },
 
@@ -383,6 +379,20 @@ const styles = StyleSheet.create({
         color: "#5c4033",
     },
 
+    checkBadge: {
+        position: "absolute",
+        top: -6,
+        right: -6,
+        width: 22,
+        height: 22,
+        borderRadius: 11,
+        backgroundColor: "#75584e",
+        alignItems: "center",
+        justifyContent: "center",
+        borderWidth: 2,
+        borderColor: "#fff",
+    },
+
     cakeCard: {
         backgroundColor: "#e8dec2",
         borderRadius: 25,
@@ -397,7 +407,6 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         marginBottom: 10,
         transform: [{ rotate: "5deg" }],
-
     },
 
     badge: {
@@ -430,6 +439,8 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         marginTop: 25,
         alignItems: "center",
+        justifyContent: "center",
+        minHeight: 58,
     },
 
     nextText: {

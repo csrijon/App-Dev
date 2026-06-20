@@ -1,20 +1,32 @@
 import { SafeAreaView } from "react-native-safe-area-context"
-import { StatusBar, View, Image, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native"
-import Zocial from 'react-native-vector-icons/Zocial';
+import { StatusBar, View, Image, Text, TextInput, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native"
 import Octicons from 'react-native-vector-icons/Octicons';
+import Feather from 'react-native-vector-icons/Feather';
 import Button from "../components/Button";
 import Socialmediabutton from "../components/Socialmediabutton"
 import { useState, useEffect } from "react";
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import Config from "react-native-config";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
-
 
 const Loginscreen = ({ navigation }) => {
 
     const [loginemail, setloginemail] = useState("")
     const [loginpassword, setloginpassword] = useState("")
+    const [showPassword, setShowPassword] = useState(false)
+    const [focusedField, setFocusedField] = useState(null) // "mobile" | "password" | null
+    const [touched, setTouched] = useState(false)
+    const [loading, setLoading] = useState(false)
+
+    const isMobileValid = /^[6-9]\d{9}$/.test(loginemail)
+    const isPasswordValid = loginpassword.length >= 6
+
+    const errorMessage = (() => {
+        if (!touched) return ""
+        if (!loginemail || !loginpassword) return "Please fill in all fields."
+        if (!isMobileValid) return "Please enter a valid 10-digit mobile number."
+        if (!isPasswordValid) return "Password must be at least 6 characters."
+        return ""
+    })()
 
     useEffect(() => {
         GoogleSignin.configure({
@@ -43,14 +55,22 @@ const Loginscreen = ({ navigation }) => {
         }
     }
 
-
     const onclickloginbutton = () => {
-        if (loginemail && loginpassword) {
-            console.log("all statement is visible")
-            navigation.replace("Tabs")
-        } else {
-            console.log("Nothing is Visible")
+        setTouched(true)
+
+        if (!loginemail || !loginpassword || !isMobileValid || !isPasswordValid) {
+            console.log("Validation failed")
+            return
         }
+
+        setLoading(true)
+
+        // Simulate API call — replace with real backend login
+        setTimeout(() => {
+            console.log("Login success")
+            setLoading(false)
+            navigation.replace("Tabs")
+        }, 1000)
     }
 
     return (
@@ -59,56 +79,113 @@ const Loginscreen = ({ navigation }) => {
             <View style={styles.loginconatiner} >
                 <View style={styles.loginbox} >
                     <View style={styles.img}>
-                        <Image
-                            style={{ width: 80, height: 80 }}
-                            source={require("../images/Background.png")}
-                        />
+                        <View style={styles.imgRing}>
+                            <Image
+                                style={styles.logoImage}
+                                source={require("../images/Background.png")}
+                            />
+                        </View>
                     </View>
+
                     {/* {top text start} */}
                     <View style={styles.welcomecake} >
                         <Text style={styles.welcomeboldtext} >Cake Haven</Text>
                         <Text style={styles.welcomenormaltext} >Welcome back to the bakery</Text>
                     </View>
                     {/* {top text end} */}
+
                     {/* {mailinput start} */}
                     <View style={styles.mailinput} >
-                        <Text style={styles.mailinputtext} >Mobile Number</Text>
-                        <View style={styles.mailtextinput} >
-                            <FontAwesome name="mobile-phone" color="#000" size={24} />
-                            <TextInput keyboardType="numeric" value={loginemail} onChangeText={(text) => {
-                                setloginemail(text)
-                            }} require placeholder="7029046473" maxLength={10} />
+                        <Text style={styles.mailinputtext} >MOBILE NUMBER</Text>
+                        <View style={[
+                            styles.mailtextinput,
+                            focusedField === "mobile" && styles.inputFocused,
+                        ]} >
+                            <View style={styles.iconWell}>
+                                <FontAwesome name="mobile-phone" color="#8a7350" size={20} />
+                            </View>
+                            <TextInput
+                                keyboardType="numeric"
+                                value={loginemail}
+                                onChangeText={(text) => setloginemail(text.replace(/[^0-9]/g, ""))}
+                                onFocus={() => setFocusedField("mobile")}
+                                onBlur={() => setFocusedField(null)}
+                                placeholder="7029046473"
+                                placeholderTextColor="#b8a888"
+                                maxLength={10}
+                                style={styles.inputField}
+                            />
                         </View>
                     </View>
                     {/* {mail input end} */}
+
                     <View style={styles.passwordsection} >
                         <View style={styles.passwordforget} >
-                            <Text>PASSWORD</Text>
+                            <Text style={styles.mailinputtext}>PASSWORD</Text>
                             <TouchableOpacity onPress={() => navigation.navigate("Reset")} >
                                 <Text style={styles.signupText} >FORGOT?</Text>
                             </TouchableOpacity>
                         </View>
-                        <View style={styles.passwordinput} >
-                            <Octicons name="lock" color="#000" size={24} />
-                            <TextInput onChangeText={(text) => {
-                                setloginpassword(text)
-                                console.log(text)
-                            }} value={loginpassword} secureTextEntry require placeholder="Enter The password" />
+                        <View style={[
+                            styles.passwordinput,
+                            focusedField === "password" && styles.inputFocused,
+                        ]} >
+                            <View style={styles.iconWell}>
+                                <Octicons name="lock" color="#8a7350" size={20} />
+                            </View>
+                            <TextInput
+                                onChangeText={(text) => setloginpassword(text)}
+                                value={loginpassword}
+                                onFocus={() => setFocusedField("password")}
+                                onBlur={() => setFocusedField(null)}
+                                secureTextEntry={!showPassword}
+                                placeholder="Enter your password"
+                                placeholderTextColor="#b8a888"
+                                style={styles.inputField}
+                            />
+                            <TouchableOpacity
+                                onPress={() => setShowPassword((prev) => !prev)}
+                                hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                            >
+                                <Feather name={showPassword ? "eye-off" : "eye"} size={19} color="#8a7350" />
+                            </TouchableOpacity>
                         </View>
                     </View>
+
+                    {/* Error Message */}
+                    {errorMessage ? (
+                        <View style={styles.errorRow}>
+                            <Feather name="alert-circle" size={13} color="#b94a3f" />
+                            <Text style={styles.errorText}>{errorMessage}</Text>
+                        </View>
+                    ) : null}
+
                     {/* {button start} */}
                     <View style={styles.loginbutton} >
-                        <Button onPress={onclickloginbutton} title="Login to Haven" />
+                        {loading ? (
+                            <View style={styles.loadingBtn}>
+                                <ActivityIndicator color="#fff" />
+                            </View>
+                        ) : (
+                            <Button onPress={onclickloginbutton} title="Login to Haven" />
+                        )}
                     </View>
                     {/* {Button end} */}
-                    <Text style={styles.orcontinue} >OR CONTINUE WITH</Text>
+
+                    <View style={styles.dividerRow}>
+                        <View style={styles.dividerLine} />
+                        <Text style={styles.orcontinue}>OR CONTINUE WITH</Text>
+                        <View style={styles.dividerLine} />
+                    </View>
+
                     {/* {social media button start} */}
                     <Socialmediabutton onPress={onclickgooglelogin} />
                     {/* {social media button end} */}
+
                     {/* {last element start} */}
                     <View style={styles.lastelement} >
-                        <Text>New to the gallery?</Text>
-                        <TouchableOpacity>
+                        <Text style={styles.normalSmallText}>New to the gallery?</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
                             <Text style={styles.signupText} >Sign Up</Text>
                         </TouchableOpacity>
                     </View>
@@ -130,82 +207,120 @@ const styles = StyleSheet.create({
 
     loginconatiner: {
         flex: 1,
+        justifyContent: "center",
     },
 
     loginbox: {
-        flex: 1,
         justifyContent: "flex-start",
-        paddingHorizontal: 30,
-        paddingVertical: 10,
-        gap: 20,
-        borderRadius: 48,
+        paddingHorizontal: 28,
+        paddingVertical: 28,
+        gap: 18,
+        borderRadius: 36,
         backgroundColor: "#FFFFFF",
-        elevation: 5,
+
+        shadowColor: "#7b5a4b",
+        shadowOffset: { width: 0, height: 8 },
+        shadowOpacity: 0.1,
+        shadowRadius: 18,
+        elevation: 6,
     },
 
     img: {
         alignItems: "center"
     },
 
+    imgRing: {
+        width: 96,
+        height: 96,
+        borderRadius: 28,
+        backgroundColor: "#f4ecd8",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+
+    logoImage: {
+        width: 70,
+        height: 70,
+        borderRadius: 18,
+    },
+
     welcomecake: {
         alignItems: "center",
-        gap: 10
+        gap: 6
     },
 
     welcomeboldtext: {
-        letterSpacing: -0.4,
+        letterSpacing: -0.3,
         color: "#75584E",
-        fontSize: 19,
-        fontWeight: "700"   // ✅ fixed
+        fontSize: 24,
+        fontWeight: "800"
     },
 
     welcomenormaltext: {
-        fontSize: 20,
-        color: "#646040"
+        fontSize: 14.5,
+        color: "#8a7350"
     },
 
     mailinput: {
-        marginTop: 20,
-        gap: 10
+        marginTop: 8,
+        gap: 8
     },
 
     mailinputtext: {
-        paddingLeft: 10
+        paddingLeft: 6,
+        fontSize: 11.5,
+        fontWeight: "700",
+        color: "#8a7350",
+        letterSpacing: 0.5,
     },
+
     mailtextinput: {
         flexDirection: "row",
         alignItems: "center",
 
         backgroundColor: "#FFFDF8",
 
-        borderWidth: 1,
+        borderWidth: 1.5,
         borderColor: "#E9E2D8",
 
-        paddingHorizontal: 18,
-        paddingVertical: 16,
+        paddingHorizontal: 8,
+        height: 58,
 
         borderRadius: 18,
+        gap: 6,
+    },
 
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.05,
-        shadowRadius: 8,
+    inputFocused: {
+        borderColor: "#a98a5f",
+        backgroundColor: "#fdfaf2",
+    },
 
-        elevation: 2,
-        gap: 12,
+    iconWell: {
+        width: 38,
+        height: 38,
+        borderRadius: 12,
+        backgroundColor: "#f0e9d4",
+        alignItems: "center",
+        justifyContent: "center",
+        marginLeft: 4,
+    },
+
+    inputField: {
+        flex: 1,
+        fontSize: 15,
+        color: "#2f2a1f",
+        marginHorizontal: 8,
     },
 
     passwordsection: {
-        gap: 10
+        gap: 8
     },
 
     passwordforget: {
         flexDirection: "row",
         justifyContent: "space-between",
-        paddingHorizontal: 10
+        alignItems: "center",
+        paddingHorizontal: 6
     },
 
     passwordinput: {
@@ -214,35 +329,62 @@ const styles = StyleSheet.create({
 
         backgroundColor: "#FFFDF8",
 
-        borderWidth: 1,
+        borderWidth: 1.5,
         borderColor: "#E9E2D8",
 
-        paddingHorizontal: 18,
-        paddingVertical: 16,
+        paddingHorizontal: 8,
+        height: 58,
 
         borderRadius: 18,
+        gap: 6,
+    },
 
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.05,
-        shadowRadius: 8,
+    errorRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: -6,
+        marginLeft: 6,
+        gap: 6,
+    },
 
-        elevation: 2,
-
-        gap: 12,
+    errorText: {
+        color: "#b94a3f",
+        fontSize: 12,
+        fontWeight: "500",
     },
 
     loginbutton: {
-        marginTop: 10
+        marginTop: 6
+    },
+
+    loadingBtn: {
+        backgroundColor: "#7b5a4b",
+        paddingVertical: 17,
+        borderRadius: 30,
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: 54,
+    },
+
+    dividerRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 10,
+        marginTop: 6,
+    },
+
+    dividerLine: {
+        flex: 1,
+        height: 1,
+        backgroundColor: "#E9E2D8",
     },
 
     orcontinue: {
         textAlign: "center",
-        marginTop: 10,
-        color: "#646040"
+        color: "#a99c7c",
+        fontSize: 11.5,
+        fontWeight: "700",
+        letterSpacing: 0.5,
     },
 
     lastelement: {
@@ -250,7 +392,12 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         gap: 5,
-        marginTop: 10
+        marginTop: 4
+    },
+
+    normalSmallText: {
+        color: "#6b5b3e",
+        fontSize: 14,
     },
 
     signupText: {

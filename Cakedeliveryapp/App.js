@@ -98,12 +98,13 @@ const TabScreen = () => {
           borderTopLeftRadius: 40,
           borderTopRightRadius: 40,
           overflow: "hidden",
+          paddingHorizontal:10
         },
         tabBarItemStyle: {
-          paddingTop: 10,
-          borderRadius: 20,
-          paddingBottom: 10
-
+          borderRadius: 9999,
+          marginHorizontal:10,
+          marginVertical:8,
+          overflow:"hidden"
         },
         tabBarActiveTintColor: "#75584E",
         tabBarInactiveTintColor: "#646040",

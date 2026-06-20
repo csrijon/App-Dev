@@ -27,183 +27,125 @@ import Animated, {
     useAnimatedStyle,
     withTiming,
 } from 'react-native-reanimated';
-import { Screen } from 'react-native-screens';
 
 const { width } = Dimensions.get("window");
 
 const categories = [
-    {
-        id: 1,
-        title: "Burger",
-    },
-    {
-        id: 2,
-        title: "Pizza",
-    },
-    {
-        id: 3,
-        title: "Chicken",
-    },
-    {
-        id: 4,
-        title: "Drinks",
-    },
-    {
-        id: 5,
-        title: "Dessert",
-    },
-    {
-        id: 6,
-        title: "Biryani",
-    },
-    {
-        id: 7,
-        title: "Pasta",
-    },
-    {
-        id: 8,
-        title: "Ice Cream",
-    },
+    { id: 1, title: "Burger" },
+    { id: 2, title: "Pizza" },
+    { id: 3, title: "Chicken" },
+    { id: 4, title: "Drinks" },
+    { id: 5, title: "Dessert" },
+    { id: 6, title: "Biryani" },
+    { id: 7, title: "Pasta" },
+    { id: 8, title: "Ice Cream" },
 ];
 
 const menuItems = [
     {
         id: 1,
-        image:
-            "https://legateaucakes.com/cdn/shop/files/28d729eb-0915-4e9a-87be-c015e085d598.png?v=1772039786",
+        image: "https://legateaucakes.com/cdn/shop/files/28d729eb-0915-4e9a-87be-c015e085d598.png?v=1772039786",
         rating: "4.5",
         bakingTime: "48h",
         title: "Midnight Forest",
-        description:
-            "A mysterious and enchanting forest that comes alive under the cover of darkness.",
+        description: "A mysterious and enchanting forest that comes alive under the cover of darkness.",
         price: "$500.00",
     },
-
     {
         id: 2,
-        image:
-            "https://imgcdn.floweraura.com/black-forest-cake-9817490ca-A.jpg",
+        image: "https://imgcdn.floweraura.com/black-forest-cake-9817490ca-A.jpg",
         rating: "4.7",
         bakingTime: "24h",
         title: "Black Forest",
-        description:
-            "Rich chocolate sponge layered with fresh cream and cherries.",
+        description: "Rich chocolate sponge layered with fresh cream and cherries.",
         price: "$420.00",
     },
-
     {
         id: 3,
-        image:
-            "https://www.fnp.com/images/pr/l/v20221205202838/choco-truffle-cake-half-kg_1.jpg",
+        image: "https://www.fnp.com/images/pr/l/v20221205202838/choco-truffle-cake-half-kg_1.jpg",
         rating: "4.8",
         bakingTime: "12h",
         title: "Choco Truffle",
-        description:
-            "Smooth chocolate truffle cake topped with rich ganache.",
+        description: "Smooth chocolate truffle cake topped with rich ganache.",
         price: "$650.00",
     },
-
     {
         id: 4,
-        image:
-            "https://www.cakexpo.com/cdn/shop/products/redvelvetcake.jpg",
+        image: "https://www.cakexpo.com/cdn/shop/products/redvelvetcake.jpg",
         rating: "4.6",
         bakingTime: "36h",
         title: "Red Velvet",
-        description:
-            "Classic red velvet cake with creamy cheese frosting.",
+        description: "Classic red velvet cake with creamy cheese frosting.",
         price: "$550.00",
     },
-
     {
         id: 5,
-        image:
-            "https://www.fnp.com/images/pr/l/v20221205202854/fresh-fruit-cake-half-kg_1.jpg",
+        image: "https://www.fnp.com/images/pr/l/v20221205202854/fresh-fruit-cake-half-kg_1.jpg",
         rating: "4.4",
         bakingTime: "18h",
         title: "Fresh Fruit Cake",
-        description:
-            "Soft vanilla sponge loaded with seasonal fresh fruits.",
+        description: "Soft vanilla sponge loaded with seasonal fresh fruits.",
         price: "$480.00",
     },
-
     {
         id: 6,
-        image:
-            "https://www.fnp.com/images/pr/l/v20221205202843/blueberry-cake-half-kg_1.jpg",
+        image: "https://www.fnp.com/images/pr/l/v20221205202843/blueberry-cake-half-kg_1.jpg",
         rating: "4.9",
         bakingTime: "20h",
         title: "Blueberry Bliss",
-        description:
-            "Creamy blueberry cake with juicy berry filling.",
+        description: "Creamy blueberry cake with juicy berry filling.",
         price: "$720.00",
     },
 ];
 
+// 🔹 helper to convert "$500.00" -> 500
+const parsePrice = (price) => parseFloat(price.replace(/[^0-9.]/g, "")) || 0;
+
 const CategoryListing = ({ navigation }) => {
 
     const [isOpen, setIsOpen] = useState(false);
-    const [selectid, setselectid] = useState(null)
+    const [selectid, setselectid] = useState(null);
     const [searchText, setSearchText] = useState("");
     const [refreshing, setRefreshing] = useState(false);
-    const [sortOrder, setSortOrder] = useState("default");
+    const [sortOrder, setSortOrder] = useState("default"); // "default" | "low" | "high"
 
     const onRefresh = () => {
-
         setRefreshing(true);
-
         setTimeout(() => {
             setRefreshing(false);
         }, 1500);
-
     };
+
     const filteredItems = menuItems.filter(item =>
-        item.title
-            .toLowerCase()
-            .includes(searchText.toLowerCase())
+        item.title.toLowerCase().includes(searchText.toLowerCase())
     );
 
     const sortedItems = [...filteredItems];
 
     if (sortOrder === "low") {
-        sortedItems.sort((a, b) => a.price - b.price);
+        sortedItems.sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
     }
 
     if (sortOrder === "high") {
-        sortedItems.sort((a, b) => b.price - a.price);
+        sortedItems.sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
     }
 
     // animation value
     const translateX = useSharedValue(-width);
 
-    // animated style
     const animatedStyle = useAnimatedStyle(() => {
         return {
-            transform: [
-                {
-                    translateX: translateX.value,
-                },
-            ],
+            transform: [{ translateX: translateX.value }],
         };
     });
 
-    // open refine panel
     const openRefine = () => {
-
         setIsOpen(true);
-
-        translateX.value = withTiming(0, {
-            duration: 400,
-        });
+        translateX.value = withTiming(0, { duration: 400 });
     };
 
-    // close refine panel
     const closeRefine = () => {
-
-        translateX.value = withTiming(-width, {
-            duration: 400,
-        });
-
+        translateX.value = withTiming(-width, { duration: 400 });
         setTimeout(() => {
             setIsOpen(false);
         }, 400);
@@ -246,62 +188,108 @@ const CategoryListing = ({ navigation }) => {
                         onPress={openRefine}
                         style={styles.FilterButtons}
                     >
-                        <Ionicons
-                            name="filter"
-                            color="#000"
-                            size={20}
-                        />
-
+                        <Ionicons name="filter" color="#000" size={20} />
                         <Text>Refine</Text>
                     </TouchableOpacity>
 
                 </View>
                 {/* filter section end */}
 
+                {/* search section start */}
                 <View style={styles.searchContainer}>
 
-                    <Ionicons
-                        name="search"
-                        size={18}
-                        color="#777"
-                    />
+                    <Ionicons name="search" size={18} color="#777" />
 
                     <TextInput
                         placeholder="Search Cakes..."
+                        placeholderTextColor="#999"
                         value={searchText}
                         onChangeText={setSearchText}
                         style={styles.searchInput}
                     />
 
-                </View>
+                    {searchText.length > 0 && (
+                        <TouchableOpacity
+                            onPress={() => setSearchText("")}
+                            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                        >
+                            <Ionicons name="close-circle" size={18} color="#bbb" />
+                        </TouchableOpacity>
+                    )}
 
-                <ScrollView
+                </View>
+                {/* search section end */}
+
+                {/* quick sort chips start */}
+                <View style={styles.sortRow}>
+                    <TouchableOpacity
+                        onPress={() => setSortOrder("default")}
+                        style={[styles.sortChip, sortOrder === "default" && styles.sortChipActive]}
+                    >
+                        <Text style={[styles.sortChipText, sortOrder === "default" && styles.sortChipTextActive]}>
+                            Default
+                        </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        onPress={() => setSortOrder("low")}
+                        style={[styles.sortChip, sortOrder === "low" && styles.sortChipActive]}
+                    >
+                        <Ionicons
+                            name="arrow-up"
+                            size={12}
+                            color={sortOrder === "low" ? "#fff" : "#75584e"}
+                            style={{ marginRight: 4 }}
+                        />
+                        <Text style={[styles.sortChipText, sortOrder === "low" && styles.sortChipTextActive]}>
+                            Price: Low to High
+                        </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        onPress={() => setSortOrder("high")}
+                        style={[styles.sortChip, sortOrder === "high" && styles.sortChipActive]}
+                    >
+                        <Ionicons
+                            name="arrow-down"
+                            size={12}
+                            color={sortOrder === "high" ? "#fff" : "#75584e"}
+                            style={{ marginRight: 4 }}
+                        />
+                        <Text style={[styles.sortChipText, sortOrder === "high" && styles.sortChipTextActive]}>
+                            Price: High to Low
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+                {/* quick sort chips end */}
+
+                {/* categories — single FlatList, no nested ScrollView */}
+                <FlatList
                     horizontal
                     showsHorizontalScrollIndicator={false}
                     style={styles.CategoryCardsContainer}
-                >
+                    contentContainerStyle={{ flexDirection: "row", gap: 10 }}
+                    data={categories}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={({ item }) => (
+                        <CategoryCard
+                            setselectid={setselectid}
+                            selectid={selectid}
+                            id={item.id}
+                            title={item.title}
+                            onPress={() => {
+                                setselectid(item.id);
+                            }}
+                        />
+                    )}
+                />
 
-                    <FlatList
-                        contentContainerStyle={{
-                            flexDirection: "row",
-                            gap: 10
-                        }}
-                        data={categories}
-                        keyExtractor={(item) => item.id.toString()}
-                        renderItem={({ item }) => (
-                            <CategoryCard
-                                setselectid={setselectid}
-                                selectid={selectid}
-                                id={item.id}
-                                title={item.title}
-                                onPress={() => {
-                                    setselectid(item.id);
-                                }}
-                            />
-                        )}
-                    />
-
-                </ScrollView>
+                {/* result count */}
+                {sortedItems.length > 0 && (
+                    <Text style={styles.countText}>
+                        {sortedItems.length} {sortedItems.length === 1 ? "cake" : "cakes"} found
+                    </Text>
+                )}
 
                 <View style={styles.MenuCardsContainer}>
 
@@ -309,26 +297,14 @@ const CategoryListing = ({ navigation }) => {
                         sortedItems.length === 0 ?
 
                             <View style={styles.emptyContainer}>
-
-                                <Ionicons
-                                    name="search-outline"
-                                    size={60}
-                                    color="#999"
-                                />
-
-                                <Text style={styles.emptyText}>
-                                    No Cakes Found
-                                </Text>
-
+                                <Ionicons name="search-outline" size={60} color="#999" />
+                                <Text style={styles.emptyText}>No Cakes Found</Text>
                             </View>
 
                             :
 
                             <FlatList
-                                contentContainerStyle={{
-                                    gap: 20,
-                                    paddingBottom: 40
-                                }}
+                                contentContainerStyle={{ gap: 20, paddingBottom: 40 }}
                                 data={sortedItems}
                                 keyExtractor={(item) => item.id.toString()}
                                 renderItem={({ item }) => (
@@ -376,7 +352,11 @@ const CategoryListing = ({ navigation }) => {
                             animatedStyle,
                         ]}
                     >
-                        <RefineScreen />
+                        <RefineScreen
+                            sortOrder={sortOrder}
+                            setSortOrder={setSortOrder}
+                            onClose={closeRefine}
+                        />
                     </Animated.View>
                 )
             }
@@ -418,12 +398,12 @@ const styles = StyleSheet.create({
     },
 
     CategoryCardsContainer: {
-        marginTop: 20,
-        flexDirection: "row",
+        marginTop: 16,
+        flexGrow: 0,
     },
 
     MenuCardsContainer: {
-        marginTop: 20,
+        marginTop: 10,
         justifyContent: "center",
         alignItems: "center",
         gap: 20,
@@ -446,37 +426,74 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 10,
     },
-    searchContainer:{
-    flexDirection:"row",
-    alignItems:"center",
-    backgroundColor:"#fff",
-    borderRadius:20,
-    paddingHorizontal:15,
-    marginVertical:15,
-    height:50
-},
 
-searchInput:{
-    flex:1,
-    marginLeft:10
-},
+    searchContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#fff",
+        borderRadius: 20,
+        paddingHorizontal: 15,
+        marginVertical: 15,
+        height: 50,
+        gap: 8,
+    },
 
-countText:{
-    fontSize:14,
-    color:"#75584e",
-    fontWeight:"600",
-    marginBottom:15
-},
+    searchInput: {
+        flex: 1,
+        marginLeft: 2,
+        color: "#333",
+    },
 
-emptyContainer:{
-    justifyContent:"center",
-    alignItems:"center",
-    paddingVertical:50
-},
+    sortRow: {
+        flexDirection: "row",
+        gap: 8,
+        marginBottom: 8,
+        flexWrap: "wrap",
+    },
 
-emptyText:{
-    marginTop:10,
-    color:"#999",
-    fontSize:16
-},
+    sortChip: {
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#fff",
+        paddingHorizontal: 12,
+        paddingVertical: 8,
+        borderRadius: 16,
+        borderWidth: 1,
+        borderColor: "#e9e2d8",
+    },
+
+    sortChipActive: {
+        backgroundColor: "#75584e",
+        borderColor: "#75584e",
+    },
+
+    sortChipText: {
+        fontSize: 12,
+        color: "#75584e",
+        fontWeight: "600",
+    },
+
+    sortChipTextActive: {
+        color: "#fff",
+    },
+
+    countText: {
+        fontSize: 14,
+        color: "#75584e",
+        fontWeight: "600",
+        marginBottom: 10,
+        marginTop: 4,
+    },
+
+    emptyContainer: {
+        justifyContent: "center",
+        alignItems: "center",
+        paddingVertical: 50
+    },
+
+    emptyText: {
+        marginTop: 10,
+        color: "#999",
+        fontSize: 16
+    },
 });
