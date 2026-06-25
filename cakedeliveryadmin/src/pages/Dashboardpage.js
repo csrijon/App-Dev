@@ -16,7 +16,8 @@ const dashboardData = [
         value: "$4,850.00",
         subtitle: "+12.5% vs last week",
         bgColor: "#ECE4C8",
-        icon: <MaterialCommunityIcons name="chart-line-variant" color="#000" size={24} />
+        iconBg: "#DCD0A0",
+        icon: <MaterialCommunityIcons name="chart-line-variant" color="#5D4B2E" size={22} />
     },
 
     {
@@ -25,7 +26,8 @@ const dashboardData = [
         value: "$12",
         subtitle: "Next delivery in 45m",
         bgColor: "#f4dce4",
-        icon: <Ionicons name="time-outline" color="#000" size={24} />
+        iconBg: "#E8BFCC",
+        icon: <Ionicons name="time-outline" color="#7A3B4E" size={22} />
     },
 
     {
@@ -34,7 +36,8 @@ const dashboardData = [
         value: "$4",
         subtitle: "4.9 avg rating",
         bgColor: "#f8bbd0",
-        icon: <Ionicons name="star-outline" color="#000" size={24} />
+        iconBg: "#F09FB8",
+        icon: <Ionicons name="star-outline" color="#7A2E45" size={22} />
     },
 ];
 
@@ -46,8 +49,8 @@ const Dashboardpage = ({ navigation }) => {
             <Adminheader />
             <ScrollView Vertical contentContainerStyle={{ paddingHorizontal: 24, marginTop: 20, paddingBottom: 40 }} >
                 <View style={Dashboardstyle.headingtext} >
-                    <Text style={[Dashboardstyle.headingtitle, Dashboardstyle.blod]} >Srijon,Chef</Text>
-                    <Text style={Dashboardstyle.headingparagraph} >Your artisanal gallery is bustling today.Here is the morning's oversight for your confectionary empire</Text>
+                    <Text style={[Dashboardstyle.headingtitle, Dashboardstyle.blod]} >Srijon, Chef</Text>
+                    <Text style={Dashboardstyle.headingparagraph} >Your artisanal gallery is bustling today. Here is the morning's oversight for your confectionary empire.</Text>
                 </View>
                 <View style={Dashboardstyle.buttonsection} >
                     <Dashboardbutton
@@ -70,9 +73,14 @@ const Dashboardpage = ({ navigation }) => {
                             <View key={item.id} style={[Dashboardstyle.card, { backgroundColor: item.bgColor }]}>
 
                                 <View style={Dashboardstyle.topSection}>
-                                    <Text style={Dashboardstyle.heading}>
-                                        {item.title}
-                                    </Text>
+                                    <View style={Dashboardstyle.topRow}>
+                                        <Text style={Dashboardstyle.heading}>
+                                            {item.title}
+                                        </Text>
+                                        <View style={[Dashboardstyle.iconBadge, { backgroundColor: item.iconBg }]}>
+                                            {item.icon}
+                                        </View>
+                                    </View>
 
                                     <Text style={Dashboardstyle.amount}>
                                         {item.value}
@@ -80,6 +88,7 @@ const Dashboardpage = ({ navigation }) => {
                                 </View>
 
                                 <View style={Dashboardstyle.bottomSection}>
+                                    <View style={Dashboardstyle.trendDot} />
                                     <Text style={Dashboardstyle.subtitle}>
                                         {item.subtitle}
                                     </Text>
@@ -107,25 +116,27 @@ const Dashboardstyle = StyleSheet.create({
         backgroundColor: "#fdf7e4",
     },
     headingtext: {
-        gap: 10
+        gap: 8
     },
     headingtitle: {
-        fontSize: 18,
-        color: "black",
+        fontSize: 22,
+        color: "#3D2E22",
+        letterSpacing: 0.3,
     },
     blod: {
         fontWeight: "700",
     },
     headingparagraph: {
-        color: "#646040",
-        fontSize: 16,
-        letterSpacing: 0.5
+        color: "#7A6F52",
+        fontSize: 15,
+        letterSpacing: 0.3,
+        lineHeight: 22,
     },
     buttonsection: {
         flexDirection: "row",
         flexWrap: "wrap",
-        gap: 20,
-        marginTop: 20,
+        gap: 16,
+        marginTop: 22,
         width: "100%"
     },
     chococolor: {
@@ -136,40 +147,63 @@ const Dashboardstyle = StyleSheet.create({
     },
     cardbox: {
         alignItems: "center",
-        marginTop: 25,
-        gap: 20
+        marginTop: 28,
+        gap: 18
     },
 
     card: {
         width: "100%",
-        height: 180,
-        backgroundColor: "#faf4d6",
-        borderRadius: 35,
-        paddingHorizontal: 26,
-        paddingVertical: 26,
+        height: 175,
+        borderRadius: 32,
+        paddingHorizontal: 24,
+        paddingVertical: 24,
         justifyContent: "space-between",
-        borderRadius: 42
+        shadowColor: "#5D4B2E",
+        shadowOpacity: 0.08,
+        shadowRadius: 10,
+        shadowOffset: { width: 0, height: 4 },
+        elevation: 2,
     },
     topSection: {
-        gap: 10,
+        gap: 14,
+    },
+    topRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+    },
+    iconBadge: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        alignItems: "center",
+        justifyContent: "center",
     },
     heading: {
-        fontSize: 15,
+        fontSize: 13,
         fontWeight: "700",
-        color: "#646040",
-        letterSpacing: 1,
+        color: "#6B5C42",
+        letterSpacing: 1.2,
     },
     amount: {
-        fontSize: 16,
-        fontWeight: "bold",
-        color: "#5D4B42",
+        fontSize: 28,
+        fontWeight: "800",
+        color: "#3F2F26",
+        letterSpacing: 0.3,
     },
     bottomSection: {
         flexDirection: "row",
         alignItems: "center",
+        gap: 8,
+    },
+    trendDot: {
+        width: 7,
+        height: 7,
+        borderRadius: 4,
+        backgroundColor: "#4CAF50",
     },
     subtitle: {
-        fontSize: 15,
+        fontSize: 14,
         color: "#6B5A50",
         fontWeight: "600",
     },

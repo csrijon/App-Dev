@@ -1,603 +1,407 @@
-import { SafeAreaView } from "react-native-safe-area-context"
-import { StyleSheet, ScrollView, Alert, StatusBar, ImageBackground, TouchableOpacity, View, Text, Switch } from "react-native"
-import Securityheader from "../components/Securityheader"
+import React, { useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { 
+    StyleSheet, 
+    ScrollView, 
+    Alert, 
+    StatusBar, 
+    ImageBackground, 
+    TouchableOpacity, 
+    View, 
+    Text, 
+    Switch,
+    Platform
+} from "react-native";
+import Securityheader from "../components/Securityheader";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Fontisto from 'react-native-vector-icons/Fontisto';
-import { useState } from "react";
 
-
-const Securitypage = ({navigation}) => {
-
-    const [permission, setpermission] = useState(false)
-    const [twofactor, settwofactor] = useState(false)
-
+const Securitypage = ({ navigation }) => {
+    const [permission, setPermission] = useState(true);
+    const [twoFactor, setTwoFactor] = useState(false);
 
     const delacc = () => {
-        Alert.alert("Delete Account", "Do You Want to Delete Account?", [
-            {
-                text: "Cancel",
-                onPress: () => console.log("Cancel Pressed")
-            },
-            {
-                text: "Ok",
-                onPress: () => console.log("Ok Press")
-            }
-        ])
-    }
+        Alert.alert(
+            "Delete Account", 
+            "Are you sure you want to permanently delete your Artisanal Pâtisserie account? This action cannot be undone.", 
+            [
+                { text: "Cancel", style: "cancel" },
+                { text: "Delete", onPress: () => console.log("Account Deleted"), style: "destructive" }
+            ]
+        );
+    };
 
     return (
-        <SafeAreaView style={styles.securitypage} >
-            <StatusBar backgroundColor="#fff9e6cc" barStyle={"dark-content"} />
+        <SafeAreaView style={styles.container}>
+            <StatusBar backgroundColor="#FCF9F2" barStyle="dark-content" />
             <Securityheader title={"Privacy & Security"} />
-            <ScrollView vertical contentContainerStyle={{ paddingHorizontal: 24, paddingVertical: 20 }} >
+            
+            <ScrollView 
+                showsVerticalScrollIndicator={false} 
+                contentContainerStyle={styles.scrollContent}
+            >
+                {/* --- HERO SECTION --- */}
                 <ImageBackground
-                    source={{
-                        uri: "https://images.unsplash.com/photo-1578985545062-69928b1d9587",
-                    }}
+                    source={{ uri: "https://images.unsplash.com/photo-1578985545062-69928b1d9587" }}
                     style={styles.heroCard}
                     imageStyle={styles.heroImage}
                 >
                     <View style={styles.darkLayer} />
-
                     <View style={styles.contentArea}>
                         <View style={styles.securityTag}>
-                            <Text style={styles.securityTagText}>
-                                SECURITY HUB
-                            </Text>
+                            <Text style={styles.securityTagText}>SECURITY HUB</Text>
                         </View>
-
                         <Text style={styles.heroHeading}>
                             Your data is the secret ingredient.
                         </Text>
                     </View>
                 </ImageBackground>
-                <View style={styles.textsection} >
-                    <Text style={styles.textbody} >
-                        At The Artisanal Pâtisserie, we protect your personal information with the same precision we use to temper our dark chocolate. Your trust is our most cherished recipe.
-                    </Text>
+
+                <Text style={styles.introText}>
+                    At The Artisanal Pâtisserie, we protect your personal information with the same precision we use to temper our dark chocolate. Your trust is our most cherished recipe.
+                </Text>
+
+                {/* --- SECURITY SETTINGS --- */}
+                <View style={styles.sectionWrapper}>
+                    <Text style={styles.sectionTitle}>Security Settings</Text>
+
+                    <View style={styles.card}>
+                        {/* Two Factor */}
+                        <View style={styles.listItem}>
+                            <View style={styles.itemTextWrapper}>
+                                <Text style={styles.itemTitle}>Two-Factor Authentication</Text>
+                                <Text style={styles.itemSubtitle}>Secure your account with a code</Text>
+                            </View>
+                            <Switch
+                                value={twoFactor}
+                                onValueChange={(val) => setTwoFactor(val)}
+                                trackColor={{ false: "#EFE8E2", true: "#8B6A5B" }}
+                                thumbColor={Platform.OS === 'ios' ? "#FFFFFF" : (twoFactor ? "#FFFFFF" : "#F4F4F4")}
+                            />
+                        </View>
+
+                        <View style={styles.divider} />
+
+                        {/* Change Password */}
+                        <TouchableOpacity 
+                            activeOpacity={0.7} 
+                            onPress={() => navigation.navigate("Passwordchangespage")} 
+                            style={styles.listItem}
+                        >
+                            <View style={styles.itemTextWrapper}>
+                                <Text style={styles.itemTitle}>Change Password</Text>
+                                <Text style={styles.itemSubtitle}>Last updated 3 months ago</Text>
+                            </View>
+                            <MaterialCommunityIcons name="chevron-right" size={24} color="#A8A085" />
+                        </TouchableOpacity>
+
+                        <View style={styles.divider} />
+
+                        {/* Recent Activity */}
+                        <View style={[styles.listItem, { borderBottomWidth: 0, paddingBottom: 20 }]}>
+                            <View style={styles.activityHeader}>
+                                <Text style={styles.itemTitle}>Recent Login Activity</Text>
+                                <TouchableOpacity>
+                                    <Text style={styles.viewAllText}>View All</Text>
+                                </TouchableOpacity>
+                            </View>
+                            
+                            <View style={styles.deviceInfoContainer}>
+                                <View style={[styles.iconNest, { backgroundColor: "#F7E2E8" }]}>
+                                    <Ionicons name="phone-portrait-outline" size={20} color="#8D5C72" />
+                                </View>
+                                <View style={styles.deviceTextContainer}>
+                                    <Text style={styles.deviceTitleText}>iPhone 15 Pro • Paris, FR</Text>
+                                    <Text style={styles.deviceStatusText}>Active Now</Text>
+                                </View>
+                            </View>
+                        </View>
+                    </View>
                 </View>
 
-                <View style={styles.securityPageWrapper}>
-                    <View style={styles.securitySectionHeader}>
-                        <MaterialCommunityIcons
-                            name="shield-lock-outline"
-                            size={18}
-                            color="#9A694F"
-                        />
+                {/* --- DATA PRIVACY --- */}
+                <View style={styles.sectionWrapper}>
+                    <Text style={styles.sectionTitle}>Data Privacy</Text>
 
-                        <Text style={styles.securitySectionTitle}>
-                            Security Settings
-                        </Text>
-                    </View>
-
-                    <View style={styles.securityCardContainer}>
-
-                        {/* Two Factor */}
-                        <View style={styles.securityOptionContainer}>
-                            <View style={styles.securityOptionTextWrapper}>
-                                <Text style={styles.securityOptionHeading}>
-                                    Two-Factor Authentication
-                                </Text>
-
-                                <Text style={styles.securityOptionSubHeading}>
-                                    Secure your account with a code
-                                </Text>
-                            </View>
-
-                            {/* <Switch
-                                value={false}
-                                trackColor={{
-                                    false: "#E8E1B8",
-                                    true: "#E8E1B8",
-                                }}
-                                thumbColor="#6E6641"
-                            /> */}
-                            <TouchableOpacity onPress={() => settwofactor(!twofactor)} >
-                                <Fontisto name={twofactor ? "toggle-on" : "toggle-off"} color={twofactor ? "#000" : "#8B6A5B"} size={34} />
+                    <View style={styles.card}>
+                        {/* Download Data */}
+                        <View style={styles.listItemColumn}>
+                            <Text style={styles.itemTitle}>Download My Data</Text>
+                            <Text style={styles.itemSubtitle}>
+                                Get a copy of your order history, preferences, and gallery favorites.
+                            </Text>
+                            <TouchableOpacity activeOpacity={0.8} style={styles.primaryButton}>
+                                <MaterialCommunityIcons name="download-outline" size={18} color="#FFFFFF" />
+                                <Text style={styles.primaryButtonText}>Request Download</Text>
                             </TouchableOpacity>
                         </View>
 
-                        {/* Change Password */}
-                        <TouchableOpacity onPress={()=>navigation.navigate("Passwordchangespage")} style={styles.securityOptionContainer}>
-                            <View style={styles.securityOptionTextWrapper}>
-                                
-                                    <Text style={styles.securityOptionHeading}>
-                                        Change Password
-                                    </Text>
-                               
-                                <Text style={styles.securityOptionSubHeading}>
-                                    Last updated 3 months ago
-                                </Text>
-                            </View>
+                        <View style={styles.divider} />
 
-                            <MaterialCommunityIcons
-                                name="chevron-right"
-                                size={26}
-                                color="#C5B98B"
+                        {/* Personalization */}
+                        <View style={styles.listItem}>
+                            <View style={[styles.itemTextWrapper, { paddingRight: 15 }]}>
+                                <Text style={styles.itemTitle}>Personalization & Ads</Text>
+                                <Text style={styles.itemSubtitle}>Allow us to suggest treats you'll love</Text>
+                            </View>
+                            <Switch
+                                value={permission}
+                                onValueChange={(val) => setPermission(val)}
+                                trackColor={{ false: "#EFE8E2", true: "#8B6A5B" }}
+                                thumbColor={Platform.OS === 'ios' ? "#FFFFFF" : (permission ? "#FFFFFF" : "#F4F4F4")}
                             />
-                        </TouchableOpacity>
-
-                        {/* Recent Activity */}
-                        <View style={styles.securityRecentActivityWrapper}>
-                            <View style={styles.securityRecentActivityHeader}>
-                                <Text style={styles.securityRecentActivityTitle}>
-                                    Recent Login Activity
-                                </Text>
-
-                                <Text style={styles.securityViewAllText}>
-                                    View All
-                                </Text>
-                            </View>
-
-                            <View style={styles.securityDeviceInfoContainer}>
-                                <View style={styles.securityDeviceIconCircle}>
-                                    <Ionicons
-                                        name="phone-portrait-outline"
-                                        size={20}
-                                        color="#68566A"
-                                    />
-                                </View>
-
-                                <View style={styles.securityDeviceTextContainer}>
-                                    <Text style={styles.securityDeviceLocationText}>
-                                        iPhone 15 Pro • Paris, FR
-                                    </Text>
-
-                                    <Text style={styles.securityDeviceStatusText}>
-                                        Active Now
-                                    </Text>
-                                </View>
-                            </View>
                         </View>
-
                     </View>
                 </View>
 
-                <View style={styles.dataPrivacyScreenWrapper}>
+                {/* --- PERMISSIONS --- */}
+                <View style={styles.sectionWrapper}>
+                    <Text style={styles.sectionTitle}>Permissions</Text>
 
-                    {/* Header */}
-                    <View style={styles.dataPrivacyHeaderRow}>
-                        <MaterialCommunityIcons
-                            name="database-outline"
-                            size={22}
-                            color="#8A6A56"
-                        />
-
-                        <Text style={styles.dataPrivacyHeaderText}>
-                            Data Privacy
-                        </Text>
-                    </View>
-
-                    {/* Download Data Card */}
-                    <View style={styles.downloadDataCardContainer}>
-                        <Text style={styles.downloadDataTitle}>
-                            Download My Data
-                        </Text>
-
-                        <Text style={styles.downloadDataDescription}>
-                            Get a copy of your order history, preferences, and gallery favorites.
-                        </Text>
-
-                        <TouchableOpacity style={styles.requestDownloadButton}>
-                            <Text style={styles.requestDownloadButtonText}>
-                                Request Download
-                            </Text>
+                    <View style={styles.card}>
+                        <TouchableOpacity style={styles.listItem} activeOpacity={0.7}>
+                            <View style={styles.rowCentered}>
+                                <View style={[styles.iconNest, { backgroundColor: "#FDF3D5", width: 38, height: 38, borderRadius: 19, marginRight: 12 }]}>
+                                    <Ionicons name="location-outline" size={18} color="#B58A24" />
+                                </View>
+                                <Text style={styles.itemTitle}>Location Access</Text>
+                            </View>
+                            <View style={styles.rowCentered}>
+                                <Text style={styles.statusText}>While Using</Text>
+                                <MaterialCommunityIcons name="chevron-right" size={20} color="#A8A085" />
+                            </View>
                         </TouchableOpacity>
                     </View>
-
-                    {/* Personalization Card */}
-                    <View style={styles.personalizationCardContainer}>
-                        <View>
-                            <Text style={styles.personalizationTitle}>
-                                Personalization & Ads
-                            </Text>
-
-                            <Text style={styles.personalizationDescription}>
-                                Allow us to suggest treats you'll love
-                            </Text>
-                        </View>
-
-                        <TouchableOpacity onPress={() => setpermission(!permission)} >
-                            <Fontisto name={permission ? "toggle-on" : "toggle-off"} color={permission ? "#8B6A5B" : "#000"} size={34} />
-                        </TouchableOpacity>
-
-                    </View>
-
                 </View>
 
-                <View style={styles.permissionPageShell}>
-
-                    {/* Header */}
-                    <View style={styles.permissionHeaderRow}>
-                        <MaterialCommunityIcons
-                            name="tune-variant"
-                            size={22}
-                            color="#8A6A56"
-                        />
-
-                        <Text style={styles.permissionHeaderTitle}>
-                            Permissions
-                        </Text>
-                    </View>
-
-                    {/* Permission Card */}
-                    <View style={styles.permissionCardWrapper}>
-
-                        {/* Location Access */}
-                        <TouchableOpacity
-                            style={styles.permissionItemRow}
-                            activeOpacity={0.8}
-                        >
-                            <View style={styles.permissionLeftSection}>
-                                <Ionicons
-                                    name="location-outline"
-                                    size={24}
-                                    color="#8C744F"
-                                />
-
-                                <Text style={styles.permissionItemTitle}>
-                                    Location Access
-                                </Text>
-                            </View>
-
-                            <Text style={styles.permissionStatusText}>
-                                While Using
-                            </Text>
-                        </TouchableOpacity>
-
-
-
-                    </View>
-
-                    {/* Delete Account */}
-                    <TouchableOpacity onPress={delacc}
-                        style={styles.deleteAccountAction}
+                {/* --- DANGER ZONE --- */}
+                <View style={[styles.sectionWrapper, { marginTop: 10, marginBottom: 20 }]}>
+                    <TouchableOpacity 
+                        onPress={delacc}
+                        style={styles.deleteCard}
                         activeOpacity={0.8}
                     >
-                        <MaterialCommunityIcons
-                            name="trash-can-outline"
-                            size={22}
-                            color="#C93A35"
-                        />
-
-                        <Text style={styles.deleteAccountLabel}>
-                            Delete Account
-                        </Text>
+                        <MaterialCommunityIcons name="trash-can-outline" size={22} color="#D84C3E" />
+                        <Text style={styles.deleteAccountLabel}>Delete Account</Text>
                     </TouchableOpacity>
-
                 </View>
 
             </ScrollView>
         </SafeAreaView>
-    )
-}
+    );
+};
 
-export default Securitypage
+export default Securitypage;
 
 const styles = StyleSheet.create({
-    securitypage: {
-        width: "100%",
+    container: {
         flex: 1,
-        backgroundColor: "#fff9e6cc"
+        backgroundColor: "#FCF9F2", // Cohesive cream background
     },
+    scrollContent: {
+        paddingHorizontal: 22,
+        paddingBottom: 40,
+    },
+    
+    /* Hero Section */
     heroCard: {
         width: "100%",
-        height: 190,
+        height: 180,
         justifyContent: "flex-end",
-        borderRadius: 36,
+        borderRadius: 24,
         overflow: "hidden",
-        marginTop: 20,
+        marginTop: 10,
+        elevation: 4,
+        shadowColor: "#8B8467",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 8,
     },
     heroImage: {
-        borderRadius: 36,
+        borderRadius: 24,
     },
-
     darkLayer: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: "rgba(0,0,0,0.22)",
+        backgroundColor: "rgba(0,0,0,0.35)", // Slightly darker for better text contrast
     },
-
     contentArea: {
         paddingHorizontal: 20,
-        paddingBottom: 22,
+        paddingBottom: 20,
     },
-
     securityTag: {
         alignSelf: "flex-start",
-        backgroundColor: "#F2BDD0",
+        backgroundColor: "#F3CFC3", // Match gold/premium badge colors
         paddingHorizontal: 12,
         paddingVertical: 6,
-        borderRadius: 4,
-        marginBottom: 12,
+        borderRadius: 16,
+        marginBottom: 10,
     },
-
     securityTagText: {
-        color: "#6D4F5D",
-        fontSize: 11,
-        fontWeight: "700",
-        letterSpacing: 0.5,
+        color: "#8B6A5B",
+        fontSize: 10,
+        fontWeight: "800",
+        letterSpacing: 1,
     },
-
     heroHeading: {
         color: "#FFFFFF",
-        fontSize: 18,
+        fontSize: 22,
         fontWeight: "700",
-        lineHeight: 26,
-        maxWidth: "85%",
+        lineHeight: 28,
+        maxWidth: "90%",
     },
-    textsection: {
-        marginTop: 16
-    },
-    textbody: {
-        color: "#646040",
-    },
-    securityPageWrapper: {
-        backgroundColor: "#F9F4E6",
-        paddingTop: 30,
+    introText: {
+        color: "#8E8873",
+        fontSize: 14,
+        lineHeight: 22,
+        marginTop: 20,
+        marginBottom: 30,
+        paddingHorizontal: 4,
     },
 
-    securitySectionHeader: {
-        flexDirection: "row",
-        alignItems: "center",
-        marginBottom: 28,
+    /* Sections & Cards */
+    sectionWrapper: {
+        marginBottom: 26,
+    },
+    sectionTitle: {
+        fontSize: 16,
+        fontWeight: "800",
+        color: "#9B8A67", // Subtle subheading color
+        marginBottom: 12,
+        marginLeft: 8,
+        textTransform: "uppercase",
+        letterSpacing: 1,
+    },
+    card: {
+        backgroundColor: "#FFFFFF",
+        borderRadius: 24,
+        elevation: 2, // Android Shadow
+        shadowColor: "#8B8467", // iOS Shadow
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.08,
+        shadowRadius: 6,
+    },
+    divider: {
+        height: 1,
+        backgroundColor: "#F4EFE6",
+        marginHorizontal: 20,
     },
 
-    securitySectionTitle: {
-        fontSize: 18,
-        fontWeight: "700",
-        color: "#5C4A3A",
-        marginLeft: 10,
-    },
-
-    securityCardContainer: {
-        backgroundColor: "#FCFAF4",
-        borderRadius: 34,
-        paddingVertical: 10,
-        borderWidth: 1,
-        borderColor: "#F1E7C8",
-    },
-
-    securityOptionContainer: {
+    /* List Items */
+    listItem: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        paddingHorizontal: 26,
-        paddingVertical: 28,
+        paddingHorizontal: 20,
+        paddingVertical: 20,
     },
-
-    securityOptionTextWrapper: {
+    listItemColumn: {
+        paddingHorizontal: 20,
+        paddingVertical: 20,
+    },
+    itemTextWrapper: {
         flex: 1,
     },
-
-    securityOptionHeading: {
-        fontSize: 17,
+    itemTitle: {
+        fontSize: 16,
         fontWeight: "700",
-        color: "#171717",
-        marginBottom: 3,
+        color: "#403A28",
+        marginBottom: 4,
     },
-
-    securityOptionSubHeading: {
-        fontSize: 15,
-        fontWeight: "500",
-        color: "#676767",
+    itemSubtitle: {
+        fontSize: 13,
+        color: "#8E8873",
+        lineHeight: 18,
     },
-
-    securityArrowWrapper: {
-        justifyContent: "center",
+    rowCentered: {
+        flexDirection: "row",
         alignItems: "center",
     },
 
-    securityRecentActivityWrapper: {
-        paddingHorizontal: 26,
-        paddingTop: 22,
-        paddingBottom: 26,
-    },
-
-    securityRecentActivityHeader: {
+    /* Activity Section Specifics */
+    activityHeader: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        marginBottom: 22,
+        width: '100%',
+        marginBottom: 16,
     },
-
-    securityRecentActivityTitle: {
-        fontSize: 17,
+    viewAllText: {
+        fontSize: 14,
         fontWeight: "700",
-        color: "#171717",
+        color: "#8B6A5B",
     },
-
-    securityViewAllText: {
-        fontSize: 16,
-        fontWeight: "700",
-        color: "#5C4A3A",
-    },
-
-    securityDeviceInfoContainer: {
+    deviceInfoContainer: {
         flexDirection: "row",
         alignItems: "center",
+        backgroundColor: "#FCFAEF", // Subtle background for the device
+        padding: 12,
+        borderRadius: 16,
+        width: '100%',
     },
-
-    securityDeviceIconCircle: {
-        width: 42,
-        height: 42,
-        borderRadius: 21,
-        backgroundColor: "#F5DDE2",
+    iconNest: {
+        width: 44,
+        height: 44,
+        borderRadius: 22,
         justifyContent: "center",
         alignItems: "center",
         marginRight: 14,
     },
-
-    securityDeviceTextContainer: {
+    deviceTextContainer: {
+        flex: 1,
         justifyContent: "center",
     },
-
-    securityDeviceLocationText: {
-        fontSize: 16,
-        fontWeight: "600",
-        color: "#232323",
+    deviceTitleText: {
+        fontSize: 15,
+        fontWeight: "700",
+        color: "#403A28",
         marginBottom: 2,
     },
-
-    securityDeviceStatusText: {
-        fontSize: 15,
-        color: "#5F5F5F",
-    },
-
-    securityToggleTrack: {
-        width: 50,
-        height: 28,
-        borderRadius: 20,
-        backgroundColor: "#E8E1B8",
-        justifyContent: "center",
-        paddingHorizontal: 3,
-    },
-
-    securityToggleThumb: {
-        width: 22,
-        height: 22,
-        borderRadius: 11,
-        backgroundColor: "#6E6641",
-    },
-    dataPrivacyScreenWrapper: {
-        backgroundColor: "#F8F4E7",
-        paddingTop: 24,
-    },
-
-    dataPrivacyHeaderRow: {
-        flexDirection: "row",
-        alignItems: "center",
-        marginBottom: 20,
-    },
-
-    dataPrivacyHeaderText: {
-        fontSize: 20,
-        fontWeight: "700",
-        color: "#6B5446",
-        marginLeft: 10,
-    },
-
-    downloadDataCardContainer: {
-        backgroundColor: "#F4EED2",
-        borderRadius: 28,
-        paddingHorizontal: 24,
-        paddingVertical: 24,
-        marginBottom: 18,
-    },
-
-    downloadDataTitle: {
-        fontSize: 20,
-        fontWeight: "700",
-        color: "#1F1F1F",
-        marginBottom: 12,
-    },
-
-    downloadDataDescription: {
-        fontSize: 16,
-        lineHeight: 24,
-        color: "#5D5D5D",
-        marginBottom: 22,
-    },
-
-    requestDownloadButton: {
-        alignSelf: "flex-start",
-        backgroundColor: "#8B6A5B",
-        borderRadius: 30,
-        paddingHorizontal: 24,
-        paddingVertical: 12,
-    },
-
-    requestDownloadButtonText: {
-        color: "#FFFFFF",
-        fontSize: 15,
-        fontWeight: "700",
-    },
-
-    personalizationCardContainer: {
-        backgroundColor: "#F4EED2",
-        borderRadius: 28,
-        paddingHorizontal: 24,
-        paddingVertical: 24,
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-    },
-
-    personalizationTitle: {
-        fontSize: 20,
-        fontWeight: "700",
-        color: "#1F1F1F",
-        marginBottom: 6,
-    },
-
-    personalizationDescription: {
-        fontSize: 16,
-        color: "#5D5D5D",
-    },
-    permissionPageShell: {
-        backgroundColor: "#F8F4E7",
-        paddingTop: 28,
-    },
-
-    permissionHeaderRow: {
-        flexDirection: "row",
-        alignItems: "center",
-        marginBottom: 28,
-    },
-
-    permissionHeaderTitle: {
-        fontSize: 20,
-        fontWeight: "700",
-        color: "#6B5446",
-        marginLeft: 10,
-    },
-
-    permissionCardWrapper: {
-        backgroundColor: "#F7F2E2",
-        borderRadius: 34,
-        overflow: "hidden",
-        borderWidth: 1,
-        borderColor: "#F0E7C9",
-    },
-
-    permissionItemRow: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        paddingHorizontal: 28,
-        paddingVertical: 26,
-    },
-
-    permissionLeftSection: {
-        flexDirection: "row",
-        alignItems: "center",
-    },
-
-    permissionItemTitle: {
-        fontSize: 18,
+    deviceStatusText: {
+        fontSize: 13,
+        color: "#4A8F79", // A soft positive green
         fontWeight: "600",
-        color: "#242424",
-        marginLeft: 18,
     },
 
-    permissionStatusText: {
-        fontSize: 16,
-        fontStyle: "italic",
-        color: "#8A744F",
+    /* Download Button */
+    primaryButton: {
+        alignSelf: "flex-start",
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#8B6A5B",
+        borderRadius: 20,
+        paddingHorizontal: 20,
+        paddingVertical: 12,
+        marginTop: 14,
+    },
+    primaryButtonText: {
+        color: "#FFFFFF",
+        fontSize: 14,
+        fontWeight: "700",
+        marginLeft: 8,
     },
 
-    deleteAccountAction: {
-        marginTop: 20,
-        marginBottom: 24,
+    /* Permissions Specifics */
+    statusText: {
+        fontSize: 14,
+        color: "#9B8A67",
+        marginRight: 6,
+    },
+
+    /* Danger Zone */
+    deleteCard: {
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: "#FFF8F7", // Soft red tint
+        borderWidth: 1.5,
+        borderColor: "#FAD4D0",
+        borderRadius: 24,
+        paddingVertical: 18,
     },
-
     deleteAccountLabel: {
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: "700",
-        color: "#C93A35",
+        color: "#D84C3E",
         marginLeft: 10,
     },
-})
+});

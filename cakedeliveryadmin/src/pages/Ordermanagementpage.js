@@ -3,6 +3,7 @@ import { StatusBar, ScrollView, View, StyleSheet, Text, FlatList, TouchableOpaci
 import Adminheader from "../components/Adminheader"
 import OrderCard from "../components/OrderCard"
 import Plusbutton from "../components/Plusbutton"
+import Ionicons from "react-native-vector-icons/Ionicons"
 import { useState } from "react"
 
 const ordersData = [
@@ -59,33 +60,38 @@ const orderStatusData = [
     {
         id: 1,
         title: "All",
+        icon: "apps-outline",
     },
 
     {
         id: 2,
         title: "Pending",
+        icon: "time-outline",
     },
 
     {
         id: 3,
         title: "Preparing",
+        icon: "flame-outline",
     },
 
     {
         id: 4,
         title: "Out for Delivery",
+        icon: "bicycle-outline",
     },
 
     {
         id: 5,
         title: "Completed",
+        icon: "checkmark-circle-outline",
     },
 ];
 
 
 const Ordermanagementpage = () => {
 
-    const [activecolorid, setactivecolorid] = useState(null)
+    const [activecolorid, setactivecolorid] = useState(1)
 
     return (
         <SafeAreaView style={Ordermanagementstyle.Ordermanagementcontainer} >
@@ -93,27 +99,49 @@ const Ordermanagementpage = () => {
             <Adminheader />
             <ScrollView Vertical showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, paddingVertical: 20 }} >
                 <View style={Ordermanagementstyle.Topsectiontext} >
-                    <Text style={Ordermanagementstyle.Boldtext} >Order Management</Text>
-                    <Text style={Ordermanagementstyle.Normalordertext} >Track,manage,and fulfill your artisanal bakery orders in real-time</Text>
+                    <View style={Ordermanagementstyle.titleRow}>
+                        <Text style={Ordermanagementstyle.Boldtext} >Order Management</Text>
+                        <View style={Ordermanagementstyle.countPill}>
+                            <Text style={Ordermanagementstyle.countPillText}>{ordersData.length} active</Text>
+                        </View>
+                    </View>
+                    <Text style={Ordermanagementstyle.Normalordertext} >Track, manage, and fulfill your artisanal bakery orders in real-time</Text>
                 </View>
                 {/* <View style={Ordermanagementstyle.Ordercards} > */}
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={Ordermanagementstyle.statusContainer} >
                     {
-                        orderStatusData.map((item) => (
-                            <TouchableOpacity onPress={() => setactivecolorid(item.id)} key={item.id} style={[Ordermanagementstyle.statusButton, { backgroundColor: activecolorid === item.id ? "#75584e" : "#F4F1EC" }]}>
-                                <Text  style={[Ordermanagementstyle.statusText,{color:activecolorid===item.id?"white":"black"}]}>
-                                    {item.title}
-                                </Text>
-                            </TouchableOpacity>
-                        ))
+                        orderStatusData.map((item) => {
+                            const isActive = activecolorid === item.id;
+                            return (
+                                <TouchableOpacity
+                                    onPress={() => setactivecolorid(item.id)}
+                                    key={item.id}
+                                    style={[
+                                        Ordermanagementstyle.statusButton,
+                                        isActive && Ordermanagementstyle.statusButtonActive,
+                                    ]}
+                                >
+                                    <Ionicons
+                                        name={item.icon}
+                                        size={15}
+                                        color={isActive ? "#FFFFFF" : "#7B5A4E"}
+                                        style={{ marginRight: 6 }}
+                                    />
+                                    <Text style={[Ordermanagementstyle.statusText, isActive && Ordermanagementstyle.statusTextActive]}>
+                                        {item.title}
+                                    </Text>
+                                </TouchableOpacity>
+                            );
+                        })
                     }
                 </ScrollView>
 
                 <FlatList
-                    contentContainerStyle={{ gap: 15, marginTop: 15 }}
+                    contentContainerStyle={{ gap: 15, marginTop: 18 }}
                     data={ordersData}
                     renderItem={({ item }) => <OrderCard orderNumber={item.orderNumber} customerName={item.customerName} deliveryTime={item.deliveryTime} price={item.price} tag={item.tag} buttonText={item.buttonText} image={item.image} buttonColor={item.buttonColor} />}
                     keyExtractor={(item) => item.id}
+                    scrollEnabled={false}
                 />
 
             </ScrollView>
@@ -130,12 +158,29 @@ const Ordermanagementstyle = StyleSheet.create({
         backgroundColor: "#fff9e6"
     },
     Topsectiontext: {
-        gap: 5
+        gap: 6
+    },
+    titleRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
     },
     Boldtext: {
         color: "#75584e",
         fontWeight: "800",
-        fontSize: 30
+        fontSize: 28,
+        letterSpacing: 0.2,
+    },
+    countPill: {
+        backgroundColor: "#EFE2D8",
+        paddingHorizontal: 14,
+        paddingVertical: 6,
+        borderRadius: 20,
+    },
+    countPillText: {
+        color: "#7B5A4E",
+        fontSize: 12,
+        fontWeight: "700",
     },
     Normalordertext: {
         color: "#646040",
@@ -148,20 +193,36 @@ const Ordermanagementstyle = StyleSheet.create({
     statusContainer: {
         flexDirection: "row",
         alignItems: "center",
-        gap: 12,
-        marginTop: 8
+        gap: 10,
+        marginTop: 16,
+        paddingBottom: 4,
     },
     statusButton: {
-        paddingHorizontal: 18,
+        flexDirection: "row",
+        alignItems: "center",
+        paddingHorizontal: 16,
         paddingVertical: 10,
         borderRadius: 30,
         backgroundColor: "#F4F1EC",
         justifyContent: "center",
-        alignItems: "center",
+        borderWidth: 1,
+        borderColor: "#EAE3D6",
+    },
+    statusButtonActive: {
+        backgroundColor: "#75584e",
+        borderColor: "#75584e",
+        shadowColor: "#3E2E25",
+        shadowOpacity: 0.18,
+        shadowRadius: 6,
+        shadowOffset: { width: 0, height: 3 },
+        elevation: 2,
     },
     statusText: {
-        fontSize: 14,
+        fontSize: 13.5,
         fontWeight: "600",
         color: "#7B5A4E",
+    },
+    statusTextActive: {
+        color: "#FFFFFF",
     },
 })

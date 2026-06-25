@@ -1,400 +1,398 @@
-import React, { useState } from "react"
-import { SafeAreaView } from "react-native-safe-area-context"
-import { ScrollView, View, Text, Image, StyleSheet, TouchableOpacity, TextInput } from "react-native"
-import Adminheader from "../components/Adminheader"
+import React, { useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { 
+    ScrollView, 
+    View, 
+    Text, 
+    Image, 
+    StyleSheet, 
+    TouchableOpacity, 
+    TextInput,
+    Platform
+} from "react-native";
+import Adminheader from "../components/Adminheader";
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {launchImageLibrary} from "react-native-image-picker"
-
+import { launchImageLibrary } from "react-native-image-picker";
 
 const Profilepage = ({ navigation }) => {
+    // State for toggling edit mode
+    const [isEditable, setIsEditable] = useState(false);
+    
+    // State for the profile image so it updates when picked
+    const [profilePic, setProfilePic] = useState("https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400");
 
-   const pickimage = async ()=>{
-      const images = await launchImageLibrary({
-        mediatype:"photo",
-        includeBase64:true
-      })
-   }
+    const pickImage = async () => {
+        try {
+            const result = await launchImageLibrary({
+                mediaType: "photo",
+                includeBase64: false, // Set to true if your backend requires base64
+                quality: 0.8,
+            });
 
-    const [editabletext, seteditabletext] = useState(false)
+            if (!result.didCancel && result.assets && result.assets.length > 0) {
+                setProfilePic(result.assets[0].uri);
+            }
+        } catch (error) {
+            console.error("Error picking image:", error);
+        }
+    };
 
     return (
-        <SafeAreaView style={styles.Profilecontainer} >
+        <SafeAreaView style={styles.container}>
             <Adminheader />
-            <ScrollView contentContainerStyle={{ paddingHorizontal: 18, paddingBottom: 40 }} >
-                <View style={styles.profilecard}>
-
-                    {/* Profile Image */}
+            
+            <ScrollView 
+                contentContainerStyle={styles.scrollContent}
+                showsVerticalScrollIndicator={false}
+            >
+                {/* --- Profile Header Section --- */}
+                <View style={styles.profileHeader}>
                     <View style={styles.profileBox}>
                         <Image
-                            source={{
-                                uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400",
-                            }}
+                            source={{ uri: profilePic }}
                             style={styles.profileImage}
                         />
-
-                        {/* Edit Button */}
-                        <TouchableOpacity onPress={pickimage} style={styles.editButton}>
-                            <Ionicons name="pencil" size={15} color="#FFFFFF" />
+                        <TouchableOpacity 
+                            activeOpacity={0.8} 
+                            onPress={pickImage} 
+                            style={styles.editButton}
+                        >
+                            <Ionicons name="camera" size={16} color="#FFFFFF" />
                         </TouchableOpacity>
                     </View>
 
-                    {/* User Name */}
-                    <Text style={styles.userName}>
-                        Eloise Beaumont
-                    </Text>
+                    <Text style={styles.userName}>Eloise Beaumont</Text>
 
-                    {/* Membership Badge */}
                     <View style={styles.goldBadge}>
                         <Ionicons name="star" size={12} color="#6B4F3B" />
-
-                        <Text style={styles.badgeText}>
-                            GOLD MEMBER
-                        </Text>
+                        <Text style={styles.badgeText}>GOLD MEMBER</Text>
                     </View>
                 </View>
 
-                <View style={styles.personalDetailsContainer}>
-                    <View style={styles.personalDetailsHeader}>
-                        <Text style={styles.personalDetailsHeading}>Personal Details</Text>
-                        <TouchableOpacity onPress={() => seteditabletext(!editabletext)} >
-                            <Text style={styles.personalDetailsEdit}>{editabletext ? "Save" : "Edit"}</Text>
+                {/* --- Personal Details Section --- */}
+                <View style={styles.sectionContainer}>
+                    <View style={styles.sectionHeader}>
+                        <Text style={styles.sectionTitle}>Personal Details</Text>
+                        <TouchableOpacity onPress={() => setIsEditable(!isEditable)}>
+                            <Text style={[styles.editActionText, isEditable && styles.saveActionText]}>
+                                {isEditable ? "Save Changes" : "Edit"}
+                            </Text>
                         </TouchableOpacity>
-
                     </View>
 
-                    <View style={styles.personalDetailsCard}>
-                        <Text style={styles.personalDetailsLabel}>Full Name</Text>
-
-                        <View style={styles.personalDetailsField}>
-                            <Ionicons name="person-outline" size={18} color="#6B6647" />
+                    <View style={styles.card}>
+                        {/* Name Field */}
+                        <Text style={styles.inputLabel}>Full Name</Text>
+                        <View style={[styles.inputField, isEditable && styles.inputFieldActive]}>
+                            <Ionicons name="person-outline" size={18} color="#8B8467" />
                             <TextInput
-                                style={styles.personalDetailsInput}
+                                style={styles.textInput}
                                 defaultValue="Eloise Beaumont"
                                 placeholder="Enter Name"
-                                placeholderTextColor="#8B8467"
-                                editable={editabletext ? true : false}
+                                placeholderTextColor="#A8A085"
+                                editable={isEditable}
                             />
                         </View>
 
-                        <Text style={styles.personalDetailsLabel}>Email Address</Text>
-
-                        <View style={styles.personalDetailsField}>
-                            <Ionicons name="mail-outline" size={18} color="#6B6647" />
+                        {/* Email Field */}
+                        <Text style={styles.inputLabel}>Email Address</Text>
+                        <View style={[styles.inputField, isEditable && styles.inputFieldActive]}>
+                            <Ionicons name="mail-outline" size={18} color="#8B8467" />
                             <TextInput
-                                style={styles.personalDetailsInput}
+                                style={styles.textInput}
                                 defaultValue="eloise.beaumont@luxury.com"
                                 placeholder="Enter Email"
-                                placeholderTextColor="#8B8467"
+                                placeholderTextColor="#A8A085"
                                 keyboardType="email-address"
-                                editable={editabletext ? true : false}
+                                editable={isEditable}
                             />
                         </View>
 
-                        <Text style={styles.personalDetailsLabel}>Phone Number</Text>
-
-                        <View style={styles.personalDetailsField}>
-                            <Ionicons name="call-outline" size={18} color="#6B6647" />
+                        {/* Phone Field */}
+                        <Text style={styles.inputLabel}>Phone Number</Text>
+                        <View style={[styles.inputField, isEditable && styles.inputFieldActive]}>
+                            <Ionicons name="call-outline" size={18} color="#8B8467" />
                             <TextInput
-                                style={styles.personalDetailsInput}
+                                style={styles.textInput}
                                 defaultValue="+33 6 12 34 56 78"
                                 placeholder="Enter Phone Number"
-                                placeholderTextColor="#8B8467"
+                                placeholderTextColor="#A8A085"
                                 keyboardType="phone-pad"
-                                editable={editabletext ? true : false}
+                                editable={isEditable}
                             />
                         </View>
 
-                        <Text style={styles.personalDetailsLabel}>
-                            Default Delivery Address
-                        </Text>
-
-                        <View style={styles.personalDetailsField}>
-                            <Ionicons name="location-outline" size={18} color="#6B6647" />
+                        {/* Address Field */}
+                        <Text style={styles.inputLabel}>Default Delivery Address</Text>
+                        <View style={[styles.inputField, isEditable && styles.inputFieldActive, { minHeight: 70, alignItems: 'flex-start', paddingTop: 12 }]}>
+                            <Ionicons name="location-outline" size={18} color="#8B8467" />
                             <TextInput
-                                style={styles.personalDetailsInput}
+                                style={[styles.textInput, { marginTop: -4 }]}
                                 defaultValue="12 Rue de la Paix, 75002 Paris, France"
                                 placeholder="Enter Address"
-                                placeholderTextColor="#8B8467"
+                                placeholderTextColor="#A8A085"
                                 multiline
-                                editable={editabletext ? true : false}
+                                editable={isEditable}
                             />
                         </View>
                     </View>
                 </View>
 
-                <View style={styles.oasisFrame}>
-                    <Text style={styles.realmHeading}>Account Settings</Text>
+                {/* --- Account Settings Section --- */}
+                <View style={styles.sectionContainer}>
+                    <Text style={styles.sectionTitle}>Account Settings</Text>
 
-                    <TouchableOpacity onPress={() => navigation.navigate("Notificationpage")} style={styles.frostPanel}>
-                        <View style={styles.orbitZone}>
-                            <View style={[styles.emblemNest, { backgroundColor: "#F7E2E8" }]}>
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate("Notificationpage")} style={styles.settingsPanel}>
+                        <View style={styles.settingsRow}>
+                            <View style={[styles.iconNest, { backgroundColor: "#F7E2E8" }]}>
                                 <Ionicons name="notifications-outline" size={20} color="#8D5C72" />
                             </View>
-
-                            <View style={styles.scriptVault}>
-                                <Text style={styles.primaryScript}>Notifications</Text>
-                                <Text style={styles.secondaryScript}>
-                                    Order updates and offers
-                                </Text>
+                            <View style={styles.settingsTextContainer}>
+                                <Text style={styles.settingsPrimaryText}>Notifications</Text>
+                                <Text style={styles.settingsSecondaryText}>Order updates and offers</Text>
                             </View>
                         </View>
-
                         <Ionicons name="chevron-forward" size={18} color="#A89572" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => navigation.navigate("Paymentadmin")} style={styles.frostPanel}>
-                        <View style={styles.orbitZone}>
-                            <View style={[styles.emblemNest, { backgroundColor: "#F4CAD7" }]}>
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate("Paymentadmin")} style={styles.settingsPanel}>
+                        <View style={styles.settingsRow}>
+                            <View style={[styles.iconNest, { backgroundColor: "#F4CAD7" }]}>
                                 <Ionicons name="card-outline" size={20} color="#9A496A" />
                             </View>
-
-                            <View style={styles.scriptVault}>
-                                <Text style={styles.primaryScript}>Payment Methods</Text>
-                                <Text style={styles.secondaryScript}>
-                                    Visa ending in **** 4242
-                                </Text>
+                            <View style={styles.settingsTextContainer}>
+                                <Text style={styles.settingsPrimaryText}>Payment Methods</Text>
+                                <Text style={styles.settingsSecondaryText}>Visa ending in **** 4242</Text>
                             </View>
                         </View>
-
                         <Ionicons name="chevron-forward" size={18} color="#A89572" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => navigation.navigate("Securityscreen")} style={styles.frostPanel}>
-                        <View style={styles.orbitZone}>
-                            <View style={[styles.emblemNest, { backgroundColor: "#F7ECE7" }]}>
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate("Securityscreen")} style={styles.settingsPanel}>
+                        <View style={styles.settingsRow}>
+                            <View style={[styles.iconNest, { backgroundColor: "#F7ECE7" }]}>
                                 <Ionicons name="shield-outline" size={20} color="#8B6B57" />
                             </View>
-
-                            <View style={styles.scriptVault}>
-                                <Text style={styles.primaryScript}>Privacy & Security</Text>
-                                <Text style={styles.secondaryScript}>
-                                    Manage your data
-                                </Text>
+                            <View style={styles.settingsTextContainer}>
+                                <Text style={styles.settingsPrimaryText}>Privacy & Security</Text>
+                                <Text style={styles.settingsSecondaryText}>Manage your data</Text>
                             </View>
                         </View>
-
                         <Ionicons name="chevron-forward" size={18} color="#A89572" />
                     </TouchableOpacity>
                 </View>
 
-                <View style={styles.summitWrapper}>
-                    <Text style={styles.crownTitle}>Account Actions</Text>
-
-
-                    {/* Logout Button */}
-                    <TouchableOpacity onPress={() => navigation.reset({
-                        routes: [{ name: "Welcome" }]
-                    })} style={styles.exitPortal}>
-                        <Ionicons
-                            name="log-out-outline"
-                            size={18}
-                            color="#D84C3E"
-                        />
-                        <Text style={styles.exitPortalText}>
-                            Logout
-                        </Text>
+                {/* --- Account Actions Section --- */}
+                <View style={[styles.sectionContainer, { marginTop: 10 }]}>
+                    <TouchableOpacity 
+                        activeOpacity={0.7}
+                        onPress={() => navigation.reset({ routes: [{ name: "Welcome" }] })} 
+                        style={styles.logoutButton}
+                    >
+                        <Ionicons name="log-out-outline" size={20} color="#D84C3E" />
+                        <Text style={styles.logoutText}>Logout securely</Text>
                     </TouchableOpacity>
                 </View>
 
             </ScrollView>
         </SafeAreaView>
-    )
-}
+    );
+};
 
-export default Profilepage
+export default Profilepage;
 
 const styles = StyleSheet.create({
-    Profilecontainer: {
+    container: {
         flex: 1,
-        backgroundColor: "#fff9e6cc",
-
+        backgroundColor: "#FCF9F2", // Slightly softer, more modern cream
     },
-    profilecard: {
+    scrollContent: {
+        paddingHorizontal: 20,
+        paddingBottom: 60,
+    },
+    
+    /* Profile Header */
+    profileHeader: {
         justifyContent: "center",
         alignItems: "center",
+        marginTop: 10,
+        marginBottom: 30,
     },
-
     profileBox: {
         position: "relative",
-        marginBottom: 18,
+        marginBottom: 16,
     },
-
     profileImage: {
-        width: 120,
-        height: 120,
-        borderRadius: 60,
+        width: 130, // Slightly larger for better visual hierarchy
+        height: 130,
+        borderRadius: 65,
         borderWidth: 4,
         borderColor: "#FFFFFF",
     },
-
     editButton: {
         position: "absolute",
-        right: 0,
-        bottom: 5,
-        width: 34,
-        height: 34,
-        borderRadius: 17,
+        right: 4,
+        bottom: 4,
+        width: 36,
+        height: 36,
+        borderRadius: 18,
         backgroundColor: "#8B6A5B",
         justifyContent: "center",
         alignItems: "center",
+        borderWidth: 3,
+        borderColor: "#FFFFFF",
+        elevation: 4, // Android shadow
+        shadowColor: "#000", // iOS shadow
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
     },
-
     userName: {
-        fontSize: 28,
-        fontWeight: "700",
+        fontSize: 26,
+        fontWeight: "800",
         color: "#363317",
         marginBottom: 8,
+        letterSpacing: 0.3,
     },
-
     goldBadge: {
         flexDirection: "row",
         alignItems: "center",
         backgroundColor: "#F3CFC3",
-        paddingHorizontal: 18,
-        paddingVertical: 8,
-        borderRadius: 30,
+        paddingHorizontal: 16,
+        paddingVertical: 6,
+        borderRadius: 20,
     },
-
     badgeText: {
         marginLeft: 6,
-        fontSize: 14,
-        fontWeight: "700",
+        fontSize: 12,
+        fontWeight: "800",
         color: "#6B4F3B",
-        letterSpacing: 0.5,
-    },
-    personalDetailsContainer: {
-        paddingHorizontal: 18,
-        paddingTop: 20,
+        letterSpacing: 0.8,
     },
 
-    personalDetailsHeader: {
+    /* Reusable Section Styles */
+    sectionContainer: {
+        marginBottom: 30,
+    },
+    sectionHeader: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        marginBottom: 15,
+        marginBottom: 16,
     },
-
-    personalDetailsHeading: {
+    sectionTitle: {
         fontSize: 18,
         fontWeight: "700",
         color: "#403A28",
+        marginBottom: 16,
     },
-
-    personalDetailsEdit: {
+    editActionText: {
         fontSize: 14,
-        color: "#7E775B",
-    },
-
-    personalDetailsCard: {
-        backgroundColor: "#EFE7C8",
-        borderRadius: 30,
-        padding: 18,
-    },
-
-    personalDetailsLabel: {
-        fontSize: 13,
         fontWeight: "600",
+        color: "#8B6A5B",
+    },
+    saveActionText: {
+        color: "#4A8F79", // A soft green to indicate saving
+    },
+
+    /* Personal Details Card */
+    card: {
+        backgroundColor: "#FFFFFF",
+        borderRadius: 24,
+        padding: 20,
+        elevation: 3,
+        shadowColor: "#8B8467",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+    },
+    inputLabel: {
+        fontSize: 13,
+        fontWeight: "700",
         color: "#5F583E",
         marginBottom: 8,
         marginLeft: 4,
     },
-
-    personalDetailsField: {
+    inputField: {
         flexDirection: "row",
         alignItems: "center",
-        backgroundColor: "#DDD3A8",
-        borderRadius: 24,
+        backgroundColor: "transparent",
+        borderRadius: 16,
         paddingHorizontal: 14,
-        marginBottom: 15,
-        minHeight: 50,
+        marginBottom: 20,
+        minHeight: 52,
+        borderWidth: 1,
+        borderColor: "transparent", // Invisible until active
     },
-
-    personalDetailsInput: {
+    inputFieldActive: {
+        backgroundColor: "#FCFAEF", // Subtle highlight when editing
+        borderColor: "#EFE7C8",
+    },
+    textInput: {
         flex: 1,
-        marginLeft: 10,
+        marginLeft: 12,
         color: "#2F2A1F",
-        fontSize: 14,
-        paddingVertical: 12,
+        fontSize: 15,
+        paddingVertical: Platform.OS === 'ios' ? 14 : 10,
     },
-    oasisFrame: {
+
+    /* Settings Panels */
+    settingsPanel: {
+        backgroundColor: "#FFFFFF",
+        borderRadius: 20,
         paddingHorizontal: 18,
-        marginTop: 30
-    },
-
-    realmHeading: {
-        fontSize: 18,
-        fontWeight: "700",
-        color: "#493F32",
+        paddingVertical: 16,
         marginBottom: 14,
-    },
-
-    frostPanel: {
-        backgroundColor: "#F7F7F7",
-        borderRadius: 30,
-        paddingHorizontal: 16,
-        paddingVertical: 14,
-        marginBottom: 12,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
+        elevation: 2,
+        shadowColor: "#8B8467",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.08,
+        shadowRadius: 6,
     },
-
-    orbitZone: {
+    settingsRow: {
         flexDirection: "row",
         alignItems: "center",
         flex: 1,
     },
-
-    emblemNest: {
-        width: 42,
-        height: 42,
-        borderRadius: 21,
+    iconNest: {
+        width: 46,
+        height: 46,
+        borderRadius: 23,
         justifyContent: "center",
         alignItems: "center",
     },
-
-    scriptVault: {
-        marginLeft: 12,
+    settingsTextContainer: {
+        marginLeft: 16,
     },
-
-    primaryScript: {
+    settingsPrimaryText: {
         fontSize: 15,
         fontWeight: "700",
         color: "#2D241B",
     },
-
-    secondaryScript: {
-        fontSize: 12,
+    settingsSecondaryText: {
+        fontSize: 13,
         color: "#9B8A67",
         marginTop: 4,
     },
-    summitWrapper: {
-        paddingHorizontal: 18,
-        marginTop: 25
-    },
 
-    crownTitle: {
-        fontSize: 18,
-        fontWeight: "700",
-        color: "#4A4030",
-        marginBottom: 16,
-    },
-
-    exitPortal: {
-        height: 52,
-        borderWidth: 1,
-        borderColor: "#E8C5BC",
-        borderRadius: 26,
+    /* Logout Button */
+    logoutButton: {
+        height: 56,
+        borderWidth: 1.5,
+        borderColor: "#FAD4D0",
+        borderRadius: 28,
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#F7F2DF",
+        backgroundColor: "#FFF8F7", // Very soft red tint
     },
-
-    exitPortalText: {
-        marginLeft: 8,
+    logoutText: {
+        marginLeft: 10,
         color: "#D84C3E",
         fontSize: 15,
         fontWeight: "700",
     },
-})
+});
