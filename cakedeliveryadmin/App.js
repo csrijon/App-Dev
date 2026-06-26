@@ -17,6 +17,10 @@ import Profilepage from "./src/pages/Profilepage"
 import RecentOrdersScreen from "./src/pages/RecentOrdersScreen"
 import CatalogUpdatedScreen from "./src/pages/CatalogUpdatedScreen"
 import Passwordchangespage from "./src/pages/Passwordchangespage"
+import OnboardingpageThree from "./src/pages/OnboardingpageThree"
+import OnboardingpageFour from "./src/pages/OnboardingpageFour"
+import OnboardingpageFive from "./src/pages/OnboardingpageFive"
+import Onboradingcompletepage from "./src/pages/Onboradingcompletepage"
 import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
 import {
   SafeAreaProvider, useSafeAreaInsets,
@@ -54,6 +58,10 @@ const Stackscreens = () => {
       <Stack.Screen name='Login' component={Loginpage} />
       <Stack.Screen name='Onbordingpageone' component={Onbordingpageone}/>
       <Stack.Screen name='OnboardingPageTwo' component={OnboardingPageTwo}/>
+      <Stack.Screen name='OnboardingpageThree' component={OnboardingpageThree}/>
+      <Stack.Screen name='OnboardingpageFour' component={OnboardingpageFour}/>
+      <Stack.Screen name='OnboardingpageFive' component={OnboardingpageFive}/>
+      <Stack.Screen name='Onboradingcompletepage' component={Onboradingcompletepage}/>
       <Stack.Screen name='TabScreens' component={TabScreens} />
       <Stack.Screen name='Securityscreen' component={Securitypage} />
       <Stack.Screen name='Paymentadmin' component={Paymentgatwaypage} />

@@ -3,235 +3,266 @@
 <html class="light" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Order Summary - Cake Haven</title>
-<!-- Google Fonts: Plus Jakarta Sans -->
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<title>Glaze &amp; Grain - Setup Complete</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&amp;display=swap" rel="stylesheet"/>
 <!-- Material Symbols -->
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
       tailwind.config = {
         darkMode: "class",
         theme: {
           extend: {
-            colors: {
-              "surface": "#fff9e6",
-              "surface-dim": "#e2dbb3",
-              "on-secondary-container": "#5e4d54",
-              "tertiary-dim": "#734557",
-              "tertiary-container": "#f8bbd0",
-              "outline": "#807c59",
-              "tertiary-fixed": "#f8bbd0",
-              "secondary-fixed-dim": "#e6ced6",
-              "primary-container": "#f6cfc2",
-              "on-background": "#363317",
-              "secondary-fixed": "#f4dce4",
-              "surface-container-lowest": "#ffffff",
-              "background": "#fff9e6",
-              "on-primary-fixed-variant": "#6a4e44",
-              "on-error-container": "#6e0a12",
-              "surface-container": "#f5efcd",
-              "surface-container-low": "#faf4d6",
-              "on-tertiary": "#fff7f7",
-              "error-container": "#fa746f",
-              "surface-bright": "#fff9e6",
-              "on-surface-variant": "#646040",
-              "on-primary-container": "#5f453b",
-              "secondary-dim": "#5f4f55",
-              "secondary": "#6c5a61",
-              "on-primary": "#fff7f5",
-              "primary-fixed-dim": "#e7c1b4",
-              "on-secondary": "#fff7f8",
-              "on-error": "#fff7f6",
-              "inverse-primary": "#f6cfc2",
-              "tertiary": "#815163",
-              "tertiary-fixed-dim": "#e9aec3",
-              "primary-dim": "#684d43",
-              "outline-variant": "#b9b38d",
-              "error-dim": "#67040d",
-              "on-primary-fixed": "#4b3229",
-              "error": "#a83836",
-              "on-secondary-fixed-variant": "#68575e",
-              "on-tertiary-fixed": "#4b2334",
-              "primary-fixed": "#f6cfc2",
-              "on-tertiary-container": "#623648",
-              "on-tertiary-fixed-variant": "#6c3f51",
-              "secondary-container": "#f4dce4",
-              "inverse-on-surface": "#a29d88",
-              "on-surface": "#363317",
-              "inverse-surface": "#100e03",
-              "surface-container-high": "#f0e9c5",
-              "on-secondary-fixed": "#4b3b41",
-              "surface-variant": "#eae3bb",
-              "primary": "#75584e",
+            "colors": {
+                    "surface": "#fff9e8",
+                    "surface-container-low": "#f9f3e1",
+                    "on-secondary-fixed-variant": "#534249",
+                    "soft-rose": "#F4DCE4",
+                    "on-tertiary-fixed": "#330f1f",
+                    "tertiary-fixed-dim": "#f2b6cb",
+                    "on-surface-variant": "#646040",
+                    "on-error": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-fixed": "#ffdbcf",
+                    "inverse-on-surface": "#f6f1de",
+                    "background": "#fff9e8",
+                    "surface-variant": "#e8e2d0",
+                    "inverse-surface": "#333124",
+                    "error": "#ba1a1a",
+                    "inverse-primary": "#e4beb2",
+                    "surface-container": "#f4eedb",
+                    "secondary-fixed": "#f5dce5",
+                    "on-error-container": "#93000a",
+                    "on-primary-container": "#f7d1c4",
+                    "secondary": "#6c5a61",
+                    "surface-bright": "#fff9e8",
+                    "on-primary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "on-primary-fixed-variant": "#5b4137",
+                    "outline": "#827470",
+                    "primary-fixed-dim": "#e4beb2",
+                    "tertiary": "#65394a",
+                    "on-background": "#1e1c11",
+                    "on-surface": "#1e1c11",
+                    "surface-container-high": "#eee8d5",
+                    "on-secondary-container": "#725f67",
+                    "on-primary-fixed": "#2b160f",
+                    "on-tertiary-container": "#ffcadb",
+                    "cream-surface": "#FFF9E6",
+                    "secondary-container": "#f5dce5",
+                    "on-secondary-fixed": "#25181e",
+                    "surface-dim": "#dfdac8",
+                    "primary": "#5b4138",
+                    "error-container": "#ffdad6",
+                    "surface-tint": "#75584e",
+                    "accent-gold": "#D4AF37",
+                    "outline-variant": "#d4c3be",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#65394a",
+                    "secondary-fixed-dim": "#d8c1c9",
+                    "warm-apricot": "#F6CFC2",
+                    "surface-container-highest": "#e8e2d0",
+                    "primary-container": "#75584e",
+                    "tertiary-fixed": "#ffd9e4",
+                    "tertiary-container": "#805062"
             },
-            fontFamily: {
-              "headline": ["Plus Jakarta Sans", "sans-serif"],
-              "body": ["Plus Jakarta Sans", "sans-serif"],
-              "label": ["Plus Jakarta Sans", "sans-serif"]
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
             },
-            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+            "spacing": {
+                    "page-margin": "2rem",
+                    "inner-padding": "1.25rem",
+                    "section-gap": "3rem",
+                    "element-gap": "1rem"
+            },
+            "fontFamily": {
+                    "label-caps": ["Plus Jakarta Sans"],
+                    "label-bold": ["Plus Jakarta Sans"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "display-lg-mobile": ["Plus Jakarta Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "display-lg": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "label-caps": ["10px", {"lineHeight": "1.2", "letterSpacing": "0.4em", "fontWeight": "600"}],
+                    "label-bold": ["11px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "300"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "1.1", "fontWeight": "700"}],
+                    "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
+            }
           },
         },
       }
     </script>
-<style>
-      body { font-family: 'Plus Jakarta Sans', sans-serif; }
-      .material-symbols-outlined {
-        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-      }
-    </style>
+<style>body {
+    background-color: #fff9e8;
+    -webkit-font-smoothing: antialiased
+    }
+.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24
+    }
+.grain-overlay {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    opacity: 0.03;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCOOLs9_PzduAu3UcytiWwcSM9j0-opKGGMfIKHBSv09eWlHZp7yPhXeOSFzayZuXSU11vgVDvO0mJKPrZ-DSOUAfmtWLpYTN9lUImPu22OX52V9Djh2dbwV5hrA-jtGbzGdRiMXS3LuhcA4MiWIMSCUM7wtyAeUrel9XlWH1jFNapba5gymxnBDf5Hci5-7lclJle0oD2pQPu-gYh7VoRS3bUAs9hPa7Od4poJ0Vnz8GPskAqOTdILYvfPIyyhrFQsTmQS93mP04I0)
+    }
+.organic-blob {
+    position: absolute;
+    filter: blur(80px);
+    z-index: -1;
+    border-radius: 50%;
+    opacity: 0.4
+    }
+@keyframes orbit {
+    from {
+        transform: rotate(0deg);
+        } to {
+        transform: rotate(360deg);
+        }
+    }
+.orbit-ring {
+    animation: orbit 20s linear infinite
+    }
+.orbit-ring-reverse {
+    animation: orbit 30s linear infinite reverse
+    }</style>
 <style>
     body {
       min-height: max(884px, 100dvh);
     }
   </style>
   </head>
-<body class="bg-surface text-on-surface min-h-screen pb-32">
-<!-- TopAppBar -->
-<header class="fixed top-0 w-full z-50 bg-[#FFF9E6]/80 backdrop-blur-md shadow-[0px_24px_48px_rgba(117,88,78,0.08)]">
-<div class="flex justify-between items-center px-6 py-4 w-full">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden">
-<img alt="Profile" class="w-full h-full object-cover" data-alt="close-up portrait of a smiling young man in a minimalist studio setting with soft warm lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCo2x78cxrT_sy8RFyXkZKOMlcXqOGQ-c4l613C0Z-npgclEOsEyK8QSeQSeQ4KLgmZITHHSjPRq0DMN9Y4ZbIon-H3o0JoyP8x_ZfSOV1HqKKYVJELKqVXtRNuAQcclnyTmhyS8B9UMnD9QRbWVI1AgJtCOxxxYyRvxEqbn4WzheuW7Zn9iZ8YNCqAH0JAnQE8fCXRqchacbImRagJqXh7pJIziOPxzC9by_mN5ik0uiYt2kQgeIdNM8dfHCKdFo5WT0fP7-wNXEEj"/>
+<body class="font-body-md text-on-surface min-h-screen overflow-x-hidden flex flex-col">
+<!-- Film Grain Effect -->
+<div class="grain-overlay"></div>
+<!-- Background Atmospheric Elements -->
+<div class="organic-blob bg-soft-rose w-[500px] h-[500px] -top-64 -left-32"></div>
+<div class="organic-blob bg-warm-apricot w-[400px] h-[400px] bottom-0 -right-16"></div>
+<!-- Navigation Shell (TopAppBar) -->
+<header class="flex justify-between items-center px-page-margin h-16 w-full docked full-width top-0 bg-surface z-40">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary hover:opacity-80 transition-opacity cursor-pointer active:scale-95 duration-150">arrow_back</span>
 </div>
-</div>
-<h1 class="font-headline text-2xl font-bold tracking-tight text-primary">The Artisanal Pâtisserie</h1>
-<div class="p-2 active:scale-95 transition-transform hover:opacity-80">
-<span class="material-symbols-outlined text-primary text-2xl">search</span>
-</div>
-</div>
+<h1 class="font-display-lg-mobile text-display-lg-mobile text-primary tracking-tighter">Glaze &amp; Grain</h1>
+<div class="w-8"></div> <!-- Spacer for centering -->
 </header>
-<main class="pt-24 px-6 max-w-2xl mx-auto space-y-8">
-<!-- Page Title -->
-<div class="space-y-1">
-<h2 class="text-display-md font-extrabold tracking-tight text-primary">Order Summary</h2>
-<p class="text-on-surface-variant font-medium">Review your sweet selection</p>
+<!-- Main Content Canvas -->
+<main class="flex-grow flex flex-col items-center justify-center px-page-margin py-section-gap relative">
+<div class="max-w-[400px] w-full flex flex-col items-center text-center">
+<!-- Hero Container with Orbit Rings -->
+<div class="relative w-64 h-64 mb-12 flex items-center justify-center">
+<!-- Orbit Rings -->
+<div class="absolute inset-0 border border-primary/10 rounded-full orbit-ring"></div>
+<div class="absolute -inset-4 border border-primary/5 rounded-full orbit-ring-reverse"></div>
+<!-- Main Image Container -->
+<div class="relative w-56 h-56 rounded-full overflow-hidden border-4 border-surface-container-low shadow-[0_20px_50px_rgba(117,88,78,0.15)] bg-white">
+<img class="w-full h-full object-cover" data-alt="A high-end, sophisticated artisanal bakery storefront at golden hour. The architecture is organic minimalism with curved cream-colored walls and large arched glass windows. Warm light glows from inside, illuminating rows of perfect pastries and loaves of rustic bread. The scene is shot with a shallow depth of field, highlighting the tactile texture of the masonry and the delicate glazes on the pastries. The overall mood is artisanal, warm, and exceptionally premium." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCF-lx_GWr-aYga4I8Te_-12lZHgzAJe1jOkxyKv8WhX7MuZt30QIH0JMMaF_FSOV-QAQXoqWNCozSx1gqF6KTn1bf2iOLBJKv_EMQGOHdGzzIH4M8cGDsjhbt5xyiUn7rtqaFfVx5MrvH16isVa472TJvtNMXiGl41_rDT3KFBIXvO4B2SusGwLymEOn0qZVrC0R7sCvmLe_RyKX4Egw9N03EkNFG029vvW31wPbBUmi2GaQZ3JFwZS7T6x310ayuaTdk0OuP7xEKI"/>
 </div>
-<!-- Order Item Card (Bento/Editorial Style) -->
-<section class="bg-surface-container-lowest rounded-xl p-1 overflow-hidden transition-all shadow-[0px_24px_48px_rgba(117,88,78,0.04)]">
-<div class="flex flex-col md:flex-row gap-6 p-5">
-<div class="w-full md:w-40 h-40 shrink-0">
-<img alt="Chocolate Ganache Cake" class="w-full h-full object-cover rounded-tl-xl rounded-br-xl" data-alt="luxury multi-layered chocolate ganache cake decorated with gold leaf and fresh berries on a soft cream background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnzVBU4tduROVbW6Ksj1Rj4LMNNXX8bNOiTCpoN-JgMJncbEyVv8exqq8Mn-1vsS8Ss9CFBzZ4Q55DcGIP6H5yHpHO9gyYfRUnbk2IAQNap2r6NnThV9zEuF9QphI6j5xGdjp59XKuZYqVMDettz-cfdrw8_JmYqMsNNnSSJngI2Ne59h2jCljzU7-1H2_vnQRqzWXIoOXB9xx61A6A7M9bf6GWx1S8PFYONJujQyd-2moZpPqvTYjVrzMTof2pbnnVBxSSL5jvu2M"/>
-</div>
-<div class="flex flex-col justify-between py-1">
-<div>
-<div class="flex justify-between items-start">
-<h3 class="text-headline-md font-bold text-primary">Velvet Chocolate Ganache</h3>
-<span class="bg-tertiary-container text-on-tertiary-container text-xs px-3 py-1 rounded-sm font-bold uppercase tracking-wider">Best Seller</span>
-</div>
-<p class="text-on-surface-variant text-sm mt-2 leading-relaxed">Rich 70% dark chocolate layers with whipped truffle filling and madagascar vanilla bean sponge.</p>
-</div>
-<div class="flex gap-4 mt-4">
-<div class="flex flex-col">
-<span class="text-[10px] uppercase font-bold text-outline tracking-widest">Weight</span>
-<span class="text-sm font-semibold">1.5 kg</span>
-</div>
-<div class="flex flex-col border-l border-outline-variant/15 pl-4">
-<span class="text-[10px] uppercase font-bold text-outline tracking-widest">Flavor</span>
-<span class="text-sm font-semibold">Dark Truffle</span>
+<!-- Floating Badge -->
+<div class="absolute -bottom-2 -right-4 bg-white px-6 py-2 rounded-full shadow-md border border-primary/5 rotate-[3deg] z-10 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-label-bold text-label-bold text-primary uppercase">Active Now</span>
 </div>
 </div>
+<!-- Typography Content -->
+<div class="space-y-4 mb-section-gap">
+<span class="font-label-caps text-label-caps text-primary/60">STEP 6 OF 6</span>
+<h2 class="font-headline-md text-headline-md-mobile text-on-background">🎉 Your bakery is ready!</h2>
+<div class="w-12 h-[1px] bg-outline-variant/40 mx-auto my-4"></div>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                    Your profile is complete. You can now start selling your masterpieces to the world.
+                </p>
 </div>
+<!-- Action Cluster -->
+<div class="w-full flex flex-col gap-element-gap">
+<button class="w-full bg-primary text-on-primary py-5 rounded-full font-label-bold text-label-bold uppercase tracking-widest shadow-[0_10px_20px_rgba(91,65,56,0.2)] hover:opacity-90 active:scale-95 transition-all duration-200">
+                    Complete Setup
+                </button>
+<button class="w-full bg-transparent text-primary py-4 rounded-full font-label-bold text-label-bold uppercase tracking-widest border border-primary/20 hover:bg-primary/5 active:scale-95 transition-all duration-200">
+                    Save &amp; Continue Later
+                </button>
 </div>
-</section>
-<!-- Customizations & Logistics Grid -->
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-<!-- Custom Message Card -->
-<div class="bg-surface-container-low rounded-lg p-6 space-y-3">
-<div class="flex items-center gap-2 text-primary">
-<span class="material-symbols-outlined text-xl">edit_note</span>
-<h4 class="font-bold">Personal Message</h4>
-</div>
-<div class="bg-surface-container-lowest p-4 rounded-lg italic text-on-surface-variant text-sm border border-outline-variant/10">
-                    "Happy 30th Birthday Sarah! Here's to many more sweet adventures together. Love, Mark."
-                </div>
-</div>
-<!-- Delivery Slot Card -->
-<div class="bg-surface-container-low rounded-lg p-6 space-y-3">
-<div class="flex items-center gap-2 text-primary">
-<span class="material-symbols-outlined text-xl">schedule</span>
-<h4 class="font-bold">Delivery Slot</h4>
-</div>
-<div class="space-y-1">
-<p class="text-lg font-bold">Tuesday, Oct 24</p>
-<p class="text-on-surface-variant text-sm">Between 2:00 PM - 4:00 PM</p>
-</div>
-</div>
-</div>
-<!-- Delivery Address -->
-<div class="bg-surface-container-low rounded-lg p-6 space-y-4">
-<div class="flex justify-between items-center">
-<div class="flex items-center gap-2 text-primary">
-<span class="material-symbols-outlined text-xl">location_on</span>
-<h4 class="font-bold">Delivery Address</h4>
-</div>
-<button class="text-primary text-xs font-bold uppercase tracking-widest hover:opacity-70 transition-opacity">Change</button>
-</div>
-<div class="flex gap-4 items-start">
-<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center shrink-0">
-<span class="material-symbols-outlined text-primary">home</span>
-</div>
-<div class="space-y-1">
-<p class="font-bold">Home</p>
-<p class="text-on-surface-variant text-sm leading-relaxed">124 Baker Street, West Wing Apartments<br/>Suite 4B, London, NW1 6XE</p>
-</div>
-</div>
-</div>
-<!-- Price Breakdown -->
-<div class="bg-surface-container-high rounded-xl p-8 space-y-6">
-<h4 class="text-primary font-bold text-lg">Billing Details</h4>
-<div class="space-y-3">
-<div class="flex justify-between items-center text-on-surface-variant">
-<span class="text-sm">Velvet Chocolate Ganache (1.5kg)</span>
-<span class="font-medium">£54.00</span>
-</div>
-<div class="flex justify-between items-center text-on-surface-variant">
-<span class="text-sm">Premium Packaging</span>
-<span class="font-medium text-primary">Included</span>
-</div>
-<div class="flex justify-between items-center text-on-surface-variant">
-<span class="text-sm">Hand-delivered Shipping</span>
-<span class="font-medium">£8.50</span>
-</div>
-<div class="flex justify-between items-center text-on-surface-variant">
-<span class="text-sm">VAT (20%)</span>
-<span class="font-medium">£10.80</span>
-</div>
-<div class="pt-4 border-t border-outline-variant/20 flex justify-between items-center">
-<span class="font-bold text-lg">Total Amount</span>
-<span class="text-2xl font-extrabold text-primary">£73.30</span>
-</div>
-</div>
-<!-- CTA -->
-<button class="w-full bg-primary text-on-primary py-5 rounded-full font-bold text-lg shadow-[0px_10px_20px_rgba(117,88,78,0.2)] hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-3">
-                Proceed to Payment
-                <span class="material-symbols-outlined">arrow_forward</span>
-</button>
 </div>
 </main>
-<!-- BottomNavBar -->
-<nav class="fixed bottom-0 left-0 w-full z-50 rounded-t-[3rem] bg-[#FFF9E6] shadow-[0px_-10px_30px_rgba(117,88,78,0.05)] border-t border-[#B9B38D]/15 flex justify-around items-center px-4 pb-6 pt-3">
-<!-- Home -->
-<a class="flex flex-col items-center justify-center text-[#646040] px-6 py-2 hover:bg-[#FAF4D6] transition-all duration-300 rounded-full group" href="#">
-<span class="material-symbols-outlined mb-1 transition-transform group-active:scale-90">home</span>
-<span class="font-plus-jakarta text-[10px] font-medium tracking-wide">Home</span>
-</a>
-<!-- My Orders (ACTIVE) -->
-<a class="flex flex-col items-center justify-center bg-[#F6CFC2] text-[#75584E] rounded-full px-6 py-2 transition-all duration-300 scale-105" href="#">
-<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">shopping_bag</span>
-<span class="font-plus-jakarta text-[10px] font-bold tracking-wide">My Orders</span>
-</a>
-<!-- Calendar -->
-<a class="flex flex-col items-center justify-center text-[#646040] px-6 py-2 hover:bg-[#FAF4D6] transition-all duration-300 rounded-full group" href="#">
-<span class="material-symbols-outlined mb-1 transition-transform group-active:scale-90">calendar_month</span>
-<span class="font-plus-jakarta text-[10px] font-medium tracking-wide">Calendar</span>
-</a>
-<!-- Profile -->
-<a class="flex flex-col items-center justify-center text-[#646040] px-6 py-2 hover:bg-[#FAF4D6] transition-all duration-300 rounded-full group" href="#">
-<span class="material-symbols-outlined mb-1 transition-transform group-active:scale-90">person</span>
-<span class="font-plus-jakarta text-[10px] font-medium tracking-wide">Profile</span>
-</a>
+<!-- Bottom Navigation Component (Suppressed on Success Screen as per UX instructions, but included as per predicted components for visibility) -->
+<!-- Note: Following "The Destination Rule", for a success/confirmation screen, the main nav is usually suppressed. 
+         However, I will render the styled navigation as defined in the JSON but hidden by default to prioritize the content canvas. -->
+<div class="fixed bottom-0 w-full p-inner-padding flex justify-between items-center gap-element-gap bg-surface-container-low/90 backdrop-blur-md border-t border-primary/10 shadow-[0_-4px_20px_rgba(117,88,78,0.1)] z-50 md:hidden opacity-0 pointer-events-none translate-y-full transition-all duration-500" id="success-nav">
+<!-- Predicted Component: BottomNavBar -->
+<div class="flex flex-row items-center justify-center gap-2 text-primary border border-primary/20 rounded-full px-8 py-3 font-label-bold text-label-bold cursor-pointer hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+            Back
+        </div>
+<div class="flex flex-row items-center justify-center gap-2 bg-primary text-on-primary rounded-full px-8 py-3 font-label-bold text-label-bold cursor-pointer active:scale-98 transition-all">
+            Next
+            <span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+<!-- Sidebar Overlay (NavigationDrawer) -->
+<div class="fixed inset-y-0 left-0 w-80 bg-surface-container shadow-md z-50 -translate-x-full transition-transform duration-300 ease-in-out md:hidden" id="drawer">
+<div class="w-full flex flex-col py-inner-padding h-full rounded-r-lg">
+<div class="px-6 py-8">
+<h3 class="font-headline-md text-headline-md-mobile text-primary">Baker Onboarding</h3>
+</div>
+<nav class="flex-grow">
+<!-- Active Item -->
+<div class="flex items-center gap-4 bg-primary-container text-on-primary-container rounded-lg p-4 mx-2 font-body-md text-body-md transition-all active:translate-x-1">
+<span class="material-symbols-outlined">fact_check</span>
+                    Review
+                </div>
+<!-- Inactive Items -->
+<div class="flex items-center gap-4 text-on-surface-variant p-4 mx-2 font-body-md text-body-md hover:bg-surface-variant transition-all cursor-pointer">
+<span class="material-symbols-outlined">person</span>
+                    Personal Info
+                </div>
+<div class="flex items-center gap-4 text-on-surface-variant p-4 mx-2 font-body-md text-body-md hover:bg-surface-variant transition-all cursor-pointer">
+<span class="material-symbols-outlined">storefront</span>
+                    Bakery Details
+                </div>
+<div class="flex items-center gap-4 text-on-surface-variant p-4 mx-2 font-body-md text-body-md hover:bg-surface-variant transition-all cursor-pointer">
+<span class="material-symbols-outlined">verified_user</span>
+                    Legal Docs
+                </div>
+<div class="flex items-center gap-4 text-on-surface-variant p-4 mx-2 font-body-md text-body-md hover:bg-surface-variant transition-all cursor-pointer">
+<span class="material-symbols-outlined">payments</span>
+                    Payment
+                </div>
 </nav>
+</div>
+</div>
+<script>
+        // Micro-interaction for buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.classList.add('scale-95');
+            });
+            button.addEventListener('mouseup', () => {
+                button.classList.remove('scale-95');
+            });
+        });
+
+        // Atmosphere - Subtle mouse tracking for blobs
+        document.addEventListener('mousemove', (e) => {
+            const blobs = document.querySelectorAll('.organic-blob');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            blobs.forEach((blob, index) => {
+                const speed = (index + 1) * 20;
+                blob.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+            });
+        });
+    </script>
 </body></html>

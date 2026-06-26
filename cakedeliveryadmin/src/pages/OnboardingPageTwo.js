@@ -61,10 +61,10 @@ const LabelBox = ({ label, value, icon, isLocked, onPress }) => {
         </Text>
       </View>
       {icon && (
-        <Icon 
-          name={icon} 
-          size={20} 
-          color={isLocked ? '#B5A89A' : COLORS.textDark} 
+        <Icon
+          name={icon}
+          size={20}
+          color={isLocked ? '#B5A89A' : COLORS.textDark}
         />
       )}
     </TouchableOpacity>
@@ -72,7 +72,7 @@ const LabelBox = ({ label, value, icon, isLocked, onPress }) => {
 };
 
 // --- Main Screen Component ---
-const OnboardingPageTwo = ({navigation}) => {
+const OnboardingPageTwo = ({ navigation }) => {
   const [form, setForm] = useState({
     address: '',
     landmark: '',
@@ -83,12 +83,12 @@ const OnboardingPageTwo = ({navigation}) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
-      <BakeryHeader onPress={()=>navigation.goBack()} />
-      <ScrollView 
-        contentContainerStyle={styles.scrollContent} 
+      <BakeryHeader onPress={() => navigation.goBack()} />
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        
+
         {/* Step Badge */}
         <View style={styles.badgeContainer}>
           <View style={styles.stepBadge}>
@@ -106,7 +106,7 @@ const OnboardingPageTwo = ({navigation}) => {
 
         {/* Form Inputs Section */}
         <View style={styles.formSection}>
-          
+
           <CustomTextInput
             placeholder="Shop Address"
             multiline={true}
@@ -156,7 +156,7 @@ const OnboardingPageTwo = ({navigation}) => {
         </View>
 
       </ScrollView>
-      <Floatingfixedbutton title={"Back"} titletwo={"Next"}/>
+      <Floatingfixedbutton onPress={() => navigation.navigate("OnboardingpageThree")} title={"Back"} titletwo={"Next"} />
     </SafeAreaView>
   );
 };

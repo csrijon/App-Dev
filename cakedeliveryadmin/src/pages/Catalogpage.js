@@ -95,11 +95,11 @@ const Catalogpage = ({ navigation }) => {
     const handleDelete = (id, title) => {
         Alert.alert(
             "Delete Product",
-            `"${title}" ডিলিট করতে চান?`,
+            `"${title}" Do You Want to Delete?`,
             [
-                { text: "না", style: "cancel" },
+                { text: "No", style: "cancel" },
                 {
-                    text: "হ্যাঁ, ডিলিট করো",
+                    text: "Yes, Delete It",
                     style: "destructive",
                     onPress: () => {
                         setCatalogData(prev => prev.filter(item => item.id !== id));
