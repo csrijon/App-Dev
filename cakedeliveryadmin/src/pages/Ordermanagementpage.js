@@ -1,12 +1,12 @@
 import { SafeAreaView } from "react-native-safe-area-context"
-import { StatusBar, ScrollView, View, StyleSheet, Text, FlatList, TouchableOpacity } from "react-native"
+import { StatusBar, ScrollView, View, StyleSheet, Text, FlatList, TouchableOpacity, Alert } from "react-native"
 import Adminheader from "../components/Adminheader"
 import OrderCard from "../components/OrderCard"
 import Plusbutton from "../components/Plusbutton"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import { useState } from "react"
 
-const ordersData = [
+const initialOrdersData = [
     {
         id: 1,
         orderNumber: "ORDER #BK-8291",
@@ -14,6 +14,7 @@ const ordersData = [
         deliveryTime: "Delivery by 2:30PM Today",
         price: "$145.00",
         tag: "CUSTOM",
+        status: "Pending",
         buttonText: "Accept Order",
         buttonColor: "#7B5A4E",
         image: require("../images/catalog.png"),
@@ -26,6 +27,7 @@ const ordersData = [
         deliveryTime: "Delivery by 4:00PM Today",
         price: "$210.00",
         tag: "PRIORITY",
+        status: "Accepted",
         buttonText: "Start Delivery",
         buttonColor: "#3E5C76",
         image: require("../images/catalog.png"),
@@ -38,6 +40,7 @@ const ordersData = [
         deliveryTime: "Delivery by 6:15PM Today",
         price: "$89.00",
         tag: "CUSTOM",
+        status: "Preparing",
         buttonText: "Track Order",
         buttonColor: "#4F772D",
         image: require("../images/catalog.png"),
@@ -50,48 +53,94 @@ const ordersData = [
         deliveryTime: "Delivery by 1:00PM Tomorrow",
         price: "$175.00",
         tag: "NEW",
+        status: "Out for Delivery",
         buttonText: "View Details",
         buttonColor: "#9C6644",
+        image: require("../images/catalog.png"),
+    },
+
+    {
+        id: 5,
+        orderNumber: "ORDER #BK-3309",
+        customerName: "James Anderson",
+        deliveryTime: "Delivered Yesterday, 5:40PM",
+        price: "$132.00",
+        tag: "DONE",
+        status: "Delivered",
+        buttonText: "View Details",
+        buttonColor: "#4F772D",
+        image: require("../images/catalog.png"),
+    },
+
+    {
+        id: 6,
+        orderNumber: "ORDER #BK-4467",
+        customerName: "Mia Thompson",
+        deliveryTime: "Cancelled by Customer",
+        price: "$60.00",
+        tag: "CANCELLED",
+        status: "Cancelled",
+        buttonText: "View Details",
+        buttonColor: "#A4161A",
+        image: require("../images/catalog.png"),
+    },
+
+    {
+        id: 7,
+        orderNumber: "ORDER #BK-2204",
+        customerName: "Liam Patel",
+        deliveryTime: "Refund Requested Today",
+        price: "$95.00",
+        tag: "REFUND",
+        status: "Refund Requested",
+        buttonText: "Review Refund",
+        buttonColor: "#B5651D",
         image: require("../images/catalog.png"),
     },
 ];
 
 const orderStatusData = [
-    {
-        id: 1,
-        title: "All",
-        icon: "apps-outline",
-    },
-
-    {
-        id: 2,
-        title: "Pending",
-        icon: "time-outline",
-    },
-
-    {
-        id: 3,
-        title: "Preparing",
-        icon: "flame-outline",
-    },
-
-    {
-        id: 4,
-        title: "Out for Delivery",
-        icon: "bicycle-outline",
-    },
-
-    {
-        id: 5,
-        title: "Completed",
-        icon: "checkmark-circle-outline",
-    },
+    { id: 1, title: "All", icon: "apps-outline" },
+    { id: 2, title: "Pending", icon: "time-outline" },
+    { id: 3, title: "Accepted", icon: "checkmark-done-outline" },
+    { id: 4, title: "Preparing", icon: "flame-outline" },
+    { id: 5, title: "Out for Delivery", icon: "bicycle-outline" },
+    { id: 6, title: "Delivered", icon: "checkmark-circle-outline" },
+    { id: 7, title: "Cancelled", icon: "close-circle-outline" },
+    { id: 8, title: "Refund Requests", icon: "cash-outline" },
 ];
 
 
 const Ordermanagementpage = () => {
 
     const [activecolorid, setactivecolorid] = useState(1)
+    const [ordersData, setOrdersData] = useState(initialOrdersData)
+
+    const activeStatus = orderStatusData.find((item) => item.id === activecolorid)?.title
+
+    const filteredOrders =
+        activeStatus === "All"
+            ? ordersData
+            : ordersData.filter((order) => order.status === activeStatus)
+
+    // Baker cancels an order
+    const handleCancelOrder = (orderId) => {
+        setOrdersData((prevOrders) =>
+            prevOrders.map((order) =>
+                order.id === orderId
+                    ? {
+                        ...order,
+                        status: "Cancelled",
+                        tag: "CANCELLED",
+                        deliveryTime: "Cancelled by Baker",
+                        buttonText: "View Details",
+                        buttonColor: "#A4161A",
+                    }
+                    : order
+            )
+        );
+        Alert.alert("Cancelled", "Order is Canceled");
+    };
 
     return (
         <SafeAreaView style={Ordermanagementstyle.Ordermanagementcontainer} >
@@ -107,7 +156,7 @@ const Ordermanagementpage = () => {
                     </View>
                     <Text style={Ordermanagementstyle.Normalordertext} >Track, manage, and fulfill your artisanal bakery orders in real-time</Text>
                 </View>
-                {/* <View style={Ordermanagementstyle.Ordercards} > */}
+
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={Ordermanagementstyle.statusContainer} >
                     {
                         orderStatusData.map((item) => {
@@ -136,13 +185,32 @@ const Ordermanagementpage = () => {
                     }
                 </ScrollView>
 
-                <FlatList
-                    contentContainerStyle={{ gap: 15, marginTop: 18 }}
-                    data={ordersData}
-                    renderItem={({ item }) => <OrderCard orderNumber={item.orderNumber} customerName={item.customerName} deliveryTime={item.deliveryTime} price={item.price} tag={item.tag} buttonText={item.buttonText} image={item.image} buttonColor={item.buttonColor} />}
-                    keyExtractor={(item) => item.id}
-                    scrollEnabled={false}
-                />
+                {filteredOrders.length === 0 ? (
+                    <View style={Ordermanagementstyle.emptyState}>
+                        <Ionicons name="file-tray-outline" size={36} color="#B5A89B" />
+                        <Text style={Ordermanagementstyle.emptyStateText}>There is no Order in this Catagory</Text>
+                    </View>
+                ) : (
+                    <FlatList
+                        contentContainerStyle={{ gap: 15, marginTop: 18 }}
+                        data={filteredOrders}
+                        renderItem={({ item }) => (
+                            <OrderCard
+                                orderNumber={item.orderNumber}
+                                customerName={item.customerName}
+                                deliveryTime={item.deliveryTime}
+                                price={item.price}
+                                tag={item.tag}
+                                buttonText={item.buttonText}
+                                image={item.image}
+                                buttonColor={item.buttonColor}
+                                onCancel={() => handleCancelOrder(item.id)}
+                            />
+                        )}
+                        keyExtractor={(item) => item.id.toString()}
+                        scrollEnabled={false}
+                    />
+                )}
 
             </ScrollView>
           <Plusbutton/>
@@ -224,5 +292,16 @@ const Ordermanagementstyle = StyleSheet.create({
     },
     statusTextActive: {
         color: "#FFFFFF",
+    },
+    emptyState: {
+        alignItems: "center",
+        justifyContent: "center",
+        marginTop: 60,
+        gap: 10,
+    },
+    emptyStateText: {
+        color: "#9C8C7C",
+        fontSize: 14,
+        fontWeight: "600",
     },
 })

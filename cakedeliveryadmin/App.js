@@ -29,15 +29,17 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
 
+
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
 
+
   return (
-     <SafeAreaProvider>
-    <NavigationContainer>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <Stackscreens />
-    </NavigationContainer>
+    <SafeAreaProvider  >
+      <NavigationContainer>
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        <Stackscreens />
+      </NavigationContainer>
     </SafeAreaProvider>
   );
 }
@@ -54,7 +56,7 @@ const Stackscreens = () => {
       <Stack.Screen name='Notificationpage' component={Notificationpage} />
       <Stack.Screen name='RecentOrdersScreen' component={RecentOrdersScreen} />
       <Stack.Screen name='CatalogUpdatedScreen' component={CatalogUpdatedScreen} />
-      <Stack.Screen name='Passwordchangespage' component={Passwordchangespage}/>
+      <Stack.Screen name='Passwordchangespage' component={Passwordchangespage} />
     </Stack.Navigator>
   )
 }
@@ -68,6 +70,7 @@ const Catalogstack = () => {
   )
 }
 const TabScreens = () => {
+  const insets = useSafeAreaInsets()
   return (
     <Tab.Navigator
       screenOptions={{
@@ -85,6 +88,7 @@ const TabScreens = () => {
           borderTopRightRadius: 35,
 
           overflow: "hidden",
+          marginBottom: 0
         },
 
         tabBarActiveTintColor: "#75584e",
@@ -96,6 +100,8 @@ const TabScreens = () => {
           borderRadius: 999,
           overflow: "hidden",
           marginVertical: 5,
+          height: 70 + insets.bottom,
+          paddingBottom: insets.bottom,
         },
 
         tabBarLabelStyle: {

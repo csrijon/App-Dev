@@ -8,7 +8,36 @@ import {
     Alert
 } from "react-native";
 
-const OrderCard = ({ orderNumber, customerName, deliveryTime, price, tag, buttonText, image, buttonColor }) => {
+const OrderCard = ({ orderNumber, customerName, deliveryTime, price, tag, buttonText, image, buttonColor, onAccept, onCancel }) => {
+
+    const handleMenuPress = () => {
+        Alert.alert(
+            "Your Orders",
+            orderNumber,
+            [
+                {
+                    text: "Cancel Order",
+                    style: "destructive",
+                    onPress: () => {
+                        Alert.alert(
+                            "Do You Want to Cancel Order",
+                            "This Order is Canceled",
+                            [
+                                { text: "NO", style: "cancel" },
+                                {
+                                    text: "Yes, Cancel ",
+                                    style: "destructive",
+                                    onPress: () => onCancel && onCancel(),
+                                },
+                            ]
+                        );
+                    },
+                },
+                { text: "Close", style: "cancel" },
+            ]
+        );
+    };
+
     return (
         <View style={designStyles.screen}>
             <View style={designStyles.orderCardBox}>
@@ -53,10 +82,9 @@ const OrderCard = ({ orderNumber, customerName, deliveryTime, price, tag, button
 
                         <TouchableOpacity
                             onPress={() =>
-                                Alert.alert(
-                                    "Success",
-                                    "Order accepted successfully!"
-                                )
+                                onAccept
+                                    ? onAccept()
+                                    : Alert.alert("Success", "Order accepted successfully!")
                             }
                             style={[
                                 designStyles.acceptButtonStyle,
@@ -67,7 +95,10 @@ const OrderCard = ({ orderNumber, customerName, deliveryTime, price, tag, button
                                 {buttonText}
                             </Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={designStyles.menuButtonCircle}>
+                        <TouchableOpacity
+                            style={designStyles.menuButtonCircle}
+                            onPress={handleMenuPress}
+                        >
                             <Text style={designStyles.menuDotsText}>
                                 •••
                             </Text>
@@ -92,8 +123,6 @@ const designStyles = StyleSheet.create({
     screen: {
         flex: 1,
         justifyContent: "center",
-        // alignItems: "center",
-        // backgroundColor: "#EEE5D6",
     },
 
     orderCardBox: {
