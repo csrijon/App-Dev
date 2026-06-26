@@ -16,6 +16,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { launchImageLibrary } from "react-native-image-picker";
 
+const MAX_DESCRIPTION_LENGTH = 220;
 
 const Addnewcakepage = ({ navigation }) => {
 
@@ -32,7 +33,6 @@ const Addnewcakepage = ({ navigation }) => {
     const [isAvailable, setIsAvailable] = useState(true);
 
     const [isCouponActive, setIsCouponActive] = useState(true);
-
 
     const selectImage = async () => {
         const result = await launchImageLibrary({
@@ -64,6 +64,16 @@ const Addnewcakepage = ({ navigation }) => {
         return true;
     };
 
+    const isFormReady = cakeName.trim().length > 0 && price.trim().length > 0 && !!imageUri;
+
+    const discountedPrice = (() => {
+        const p = parseFloat(price);
+        const d = parseFloat(discount);
+        if (isNaN(p)) return null;
+        if (isNaN(d) || d <= 0) return p.toFixed(2);
+        return (p - (p * d) / 100).toFixed(2);
+    })();
+
     const addCake = () => {
 
         if (!validateForm()) return;
@@ -94,57 +104,68 @@ const Addnewcakepage = ({ navigation }) => {
         <SafeAreaView style={styles.Addnewcakecontainer} >
             <StatusBar backgroundColor="#fff8e6" barStyle="dark-content" />
             <BakeryHeader onPress={() => navigation.goBack()} />
-            <ScrollView vertical showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 32, paddingBottom: 40 }} >
+            <ScrollView vertical showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 40 }} >
                 <View style={styles.screenContainer}>
 
                     {/* Heading */}
-                    <Text style={styles.smallHeading}>
-                        CATALOG MANAGEMENT
-                    </Text>
+                    <View style={styles.headingRow}>
+                        <View style={styles.headingAccentBar} />
+                        <Text style={styles.smallHeading}>
+                            CATALOG MANAGEMENT
+                        </Text>
+                    </View>
 
                     <Text style={styles.mainHeading}>
                         Add New Cake
                     </Text>
 
                     {/* Gallery Section */}
-                    <Text style={styles.sectionTitle}>
-                        Gallery Display
-                    </Text>
+                    <View style={styles.sectionTitleRow}>
+                        <Text style={styles.sectionTitle}>
+                            Gallery Display
+                        </Text>
+                        {imageUri && (
+                            <View style={styles.imageReadyPill}>
+                                <Ionicons name="checkmark-circle" size={14} color="#3F7A53" />
+                                <Text style={styles.imageReadyPillText}>Photo added</Text>
+                            </View>
+                        )}
+                    </View>
 
                     {/* Upload Box */}
+                    <TouchableOpacity activeOpacity={0.85} onPress={selectImage} style={styles.uploadBox}>
 
-                    <TouchableOpacity onPress={selectImage} style={styles.uploadBox}>
-
-                        <View style={styles.iconCircle}>
-                            <MaterialIcons name="add-a-photo" color="#75584e" size={26} />
-                        </View>
-
-                        <Text style={styles.uploadTitle}>
-                            Upload Hero Image
-                        </Text>
-
-                        <Text style={styles.uploadDescription}>
-                            Drop your high-resolution confectionery
-                            photography here. Minimum 1200px wide
-                            recommended.
-                        </Text>
-
-                    </TouchableOpacity>
-                    {/* Bottom Card */}
-                    <View style={styles.previewCard}>
                         {imageUri ? (
                             <Image
                                 source={{ uri: imageUri }}
-                                style={{
-                                    width: "100%",
-                                    height: "100%",
-                                    borderRadius: 34,
-                                }}
+                                style={styles.uploadedHeroImage}
                             />
                         ) : (
-                            <Text style={styles.plusIcon}>+</Text>
+                            <>
+                                <View style={styles.iconCircle}>
+                                    <MaterialIcons name="add-a-photo" color="#75584e" size={26} />
+                                </View>
+
+                                <Text style={styles.uploadTitle}>
+                                    Upload Hero Image
+                                </Text>
+
+                                <Text style={styles.uploadDescription}>
+                                    Drop your high-resolution confectionery
+                                    photography here. Minimum 1200px wide
+                                    recommended.
+                                </Text>
+                            </>
                         )}
-                    </View>
+
+                        {imageUri && (
+                            <View style={styles.changePhotoOverlay}>
+                                <MaterialIcons name="edit" color="#FFFFFF" size={16} />
+                                <Text style={styles.changePhotoOverlayText}>Change Photo</Text>
+                            </View>
+                        )}
+
+                    </TouchableOpacity>
 
                 </View>
 
@@ -164,15 +185,21 @@ const Addnewcakepage = ({ navigation }) => {
                     />
 
                     {/* Description */}
-                    <Text style={styles.formSectionLabel}>
-                        Description
-                    </Text>
+                    <View style={styles.sectionTitleRow}>
+                        <Text style={styles.formSectionLabel}>
+                            Description
+                        </Text>
+                        <Text style={styles.charCounter}>
+                            {description.length}/{MAX_DESCRIPTION_LENGTH}
+                        </Text>
+                    </View>
                     <TextInput
                         value={description}
-                        onChangeText={setDescription}
+                        onChangeText={(text) => setDescription(text.slice(0, MAX_DESCRIPTION_LENGTH))}
                         multiline
                         textAlignVertical="top"
-                        placeholder="Describe..."
+                        placeholder="Describe the flavor, texture, and occasion this cake is perfect for..."
+                        placeholderTextColor="#B4AA8D"
                         style={styles.cakeDescriptionInput}
                     />
                     {/* Economics Section */}
@@ -193,6 +220,8 @@ const Addnewcakepage = ({ navigation }) => {
                                 <TextInput
                                     value={price}
                                     onChangeText={setPrice}
+                                    placeholder="0.00"
+                                    placeholderTextColor="#A89B7E"
                                     keyboardType="numeric"
                                     style={styles.priceTextInput}
                                 />
@@ -206,12 +235,21 @@ const Addnewcakepage = ({ navigation }) => {
                                 <TextInput
                                     value={discount}
                                     onChangeText={setDiscount}
+                                    placeholder="0"
+                                    placeholderTextColor="#A89B7E"
                                     keyboardType="numeric"
                                     style={styles.discountTextInput}
                                 />
                             </View>
 
                         </View>
+
+                        {discountedPrice && (
+                            <View style={styles.finalPriceBanner}>
+                                <Text style={styles.finalPriceLabel}>Customer pays</Text>
+                                <Text style={styles.finalPriceValue}>${discountedPrice}</Text>
+                            </View>
+                        )}
 
                         {/* Weight */}
                         <View style={styles.weightInputContainer}>
@@ -223,6 +261,8 @@ const Addnewcakepage = ({ navigation }) => {
                             <TextInput
                                 value={weight}
                                 onChangeText={setWeight}
+                                placeholder="1.0"
+                                placeholderTextColor="#A89B7E"
                                 keyboardType="numeric"
                                 style={styles.weightTextInput}
                             />
@@ -256,9 +296,7 @@ const Addnewcakepage = ({ navigation }) => {
                                     Valrhona Chocolate
                                 </Text>
 
-                                <Text style={styles.dropdownArrowIcon}>
-                                    ⌄⌄
-                                </Text>
+                                <Ionicons name="chevron-down" size={20} color="#6D5A4B" />
 
                             </TouchableOpacity>
 
@@ -277,9 +315,7 @@ const Addnewcakepage = ({ navigation }) => {
                                     Wedding
                                 </Text>
 
-                                <Text style={styles.dropdownArrowIcon}>
-                                    ⌄⌄
-                                </Text>
+                                <Ionicons name="chevron-down" size={20} color="#6D5A4B" />
 
                             </TouchableOpacity>
 
@@ -289,6 +325,14 @@ const Addnewcakepage = ({ navigation }) => {
 
                     {/* Availability Card */}
                     <View style={styles.availabilityCardContainer}>
+
+                        <View style={styles.availabilityIconCircle}>
+                            <MaterialIcons
+                                name={isAvailable ? "storefront" : "storefront"}
+                                size={24}
+                                color="#A6624E"
+                            />
+                        </View>
 
                         <View style={styles.availabilityTextWrapper}>
 
@@ -308,7 +352,7 @@ const Addnewcakepage = ({ navigation }) => {
                         >
                             <MaterialIcons
                                 name={isAvailable ? "toggle-on" : "toggle-off"}
-                                color="#7B5A4E"
+                                color={isAvailable ? "#7B5A4E" : "#C9BCA0"}
                                 size={52}
                             />
                         </TouchableOpacity>
@@ -321,7 +365,7 @@ const Addnewcakepage = ({ navigation }) => {
 
                     <View style={styles.couponTopSection}>
 
-                        <View>
+                        <View style={{ flex: 1 }}>
 
                             <Text style={styles.couponOfferHeading}>
                                 Coupon Offer
@@ -336,7 +380,7 @@ const Addnewcakepage = ({ navigation }) => {
 
                         <TouchableOpacity onPress={() => setnotactiveoffer(!activeoffer)} >
 
-                            <MaterialIcons name={activeoffer ? "toggle-off" : "toggle-on"} color="#75584e" size={52} />
+                            <MaterialIcons name={activeoffer ? "toggle-off" : "toggle-on"} color={activeoffer ? "#C9BCA0" : "#75584e"} size={52} />
 
                         </TouchableOpacity>
 
@@ -353,8 +397,10 @@ const Addnewcakepage = ({ navigation }) => {
 
                                 <TextInput
                                     value={couponCode}
-                                    onChangeText={setCouponCode}
+                                    onChangeText={(text) => setCouponCode(text.toUpperCase())}
                                     placeholder="e.g. SWEET20"
+                                    placeholderTextColor="#B4AA8D"
+                                    autoCapitalize="characters"
                                     style={styles.couponTextInput}
                                 />
 
@@ -370,6 +416,7 @@ const Addnewcakepage = ({ navigation }) => {
                                     value={couponDiscount}
                                     onChangeText={setCouponDiscount}
                                     placeholder="20"
+                                    placeholderTextColor="#B4AA8D"
                                     keyboardType="numeric"
                                     style={styles.discountTextInputField}
                                 />
@@ -469,7 +516,7 @@ const Addnewcakepage = ({ navigation }) => {
                                     <MaterialIcons
                                         name={isCouponActive ? "toggle-on" : "toggle-off"}
                                         size={46}
-                                        color="#7A5C50"
+                                        color={isCouponActive ? "#7A5C50" : "#C9BCA0"}
                                     />
                                 </TouchableOpacity>
 
@@ -505,7 +552,10 @@ const Addnewcakepage = ({ navigation }) => {
                 </TouchableOpacity>
 
                 {/* Add to Catalog */}
-                <TouchableOpacity onPress={addCake} style={styles.catalogButton}>
+                <TouchableOpacity
+                    onPress={addCake}
+                    style={[styles.catalogButton, !isFormReady && styles.catalogButtonDisabled]}
+                >
 
                     <Ionicons
                         name="checkmark-circle-outline"
@@ -528,34 +578,79 @@ const Addnewcakepage = ({ navigation }) => {
 export default Addnewcakepage
 
 
+const cardShadow = {
+    shadowColor: "#3D2E22",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.06,
+    shadowRadius: 14,
+    elevation: 2,
+};
+
 const styles = StyleSheet.create({
     Addnewcakecontainer: {
         flex: 1,
         backgroundColor: "#F6F0DF",
     },
     screenContainer: {
-        // paddingHorizontal: 20,
         paddingTop: 24,
     },
 
-    smallHeading: {
-        fontSize: 14,
-        letterSpacing: 2,
-        color: "#646040",
+    headingRow: {
+        flexDirection: "row",
+        alignItems: "center",
         marginBottom: 8,
     },
 
+    headingAccentBar: {
+        width: 18,
+        height: 3,
+        borderRadius: 2,
+        backgroundColor: "#A6624E",
+        marginRight: 8,
+    },
+
+    smallHeading: {
+        fontSize: 13,
+        fontWeight: "700",
+        letterSpacing: 2,
+        color: "#8C6A4F",
+    },
+
     mainHeading: {
-        fontSize: 36,
+        fontSize: 34,
         fontWeight: "800",
-        color: "#322A1F",
-        marginBottom: 32,
+        color: "#2E241D",
+        marginBottom: 28,
+        letterSpacing: -0.5,
+    },
+
+    sectionTitleRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: 14,
     },
 
     sectionTitle: {
         fontSize: 16,
+        fontWeight: "600",
         color: "#363317",
-        marginBottom: 16,
+    },
+
+    imageReadyPill: {
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#E2F0E5",
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+        borderRadius: 16,
+    },
+
+    imageReadyPillText: {
+        fontSize: 12,
+        fontWeight: "600",
+        color: "#3F7A53",
+        marginLeft: 4,
     },
 
     uploadBox: {
@@ -564,11 +659,38 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderStyle: "dashed",
         borderColor: "#D2B89B",
-        borderRadius: 34,
+        borderRadius: 30,
         justifyContent: "center",
         alignItems: "center",
         paddingHorizontal: 28,
         backgroundColor: "#F3EACF",
+        overflow: "hidden",
+        position: "relative",
+    },
+
+    uploadedHeroImage: {
+        width: "100%",
+        height: "100%",
+        borderRadius: 28,
+    },
+
+    changePhotoOverlay: {
+        position: "absolute",
+        bottom: 14,
+        right: 14,
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "rgba(45,33,24,0.72)",
+        paddingHorizontal: 12,
+        paddingVertical: 8,
+        borderRadius: 18,
+    },
+
+    changePhotoOverlayText: {
+        color: "#FFFFFF",
+        fontSize: 13,
+        fontWeight: "600",
+        marginLeft: 6,
     },
 
     iconCircle: {
@@ -581,93 +703,86 @@ const styles = StyleSheet.create({
         marginBottom: 18,
     },
 
-    iconText: {
-        fontSize: 30,
-    },
-
     uploadTitle: {
         fontSize: 18,
-        fontWeight: "600",
+        fontWeight: "700",
         color: "#363317",
-        marginBottom: 12,
+        marginBottom: 10,
     },
 
     uploadDescription: {
         textAlign: "center",
         fontSize: 14,
-        lineHeight: 24,
-        color: "#646040",
+        lineHeight: 22,
+        color: "#7A7158",
     },
 
-    previewCard: {
-        width: "100%",
-        height: 230,
-        backgroundColor: "#EAE0BA",
-        borderRadius: 34,
-        marginTop: 22,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-
-    plusIcon: {
-        fontSize: 42,
-        color: "#6D614B",
-        fontWeight: "300",
-    },
     mainScreenContainer: {
-
-        paddingTop: 20,
+        paddingTop: 28,
     },
 
     formSectionLabel: {
-        fontSize: 18,
-        color: "#646040",
+        fontSize: 17,
+        fontWeight: "600",
+        color: "#4A4030",
         marginBottom: 10,
-        marginTop: 12,
+    },
+
+    charCounter: {
+        fontSize: 12,
+        color: "#9A8E70",
+        marginBottom: 10,
     },
 
     cakeNameInputField: {
         width: "100%",
-        height: 58,
-        backgroundColor: "#E8E0B8",
-        borderRadius: 26,
+        height: 56,
+        backgroundColor: "#FFFFFF",
+        borderRadius: 18,
         paddingHorizontal: 20,
-        fontSize: 18,
+        fontSize: 17,
         color: "#3D3127",
-        marginBottom: 24,
+        marginBottom: 22,
+        borderWidth: 1,
+        borderColor: "#E9DFC0",
+        ...cardShadow,
     },
 
     cakeDescriptionInput: {
         width: "100%",
         height: 120,
-        backgroundColor: "#E8E0B8",
-        borderRadius: 30,
+        backgroundColor: "#FFFFFF",
+        borderRadius: 22,
         paddingHorizontal: 20,
-        paddingTop: 18,
-        fontSize: 17,
+        paddingTop: 16,
+        fontSize: 16,
         color: "#3D3127",
-        lineHeight: 26,
-        marginBottom: 34,
+        lineHeight: 24,
+        marginBottom: 28,
+        borderWidth: 1,
+        borderColor: "#E9DFC0",
+        ...cardShadow,
     },
 
     economicsInfoCard: {
         width: "100%",
-        backgroundColor: "#faf4d6",
-        borderRadius: 34,
+        backgroundColor: "#FAF4D6",
+        borderRadius: 28,
         padding: 24,
+        ...cardShadow,
     },
 
     economicsCardHeading: {
-        fontSize: 24,
+        fontSize: 20,
         fontWeight: "700",
         color: "#674F45",
-        marginBottom: 28,
+        marginBottom: 22,
     },
 
     priceDiscountRow: {
         flexDirection: "row",
         justifyContent: "space-between",
-        marginBottom: 28,
+        marginBottom: 18,
     },
 
     priceInputWrapper: {
@@ -679,29 +794,57 @@ const styles = StyleSheet.create({
     },
 
     inputFieldLabel: {
-        fontSize: 17,
-        color: "#66584A",
-        marginBottom: 10,
+        fontSize: 14,
+        fontWeight: "600",
+        color: "#7A6C58",
+        marginBottom: 8,
     },
 
     priceTextInput: {
         width: "100%",
-        height: 54,
-        backgroundColor: "#DFD7AE",
-        borderRadius: 10,
+        height: 52,
+        backgroundColor: "#FFFFFF",
+        borderRadius: 14,
         paddingHorizontal: 16,
-        fontSize: 17,
+        fontSize: 16,
         color: "#363317",
+        borderWidth: 1,
+        borderColor: "#E9DFC0",
     },
 
     discountTextInput: {
         width: "100%",
-        height: 54,
-        backgroundColor: "#DFD7AE",
-        borderRadius: 10,
+        height: 52,
+        backgroundColor: "#FFFFFF",
+        borderRadius: 14,
         paddingHorizontal: 16,
-        fontSize: 17,
+        fontSize: 16,
         color: "#3D3127",
+        borderWidth: 1,
+        borderColor: "#E9DFC0",
+    },
+
+    finalPriceBanner: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        backgroundColor: "#EFE6BE",
+        borderRadius: 14,
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        marginBottom: 18,
+    },
+
+    finalPriceLabel: {
+        fontSize: 13,
+        fontWeight: "600",
+        color: "#7A6C58",
+    },
+
+    finalPriceValue: {
+        fontSize: 18,
+        fontWeight: "800",
+        color: "#3F6B45",
     },
 
     weightInputContainer: {
@@ -710,107 +853,121 @@ const styles = StyleSheet.create({
 
     weightTextInput: {
         width: "100%",
-        height: 54,
-        backgroundColor: "#DFD7AE",
-        borderRadius: 10,
+        height: 52,
+        backgroundColor: "#FFFFFF",
+        borderRadius: 14,
         paddingHorizontal: 16,
-        fontSize: 17,
+        fontSize: 16,
         color: "#3D3127",
+        borderWidth: 1,
+        borderColor: "#E9DFC0",
     },
+
     screenWrapper: {
-        // paddingHorizontal: 16,
-        paddingTop: 20,
+        paddingTop: 26,
     },
 
     categoryCardContainer: {
         width: "100%",
         backgroundColor: "#ECE4BE",
-        borderRadius: 34,
+        borderRadius: 28,
         padding: 22,
-        marginBottom: 30,
-        marginTop: 10
+        marginBottom: 22,
+        ...cardShadow,
     },
 
     categoryHeadingText: {
-        fontSize: 22,
+        fontSize: 19,
         fontWeight: "700",
         color: "#6D5348",
-        marginBottom: 26,
+        marginBottom: 22,
     },
 
     dropdownSection: {
-        marginBottom: 24,
+        marginBottom: 20,
     },
 
     dropdownLabelText: {
-        fontSize: 16,
-        color: "#6D5A4B",
-        marginBottom: 10,
+        fontSize: 14,
+        fontWeight: "600",
+        color: "#7A6C58",
+        marginBottom: 8,
     },
 
     dropdownBox: {
         width: "100%",
-        height: 54,
-        backgroundColor: "#DED5AA",
-        borderRadius: 10,
-        paddingHorizontal: 14,
+        height: 52,
+        backgroundColor: "#FFFFFF",
+        borderRadius: 14,
+        paddingHorizontal: 16,
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
+        borderWidth: 1,
+        borderColor: "#DED5AA",
     },
 
     dropdownValueText: {
-        fontSize: 18,
+        fontSize: 16,
+        fontWeight: "500",
         color: "#4E3D32",
-    },
-
-    dropdownArrowIcon: {
-        fontSize: 18,
-        color: "#6D5A4B",
-        fontWeight: "700",
     },
 
     availabilityCardContainer: {
         width: "100%",
         backgroundColor: "#F2DED2",
-        borderRadius: 34,
-        padding: 22,
+        borderRadius: 28,
+        padding: 20,
         flexDirection: "row",
-        justifyContent: "space-between",
         alignItems: "center",
+        ...cardShadow,
+    },
+
+    availabilityIconCircle: {
+        width: 48,
+        height: 48,
+        borderRadius: 24,
+        backgroundColor: "#FBEDE6",
+        justifyContent: "center",
+        alignItems: "center",
+        marginRight: 14,
     },
 
     availabilityTextWrapper: {
-        width: "72%",
+        flex: 1,
+        marginRight: 10,
     },
 
     availabilityHeadingText: {
-        fontSize: 20,
+        fontSize: 17,
         fontWeight: "700",
         color: "#6D5348",
-        marginBottom: 8,
+        marginBottom: 6,
     },
 
     availabilityDescriptionText: {
-        fontSize: 15,
-        lineHeight: 22,
-        color: "#7E6A5D",
+        fontSize: 13,
+        lineHeight: 19,
+        color: "#8A7969",
     },
+
     bottomButtonContainer: {
         width: "100%",
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
         paddingHorizontal: 16,
-        paddingVertical: 16,
-        marginTop: 24,
+        paddingVertical: 14,
+        backgroundColor: "#F6F0DF",
+        borderTopWidth: 1,
+        borderTopColor: "#E9DFC0",
     },
 
     draftButton: {
         flex: 1,
         height: 56,
         backgroundColor: "#F2CDBF",
-        borderRadius: 30,
+        borderRadius: 28,
         justifyContent: "center",
         alignItems: "center",
         marginRight: 12,
@@ -823,13 +980,24 @@ const styles = StyleSheet.create({
     },
 
     catalogButton: {
-        flex: 1.2,
+        flex: 1.3,
         height: 56,
         backgroundColor: "#7A5C50",
-        borderRadius: 30,
+        borderRadius: 28,
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
+        shadowColor: "#4A3024",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.25,
+        shadowRadius: 8,
+        elevation: 3,
+    },
+
+    catalogButtonDisabled: {
+        backgroundColor: "#C2B49C",
+        shadowOpacity: 0,
+        elevation: 0,
     },
 
     checkIcon: {
@@ -837,43 +1005,44 @@ const styles = StyleSheet.create({
     },
 
     catalogButtonText: {
-        fontSize: 18,
+        fontSize: 17,
         fontWeight: "700",
         color: "#FFFFFF",
     },
+
     couponOfferCard: {
         width: "100%",
         backgroundColor: "#F2DED2",
-        borderRadius: 34,
+        borderRadius: 28,
         padding: 22,
-        marginTop: 30,
+        marginTop: 26,
+        ...cardShadow,
     },
 
     couponTopSection: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "flex-start",
-        marginBottom: 24,
+        marginBottom: 20,
     },
 
     couponOfferHeading: {
-        fontSize: 22,
+        fontSize: 19,
         fontWeight: "700",
         color: "#6D5348",
-        marginBottom: 8,
+        marginBottom: 6,
     },
 
     couponOfferDescription: {
-        fontSize: 15,
-        lineHeight: 22,
-        color: "#7E6A5D",
+        fontSize: 14,
+        lineHeight: 20,
+        color: "#8A7969",
         width: 220,
     },
 
     couponInputRow: {
         flexDirection: "row",
         justifyContent: "space-between",
-        marginBottom: 22,
     },
 
     couponCodeWrapper: {
@@ -885,80 +1054,69 @@ const styles = StyleSheet.create({
     },
 
     couponLabel: {
-        fontSize: 15,
-        color: "#6D5A4B",
-        marginBottom: 10,
+        fontSize: 13,
+        fontWeight: "600",
+        color: "#7A6C58",
+        marginBottom: 8,
     },
 
     couponTextInput: {
         width: "100%",
-        height: 54,
-        backgroundColor: "#F8EEE8",
+        height: 52,
+        backgroundColor: "#FFFFFF",
         borderRadius: 14,
         paddingHorizontal: 16,
-        fontSize: 16,
+        fontSize: 15,
         color: "#4E3D32",
+        borderWidth: 1,
+        borderColor: "#EAD9CD",
     },
 
     discountTextInputField: {
         width: "100%",
-        height: 54,
-        backgroundColor: "#F8EEE8",
+        height: 52,
+        backgroundColor: "#FFFFFF",
         borderRadius: 14,
         textAlign: "center",
-        fontSize: 16,
+        fontSize: 15,
         color: "#4E3D32",
+        borderWidth: 1,
+        borderColor: "#EAD9CD",
     },
 
-    skipCouponButton: {
-        width: "100%",
-        height: 54,
-        backgroundColor: "#E8C7BB",
-        borderRadius: 18,
-        justifyContent: "center",
-        alignItems: "center",
-    },
-
-    skipCouponButtonText: {
-        fontSize: 16,
-        fontWeight: "700",
-        color: "#7A5C50",
-    },
     offerScreenContainer: {
-        flex: 1,
-        backgroundColor: "#F6F0DF",
-        // padding: 16,
-        marginTop: 15
+        marginTop: 26,
     },
 
     offerTopSection: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "flex-start",
-        marginBottom: 24,
+        marginBottom: 20,
     },
 
     offerHeadingText: {
-        fontSize: 28,
-        fontWeight: "700",
+        fontSize: 26,
+        fontWeight: "800",
         color: "#2E241D",
         marginBottom: 6,
+        letterSpacing: -0.3,
     },
 
     offerDescriptionText: {
-        fontSize: 16,
-        lineHeight: 24,
+        fontSize: 15,
+        lineHeight: 22,
         color: "#6B5B4C",
     },
 
     activeOfferCountCard: {
-        width: 110,
-        height: 110,
+        width: 100,
+        height: 100,
         backgroundColor: "#F2D8E3",
-        borderRadius: 30,
+        borderRadius: 26,
         justifyContent: "center",
         alignItems: "center",
-        paddingVertical: 12,
+        paddingVertical: 10,
     },
 
     activeOfferRow: {
@@ -969,14 +1127,15 @@ const styles = StyleSheet.create({
     },
 
     activeOfferCount: {
-        fontSize: 26,
+        fontSize: 24,
         fontWeight: "800",
         color: "#7A5C50",
         marginLeft: 6,
-        lineHeight: 30,
+        lineHeight: 28,
     },
+
     activeOfferText: {
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: "700",
         color: "#7A5C50",
         letterSpacing: 1,
@@ -985,22 +1144,18 @@ const styles = StyleSheet.create({
     couponCardContainer: {
         width: "100%",
         backgroundColor: "#FFFFFF",
-        borderRadius: 30,
+        borderRadius: 26,
         overflow: "hidden",
-        marginBottom: 22,
-
+        marginBottom: 18,
         shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
+        shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.08,
         shadowRadius: 10,
         elevation: 4,
     },
 
     leftAccentBar: {
-        width: 8,
+        width: 6,
         height: "100%",
         backgroundColor: "#7A5C50",
         position: "absolute",
@@ -1015,9 +1170,9 @@ const styles = StyleSheet.create({
     },
 
     couponIconCircle: {
-        width: 58,
-        height: 58,
-        borderRadius: 29,
+        width: 54,
+        height: 54,
+        borderRadius: 27,
         backgroundColor: "#F2D0C4",
         justifyContent: "center",
         alignItems: "center",
@@ -1031,50 +1186,37 @@ const styles = StyleSheet.create({
     couponTitleRow: {
         flexDirection: "row",
         alignItems: "center",
-        marginBottom: 6,
+        marginBottom: 4,
     },
 
     couponCodeText: {
-        fontSize: 26,
+        fontSize: 22,
         fontWeight: "800",
         color: "#2F241D",
         marginRight: 10,
     },
 
-    flavorTagBadge: {
-        backgroundColor: "#F2B6C7",
-        borderRadius: 8,
-        paddingHorizontal: 8,
-        paddingVertical: 4,
-    },
-
-    flavorTagText: {
-        fontSize: 10,
-        fontWeight: "700",
-        color: "#7A4D5B",
-        textAlign: "center",
-    },
-
     discountValueText: {
-        fontSize: 16,
+        fontSize: 15,
         color: "#5E5248",
         marginBottom: 4,
     },
 
     expiryDateText: {
-        fontSize: 15,
-        color: "#8A7A6A",
+        fontSize: 13,
+        color: "#9A8A7A",
     },
 
     couponActionSection: {
         alignItems: "center",
         justifyContent: "space-between",
-        height: 90,
+        height: 88,
     },
+
     editButton: {
-        height: 36,
-        width: 36,
-        borderRadius: 18,
+        height: 34,
+        width: 34,
+        borderRadius: 17,
         backgroundColor: "#7A5C50",
         justifyContent: "center",
         alignItems: "center",
