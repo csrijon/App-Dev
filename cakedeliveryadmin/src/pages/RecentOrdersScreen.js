@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
     View,
     Text,
@@ -16,8 +16,7 @@ const orders = [
         name: "Eleanor Shellstrop",
         status: "Delivered",
         amount: "$124.50",
-        image:
-            require("../images/catalog.png"),
+        image: require("../images/catalog.png"),
         details: "2x Vanilla Bean Cake, 1x Croisant Box",
         date: "Oct 24, 2023 · 14:30 PM",
     },
@@ -26,8 +25,7 @@ const orders = [
         name: "Chidi Anagonye",
         status: "Cancelled",
         amount: "$48.00",
-        image:
-            require("../images/catalog.png"),
+        image: require("../images/catalog.png"),
         details: "1x Specialty Cupcake Dozen",
         date: "Oct 22, 2023 · 09:15 AM",
     },
@@ -36,134 +34,151 @@ const orders = [
         name: "Tahani Al-Jamil",
         status: "Delivered",
         amount: "$32.20",
-        image:
-            require("../images/catalog.png"),
+        image: require("../images/catalog.png"),
         details: "4x Pain au Chocolat, 2x Almond Croissants",
         date: "Oct 20, 2023 · 11:45 AM",
     },
-     {
-        id: "#GZ-7650",
+    {
+        id: "#GZ-7651",
         name: "Tahani Al-Jamil",
         status: "Delivered",
         amount: "$32.20",
-        image:
-            require("../images/catalog.png"),
+        image: require("../images/catalog.png"),
         details: "4x Pain au Chocolat, 2x Almond Croissants",
         date: "Oct 20, 2023 · 11:45 AM",
     },
 ];
 
+// Parse "Oct 24, 2023 · 14:30 PM" -> JS Date
+const parseOrderDate = (dateString) => {
+    const datePart = dateString.split("·")[0].trim(); // "Oct 24, 2023"
+    return new Date(datePart);
+};
+
+// Filter logic based on selected filter
+const getFilteredOrders = (data, filter) => {
+    if (filter === "All Time") return data;
+
+    const now = new Date();
+
+    return data.filter((item) => {
+        const itemDate = parseOrderDate(item.date);
+        const diffInDays = (now - itemDate) / (1000 * 60 * 60 * 24);
+
+        switch (filter) {
+            case "Last 7 Days":
+                return diffInDays <= 7;
+            case "Last Month":
+                return diffInDays <= 30;
+            case "Last 6 Months":
+                return diffInDays <= 180;
+            case "This Year":
+                return itemDate.getFullYear() === now.getFullYear();
+            default:
+                return true;
+        }
+    });
+};
+
+const FILTERS = ["All Time", "Last 7 Days", "Last Month", "Last 6 Months", "This Year"];
+
 const RecentOrdersScreen = () => {
     const [selectedFilter, setSelectedFilter] = useState("All Time");
+
+    const filteredOrders = useMemo(
+        () => getFilteredOrders(orders, selectedFilter),
+        [selectedFilter]
+    );
+
     return (
-        <SafeAreaView style={styles.totalordersection} >
+        <SafeAreaView style={styles.totalordersection}>
             <Securityheader title={"Order History"} />
-        <View style={styles.mainWrapper}>
-            {/* Filter Buttons */}
-
-            <View style={styles.filterRow}>
-                <TouchableOpacity
-                    onPress={() => setSelectedFilter("All Time")}
-                    style={[
-                        styles.filterButton,
-                        selectedFilter === "All Time" && styles.activeFilter,
-                    ]}>
-                    <Text
-                        style={[
-                            styles.filterText,
-                            selectedFilter === "All Time" && styles.activeFilterText,
-                        ]}>
-                        All Time
-                    </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    onPress={() => setSelectedFilter("Last 7 Days")}
-                    style={[
-                        styles.filterButton,
-                        selectedFilter === "Last 7 Days" && styles.activeFilter,
-                    ]}>
-                    <Text
-                        style={[
-                            styles.filterText,
-                            selectedFilter === "Last 7 Days" && styles.activeFilterText,
-                        ]}>
-                        Last 7 Days
-                    </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    onPress={() => setSelectedFilter("Last Month")}
-                    style={[
-                        styles.filterButton,
-                        selectedFilter === "Last Month" && styles.activeFilter,
-                    ]}>
-                    <Text
-                        style={[
-                            styles.filterText,
-                            selectedFilter === "Last Month" && styles.activeFilterText,
-                        ]}>
-                        Last Month
-                    </Text>
-                </TouchableOpacity>
-            </View>
-
-            <Text style={styles.heading}>RECENT RECORDS</Text>
-
-            <ScrollView
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{ paddingBottom: 170 }}>
-                {orders.map(item => (
-                    <View key={item.id} style={styles.orderCard}>
-                        <View style={styles.topSection}>
-                            <View>
-                                <Text style={styles.orderId}>{item.id}</Text>
-                                <Text style={styles.customerName}>{item.name}</Text>
-                            </View>
-
-                            <View
+            <View style={styles.mainWrapper}>
+                {/* Filter Buttons */}
+                <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={styles.filterRow}
+                >
+                    {FILTERS.map((filter) => (
+                        <TouchableOpacity
+                            key={filter}
+                            onPress={() => setSelectedFilter(filter)}
+                            style={[
+                                styles.filterButton,
+                                selectedFilter === filter && styles.activeFilter,
+                            ]}>
+                            <Text
                                 style={[
-                                    styles.statusBox,
-                                    item.status === "Cancelled"
-                                        ? styles.cancelledBg
-                                        : styles.deliveredBg,
+                                    styles.filterText,
+                                    selectedFilter === filter && styles.activeFilterText,
                                 ]}>
-                                <Text
-                                    style={[
-                                        styles.statusText,
-                                        item.status === "Cancelled"
-                                            ? styles.cancelledText
-                                            : styles.deliveredText,
-                                    ]}>
-                                    ⊗ {item.status}
-                                </Text>
+                                {filter}
+                            </Text>
+                        </TouchableOpacity>
+                    ))}
+                </ScrollView>
+
+                <Text style={styles.heading}>RECENT RECORDS</Text>
+
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{ paddingBottom: 170 }}>
+                    {filteredOrders.length === 0 ? (
+                        <Text style={styles.emptyText}>No orders found for this period.</Text>
+                    ) : (
+                        filteredOrders.map((item, index) => (
+                            <View key={`${item.id}-${index}`} style={styles.orderCard}>
+                                <View style={styles.topSection}>
+                                    <View>
+                                        <Text style={styles.orderId}>{item.id}</Text>
+                                        <Text style={styles.customerName}>{item.name}</Text>
+                                    </View>
+
+                                    <View
+                                        style={[
+                                            styles.statusBox,
+                                            item.status === "Cancelled"
+                                                ? styles.cancelledBg
+                                                : styles.deliveredBg,
+                                        ]}>
+                                        <Text
+                                            style={[
+                                                styles.statusText,
+                                                item.status === "Cancelled"
+                                                    ? styles.cancelledText
+                                                    : styles.deliveredText,
+                                            ]}>
+                                            ⊗ {item.status}
+                                        </Text>
+                                    </View>
+                                </View>
+
+                                <View style={styles.middleSection}>
+                                    <Image
+                                        source={item.image}
+                                        style={styles.foodImage}
+                                    />
+
+                                    <View style={styles.infoArea}>
+                                        <Text style={styles.productText}>{item.details}</Text>
+                                        <Text style={styles.dateText}>{item.date}</Text>
+                                    </View>
+                                </View>
+
+                                <View style={styles.bottomSection}>
+                                    <Text style={styles.priceText}>{item.amount}</Text>
+
+                                    <TouchableOpacity style={styles.detailsButton}>
+                                        <Text style={styles.detailsText}>View Details</Text>
+                                        <Text style={styles.arrow}>›</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                        </View>
-
-                        <View style={styles.middleSection}>
-                            <Image
-                                source={Image}
-                                style={styles.foodImage}
-                            />
-
-                            <View style={styles.infoArea}>
-                                <Text style={styles.productText}>{item.details}</Text>
-                                <Text style={styles.dateText}>{item.date}</Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.bottomSection}>
-                            <Text style={styles.priceText}>{item.amount}</Text>
-
-                            <TouchableOpacity style={styles.detailsButton}>
-                                <Text style={styles.detailsText}>View Details</Text>
-                                <Text style={styles.arrow}>›</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                ))}
-            </ScrollView>
-        </View>
+                        ))
+                    )}
+                </ScrollView>
+            </View>
         </SafeAreaView>
     );
 };
@@ -171,9 +186,9 @@ const RecentOrdersScreen = () => {
 export default RecentOrdersScreen;
 
 const styles = StyleSheet.create({
-    totalordersection:{
-     flex:1,
-     backgroundColor: "#F7F0DD",
+    totalordersection: {
+        flex: 1,
+        backgroundColor: "#F7F0DD",
     },
     mainWrapper: {
         paddingHorizontal: 18,
@@ -182,7 +197,10 @@ const styles = StyleSheet.create({
 
     filterRow: {
         flexDirection: "row",
-        marginBottom: 25,
+        alignItems: "center",
+        gap: 10,
+        paddingRight: 20,
+        paddingBottom: 5,
     },
 
     activeFilter: {
@@ -332,5 +350,12 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: "#74594C",
         fontWeight: "700",
+    },
+
+    emptyText: {
+        textAlign: "center",
+        marginTop: 40,
+        color: "#a48a80",
+        fontStyle: "italic",
     },
 });

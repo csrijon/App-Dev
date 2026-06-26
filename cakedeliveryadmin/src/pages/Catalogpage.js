@@ -5,7 +5,8 @@ import {
     StatusBar, 
     Text, 
     TouchableOpacity, 
-    FlatList 
+    FlatList,
+    Alert
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -23,7 +24,7 @@ const bardata = [
     { id: 4, title: "Pastries" }
 ];
 
-const catalogData = [
+const initialCatalogData = [
     {
         id: 1,
         title: "Provençal Bloom",
@@ -74,11 +75,53 @@ const catalogData = [
 const Catalogpage = ({ navigation }) => {
     // Default to '1' so "All" is highlighted on initial load
     const [active, setActive] = useState(1);
+    const [catalogData, setCatalogData] = useState(initialCatalogData);
+    const [searchQuery, setSearchQuery] = useState("");
 
-    // Filter logic to make the aesthetic buttons actually work
-    const filteredData = active === 1 
-        ? catalogData 
+    // Category filter
+    const categoryFiltered = active === 1
+        ? catalogData
         : catalogData.filter(item => item.categoryId === active);
+
+    // Search filter (by title or tag)
+    const filteredData = searchQuery.trim() === ""
+        ? categoryFiltered
+        : categoryFiltered.filter(item =>
+            item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            item.tag.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+
+    // Delete product
+    const handleDelete = (id, title) => {
+        Alert.alert(
+            "Delete Product",
+            `"${title}" ডিলিট করতে চান?`,
+            [
+                { text: "না", style: "cancel" },
+                {
+                    text: "হ্যাঁ, ডিলিট করো",
+                    style: "destructive",
+                    onPress: () => {
+                        setCatalogData(prev => prev.filter(item => item.id !== id));
+                    },
+                },
+            ]
+        );
+    };
+
+    // Toggle availability
+    const handleToggleAvailability = (id) => {
+        setCatalogData(prev =>
+            prev.map(item =>
+                item.id === id ? { ...item, active: !item.active } : item
+            )
+        );
+    };
+
+    // Edit product
+    const handleEdit = (item) => {
+        navigation.navigate("Addnewpage", { product: item, isEdit: true });
+    };
 
     // Extracted the top section into a ListHeaderComponent for better performance
     const renderHeader = () => (
@@ -87,7 +130,11 @@ const Catalogpage = ({ navigation }) => {
             <Text style={Catalogstyle.subtitle}>Manage your beautiful creations</Text>
             
             <View style={Catalogstyle.searchWrapper}>
-                <Search />
+                <Search
+                    value={searchQuery}
+                    onChangeText={setSearchQuery}
+                    placeholder="Search products..."
+                />
             </View>
 
             <View style={Catalogstyle.barbuttonsection}>
@@ -113,6 +160,12 @@ const Catalogpage = ({ navigation }) => {
                     );
                 })}
             </View>
+
+            <View style={Catalogstyle.countRow}>
+                <Text style={Catalogstyle.countText}>
+                    {filteredData.length} {filteredData.length === 1 ? "product" : "products"} found
+                </Text>
+            </View>
         </View>
     );
 
@@ -130,13 +183,15 @@ const Catalogpage = ({ navigation }) => {
                         price={item.price} 
                         title={item.title} 
                         image={item.image} 
-                        isActive={item.active} // Passing this down just in case you want to style inactive cards!
+                        isActive={item.active}
+                        onEdit={() => handleEdit(item)}
+                        onDelete={() => handleDelete(item.id, item.title)}
+                        onToggleAvailability={() => handleToggleAvailability(item.id)}
                     />
                 )}
                 keyExtractor={(item) => item.id.toString()}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={Catalogstyle.listContent}
-                // If list is empty (e.g., no items in a category), show a nice message
                 ListEmptyComponent={
                     <Text style={Catalogstyle.emptyText}>No creations found in this category.</Text>
                 }
@@ -158,25 +213,25 @@ const Catalogstyle = StyleSheet.create({
     listContent: {
         paddingHorizontal: 26,
         paddingTop: 10,
-        paddingBottom: 100, // Extra padding at the bottom so the Plusbutton doesn't block the last item
+        paddingBottom: 100,
     },
     headerContainer: {
-        marginBottom: 20, // Space between header elements and the cards
+        marginBottom: 20,
     },
     catalogtext: {
         color: "#75584e",
-        fontWeight: "800", // Slightly bolder for hierarchy
-        fontSize: 24, // Larger for better aesthetic impact
+        fontWeight: "800",
+        fontSize: 24,
         letterSpacing: 0.5,
     },
     subtitle: {
-        color: "#a48a80", // Softer brown for subtitle
+        color: "#a48a80",
         fontSize: 14,
         marginBottom: 20,
         marginTop: 4,
     },
     searchWrapper: {
-        marginBottom: 24, // Gives breathing room between search and filter buttons
+        marginBottom: 24,
     },
     barbuttonsection: {
         flexDirection: "row",
@@ -186,12 +241,12 @@ const Catalogstyle = StyleSheet.create({
     barbutton: {
         paddingHorizontal: 20,
         paddingVertical: 10,
-        borderRadius: 20, // Slightly more modern curve
+        borderRadius: 20,
     },
     activeBarButton: {
         backgroundColor: "#6c5a61",
-        elevation: 3, // Subtle shadow for active state on Android
-        shadowColor: "#6c5a61", // Shadow for iOS
+        elevation: 3,
+        shadowColor: "#6c5a61",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.3,
         shadowRadius: 3,
@@ -203,6 +258,14 @@ const Catalogstyle = StyleSheet.create({
         fontWeight: "600",
         fontSize: 14,
         letterSpacing: 0.3,
+    },
+    countRow: {
+        marginTop: 16,
+    },
+    countText: {
+        color: "#9c8c7c",
+        fontSize: 13,
+        fontWeight: "600",
     },
     emptyText: {
         textAlign: 'center',

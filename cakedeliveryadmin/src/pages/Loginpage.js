@@ -139,7 +139,7 @@ const Loginpage = ({navigation}) => {
                         </View>
 
                         <View style={{ marginTop: 24 }}>
-                            <Button onPress={()=>navigation.navigate("TabScreens")} title="Sign in →" />
+                            <Button onPress={()=>navigation.navigate("Onbordingpageone")} title="Sign in →" />
                         </View>
 
                         <View style={pastryStyles.sugarFooterRibbon}>

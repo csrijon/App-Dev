@@ -2,7 +2,6 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import { StatusBar, ScrollView, View, StyleSheet, Text, FlatList, TouchableOpacity, Alert } from "react-native"
 import Adminheader from "../components/Adminheader"
 import OrderCard from "../components/OrderCard"
-import Plusbutton from "../components/Plusbutton"
 import Ionicons from "react-native-vector-icons/Ionicons"
 import { useState } from "react"
 
@@ -213,7 +212,7 @@ const Ordermanagementpage = () => {
                 )}
 
             </ScrollView>
-          <Plusbutton/>
+          {/* <Plusbutton/> */}
         </SafeAreaView>
     )
 }

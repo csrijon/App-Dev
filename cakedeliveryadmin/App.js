@@ -11,6 +11,8 @@ import Ordertrackingpage from "./src/pages/Ordertrackingpage"
 import Paymentgatwaypage from "./src/pages/Paymentgatwaypage"
 import Notificationpage from "./src/pages/Notificationpage"
 import Addnewcakepage from "./src/pages/Addnewcakepage"
+import Onbordingpageone  from "./src/pages/Onbordingpageone"
+import OnboardingPageTwo from "./src/pages/OnboardingPageTwo"
 import Profilepage from "./src/pages/Profilepage"
 import RecentOrdersScreen from "./src/pages/RecentOrdersScreen"
 import CatalogUpdatedScreen from "./src/pages/CatalogUpdatedScreen"
@@ -50,6 +52,8 @@ const Stackscreens = () => {
       <Stack.Screen name="Welcome" component={Welcomepage} />
       <Stack.Screen name='Signup' component={Signuppage} />
       <Stack.Screen name='Login' component={Loginpage} />
+      <Stack.Screen name='Onbordingpageone' component={Onbordingpageone}/>
+      <Stack.Screen name='OnboardingPageTwo' component={OnboardingPageTwo}/>
       <Stack.Screen name='TabScreens' component={TabScreens} />
       <Stack.Screen name='Securityscreen' component={Securitypage} />
       <Stack.Screen name='Paymentadmin' component={Paymentgatwaypage} />
@@ -94,7 +98,7 @@ const TabScreens = () => {
         tabBarActiveTintColor: "#75584e",
         tabBarInactiveTintColor: "#8c8c8c",
 
-        tabBarActiveBackgroundColor: "#f6cfc2",
+        // tabBarActiveBackgroundColor: "#f6cfc2",
 
         tabBarItemStyle: {
           borderRadius: 999,
