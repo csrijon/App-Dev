@@ -31,6 +31,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {OnbordingContext} from "./src/context/Context"
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -43,8 +44,10 @@ function App() {
   return (
     <SafeAreaProvider  >
       <NavigationContainer>
+        <OnbordingContext.Provider>
         <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
         <Stackscreens />
+        </OnbordingContext.Provider>
       </NavigationContainer>
     </SafeAreaProvider>
   );
