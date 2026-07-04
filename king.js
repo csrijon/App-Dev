@@ -1,12 +1,9 @@
-import QRCode from"qrcode"
-
-const qrgen = async (text)=>{
-   try{
-   let qr= QRCode.create(text)
-   console.log(qr)
-   }catch{
-    console.log("not generate")
-   }
+const user = {
+   "name": "srijon",
+   "age": 10
 }
 
-console.log(qrgen("iamsrijon"))
+const userdata = {
+   ...user
+}
+console.log(userdata)

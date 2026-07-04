@@ -566,8 +566,15 @@ const cardShadow = {
 };
 
 const styles = StyleSheet.create({
-    Addnewcakecontainer: { flex: 1, backgroundColor: "#F6F0DF" },
-    screenContainer: { paddingTop: 24 },
+    Addnewcakecontainer:
+    {
+        flex: 1,
+        backgroundColor: "#F6F0DF"
+    },
+    screenContainer:
+    {
+        paddingTop: 24
+    },
     headingRow: { flexDirection: "row", alignItems: "center", marginBottom: 8 },
     headingAccentBar: { width: 18, height: 3, borderRadius: 2, backgroundColor: "#A6624E", marginRight: 8 },
     smallHeading: { fontSize: 13, fontWeight: "700", letterSpacing: 2, color: "#8C6A4F" },
