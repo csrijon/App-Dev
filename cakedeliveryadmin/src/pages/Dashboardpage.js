@@ -68,6 +68,101 @@ const lowStockItems = [
     { id: 3, name: "Almond Flour", quantity: "3 kg left", level: "low" },
 ];
 
+// Today's Schedule
+const todaysScheduleData = [
+    {
+        id: 1,
+        time: "9:00 AM",
+        title: "Wedding Cake Delivery",
+        subtitle: "Rossi Family • Downtown",
+        bg: "#DCE3F0",
+        icon: <MaterialCommunityIcons name="truck-delivery-outline" size={18} color="#3C5DA8" />,
+    },
+    {
+        id: 2,
+        time: "11:30 AM",
+        title: "Client Consultation",
+        subtitle: "Custom birthday design",
+        bg: "#f4dce4",
+        icon: <Ionicons name="people-outline" size={18} color="#7A3B4E" />,
+    },
+    {
+        id: 3,
+        time: "2:00 PM",
+        title: "Batch Baking",
+        subtitle: "18 birthday orders queued",
+        bg: "#ECE4C8",
+        icon: <MaterialCommunityIcons name="chef-hat" size={18} color="#5D4B2E" />,
+    },
+    {
+        id: 4,
+        time: "5:00 PM",
+        title: "Ingredient Restock",
+        subtitle: "Valrhona chocolate arriving",
+        bg: "#CFE3D2",
+        icon: <MaterialIcons name="inventory" size={18} color="#3F7A53" />,
+    },
+];
+
+// Best Selling Cakes — this week
+const bestSellingCakes = [
+    {
+        id: 1,
+        rank: 1,
+        name: "Provençal Bloom",
+        tag: "Wedding • Lavender Honey",
+        unitsSold: 38,
+        revenue: "$2,964",
+        badgeBg: "#F6E3B4",
+        badgeText: "#8C6A2E",
+    },
+    {
+        id: 2,
+        rank: 2,
+        name: "Velvet Cocoa",
+        tag: "Birthday • Dark Chocolate",
+        unitsSold: 31,
+        revenue: "$1,984",
+        badgeBg: "#E7E0D0",
+        badgeText: "#6B5C42",
+    },
+    {
+        id: 3,
+        rank: 3,
+        name: "Golden Pistachio",
+        tag: "Wedding • Pistachio Cream",
+        unitsSold: 24,
+        revenue: "$2,280",
+        badgeBg: "#F2D8C4",
+        badgeText: "#8C5A3C",
+    },
+];
+
+// Customer Reviews
+const customerReviews = [
+    {
+        id: 1,
+        name: "Amara Whitfield",
+        rating: 5,
+        comment: "The lavender honey cake was the highlight of our wedding. Absolutely stunning.",
+        date: "2 days ago",
+    },
+    {
+        id: 2,
+        name: "Devon Clarke",
+        rating: 4,
+        comment: "Velvet Cocoa was rich and beautifully finished. Delivery was a touch late.",
+        date: "4 days ago",
+    },
+    {
+        id: 3,
+        name: "Priya Malhotra",
+        rating: 5,
+        comment: "Ordered the pistachio cake for an anniversary — guests are still talking about it.",
+        date: "1 week ago",
+    },
+];
+
 // Quick Actions
 const quickActions = [
     { id: 1, label: "Add Product", icon: <MaterialIcons name="add-circle-outline" size={24} color="#7A5C50" />, bg: "#F3EACF" },
@@ -81,6 +176,17 @@ const Dashboardpage = ({ navigation }) => {
 
     const todaysOrdersTotal = todaysOrdersBreakdown.reduce((sum, item) => sum + item.count, 0);
     const maxSalesValue = Math.max(...salesOverviewData.map((d) => d.value));
+    const averageRating = (
+        customerReviews.reduce((sum, r) => sum + r.rating, 0) / customerReviews.length
+    ).toFixed(1);
+
+    const getInitials = (name) =>
+        name
+            .split(" ")
+            .map((part) => part[0])
+            .join("")
+            .slice(0, 2)
+            .toUpperCase();
 
     return (
         <SafeAreaView style={Dashboardstyle.Dashboardcontainer} >
@@ -249,6 +355,122 @@ const Dashboardpage = ({ navigation }) => {
                             >
                                 <Text style={Dashboardstyle.restockButtonText}>Restock</Text>
                             </TouchableOpacity>
+                        </View>
+                    ))}
+                </View>
+
+                {/* Today's Schedule */}
+                <View style={Dashboardstyle.scheduleCard}>
+                    <View style={Dashboardstyle.salesOverviewHeaderRow}>
+                        <View>
+                            <Text style={Dashboardstyle.sectionHeading}>Today's Schedule</Text>
+                            <Text style={Dashboardstyle.salesOverviewSubtitle}>{todaysScheduleData.length} events lined up</Text>
+                        </View>
+                        <View style={Dashboardstyle.scheduleCalendarPill}>
+                            <Ionicons name="calendar-outline" size={14} color="#3C5DA8" />
+                        </View>
+                    </View>
+
+                    {todaysScheduleData.map((item, index) => (
+                        <View
+                            key={item.id}
+                            style={[
+                                Dashboardstyle.scheduleRow,
+                                index === todaysScheduleData.length - 1 && Dashboardstyle.scheduleRowLast,
+                            ]}
+                        >
+                            <View style={[Dashboardstyle.scheduleIconCircle, { backgroundColor: item.bg }]}>
+                                {item.icon}
+                            </View>
+                            <View style={Dashboardstyle.scheduleTextWrapper}>
+                                <Text style={Dashboardstyle.scheduleItemTitle}>{item.title}</Text>
+                                <Text style={Dashboardstyle.scheduleItemSubtitle}>{item.subtitle}</Text>
+                            </View>
+                            <Text style={Dashboardstyle.scheduleTimeText}>{item.time}</Text>
+                        </View>
+                    ))}
+                </View>
+
+                {/* Best Selling Cakes */}
+                <View style={Dashboardstyle.bestSellingCard}>
+                    <View style={Dashboardstyle.salesOverviewHeaderRow}>
+                        <View>
+                            <Text style={Dashboardstyle.sectionHeading}>Best Selling Cakes</Text>
+                            <Text style={Dashboardstyle.salesOverviewSubtitle}>Ranked by units sold this week</Text>
+                        </View>
+                        <View style={Dashboardstyle.salesOverviewTotalPill}>
+                            <MaterialCommunityIcons name="crown-outline" size={14} color="#3F7A53" />
+                            <Text style={Dashboardstyle.salesOverviewTotalPillText}>Top 3</Text>
+                        </View>
+                    </View>
+
+                    {bestSellingCakes.map((item, index) => (
+                        <View
+                            key={item.id}
+                            style={[
+                                Dashboardstyle.bestSellingRow,
+                                index === bestSellingCakes.length - 1 && Dashboardstyle.bestSellingRowLast,
+                            ]}
+                        >
+                            <View style={[Dashboardstyle.rankBadge, { backgroundColor: item.badgeBg }]}>
+                                <Text style={[Dashboardstyle.rankBadgeText, { color: item.badgeText }]}>
+                                    {item.rank}
+                                </Text>
+                            </View>
+                            <View style={Dashboardstyle.bestSellingTextWrapper}>
+                                <Text style={Dashboardstyle.bestSellingName}>{item.name}</Text>
+                                <Text style={Dashboardstyle.bestSellingTag}>{item.tag}</Text>
+                            </View>
+                            <View style={Dashboardstyle.bestSellingStatsWrapper}>
+                                <Text style={Dashboardstyle.bestSellingRevenue}>{item.revenue}</Text>
+                                <Text style={Dashboardstyle.bestSellingUnits}>{item.unitsSold} sold</Text>
+                            </View>
+                        </View>
+                    ))}
+                </View>
+
+                {/* Customer Reviews */}
+                <View style={Dashboardstyle.reviewsCard}>
+                    <View style={Dashboardstyle.salesOverviewHeaderRow}>
+                        <View>
+                            <Text style={Dashboardstyle.sectionHeading}>Customer Reviews</Text>
+                            <Text style={Dashboardstyle.salesOverviewSubtitle}>What clients are saying</Text>
+                        </View>
+                        <View style={Dashboardstyle.reviewsRatingPill}>
+                            <Ionicons name="star" size={13} color="#B98A2E" />
+                            <Text style={Dashboardstyle.reviewsRatingPillText}>{averageRating}</Text>
+                        </View>
+                    </View>
+
+                    {customerReviews.map((item, index) => (
+                        <View
+                            key={item.id}
+                            style={[
+                                Dashboardstyle.reviewRow,
+                                index === customerReviews.length - 1 && Dashboardstyle.reviewRowLast,
+                            ]}
+                        >
+                            <View style={Dashboardstyle.reviewAvatarCircle}>
+                                <Text style={Dashboardstyle.reviewAvatarText}>{getInitials(item.name)}</Text>
+                            </View>
+                            <View style={Dashboardstyle.reviewTextWrapper}>
+                                <View style={Dashboardstyle.reviewTopRow}>
+                                    <Text style={Dashboardstyle.reviewName}>{item.name}</Text>
+                                    <Text style={Dashboardstyle.reviewDate}>{item.date}</Text>
+                                </View>
+                                <View style={Dashboardstyle.reviewStarsRow}>
+                                    {[1, 2, 3, 4, 5].map((star) => (
+                                        <Ionicons
+                                            key={star}
+                                            name={star <= item.rating ? "star" : "star-outline"}
+                                            size={13}
+                                            color="#D6A93B"
+                                            style={{ marginRight: 2 }}
+                                        />
+                                    ))}
+                                </View>
+                                <Text style={Dashboardstyle.reviewComment}>{item.comment}</Text>
+                            </View>
                         </View>
                     ))}
                 </View>
@@ -597,6 +819,209 @@ const Dashboardstyle = StyleSheet.create({
         fontSize: 13,
         fontWeight: "700",
         color: "#A6624E",
+    },
+
+    /* ---------- Today's Schedule ---------- */
+    scheduleCard: {
+        backgroundColor: "#FFFFFF",
+        borderRadius: 28,
+        padding: 22,
+        marginTop: 22,
+        borderWidth: 1,
+        borderColor: "#EFE6CC",
+        shadowColor: "#5D4B2E",
+        shadowOpacity: 0.05,
+        shadowRadius: 10,
+        shadowOffset: { width: 0, height: 4 },
+        elevation: 1,
+    },
+    scheduleCalendarPill: {
+        width: 32,
+        height: 32,
+        borderRadius: 16,
+        backgroundColor: "#DCE3F0",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    scheduleRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        paddingVertical: 12,
+        borderTopWidth: 1,
+        borderTopColor: "#F3EDDB",
+    },
+    scheduleRowLast: {
+        paddingBottom: 0,
+    },
+    scheduleIconCircle: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        alignItems: "center",
+        justifyContent: "center",
+        marginRight: 14,
+    },
+    scheduleTextWrapper: {
+        flex: 1,
+    },
+    scheduleItemTitle: {
+        fontSize: 14,
+        fontWeight: "700",
+        color: "#3D2E22",
+        marginBottom: 2,
+    },
+    scheduleItemSubtitle: {
+        fontSize: 12,
+        color: "#9A8E70",
+    },
+    scheduleTimeText: {
+        fontSize: 12,
+        fontWeight: "700",
+        color: "#6B5C42",
+        marginLeft: 10,
+    },
+
+    /* ---------- Best Selling Cakes ---------- */
+    bestSellingCard: {
+        backgroundColor: "#FFFFFF",
+        borderRadius: 28,
+        padding: 22,
+        marginTop: 22,
+        borderWidth: 1,
+        borderColor: "#EFE6CC",
+        shadowColor: "#5D4B2E",
+        shadowOpacity: 0.05,
+        shadowRadius: 10,
+        shadowOffset: { width: 0, height: 4 },
+        elevation: 1,
+    },
+    bestSellingRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        paddingVertical: 12,
+        borderTopWidth: 1,
+        borderTopColor: "#F3EDDB",
+    },
+    bestSellingRowLast: {
+        paddingBottom: 0,
+    },
+    rankBadge: {
+        width: 34,
+        height: 34,
+        borderRadius: 17,
+        alignItems: "center",
+        justifyContent: "center",
+        marginRight: 14,
+    },
+    rankBadgeText: {
+        fontSize: 14,
+        fontWeight: "800",
+    },
+    bestSellingTextWrapper: {
+        flex: 1,
+    },
+    bestSellingName: {
+        fontSize: 14,
+        fontWeight: "700",
+        color: "#3D2E22",
+        marginBottom: 2,
+    },
+    bestSellingTag: {
+        fontSize: 12,
+        color: "#9A8E70",
+    },
+    bestSellingStatsWrapper: {
+        alignItems: "flex-end",
+        marginLeft: 10,
+    },
+    bestSellingRevenue: {
+        fontSize: 14,
+        fontWeight: "800",
+        color: "#3F7A53",
+        marginBottom: 2,
+    },
+    bestSellingUnits: {
+        fontSize: 12,
+        color: "#9A8E70",
+    },
+
+    /* ---------- Customer Reviews ---------- */
+    reviewsCard: {
+        backgroundColor: "#FFFFFF",
+        borderRadius: 28,
+        padding: 22,
+        marginTop: 22,
+        borderWidth: 1,
+        borderColor: "#EFE6CC",
+        shadowColor: "#5D4B2E",
+        shadowOpacity: 0.05,
+        shadowRadius: 10,
+        shadowOffset: { width: 0, height: 4 },
+        elevation: 1,
+    },
+    reviewsRatingPill: {
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#F6E9C8",
+        paddingHorizontal: 10,
+        paddingVertical: 6,
+        borderRadius: 16,
+    },
+    reviewsRatingPillText: {
+        fontSize: 12,
+        fontWeight: "800",
+        color: "#8C6A2E",
+        marginLeft: 4,
+    },
+    reviewRow: {
+        flexDirection: "row",
+        paddingVertical: 14,
+        borderTopWidth: 1,
+        borderTopColor: "#F3EDDB",
+    },
+    reviewRowLast: {
+        paddingBottom: 0,
+    },
+    reviewAvatarCircle: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        backgroundColor: "#ECE4C8",
+        alignItems: "center",
+        justifyContent: "center",
+        marginRight: 14,
+    },
+    reviewAvatarText: {
+        fontSize: 13,
+        fontWeight: "800",
+        color: "#5D4B2E",
+    },
+    reviewTextWrapper: {
+        flex: 1,
+    },
+    reviewTopRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: 4,
+    },
+    reviewName: {
+        fontSize: 14,
+        fontWeight: "700",
+        color: "#3D2E22",
+    },
+    reviewDate: {
+        fontSize: 11,
+        color: "#B0A488",
+    },
+    reviewStarsRow: {
+        flexDirection: "row",
+        marginBottom: 6,
+    },
+    reviewComment: {
+        fontSize: 13,
+        lineHeight: 19,
+        color: "#6B5A50",
     },
 
 })

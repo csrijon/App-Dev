@@ -7,35 +7,67 @@ import {
     TouchableOpacity,
     ScrollView,
     StatusBar,
+    Alert,
+    Image,
+    ActionSheetIOS,
+    Platform,
+    PermissionsAndroid,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+// npm install react-native-image-picker
+// iOS: run `pod install` in the ios folder, and add NSCameraUsageDescription /
+//      NSPhotoLibraryUsageDescription keys to Info.plist
+// Android: add CAMERA permission to AndroidManifest.xml (storage permission is
+//      requested at runtime below for API < 33)
 import BakeryHeader from '../components/BakeryHeader';
 import Floatingfixedbutton from "../components/Floatingfixedbutton"
 
 
 // --- Color Palette ---
 const COLORS = {
-    background: '#fff8e6', // Updated to match your StatusBar
+    background: '#fff8e6',
     textDark: '#4A3320',
     textLight: '#8C7A6B',
     inputBg: '#F4EFE6',
     inputBorder: '#DDCFC1',
     white: '#FFFFFF',
     accent: '#4A3320',
+    error: '#C0392B',
 };
 
+// --- Validation Helpers ---
+const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+const isValidPhone = (phone) => /^\d{10}$/.test(phone.replace(/\D/g, ''));
+
 // --- Custom Component: Floating Label Input ---
-const FloatingLabelInput = ({ label, value, onChangeText, keyboardType = 'default' }) => {
-    const isFocusedOrFilled = value !== '';
+const FloatingLabelInput = ({
+    label,
+    value,
+    onChangeText,
+    keyboardType = 'default',
+    error,
+    onBlur,
+    maxLength,
+}) => {
+    const [isFocused, setIsFocused] = useState(false);
+    const isFocusedOrFilled = isFocused || value !== '';
 
     return (
         <View style={styles.inputContainer}>
-            <View style={styles.inputInner}>
+            <View
+                style={[
+                    styles.inputInner,
+                    isFocused && styles.inputInnerFocused,
+                    error && styles.inputInnerError,
+                ]}
+            >
                 <Text
                     style={[
                         styles.floatingLabel,
                         isFocusedOrFilled ? styles.floatingLabelActive : styles.floatingLabelInactive,
+                        error && styles.floatingLabelError,
                     ]}
                 >
                     {label}
@@ -46,8 +78,20 @@ const FloatingLabelInput = ({ label, value, onChangeText, keyboardType = 'defaul
                     onChangeText={onChangeText}
                     keyboardType={keyboardType}
                     selectionColor={COLORS.textDark}
+                    maxLength={maxLength}
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={() => {
+                        setIsFocused(false);
+                        onBlur && onBlur();
+                    }}
                 />
             </View>
+            {error ? (
+                <View style={styles.errorRow}>
+                    <Icon name="alert-circle-outline" size={13} color={COLORS.error} />
+                    <Text style={styles.errorText}>{error}</Text>
+                </View>
+            ) : null}
         </View>
     );
 };
@@ -80,7 +124,7 @@ const BusinessTypeCard = ({ title, iconName, isSelected, onPress }) => {
 };
 
 // --- Main Screen Component ---
-const Onbordingpageone = ({navigation}) => {
+const Onbordingpageone = ({ navigation }) => {
     const [form, setForm] = useState({
         bakeryName: '',
         ownerName: '',
@@ -88,21 +132,196 @@ const Onbordingpageone = ({navigation}) => {
         phone: '',
     });
 
+    const [errors, setErrors] = useState({
+        bakeryName: '',
+        ownerName: '',
+        email: '',
+        phone: '',
+    });
+
     const [selectedBusiness, setSelectedBusiness] = useState('Home Bakery');
+    const [logoUri, setLogoUri] = useState(null);
+
+    const updateField = (field, text) => {
+        setForm((prev) => ({ ...prev, [field]: text }));
+        if (errors[field]) {
+            setErrors((prev) => ({ ...prev, [field]: '' }));
+        }
+    };
+
+    const validateField = (field) => {
+        let message = '';
+        const value = form[field];
+
+        switch (field) {
+            case 'bakeryName':
+                if (!value.trim()) message = 'Bakery name is required';
+                break;
+            case 'ownerName':
+                if (!value.trim()) message = 'Owner name is required';
+                break;
+            case 'email':
+                if (!value.trim()) message = 'Email is required';
+                else if (!isValidEmail(value)) message = 'Enter a valid email address';
+                break;
+            case 'phone':
+                if (!value.trim()) message = 'Phone number is required';
+                else if (!isValidPhone(value)) message = 'Enter a valid 10-digit phone number';
+                break;
+            default:
+                break;
+        }
+
+        setErrors((prev) => ({ ...prev, [field]: message }));
+        return message === '';
+    };
+
+    const validateAll = () => {
+        const fields = ['bakeryName', 'ownerName', 'email', 'phone'];
+        const results = fields.map((field) => validateField(field));
+        return results.every(Boolean);
+    };
+
+    // --- Image Upload Logic ---
+    const requestAndroidCameraPermission = async () => {
+        if (Platform.OS !== 'android') return true;
+        const result = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+            {
+                title: 'Camera Permission',
+                message: 'We need access to your camera to take a photo for your logo.',
+                buttonPositive: 'Allow',
+                buttonNegative: 'Deny',
+            }
+        );
+        return result === PermissionsAndroid.RESULTS.GRANTED;
+    };
+
+    const requestAndroidStoragePermission = async () => {
+        if (Platform.OS !== 'android') return true;
+        // API 33+ (Android 13+) uses scoped media access and doesn't need this
+        // runtime permission for the image picker; only request on older APIs.
+        if (Platform.Version >= 33) return true;
+        const result = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+            {
+                title: 'Storage Permission',
+                message: 'We need access to your photos to upload a logo.',
+                buttonPositive: 'Allow',
+                buttonNegative: 'Deny',
+            }
+        );
+        return result === PermissionsAndroid.RESULTS.GRANTED;
+    };
+
+    const pickFromLibrary = async () => {
+        const granted = await requestAndroidStoragePermission();
+        if (!granted) {
+            Alert.alert('Permission required', 'Please allow access to your photo library to upload a logo.');
+            return;
+        }
+        launchImageLibrary(
+            { mediaType: 'photo', quality: 0.8, includeBase64: false },
+            (response) => {
+                if (response.didCancel || response.errorCode) return;
+                if (response.assets?.length) {
+                    setLogoUri(response.assets[0].uri);
+                }
+            }
+        );
+    };
+
+    const pickFromCamera = async () => {
+        const granted = await requestAndroidCameraPermission();
+        if (!granted) {
+            Alert.alert('Permission required', 'Please allow camera access to take a photo.');
+            return;
+        }
+        launchCamera(
+            { mediaType: 'photo', quality: 0.8, saveToPhotos: true, includeBase64: false },
+            (response) => {
+                if (response.didCancel || response.errorCode) return;
+                if (response.assets?.length) {
+                    setLogoUri(response.assets[0].uri);
+                }
+            }
+        );
+    };
+
+    const handleUploadLogo = () => {
+        if (Platform.OS === 'ios') {
+            ActionSheetIOS.showActionSheetWithOptions(
+                {
+                    options: ['Cancel', 'Take Photo', 'Choose from Library', logoUri ? 'Remove Logo' : null].filter(Boolean),
+                    cancelButtonIndex: 0,
+                    destructiveButtonIndex: logoUri ? 3 : undefined,
+                },
+                (buttonIndex) => {
+                    if (buttonIndex === 1) pickFromCamera();
+                    else if (buttonIndex === 2) pickFromLibrary();
+                    else if (buttonIndex === 3) setLogoUri(null);
+                }
+            );
+        } else {
+            const options = ['Take Photo', 'Choose from Library'];
+            if (logoUri) options.push('Remove Logo');
+            options.push('Cancel');
+
+            Alert.alert('Upload Logo', 'Choose an option', [
+                { text: 'Take Photo', onPress: pickFromCamera },
+                { text: 'Choose from Library', onPress: pickFromLibrary },
+                ...(logoUri ? [{ text: 'Remove Logo', onPress: () => setLogoUri(null), style: 'destructive' }] : []),
+                { text: 'Cancel', style: 'cancel' },
+            ]);
+        }
+    };
+
+    const handleNext = () => {
+        const valid = validateAll();
+        if (!valid) {
+            Alert.alert('Missing information', 'Please fill in all required fields correctly before continuing.');
+            return;
+        }
+        navigation.navigate('OnboardingPageTwo', {
+            ...form,
+            businessType: selectedBusiness,
+            logoUri,
+        });
+    };
+
+    const handleBack = () => {
+        if (navigation.canGoBack && navigation.canGoBack()) {
+            navigation.goBack();
+        }
+    };
 
     return (
         <SafeAreaView style={styles.safeArea}>
             <StatusBar barStyle={'dark-content'} backgroundColor={'#fff8e6'} />
             <BakeryHeader />
-            <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+            <ScrollView
+                contentContainerStyle={styles.scrollContent}
+                showsVerticalScrollIndicator={false}
+                keyboardShouldPersistTaps="handled"
+            >
                 {/* Upload Logo Section */}
                 <View style={styles.uploadSection}>
-                    <TouchableOpacity style={styles.uploadCircle} activeOpacity={0.7}>
-                        <Icon name="camera-iris" size={28} color={COLORS.textDark} />
-                        <Text style={styles.uploadText}>UPLOAD LOGO</Text>
+                    <TouchableOpacity
+                        style={styles.uploadCircle}
+                        activeOpacity={0.7}
+                        onPress={handleUploadLogo}
+                    >
+                        {logoUri ? (
+                            <Image source={{ uri: logoUri }} style={styles.uploadedImage} />
+                        ) : (
+                            <>
+                                <Icon name="camera-iris" size={28} color={COLORS.textDark} />
+                                <Text style={styles.uploadText}>UPLOAD LOGO</Text>
+                            </>
+                        )}
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.addBtn} activeOpacity={0.8}>
-                        <Icon name="plus" size={20} color={COLORS.white} />
+                    <TouchableOpacity style={styles.addBtn} activeOpacity={0.8} onPress={handleUploadLogo}>
+                        <Icon name={logoUri ? 'pencil' : 'plus'} size={20} color={COLORS.white} />
                     </TouchableOpacity>
                 </View>
 
@@ -111,24 +330,33 @@ const Onbordingpageone = ({navigation}) => {
                     <FloatingLabelInput
                         label="BAKERY NAME"
                         value={form.bakeryName}
-                        onChangeText={(text) => setForm({ ...form, bakeryName: text })}
+                        onChangeText={(text) => updateField('bakeryName', text)}
+                        onBlur={() => validateField('bakeryName')}
+                        error={errors.bakeryName}
                     />
                     <FloatingLabelInput
                         label="OWNER NAME"
                         value={form.ownerName}
-                        onChangeText={(text) => setForm({ ...form, ownerName: text })}
+                        onChangeText={(text) => updateField('ownerName', text)}
+                        onBlur={() => validateField('ownerName')}
+                        error={errors.ownerName}
                     />
                     <FloatingLabelInput
                         label="BUSINESS EMAIL"
                         value={form.email}
-                        onChangeText={(text) => setForm({ ...form, email: text })}
+                        onChangeText={(text) => updateField('email', text)}
+                        onBlur={() => validateField('email')}
+                        error={errors.email}
                         keyboardType="email-address"
                     />
                     <FloatingLabelInput
                         label="PHONE NUMBER"
                         value={form.phone}
-                        onChangeText={(text) => setForm({ ...form, phone: text })}
+                        onChangeText={(text) => updateField('phone', text.replace(/[^0-9]/g, ''))}
+                        onBlur={() => validateField('phone')}
+                        error={errors.phone}
                         keyboardType="phone-pad"
+                        maxLength={10}
                     />
                 </View>
 
@@ -169,7 +397,7 @@ const Onbordingpageone = ({navigation}) => {
                 </View>
 
             </ScrollView>
-            <Floatingfixedbutton onPress={()=>navigation.navigate("OnboardingPageTwo")} titletwo={"Next"} title={"Back"} />
+            <Floatingfixedbutton onPress={handleNext} onPressBack={handleBack} titletwo={"Next"} title={"Back"} />
         </SafeAreaView>
     );
 };
@@ -184,7 +412,7 @@ const styles = StyleSheet.create({
     },
     scrollContent: {
         paddingHorizontal: 18,
-        paddingTop: 10, // Adjusted top padding since the header is now a separate component
+        paddingTop: 10,
         paddingBottom: 60,
     },
     uploadSection: {
@@ -202,6 +430,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'transparent',
+        overflow: 'hidden',
+    },
+    uploadedImage: {
+        width: '100%',
+        height: '100%',
+        borderRadius: 55,
     },
     uploadText: {
         fontSize: 10,
@@ -227,19 +461,25 @@ const styles = StyleSheet.create({
         marginBottom: 40,
     },
     inputContainer: {
+        marginBottom: 16,
+    },
+    inputInner: {
         backgroundColor: COLORS.inputBg,
         borderTopLeftRadius: 12,
         borderTopRightRadius: 12,
         borderBottomWidth: 1.5,
         borderBottomColor: COLORS.inputBorder,
-        marginBottom: 16,
         height: 65,
         justifyContent: 'center',
-    },
-    inputInner: {
-        flex: 1,
         paddingHorizontal: 16,
-        justifyContent: 'center',
+    },
+    inputInnerFocused: {
+        borderBottomColor: COLORS.textDark,
+        borderBottomWidth: 2,
+    },
+    inputInnerError: {
+        borderBottomColor: COLORS.error,
+        borderBottomWidth: 2,
     },
     floatingLabel: {
         color: COLORS.textLight,
@@ -256,6 +496,9 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         top: 10,
     },
+    floatingLabelError: {
+        color: COLORS.error,
+    },
     textInput: {
         fontSize: 16,
         color: COLORS.textDark,
@@ -267,6 +510,18 @@ const styles = StyleSheet.create({
     textInputActive: {
         opacity: 1,
         marginTop: 18,
+    },
+    errorRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 4,
+        marginLeft: 4,
+        gap: 4,
+    },
+    errorText: {
+        color: COLORS.error,
+        fontSize: 11,
+        fontWeight: '500',
     },
     businessSection: {
         marginBottom: 20,

@@ -9,6 +9,7 @@ import {
     Switch,
     Image,
     Dimensions,
+    Alert
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -18,8 +19,56 @@ import Floatingfixedbutton from "../components/Floatingfixedbutton"
 
 const OnboardingpageFive = ({navigation}) => {
 
+    // --- EXISTING STATES ---
     const [acceptOrders247, setAcceptOrders247] = useState(false);
-    const [deliveryAvailable, setDeliveryAvailable] = useState(true)
+    const [deliveryAvailable, setDeliveryAvailable] = useState(true);
+
+    // --- ADDED STATES FOR FORMS ---
+    const [openingTime, setOpeningTime] = useState('08:00 AM');
+    const [closingTime, setClosingTime] = useState('06:00 PM');
+    const [weeklyOff, setWeeklyOff] = useState('None (Open Daily)');
+
+    const [deliveryRadius, setDeliveryRadius] = useState('5');
+    const [deliveryCharge, setDeliveryCharge] = useState('0.00');
+    const [freeDeliveryAbove, setFreeDeliveryAbove] = useState('50.00');
+    const [minOrderValue, setMinOrderValue] = useState('15.00');
+
+    // --- ADDED FUNCTIONALITY HANDLERS ---
+    // const handleNext = () => {
+    //     // Optional validation
+    //     if (!deliveryRadius) {
+    //         Alert.alert("Required", "Please enter a delivery radius.");
+    //         return;
+    //     }
+
+    //     // Navigate and pass all the configured data
+    //     navigation.navigate("Onboradingcompletepage", {
+    //         acceptOrders247,
+    //         deliveryAvailable,
+    //         openingTime,
+    //         closingTime,
+    //         weeklyOff,
+    //         deliveryRadius,
+    //         deliveryCharge,
+    //         freeDeliveryAbove,
+    //         minOrderValue
+    //     });
+    // };
+
+    const handleBack = () => {
+        navigation.goBack();
+    };
+
+    const handleTimePicker = (type) => {
+        // In a real app, you would open a TimePicker component here (e.g., react-native-date-picker)
+        Alert.alert(`${type} Picker`, `Simulating opening a time picker for ${type}.`);
+    };
+
+    const handleDayPicker = () => {
+        // In a real app, you would open a Dropdown/Modal here
+        Alert.alert("Select Day", "Simulating opening a dropdown to select your weekly off day.");
+    };
+    // ------------------------------------
 
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -48,24 +97,26 @@ const OnboardingpageFive = ({navigation}) => {
 
                     <View style={styles.inputGroup}>
                         <Text style={styles.inputLabel}>OPENING TIME</Text>
-                        <View style={styles.inputWrapper}>
-                            <TextInput style={styles.input} value="08:00 AM" editable={false} />
+                        {/* Added TouchableOpacity to simulate Time Picker */}
+                        <TouchableOpacity style={styles.inputWrapper} activeOpacity={0.8} onPress={() => handleTimePicker('Opening Time')}>
+                            <TextInput style={styles.input} value={openingTime} editable={false} pointerEvents="none" />
                             <Text style={styles.inputRightIcon}>🕒</Text>
-                        </View>
+                        </TouchableOpacity>
                     </View>
 
                     <View style={styles.inputGroup}>
                         <Text style={styles.inputLabel}>CLOSING TIME</Text>
-                        <View style={styles.inputWrapper}>
-                            <TextInput style={styles.input} value="06:00 PM" editable={false} />
+                        {/* Added TouchableOpacity to simulate Time Picker */}
+                        <TouchableOpacity style={styles.inputWrapper} activeOpacity={0.8} onPress={() => handleTimePicker('Closing Time')}>
+                            <TextInput style={styles.input} value={closingTime} editable={false} pointerEvents="none" />
                             <Text style={styles.inputRightIcon}>🕒</Text>
-                        </View>
+                        </TouchableOpacity>
                     </View>
 
                     <View style={styles.inputGroup}>
                         <Text style={styles.inputLabel}>WEEKLY OFF DAY</Text>
-                        <TouchableOpacity style={styles.inputWrapper} activeOpacity={0.8}>
-                            <Text style={styles.inputText}>None (Open Daily)</Text>
+                        <TouchableOpacity style={styles.inputWrapper} activeOpacity={0.8} onPress={handleDayPicker}>
+                            <Text style={styles.inputText}>{weeklyOff}</Text>
                             <Text style={styles.inputRightIcon}>⌄</Text>
                         </TouchableOpacity>
                     </View>
@@ -107,11 +158,17 @@ const OnboardingpageFive = ({navigation}) => {
                         </View>
                     </TouchableOpacity>
 
+                    {/* Tied inputs to state variables */}
                     <View style={styles.inputGroup}>
                         <Text style={styles.inputLabel}>DELIVERY RADIUS (KM)</Text>
                         <View style={styles.inputWrapper}>
                             <Text style={styles.inputLeftIcon}>📍</Text>
-                            <TextInput style={styles.inputWithLeftIcon} keyboardType="numeric" defaultValue="5" />
+                            <TextInput 
+                                style={styles.inputWithLeftIcon} 
+                                keyboardType="numeric" 
+                                value={deliveryRadius} 
+                                onChangeText={setDeliveryRadius} 
+                            />
                         </View>
                     </View>
 
@@ -119,7 +176,12 @@ const OnboardingpageFive = ({navigation}) => {
                         <Text style={styles.inputLabel}>DELIVERY CHARGE</Text>
                         <View style={styles.inputWrapper}>
                             <Text style={styles.inputLeftIcon}>💵</Text>
-                            <TextInput style={styles.inputWithLeftIcon} keyboardType="numeric" defaultValue="0.00" />
+                            <TextInput 
+                                style={styles.inputWithLeftIcon} 
+                                keyboardType="numeric" 
+                                value={deliveryCharge} 
+                                onChangeText={setDeliveryCharge} 
+                            />
                         </View>
                     </View>
 
@@ -127,7 +189,12 @@ const OnboardingpageFive = ({navigation}) => {
                         <Text style={styles.inputLabel}>FREE DELIVERY ABOVE</Text>
                         <View style={styles.inputWrapper}>
                             <Text style={styles.inputLeftIcon}>🛍️</Text>
-                            <TextInput style={styles.inputWithLeftIcon} keyboardType="numeric" defaultValue="50.00" />
+                            <TextInput 
+                                style={styles.inputWithLeftIcon} 
+                                keyboardType="numeric" 
+                                value={freeDeliveryAbove} 
+                                onChangeText={setFreeDeliveryAbove} 
+                            />
                         </View>
                     </View>
 
@@ -135,7 +202,12 @@ const OnboardingpageFive = ({navigation}) => {
                         <Text style={styles.inputLabel}>MINIMUM ORDER VALUE</Text>
                         <View style={styles.inputWrapper}>
                             <Text style={styles.inputLeftIcon}>🛒</Text>
-                            <TextInput style={styles.inputWithLeftIcon} keyboardType="numeric" defaultValue="15.00" />
+                            <TextInput 
+                                style={styles.inputWithLeftIcon} 
+                                keyboardType="numeric" 
+                                value={minOrderValue} 
+                                onChangeText={setMinOrderValue} 
+                            />
                         </View>
                     </View>
                 </View>
@@ -154,7 +226,15 @@ const OnboardingpageFive = ({navigation}) => {
                 </View>
 
             </ScrollView>
-            <Floatingfixedbutton onPress={()=>navigation.navigate("Onboradingcompletepage")} title={"Back"} titletwo={"Send"} />
+            
+            {/* Wired up functionality to the bottom buttons */}
+            <Floatingfixedbutton 
+                onPressBack={handleBack} 
+                // onPressNext={handleNext} 
+                onPress={()=>navigation.navigate("Onboradingcompletepage")}
+                title={"Back"} 
+                titletwo={"Send"} 
+            />
         </SafeAreaView>
     )
 }
@@ -169,7 +249,7 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
     paddingTop: 30,
-    paddingBottom: 50,
+    paddingBottom: 100, // Adjusted so the floating button doesn't cover the bottom image
     alignItems: 'center',
   },
 

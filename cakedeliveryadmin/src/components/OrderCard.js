@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
     View,
     Text,
@@ -9,6 +9,27 @@ import {
 } from "react-native";
 
 const OrderCard = ({ orderNumber, customerName, deliveryTime, price, tag, buttonText, image, buttonColor, onAccept, onCancel }) => {
+
+    const [isAccepted, setIsAccepted] = useState(false);
+
+    const handleAcceptPress = () => {
+        if (isAccepted) return; // already accepted, do nothing
+
+        Alert.alert(
+            "Accept Order",
+            `Accept order ${orderNumber} from ${customerName}?`,
+            [
+                { text: "No", style: "cancel" },
+                {
+                    text: "Yes, Accept",
+                    onPress: () => {
+                        setIsAccepted(true);
+                        onAccept ? onAccept() : Alert.alert("Success", "Order accepted successfully!");
+                    },
+                },
+            ]
+        );
+    };
 
     const handleMenuPress = () => {
         Alert.alert(
@@ -27,7 +48,10 @@ const OrderCard = ({ orderNumber, customerName, deliveryTime, price, tag, button
                                 {
                                     text: "Yes, Cancel ",
                                     style: "destructive",
-                                    onPress: () => onCancel && onCancel(),
+                                    onPress: () => {
+                                        setIsAccepted(false);
+                                        onCancel && onCancel();
+                                    },
                                 },
                             ]
                         );
@@ -59,9 +83,19 @@ const OrderCard = ({ orderNumber, customerName, deliveryTime, price, tag, button
                 {/* Details */}
                 <View style={designStyles.detailsWrapper}>
 
-                    <Text style={designStyles.orderNumberText}>
-                        {orderNumber}
-                    </Text>
+                    <View style={designStyles.orderNumberRow}>
+                        <Text style={designStyles.orderNumberText}>
+                            {orderNumber}
+                        </Text>
+
+                        {isAccepted && (
+                            <View style={designStyles.acceptedBadge}>
+                                <Text style={designStyles.acceptedBadgeText}>
+                                    ACCEPTED
+                                </Text>
+                            </View>
+                        )}
+                    </View>
 
                     <Text style={designStyles.customerName}>
                         {customerName}
@@ -81,18 +115,16 @@ const OrderCard = ({ orderNumber, customerName, deliveryTime, price, tag, button
                     <View style={designStyles.actionArea}>
 
                         <TouchableOpacity
-                            onPress={() =>
-                                onAccept
-                                    ? onAccept()
-                                    : Alert.alert("Success", "Order accepted successfully!")
-                            }
+                            onPress={handleAcceptPress}
+                            activeOpacity={isAccepted ? 1 : 0.8}
+                            disabled={isAccepted}
                             style={[
                                 designStyles.acceptButtonStyle,
-                                { backgroundColor: buttonColor },
+                                { backgroundColor: isAccepted ? "#3F7A53" : buttonColor },
                             ]}
                         >
                             <Text style={designStyles.acceptButtonText}>
-                                {buttonText}
+                                {isAccepted ? "Accepted ✓" : buttonText}
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
@@ -166,12 +198,32 @@ const designStyles = StyleSheet.create({
         marginTop: 18,
     },
 
+    orderNumberRow: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: 5,
+    },
+
     orderNumberText: {
         color: "#9B7E67",
         fontSize: 10,
         fontWeight: "700",
         letterSpacing: 1,
-        marginBottom: 5,
+    },
+
+    acceptedBadge: {
+        backgroundColor: "#E2F0E5",
+        paddingHorizontal: 8,
+        paddingVertical: 3,
+        borderRadius: 10,
+        marginLeft: 8,
+    },
+
+    acceptedBadgeText: {
+        color: "#3F7A53",
+        fontSize: 9,
+        fontWeight: "800",
+        letterSpacing: 0.5,
     },
 
     customerName: {

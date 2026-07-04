@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,13 +8,82 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
+  Alert
 } from 'react-native';
 const { width } = Dimensions.get('window')
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BakeryHeader from "../components/BakeryHeader"
 import Floatingfixedbutton from "../components/Floatingfixedbutton"
 
+// --- ADDED IMPORT FOR GALLERY PICKER ---
+import { launchImageLibrary } from 'react-native-image-picker';
+
 const OnboardingpageFour = ({navigation})=>{
+    const [fssaiNumber, setFssaiNumber] = useState('');
+    
+    // --- ADDED STATES FOR FILES ---
+    const [fssaiDocName, setFssaiDocName] = useState('fssal_cert.pdf');
+    const [gstImageUri, setGstImageUri] = useState(null);
+
+    // const handleNext = () => {
+    //     if (fssaiNumber.trim().length !== 14) {
+    //         Alert.alert("Validation Error", "Please enter a valid 14-digit FSSAI License Number.");
+    //         return;
+    //     }
+    //     navigation.navigate("OnboardingpageFive", { 
+    //         fssaiNumber, 
+    //         fssaiDocName, 
+    //         gstImageUri 
+    //     });
+    // };
+
+    const handleBack = () => {
+        navigation.goBack();
+    };
+
+    const handleViewDocument = () => {
+        Alert.alert("View Document", `Opening ${fssaiDocName}...`);
+    };
+
+    // --- ADDED GALLERY PICKER FUNCTIONALITY FOR FSSAI ---
+    const handleReplaceDocument = () => {
+        const options = {
+            mediaType: 'photo',
+            quality: 0.8,
+        };
+
+        launchImageLibrary(options, (response) => {
+            if (response.didCancel) {
+                console.log('User cancelled gallery picker');
+            } else if (response.errorCode) {
+                Alert.alert('Error', response.errorMessage);
+            } else if (response.assets && response.assets.length > 0) {
+                // Update the UI with the selected file's name
+                const selectedFileName = response.assets[0].fileName || 'Updated_Certificate.jpg';
+                setFssaiDocName(selectedFileName);
+            }
+        });
+    };
+
+    // --- ADDED GALLERY PICKER FUNCTIONALITY FOR GST ---
+    const handleUploadGST = () => {
+        const options = {
+            mediaType: 'photo',
+            quality: 0.8,
+        };
+
+        launchImageLibrary(options, (response) => {
+            if (response.didCancel) {
+                console.log('User cancelled gallery picker');
+            } else if (response.errorCode) {
+                Alert.alert('Error', response.errorMessage);
+            } else if (response.assets && response.assets.length > 0) {
+                // Save the image URI to show it in the UI
+                setGstImageUri(response.assets[0].uri);
+            }
+        });
+    };
+
     return(
  <SafeAreaView style={styles.safeArea}>
     <BakeryHeader/>
@@ -50,6 +119,8 @@ const OnboardingpageFour = ({navigation})=>{
             placeholderTextColor="#B0A39A"
             keyboardType="number-pad"
             maxLength={14}
+            value={fssaiNumber}
+            onChangeText={setFssaiNumber}
           />
         </View>
 
@@ -60,25 +131,38 @@ const OnboardingpageFour = ({navigation})=>{
           </View>
           <View style={styles.uploadedTextContainer}>
             <Text style={styles.uploadedTitle}>FSSAI{'\n'}CERTIFICATE</Text>
-            <Text style={styles.uploadedSubtitle}>✅ fssal_cert.pdf</Text>
+            {/* Dynamic File Name */}
+            <Text style={styles.uploadedSubtitle} numberOfLines={1}>✅ {fssaiDocName}</Text>
           </View>
           <View style={styles.uploadedActions}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleViewDocument}>
               <Text style={styles.actionTextDark}>View</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{ marginLeft: 16 }}>
+            <TouchableOpacity style={{ marginLeft: 16 }} onPress={handleReplaceDocument}>
               <Text style={styles.actionTextRed}>Replace</Text>
             </TouchableOpacity>
           </View>
         </View>
 
         {/* --- GST Upload Area --- */}
-        <TouchableOpacity style={styles.uploadArea} activeOpacity={0.7}>
-          <View style={styles.uploadIconCircle}>
-            <Text style={styles.uploadIcon}>⬆️</Text>
-          </View>
-          <Text style={styles.uploadAreaTitle}>GST NUMBER (OPTIONAL)</Text>
-          <Text style={styles.uploadAreaSubtitle}>PDF, JPG, PNG • Max 5MB</Text>
+        <TouchableOpacity style={styles.uploadArea} activeOpacity={0.7} onPress={handleUploadGST}>
+          {gstImageUri ? (
+            // Show the picked image if it exists
+            <Image 
+                source={{ uri: gstImageUri }} 
+                style={styles.uploadedImagePreview} 
+                resizeMode="cover"
+            />
+          ) : (
+            // Show the default upload UI if no image is picked
+            <>
+                <View style={styles.uploadIconCircle}>
+                  <Text style={styles.uploadIcon}>⬆️</Text>
+                </View>
+                <Text style={styles.uploadAreaTitle}>GST NUMBER (OPTIONAL)</Text>
+                <Text style={styles.uploadAreaSubtitle}>PDF, JPG, PNG • Max 5MB</Text>
+            </>
+          )}
         </TouchableOpacity>
 
         {/* --- Divider --- */}
@@ -92,7 +176,6 @@ const OnboardingpageFour = ({navigation})=>{
 
         {/* --- Bottom Illustration / Image --- */}
         <View style={styles.bottomSection}>
-          {/* Concentric background circles */}
           <View style={styles.circleOuter}>
             <View style={styles.circleInner}>
               <Image
@@ -102,7 +185,6 @@ const OnboardingpageFour = ({navigation})=>{
             </View>
           </View>
           
-          {/* Floating Secure Badge */}
           <View style={styles.secureBadge}>
             <Text style={styles.secureBadgeIcon}>🛡️</Text>
             <Text style={styles.secureBadgeText}>SECURE VERIFICATION</Text>
@@ -110,27 +192,30 @@ const OnboardingpageFour = ({navigation})=>{
         </View>
 
       </ScrollView>
-      <Floatingfixedbutton onPress={()=>navigation.navigate("OnboardingpageFive")} title={"Back"} titletwo={"Send"} />
+
+      <Floatingfixedbutton 
+        onPressBack={handleBack} 
+        onPress={()=>navigation.navigate("OnboardingpageFive")} 
+        title={"Back"} 
+        titletwo={"Send"} 
+      />
     </SafeAreaView>
     )
 }
 
 export default OnboardingpageFour
 
-
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#FAF5EE', // Warm, creamy background
+    backgroundColor: '#FAF5EE', 
   },
   container: {
     paddingHorizontal: 18,
     paddingTop: 30,
-    paddingBottom: 50,
+    paddingBottom: 100, 
     alignItems: 'center',
   },
-
-  // Step Indicator
   stepContainer: {
     alignItems: 'center',
     marginBottom: 30,
@@ -159,8 +244,6 @@ const styles = StyleSheet.create({
   stepBarInactive: {
     backgroundColor: '#DCD1C8',
   },
-
-  // Header
   headerContainer: {
     alignItems: 'center',
     marginBottom: 40,
@@ -177,8 +260,6 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     opacity: 0.8,
   },
-
-  // Input Section
   inputSection: {
     width: '100%',
     marginBottom: 20,
@@ -201,8 +282,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#EAE1D3',
   },
-
-  // Uploaded Card
   uploadedCard: {
     width: '100%',
     backgroundColor: '#FFFFFF',
@@ -231,6 +310,7 @@ const styles = StyleSheet.create({
   },
   uploadedTextContainer: {
     flex: 1,
+    paddingRight: 10, // Prevents long file names from touching buttons
   },
   uploadedTitle: {
     fontSize: 12,
@@ -241,7 +321,7 @@ const styles = StyleSheet.create({
   },
   uploadedSubtitle: {
     fontSize: 12,
-    color: '#71A16C', // Muted green
+    color: '#71A16C', 
     fontWeight: '600',
   },
   uploadedActions: {
@@ -258,8 +338,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#B64B4B',
   },
-
-  // Upload Area (Dashed)
   uploadArea: {
     width: '100%',
     height: 140,
@@ -271,6 +349,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(243, 237, 226, 0.4)',
     marginBottom: 40,
+    overflow: 'hidden', // Added so the image respects the border radius
   },
   uploadIconCircle: {
     width: 40,
@@ -300,8 +379,11 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: '#9E9087',
   },
-
-  // Divider
+  // --- ADDED STYLE FOR GST IMAGE PREVIEW ---
+  uploadedImagePreview: {
+    width: '100%',
+    height: '100%',
+  },
   dividerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -325,8 +407,6 @@ const styles = StyleSheet.create({
   dividerStar: {
     fontSize: 10,
   },
-
-  // Bottom Section
   bottomSection: {
     alignItems: 'center',
     justifyContent: 'center',

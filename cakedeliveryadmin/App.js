@@ -67,7 +67,6 @@ const Stackscreens = () => {
       <Stack.Screen name='Paymentadmin' component={Paymentgatwaypage} />
       <Stack.Screen name='Notificationpage' component={Notificationpage} />
       <Stack.Screen name='RecentOrdersScreen' component={RecentOrdersScreen} />
-      <Stack.Screen name='CatalogUpdatedScreen' component={CatalogUpdatedScreen} />
       <Stack.Screen name='Passwordchangespage' component={Passwordchangespage} />
     </Stack.Navigator>
   )
@@ -78,6 +77,7 @@ const Catalogstack = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName='Catalog'>
       <Stack.Screen name='Catalog' component={Catalogpage} />
       <Stack.Screen name='Addnewpage' component={Addnewcakepage} />
+         <Stack.Screen name='CatalogUpdatedScreen' component={CatalogUpdatedScreen} />
     </Stack.Navigator>
   )
 }

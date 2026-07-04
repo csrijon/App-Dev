@@ -11,7 +11,17 @@ import {
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
-const Catalogcard = ({ title, tag, price, image }) => {
+const Catalogcard = ({ 
+  title, 
+  tag, 
+  price, 
+  image, 
+  stock, 
+  sales, 
+  isFeatured, 
+  rating, 
+  lastUpdated 
+}) => {
 
   const [toggleswitch, settoggleswitch] = useState(false)
   const [editlogo, seteditlogo] = useState(false)
@@ -26,17 +36,50 @@ const Catalogcard = ({ title, tag, price, image }) => {
           source={image}
         />
 
-        {/* Tag */}
+        {/* Featured Badge (Top Left) */}
+        {isFeatured && (
+          <View style={styles.featuredBadge}>
+             <MaterialIcons name="star" size={16} color="#fff" />
+             <Text style={styles.featuredText}>Featured</Text>
+          </View>
+        )}
+
+        {/* Tag (Top Right) */}
         <View style={styles.tag}>
           <Text style={styles.tagText}>{tag}</Text>
         </View>
       </View>
 
-      {/* Product Info */}
+      {/* Product Info (Title, Rating, Price) */}
       <View style={styles.infoSection}>
-        <Text style={styles.title}>{title}</Text>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>{title}</Text>
+          {/* Rating */}
+          <View style={styles.ratingContainer}>
+            <MaterialIcons name="star" size={18} color="#e6a822" />
+            <Text style={styles.ratingText}>{rating}</Text>
+          </View>
+        </View>
         <Text style={styles.price}>{price}</Text>
       </View>
+
+      {/* Stats Section: Stock & Sales */}
+      <View style={styles.statsContainer}>
+        <View style={styles.statItem}>
+          <MaterialIcons name="inventory" size={16} color="#7a5b52" />
+          <Text style={styles.statText}>Stock: {stock}</Text>
+        </View>
+        <View style={styles.statItem}>
+          <MaterialIcons name="shopping-cart" size={16} color="#7a5b52" />
+          <Text style={styles.statText}>Sales: {sales}</Text>
+        </View>
+      </View>
+
+      {/* Last Updated */}
+      <Text style={styles.lastUpdatedText}>Last updated: {lastUpdated}</Text>
+
+      {/* Divider */}
+      <View style={styles.divider} />
 
       {/* Bottom Section */}
       <View style={styles.bottomSection}>
@@ -102,7 +145,12 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     padding: 16,
     marginTop: 20,
-    height: "auto"
+    height: "auto",
+    elevation: 2, // Added slight shadow for better card separation
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
 
   imageContainer: {
@@ -114,6 +162,25 @@ const styles = StyleSheet.create({
     height: 220,
     borderRadius: 35,
     resizeMode: "cover",
+  },
+
+  featuredBadge: {
+    position: "absolute",
+    top: 14,
+    left: 14,
+    backgroundColor: "#8c5f4f",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+  },
+
+  featuredText: {
+    color: "#fff",
+    fontSize: 12,
+    fontWeight: "600",
   },
 
   tag: {
@@ -136,17 +203,33 @@ const styles = StyleSheet.create({
   infoSection: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-start",
     marginTop: 16,
     paddingHorizontal: 4,
   },
 
+  titleContainer: {
+    flex: 1,
+  },
+
   title: {
     fontSize: 18,
-    lineHeight: 28,
+    lineHeight: 24,
     fontWeight: "700",
     color: "#363317",
-    // width: "70%",
+    marginBottom: 4,
+  },
+
+  ratingContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+  },
+
+  ratingText: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#7a5b52",
   },
 
   price: {
@@ -155,8 +238,46 @@ const styles = StyleSheet.create({
     color: "#8c5f4f",
   },
 
+  statsContainer: {
+    flexDirection: "row",
+    paddingHorizontal: 4,
+    marginTop: 12,
+    gap: 16,
+  },
+
+  statItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#f9f6f5",
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 8,
+    gap: 6,
+  },
+
+  statText: {
+    fontSize: 13,
+    color: "#7a5b52",
+    fontWeight: "500",
+  },
+
+  lastUpdatedText: {
+    fontSize: 11,
+    color: "#a49692",
+    fontStyle: "italic",
+    paddingHorizontal: 4,
+    marginTop: 10,
+  },
+
+  divider: {
+    height: 1,
+    backgroundColor: "#f0eaea",
+    marginTop: 16,
+    marginHorizontal: 4,
+  },
+
   bottomSection: {
-    marginTop: 24,
+    marginTop: 16,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -176,7 +297,6 @@ const styles = StyleSheet.create({
   },
 
   iconContainer: {
-    marginTop: 20,
     flexDirection: "row",
     alignItems: "center",
     gap: 18,

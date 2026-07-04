@@ -1,5 +1,5 @@
 import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   View,
   Text,
@@ -7,118 +7,134 @@ import {
   Image,
   TouchableOpacity,
   StatusBar,
+  ScrollView
 } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Adminheader from "../components/Adminheader"
 
-const CatalogUpdatedScreen = () => {
+const CatalogUpdatedScreen = ({ navigation }) => {
+
+  const insets = useSafeAreaInsets()
+
+  const handelcatalog = () => {
+    navigation.navigate("Catalog")
+  }
+
+  const handelgodashboard = ()=>{
+    navigation.navigate("Dashboard")
+  }
+
+  console.log("Insets:", insets);
+
   return (
-    <SafeAreaView style ={styles.CatalogUpdatedScreen} >
-        <Adminheader/>
-    <View style={styles.container}>
-      <StatusBar
-        backgroundColor="#F8F2DE"
-        barStyle="dark-content"
-      />
-
-      {/* Cake Image */}
-
-      <Image
-        source={{
-          uri: "https://images.unsplash.com/photo-1571115764595-644a1f56a55c",
-        }}
-        style={styles.cakeImage}
-      />
-
-      {/* Floating Check */}
-
-      <View style={styles.checkCircle}>
-        <MaterialIcons
-          name="check"
-          size={24}
-          color="#6F564C"
-        />
-      </View>
-
-      {/* Badge */}
-
-      <View style={styles.badge}>
-        <Text style={styles.badgeText}>
-          Update Successful
-        </Text>
-      </View>
-
-      {/* Heading */}
-
-      <Text style={styles.heading}>
-        Catalog
-      </Text>
-
-      <Text style={styles.subHeading}>
-        Updated!
-      </Text>
-
-      {/* Description */}
-
-      <Text style={styles.description}>
-        Your latest artisan creations have been
-        polished and published. Your boutique
-        catalog is now live and ready to delight
-        your customers.
-      </Text>
-
-      {/* Buttons */}
-
-      <TouchableOpacity style={styles.primaryBtn}>
-        <Text style={styles.primaryText}>
-          View Catalog
-        </Text>
-
-        <MaterialIcons
-          name="grid-view"
-          size={16}
-          color="#fff"
-        />
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.secondaryBtn}>
-        <Text style={styles.secondaryText}>
-          Go to Dashboard
-        </Text>
-
-        <MaterialIcons
-          name="grid-view"
-          size={16}
-          color="#75654E"
-        />
-      </TouchableOpacity>
-
-      {/* Footer Stats */}
-
-      <View style={styles.bottomRow}>
-        <View style={styles.infoChip}>
-          <MaterialIcons
-            name="schedule"
-            size={12}
-            color="#75654E"
+    <SafeAreaView style={[styles.CatalogUpdatedScreen, { paddingTop: insets.top, paddingBottom: insets.bottom }]} >
+      <Adminheader />
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{
+        paddingBottom: 50 + insets.bottom
+      }} >
+        <View style={styles.container}>
+          <StatusBar
+            backgroundColor="#F8F2DE"
+            barStyle="dark-content"
           />
-          <Text style={styles.infoText}>
-            Updated Just now
-          </Text>
-        </View>
 
-        <View style={styles.infoChip}>
-          <MaterialIcons
-            name="inventory-2"
-            size={12}
-            color="#75654E"
+          {/* Cake Image */}
+
+          <Image
+            source={require("../images/unnamed.png")}
+            style={styles.cakeImage}
           />
-          <Text style={styles.infoText}>
-            12 New Items
+
+          {/* Floating Check */}
+
+          <View style={styles.checkCircle}>
+            <MaterialIcons
+              name="check"
+              size={24}
+              color="#6F564C"
+            />
+          </View>
+
+          {/* Badge */}
+
+          <View style={styles.badge}>
+            <Text style={styles.badgeText}>
+              Update Successful
+            </Text>
+          </View>
+
+          {/* Heading */}
+
+          <Text style={styles.heading}>
+            Catalog
           </Text>
+
+          <Text style={styles.subHeading}>
+            Updated!
+          </Text>
+
+          {/* Description */}
+
+          <Text style={styles.description}>
+            Your latest artisan creations have been
+            polished and published. Your boutique
+            catalog is now live and ready to delight
+            your customers.
+          </Text>
+
+          {/* Buttons */}
+
+          <TouchableOpacity onPress={handelcatalog} style={styles.primaryBtn}>
+            <Text style={styles.primaryText}>
+              View Catalog
+            </Text>
+
+            <MaterialIcons
+              name="grid-view"
+              size={16}
+              color="#fff"
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={handelgodashboard} style={styles.secondaryBtn}>
+            <Text style={styles.secondaryText}>
+              Go to Dashboard
+            </Text>
+
+            <MaterialIcons
+              name="grid-view"
+              size={16}
+              color="#75654E"
+            />
+          </TouchableOpacity>
+
+          {/* Footer Stats */}
+
+          <View style={styles.bottomRow}>
+            <View style={styles.infoChip}>
+              <MaterialIcons
+                name="schedule"
+                size={12}
+                color="#75654E"
+              />
+              <Text style={styles.infoText}>
+                Updated Just now
+              </Text>
+            </View>
+
+            <View style={styles.infoChip}>
+              <MaterialIcons
+                name="inventory-2"
+                size={12}
+                color="#75654E"
+              />
+              <Text style={styles.infoText}>
+                12 New Items
+              </Text>
+            </View>
+          </View>
         </View>
-      </View>
-    </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -126,10 +142,10 @@ const CatalogUpdatedScreen = () => {
 export default CatalogUpdatedScreen;
 
 const styles = StyleSheet.create({
-    CatalogUpdatedScreen:{
+  CatalogUpdatedScreen: {
     flex: 1,
     backgroundColor: "#F8F2DE",
-    },
+  },
   container: {
     paddingHorizontal: 14,
     alignItems: "center",
