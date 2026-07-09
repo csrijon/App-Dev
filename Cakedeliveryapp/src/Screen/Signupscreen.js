@@ -9,7 +9,44 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 
 const Signupscreen = ({ navigation }) => {
+    const onclickcreateaccount = async () => {
+        setTouched(true);
 
+        if (!isFormValid) {
+            return;
+        }
+
+        try {
+            setLoading(true);
+
+            const response = await fetch("http://192.168.1.5:3000/api/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    fullname,
+                    mobile: fullemail,
+                    password,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message);
+            }
+
+            console.log(data);
+
+            navigation.navigate("Login");
+
+        } catch (error) {
+            console.log(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
     const [checkbox, setcheckbox] = useState(false)
     const [fullname, setfullname] = useState("")
     const [fullemail, setfullemail] = useState("")
@@ -42,23 +79,6 @@ const Signupscreen = ({ navigation }) => {
 
     const isFormValid = isNameValid && isMobileValid && isPasswordValid && passwordsMatch && checkbox
 
-    const onclickcreateaccount = () => {
-        setTouched(true)
-
-        if (!isFormValid) {
-            console.log("some statement is false")
-            return
-        }
-
-        setLoading(true)
-
-        // Simulate API call — replace with real backend signup
-        setTimeout(() => {
-            console.log("all statement is true")
-            setLoading(false)
-            navigation.navigate("Login")
-        }, 1200)
-    }
 
     return (
         <SafeAreaView style={styles.signupsafearea}>

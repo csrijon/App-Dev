@@ -55,23 +55,43 @@ const Loginscreen = ({ navigation }) => {
         }
     }
 
-    const onclickloginbutton = () => {
-        setTouched(true)
+const onclickloginbutton = async () => {
+    setTouched(true);
 
-        if (!loginemail || !loginpassword || !isMobileValid || !isPasswordValid) {
-            console.log("Validation failed")
-            return
+    if (!loginemail || !loginpassword || !isMobileValid || !isPasswordValid) {
+        return;
+    }
+
+    try {
+        setLoading(true);
+
+        const response = await fetch("http://192.168.1.5:3000/api/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                mobile: loginemail,
+                password: loginpassword,
+            }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message);
         }
 
-        setLoading(true)
+        console.log(data);
 
-        // Simulate API call — replace with real backend login
-        setTimeout(() => {
-            console.log("Login success")
-            setLoading(false)
-            navigation.replace("Tabs")
-        }, 1000)
+        navigation.replace("Tabs");
+
+    } catch (error) {
+        console.log(error.message);
+    } finally {
+        setLoading(false);
     }
+};
 
     return (
         <SafeAreaView style={styles.loginsafearea} >
