@@ -31,17 +31,48 @@ const AddressUI = ({ navigation }) => {
     const [focusedField, setFocusedField] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (!street.trim() || !city.trim() || !selectedState || !zip.trim()) {
             Alert.alert("Required", "Please fill in all required fields.");
             return;
         }
+
         setLoading(true);
-        setTimeout(() => {
+
+        try {
+            const response = await fetch(
+                "http://10.140.23.125:3000/api/address/save",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        street,
+                        apartment,
+                        city,
+                        state: selectedState,
+                        zip,
+                        isDefault,
+                    }),
+                }
+            );
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || "Failed to save address");
+            }
+
+            Alert.alert("Success", data.message);
+
+            navigation.navigate("Profilescreen");
+
+        } catch (error) {
+            Alert.alert("Error", error.message);
+        } finally {
             setLoading(false);
-            Alert.alert("Saved", "Your delivery address has been updated.");
-            navigation.navigate("Profilescreen")
-        }, 1200);
+        }
     };
 
     const handleDiscard = () => {

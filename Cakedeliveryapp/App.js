@@ -18,6 +18,7 @@ import EmptyOrderScreen from "./src/Screen/EmptyOrderScreen"
 import ResetLinkpage from "./src/Screen/ResetLinkpage"
 import Setpasswordpage from "./src/Screen/Setpasswordpage"
 import PasswordChanged from "./src/Screen/PasswordChanged"
+import Ordertrackingscreen from "./src/Screen/Ordertrackingscreen.js"
 import RefineScreen from "./src/Screen/RefineScreen"
 import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
@@ -75,6 +76,7 @@ const Orderstack = () => {
       <Stack.Screen name="Customorder" component={Customorderpage} />
       <Stack.Screen name="Ordesuccess" component={OrderSuccessScreen} />
       <Stack.Screen name="Myorder" component={Myorderscreen} />
+      <Stack.Screen name="Ordertrackingscreen" component={Ordertrackingscreen}/>
     </Stack.Navigator>
   )
 }

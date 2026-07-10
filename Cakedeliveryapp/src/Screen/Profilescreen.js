@@ -19,14 +19,23 @@ import { useState, useRef } from "react";
 const Profilescreen = ({ navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [fullName, setFullName] = useState("");
-    const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
+
+    // User er already thaka info diye prefill kora - khali thakbe na
+    // real app e eta API/AsyncStorage theke fetch kore boshabe
+    const [fullName, setFullName] = useState("Artisan Baker");
+    const [email, setEmail] = useState("artisan.baker@glazegrain.com");
+    const [phone, setPhone] = useState("9831234567");
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [showCurrentPassword, setShowCurrentPassword] = useState(false);
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [focusedField, setFocusedField] = useState(null);
+
+    // User er ekhon je address set kora ache seta dekhanor jonno
+    // real app e eta API theke fetch kore boshabe
+    const [savedAddress, setSavedAddress] = useState(
+        "123 Baker Street, Kolkata, West Bengal 700001"
+    );
 
     const onRefresh = () => {
         setRefreshing(true);
@@ -41,18 +50,31 @@ const Profilescreen = ({ navigation }) => {
         setLoading(true);
         setTimeout(() => {
             setLoading(false);
-            Alert.alert("Saved", "Your profile has been updated.");
-            navigation.navigate("Adressscreen");
+            Alert.alert("Saved", "Your Password has been updated.");
+            // navigation.navigate("Adressscreen");
         }, 1200);
     };
 
+    // Original values - "Discard edits" e click korle egulote ferot jabe
+    const originalInfo = {
+        fullName: "Artisan Baker",
+        email: "artisan.baker@glazegrain.com",
+        phone: "9831234567",
+    };
+
     const handleDiscard = () => {
-        setFullName("");
-        setEmail("");
-        setPhone("");
+        setFullName(originalInfo.fullName);
+        setEmail(originalInfo.email);
+        setPhone(originalInfo.phone);
         setCurrentPassword("");
         setNewPassword("");
         setFocusedField(null);
+    };
+
+    // Jara password change korte chai na, sudhu address update korte chai,
+    // tader jonno alada button - direct address screen e niye jabe
+    const handleAddressOnly = () => {
+        navigation.navigate("Adressscreen");
     };
 
     const getBorderColor = (fieldName) =>
@@ -110,6 +132,26 @@ const Profilescreen = ({ navigation }) => {
                             Shown on your invoices and{"\n"}personalized recommendations
                         </Text>
                     </View>
+                </View>
+
+                {/* Saved Address Section */}
+                <Text style={styles.sectionLabel}>Delivery address</Text>
+                <View style={styles.addressCard}>
+                    <View style={styles.addressIconWrap}>
+                        <Ionicons name="location-outline" size={18} color="#9B6E55" />
+                    </View>
+                    <View style={styles.addressTextWrap}>
+                        <Text style={styles.addressLabel}>Currently set to</Text>
+                        <Text style={styles.addressValue} numberOfLines={2}>
+                            {savedAddress || "No address added yet"}
+                        </Text>
+                    </View>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate("Adressscreen")}
+                        style={styles.addressEditBtn}
+                    >
+                        <Ionicons name="pencil-outline" size={15} color="#7B5E57" />
+                    </TouchableOpacity>
                 </View>
 
                 {/* Personal Info Section */}
@@ -252,6 +294,16 @@ const Profilescreen = ({ navigation }) => {
                     <Text style={styles.discardText}>Discard edits</Text>
                 </TouchableOpacity>
 
+                {/* Password change chara direct address update korar jonno */}
+                <TouchableOpacity
+                    onPress={handleAddressOnly}
+                    style={styles.addressOnlyBtn}
+                    activeOpacity={0.85}
+                >
+                    <Ionicons name="location-outline" size={16} color="#7B5E57" style={{ marginRight: 6 }} />
+                    <Text style={styles.addressOnlyText}>Only update address</Text>
+                </TouchableOpacity>
+
             </ScrollView>
         </SafeAreaView>
     );
@@ -382,6 +434,50 @@ const styles = StyleSheet.create({
         paddingLeft: 4,
     },
 
+    /* ── Address Card ── */
+    addressCard: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 12,
+        backgroundColor: "#fff",
+        borderRadius: 20,
+        borderWidth: 0.5,
+        borderColor: "#E0D5BE",
+        paddingHorizontal: 16,
+        paddingVertical: 14,
+    },
+    addressIconWrap: {
+        width: 36,
+        height: 36,
+        borderRadius: 12,
+        backgroundColor: "#F5EDD8",
+        alignItems: "center",
+        justifyContent: "center",
+        flexShrink: 0,
+    },
+    addressTextWrap: {
+        flex: 1,
+        gap: 2,
+    },
+    addressLabel: {
+        fontSize: 11,
+        color: "#A0907A",
+    },
+    addressValue: {
+        fontSize: 14,
+        color: "#3D2B1F",
+        lineHeight: 19,
+    },
+    addressEditBtn: {
+        width: 32,
+        height: 32,
+        borderRadius: 10,
+        backgroundColor: "#F0E8D8",
+        alignItems: "center",
+        justifyContent: "center",
+        flexShrink: 0,
+    },
+
     /* ── Fields Card ── */
     fieldsCard: {
         backgroundColor: "#fff",
@@ -492,5 +588,23 @@ const styles = StyleSheet.create({
         fontSize: 13,
         color: "#9B7A65",
         textDecorationLine: "underline",
+    },
+
+    /* ── Address-only Button ── */
+    addressOnlyBtn: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#F0E8D8",
+        borderRadius: 16,
+        paddingVertical: 14,
+        marginTop: 4,
+        borderWidth: 1,
+        borderColor: "#E0D0AE",
+    },
+    addressOnlyText: {
+        fontSize: 14,
+        fontWeight: "600",
+        color: "#7B5E57",
     },
 });

@@ -39,7 +39,7 @@ const PILL_STYLES = {
   DELIVERED: { backgroundColor: "#D3D3D3" },
 }
 
-const Myorderscreen = () => {
+const Myorderscreen = ({navigation}) => {
   const { width } = useWindowDimensions()
   const [activeTab, setActiveTab] = useState("active") // "active" | "past"
 
@@ -111,7 +111,7 @@ const Myorderscreen = () => {
                   <Text style={styles.orderRef}>Order #{order.id}</Text>
                   <Text style={styles.timeStamp}>{order.date}</Text>
 
-                  <TouchableOpacity style={styles.actionTrigger}>
+                  <TouchableOpacity onPress={()=>navigation.navigate("Ordertrackingscreen")} style={styles.actionTrigger}>
                     <Text style={styles.triggerText}>{order.action}</Text>
                   </TouchableOpacity>
                 </View>

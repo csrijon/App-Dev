@@ -6,7 +6,7 @@ const Loginmainapp = (req, res) => {
         console.log(mobile, password)
         res.json({
             meess: "Login Successfully",
-            details:mobile
+            details: mobile
         })
     } catch (error) {
         console.log(error)
@@ -16,24 +16,21 @@ const Loginmainapp = (req, res) => {
     }
 }
 
-const LoginAdminapp = (req,res)=>{
-     
+const LoginAdminapp = (req, res) => {
+
     try {
-        const {email,password} = req.body
-        console.log(email,password)
+        const { email, password } = req.body
+        console.log(email, password)
         res.json({
-            mess:"LoginAdmin app is working"
+            mess: "LoginAdmin app is working"
         })
     } catch (error) {
         console.log(error)
         res.json({
-            mess:"Loginadmin app is not working "
+            mess: "Loginadmin app is not working "
         })
     }
 
 }
 
-
-
-
-export {Loginmainapp,LoginAdminapp}
+export { Loginmainapp, LoginAdminapp }

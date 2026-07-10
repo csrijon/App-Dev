@@ -106,11 +106,65 @@ const foodData = [
     },
 ];
 
+// ── Naya additions er jonno data (existing data upore touch kora hoyni) ──
+const promoData = [
+    {
+        id: "p1",
+        title: "20% off your first order",
+        subtitle: "Use code SWEET20 at checkout",
+        color: "#E8DCCB",
+    },
+    {
+        id: "p2",
+        title: "Free delivery this weekend",
+        subtitle: "On all orders above $15",
+        color: "#E7C8C8",
+    },
+    {
+        id: "p3",
+        title: "New: Vegan pastries",
+        subtitle: "Freshly launched, try today",
+        color: "#D9E2CE",
+    },
+];
+
+const categoryChips = [
+    { id: "c1", label: "Cakes", icon: "restaurant-outline" },
+    { id: "c2", label: "Cupcakes", icon: "cafe-outline" },
+    { id: "c3", label: "Pastries", icon: "gift-outline" },
+    { id: "c4", label: "Bread", icon: "pizza-outline" },
+    { id: "c5", label: "Cookies", icon: "nutrition-outline" },
+];
+
+const reorderData = [
+    {
+        id: "r1",
+        image: require("../images/cakeimage.jpeg"),
+        name: "Chocolate Cake",
+        lastOrdered: "Ordered 3 days ago",
+    },
+    {
+        id: "r2",
+        image: require("../images/deva-williamson-tW0Ix_Ajg6Y-unsplash.jpg"),
+        name: "Red Velvet Cake",
+        lastOrdered: "Ordered last week",
+    },
+];
+
+const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good morning";
+    if (hour < 17) return "Good afternoon";
+    return "Good evening";
+};
+
 const Homescreen = ({ navigation }) => {
 
     const { width, height } = useWindowDimensions()
     const [searchText, setSearchText] = useState("");
     const [refreshing, setRefreshing] = useState(false);
+    // Category chip select korle sudhu highlight er jonno, existing filter logic touch kora hoyni
+    const [selectedCategory, setSelectedCategory] = useState(null);
     const onRefresh = () => {
         setRefreshing(true);
 
@@ -144,6 +198,11 @@ const Homescreen = ({ navigation }) => {
             >
                 <View style={styles.subhomecontainer}>
 
+                    {/* Greeting */}
+                    <Text style={styles.greetingText}>
+                        {getGreeting()}, Srijon👋
+                    </Text>
+
                     {/* Search Bar */}
                     <View style={styles.searchBox}>
                         <Ionicons
@@ -160,6 +219,66 @@ const Homescreen = ({ navigation }) => {
                             style={styles.searchInput}
                         />
                     </View>
+
+                    {/* Promo Banner */}
+                    <FlatList
+                        horizontal
+                        data={promoData}
+                        showsHorizontalScrollIndicator={false}
+                        keyExtractor={(item) => item.id}
+                        contentContainerStyle={{ gap: 12, paddingBottom: 4 }}
+                        style={{ marginBottom: 18 }}
+                        renderItem={({ item }) => (
+                            <View
+                                style={[
+                                    styles.promoCard,
+                                    { backgroundColor: item.color },
+                                ]}
+                            >
+                                <Text style={styles.promoTitle}>{item.title}</Text>
+                                <Text style={styles.promoSubtitle}>{item.subtitle}</Text>
+                            </View>
+                        )}
+                    />
+
+                    {/* Quick Category Chips */}
+                    <FlatList
+                        horizontal
+                        data={categoryChips}
+                        showsHorizontalScrollIndicator={false}
+                        keyExtractor={(item) => item.id}
+                        contentContainerStyle={{ gap: 10, paddingBottom: 4 }}
+                        style={{ marginBottom: 18 }}
+                        renderItem={({ item }) => {
+                            const active = selectedCategory === item.id;
+                            return (
+                                <TouchableOpacity
+                                    activeOpacity={0.8}
+                                    onPress={() =>
+                                        setSelectedCategory(active ? null : item.id)
+                                    }
+                                    style={[
+                                        styles.categoryChip,
+                                        active && styles.categoryChipActive,
+                                    ]}
+                                >
+                                    <Ionicons
+                                        name={item.icon}
+                                        size={16}
+                                        color={active ? "#fff" : "#6D4C41"}
+                                    />
+                                    <Text
+                                        style={[
+                                            styles.categoryChipText,
+                                            active && styles.categoryChipTextActive,
+                                        ]}
+                                    >
+                                        {item.label}
+                                    </Text>
+                                </TouchableOpacity>
+                            );
+                        }}
+                    />
 
                     {/* Featured Bakes */}
                     <View style={styles.featuredBakesContainer}>
@@ -192,6 +311,39 @@ const Homescreen = ({ navigation }) => {
                                 name={item.name}
                                 price={item.price}
                             />
+                        )}
+                    />
+
+                    {/* Order Again */}
+                    <Text style={styles.exploreCollectionsText}>
+                        Order Again
+                    </Text>
+
+                    <FlatList
+                        horizontal
+                        data={reorderData}
+                        showsHorizontalScrollIndicator={false}
+                        keyExtractor={(item) => item.id}
+                        contentContainerStyle={{ gap: 12, paddingBottom: 4 }}
+                        renderItem={({ item }) => (
+                            <TouchableOpacity
+                                activeOpacity={0.85}
+                                style={styles.reorderCard}
+                            >
+                                <View style={styles.reorderTextWrap}>
+                                    <Text style={styles.reorderName}>{item.name}</Text>
+                                    <Text style={styles.reorderMeta}>
+                                        {item.lastOrdered}
+                                    </Text>
+                                </View>
+                                <View style={styles.reorderBtn}>
+                                    <Ionicons
+                                        name="repeat-outline"
+                                        size={16}
+                                        color="#fff"
+                                    />
+                                </View>
+                            </TouchableOpacity>
                         )}
                     />
 
@@ -443,5 +595,99 @@ emptyText: {
   fontSize: 16,
   color: "#999",
   fontWeight: "600",
+},
+
+/* ── Naya additions er style ── */
+greetingText: {
+  fontSize: 16,
+  fontWeight: "700",
+  color: "#5D4037",
+  marginTop: 12,
+  marginBottom: 2,
+},
+
+promoCard: {
+  width: 260,
+  borderRadius: 24,
+  padding: 18,
+  justifyContent: "center",
+  gap: 6,
+},
+
+promoTitle: {
+  fontSize: 15,
+  fontWeight: "700",
+  color: "#5D4037",
+},
+
+promoSubtitle: {
+  fontSize: 12,
+  color: "#7A5F52",
+},
+
+categoryChip: {
+  flexDirection: "row",
+  alignItems: "center",
+  gap: 6,
+  backgroundColor: "#EDE0D4",
+  borderRadius: 20,
+  paddingHorizontal: 14,
+  paddingVertical: 9,
+},
+
+categoryChipActive: {
+  backgroundColor: "#6D4C41",
+},
+
+categoryChipText: {
+  fontSize: 13,
+  fontWeight: "600",
+  color: "#6D4C41",
+},
+
+categoryChipTextActive: {
+  color: "#fff",
+},
+
+reorderCard: {
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-between",
+  width: 220,
+  backgroundColor: "#ffffff",
+  borderRadius: 20,
+  paddingHorizontal: 16,
+  paddingVertical: 14,
+  gap: 10,
+  shadowColor: "#000",
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.06,
+  shadowRadius: 4,
+  elevation: 2,
+},
+
+reorderTextWrap: {
+  flex: 1,
+  gap: 2,
+},
+
+reorderName: {
+  fontSize: 14,
+  fontWeight: "700",
+  color: "#5D4037",
+},
+
+reorderMeta: {
+  fontSize: 11,
+  color: "#9B8070",
+},
+
+reorderBtn: {
+  width: 30,
+  height: 30,
+  borderRadius: 15,
+  backgroundColor: "#6D4C41",
+  alignItems: "center",
+  justifyContent: "center",
 },
 })
