@@ -7,6 +7,7 @@ import {
     StatusBar,
     TouchableOpacity,
     ScrollView,
+    Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -60,7 +61,19 @@ const SocialButton = ({ iconName, label, onPress }) => (
     </TouchableOpacity>
 );
 
-const InputField = ({ label, placeholder, icon, secureEntry, toggleSecure, showToggle }) => (
+// InputField ekhon controlled component - value o onChangeText props nibe
+const InputField = ({
+    label,
+    placeholder,
+    icon,
+    secureEntry,
+    toggleSecure,
+    showToggle,
+    value,
+    onChangeText,
+    keyboardType,
+    autoCapitalize,
+}) => (
     <View style={styles.fieldWrapper}>
         <Text style={styles.fieldLabel}>{label}</Text>
         <View style={styles.inputShell}>
@@ -70,6 +83,10 @@ const InputField = ({ label, placeholder, icon, secureEntry, toggleSecure, showT
                 placeholderTextColor="#B8AF8F"
                 secureTextEntry={secureEntry}
                 style={styles.inputText}
+                value={value}
+                onChangeText={onChangeText}
+                keyboardType={keyboardType || "default"}
+                autoCapitalize={autoCapitalize || "none"}
             />
             {showToggle && (
                 <TouchableOpacity onPress={toggleSecure}>
@@ -83,6 +100,53 @@ const InputField = ({ label, placeholder, icon, secureEntry, toggleSecure, showT
 const Signuppage = ({ navigation }) => {
     const [eyeActive, setEyeActive] = useState(false);
     const [check, setCheck] = useState(false);
+
+    // Form fields er jonno state - eigulo API call e directly pathano jabe
+    const [fullName, setFullName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const handleSignup = async () => {
+        // Basic validation
+        if (!fullName.trim() || !email.trim() || !password.trim()) {
+            Alert.alert("Missing Info", "Please fill in all fields.");
+            return;
+        }
+        if (!check) {
+            Alert.alert("Terms Required", "Please agree to the Terms of Service and Privacy Policy.");
+            return;
+        }
+
+        setLoading(true);
+        try {
+            // API call - URL ta nijer backend endpoint diye replace koro
+            const response = await fetch("http://10.140.23.125:3000/api/auth/adminsignup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    fullName,
+                    email,
+                    password,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data?.message || "Signup failed. Please try again.");
+            }
+
+            // Success hole onboarding e navigate
+            navigation.navigate("Onbordingpageone");
+        } catch (error) {
+            Alert.alert("Signup Error", error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <SafeAreaView style={styles.canvas}>
@@ -115,19 +179,27 @@ const Signuppage = ({ navigation }) => {
                         label="FULL NAME"
                         placeholder="Enter your full name"
                         icon="person-outline"
+                        value={fullName}
+                        onChangeText={setFullName}
+                        autoCapitalize="words"
                     />
                     <InputField
                         label="EMAIL ADDRESS"
                         placeholder="hello@patisserie.com"
                         icon="mail-outline"
+                        value={email}
+                        onChangeText={setEmail}
+                        keyboardType="email-address"
                     />
                     <InputField
                         label="PASSWORD"
                         placeholder="Minimum 8 characters"
                         icon="lock-closed-outline"
-                        secureEntry={eyeActive}
+                        secureEntry={!eyeActive}
                         toggleSecure={() => setEyeActive(!eyeActive)}
                         showToggle
+                        value={password}
+                        onChangeText={setPassword}
                     />
 
                     {/* Terms */}
@@ -153,8 +225,14 @@ const Signuppage = ({ navigation }) => {
                         end={{ x: 1, y: 1 }}
                         style={styles.ctaGradient}
                     >
-                        <TouchableOpacity style={styles.ctaInner}>
-                            <Text style={styles.ctaText}>Create Account  ✦</Text>
+                        <TouchableOpacity
+                            onPress={handleSignup}
+                            disabled={loading}
+                            style={styles.ctaInner}
+                        >
+                            <Text style={styles.ctaText}>
+                                {loading ? "Creating Account..." : "Create Account  ✦"}
+                            </Text>
                         </TouchableOpacity>
                     </LinearGradient>
 

@@ -9,7 +9,8 @@ import {
     KeyboardAvoidingView,
     Platform,
     ScrollView,
-    Image
+    Image,
+    Alert
 } from "react-native";
 import Button from "../components/Button"
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -20,6 +21,44 @@ const Loginpage = ({navigation}) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const handleLogin = async () => {
+        // Basic validation
+        if (!email.trim() || !password.trim()) {
+            Alert.alert("Missing Info", "Please enter your email and password.");
+            return;
+        }
+
+        setLoading(true);
+        try {
+            // API call - URL ta nijer backend endpoint diye replace koro
+            const response = await fetch("http://10.140.23.125:3000/api/auth/loginadmin", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email,
+                    password,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data?.message || "Login failed. Please check your credentials.");
+            }
+
+            // Success hole onboarding e navigate
+            // ekhane token/user data thakle AsyncStorage ba context e save korte paro
+            navigation.navigate("Onbordingpageone");
+        } catch (error) {
+            Alert.alert("Login Error", error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <SafeAreaView style={pastryStyles.velvetCanvas}>
@@ -139,7 +178,11 @@ const Loginpage = ({navigation}) => {
                         </View>
 
                         <View style={{ marginTop: 24 }}>
-                            <Button onPress={()=>navigation.navigate("Onbordingpageone")} title="Sign in →" />
+                            <Button
+                                onPress={handleLogin}
+                                title={loading ? "Signing in..." : "Sign in →"}
+                                disabled={loading}
+                            />
                         </View>
 
                         <View style={pastryStyles.sugarFooterRibbon}>

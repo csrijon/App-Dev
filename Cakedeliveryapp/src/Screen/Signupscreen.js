@@ -19,15 +19,15 @@ const Signupscreen = ({ navigation }) => {
         try {
             setLoading(true);
 
-            const response = await fetch("http://192.168.1.5:3000/api/signup", {
+            const response = await fetch("http://10.140.23.125:3000/api/auth/signupmain", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    fullname,
+                    fullname: fullname,
                     mobile: fullemail,
-                    password,
+                    password: password
                 }),
             });
 

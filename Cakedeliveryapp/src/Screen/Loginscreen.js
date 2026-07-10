@@ -56,6 +56,7 @@ const Loginscreen = ({ navigation }) => {
     }
 
 const onclickloginbutton = async () => {
+    console.log("login button clicked ")
     setTouched(true);
 
     if (!loginemail || !loginpassword || !isMobileValid || !isPasswordValid) {
@@ -65,7 +66,7 @@ const onclickloginbutton = async () => {
     try {
         setLoading(true);
 
-        const response = await fetch("http://192.168.1.5:3000/api/login", {
+        const response = await fetch("http://10.140.23.125:3000/api/auth/loginmain", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

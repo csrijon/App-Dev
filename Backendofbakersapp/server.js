@@ -1,5 +1,6 @@
 import express from "express"
 import db from "./config/db.js"
+import main from "./routes/main.js"
 
 
 const app = express()
@@ -7,6 +8,7 @@ const PORT = 3000
 
 
 app.use(express.json())
+app.use(main)
 
 app.get("/", async (req, res) => {
     const result = await db.query("SELECT current_database()")
