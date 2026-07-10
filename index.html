@@ -1,341 +1,295 @@
 <!DOCTYPE html>
 
-<html class="light" lang="en"><head>
+<html lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Order Tracking | The Artisanal Pâtisserie</title>
+<title>Your Basket | Glaze &amp; Grain</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<style>.material-symbols-outlined {
-    font-variation-settings: "WHT" 300
-    }
-.grain-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0.04;
-    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuB3_yuwfx0erq5RLNkqIQUt6hVBNqXvLH14dIDAMi9t2Vv8rK2sP-p8oBEKNb4HtdboGNzD2OlfUV5mZwo0KO0eMuBo7nKgSgsehckCu_ytMjXNJBeSoDzV-DLCuGkKGS_xa3D8fAlngKXjK42jyT45hoU3HscOfu7KSvR9b7vNE0o9ln_SY-y8XjsOEvf7ffK40hReg9RVTRayEhBUx8-pZ0Y8sn2a8HjsWK89ULmE_pzsaMtUJg760Q2gHUn6LrzTLkG8T7HMyZzA)
-    }
-.organic-blob {
-    filter: blur(60px);
-    opacity: 0.4;
-    position: fixed;
-    z-index: -1
-    }
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0) scale(1);
-        } 50% {
-        transform: translateY(-20px) scale(1.05);
-        }
-    }
-.animate-float {
-    animation: float 8s ease-in-out infinite
-    }
-/* Custom map mask for organic feel */
-.map-mask {
-    mask-image: radial-gradient(circle, black 60%, transparent 100%)
-    }</style>
-<!-- Component Config -->
 <script id="tailwind-config">
-        tailwind.config = {
-          darkMode: "class",
-          theme: {
-            extend: {
-              "colors": {
-                      "tertiary-fixed-dim": "#f2b6cb",
-                      "surface-tint": "#75584e",
-                      "secondary-fixed": "#f5dce5",
-                      "primary-fixed": "#ffdbcf",
-                      "primary": "#5b4138",
-                      "surface-container-lowest": "#ffffff",
-                      "on-tertiary-fixed-variant": "#65394a",
-                      "surface-container-high": "#eee8d5",
-                      "cream-surface": "#FFF9E6",
-                      "on-primary-fixed-variant": "#5b4137",
-                      "accent-gold": "#D4AF37",
-                      "surface-variant": "#e8e2d0",
-                      "on-secondary-container": "#725f67",
-                      "on-error": "#ffffff",
-                      "tertiary": "#65394a",
-                      "surface-container-highest": "#e8e2d0",
-                      "on-surface-variant": "#646040",
-                      "primary-container": "#75584e",
-                      "on-primary-container": "#f7d1c4",
-                      "secondary-fixed-dim": "#d8c1c9",
-                      "inverse-on-surface": "#f6f1de",
-                      "surface": "#fff9e8",
-                      "surface-container": "#f4eedb",
-                      "on-tertiary-container": "#ffcadb",
-                      "on-tertiary": "#ffffff",
-                      "on-secondary": "#ffffff",
-                      "on-primary-fixed": "#2b160f",
-                      "warm-apricot": "#F6CFC2",
-                      "on-secondary-fixed-variant": "#534249",
-                      "primary-fixed-dim": "#e4beb2",
-                      "on-surface": "#1e1c11",
-                      "tertiary-fixed": "#ffd9e4",
-                      "error-container": "#ffdad6",
-                      "surface-container-low": "#f9f3e1",
-                      "secondary": "#6c5a61",
-                      "outline-variant": "#d4c3be",
-                      "on-primary": "#ffffff",
-                      "background": "#fff9e8",
-                      "on-secondary-fixed": "#25181e",
-                      "tertiary-container": "#805062",
-                      "inverse-primary": "#e4beb2",
-                      "error": "#ba1a1a",
-                      "secondary-container": "#f5dce5",
-                      "surface-dim": "#dfdac8",
-                      "on-error-container": "#93000a",
-                      "outline": "#827470",
-                      "on-tertiary-fixed": "#330f1f",
-                      "on-background": "#1e1c11",
-                      "soft-rose": "#F4DCE4",
-                      "inverse-surface": "#333124",
-                      "surface-bright": "#fff9e8"
-              },
-              "borderRadius": {
-                      "DEFAULT": "1rem",
-                      "lg": "2rem",
-                      "xl": "3rem",
-                      "full": "9999px"
-              },
-              "spacing": {
-                      "element-gap": "1rem",
-                      "page-margin": "2rem",
-                      "section-gap": "3rem",
-                      "inner-padding": "1.25rem"
-              },
-              "fontFamily": {
-                      "label-bold": ["Plus Jakarta Sans"],
-                      "body-lg": ["Plus Jakarta Sans"],
-                      "headline-md": ["Plus Jakarta Sans"],
-                      "body-md": ["Plus Jakarta Sans"],
-                      "label-caps": ["Plus Jakarta Sans"],
-                      "display-lg": ["Plus Jakarta Sans"],
-                      "display-lg-mobile": ["Plus Jakarta Sans"]
-              },
-              "fontSize": {
-                      "label-bold": ["11px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "700"}],
-                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "300"}],
-                      "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
-                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
-                      "label-caps": ["10px", {"lineHeight": "1.2", "letterSpacing": "0.4em", "fontWeight": "600"}],
-                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                      "display-lg-mobile": ["40px", {"lineHeight": "1.1", "fontWeight": "700"}]
-              }
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-high": "#eee8d5",
+                    "surface-dim": "#dfdac8",
+                    "on-error": "#ffffff",
+                    "inverse-on-surface": "#f6f1de",
+                    "surface-container": "#f4eedb",
+                    "surface-container-low": "#f9f3e1",
+                    "primary-container": "#75584e",
+                    "error-container": "#ffdad6",
+                    "on-secondary-container": "#725f67",
+                    "on-primary-container": "#f7d1c4",
+                    "tertiary-container": "#805062",
+                    "secondary-container": "#f5dce5",
+                    "on-error-container": "#93000a",
+                    "primary-fixed-dim": "#e4beb2",
+                    "accent-gold": "#D4AF37",
+                    "tertiary-fixed": "#ffd9e4",
+                    "on-tertiary-container": "#ffcadb",
+                    "on-surface-variant": "#646040",
+                    "surface-container-lowest": "#ffffff",
+                    "outline-variant": "#d4c3be",
+                    "primary": "#5b4138",
+                    "secondary-fixed-dim": "#d8c1c9",
+                    "warm-apricot": "#F6CFC2",
+                    "on-primary-fixed-variant": "#5b4137",
+                    "background": "#fff9e8",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed-variant": "#65394a",
+                    "on-surface": "#1e1c11",
+                    "surface-tint": "#75584e",
+                    "primary-fixed": "#ffdbcf",
+                    "on-primary": "#ffffff",
+                    "surface-variant": "#e8e2d0",
+                    "on-secondary-fixed": "#25181e",
+                    "on-background": "#1e1c11",
+                    "tertiary-fixed-dim": "#f2b6cb",
+                    "cream-surface": "#FFF9E6",
+                    "outline": "#827470",
+                    "secondary": "#6c5a61",
+                    "inverse-surface": "#333124",
+                    "on-secondary-fixed-variant": "#534249",
+                    "on-tertiary-fixed": "#330f1f",
+                    "on-primary-fixed": "#2b160f",
+                    "surface-container-highest": "#e8e2d0",
+                    "tertiary": "#65394a",
+                    "surface": "#fff9e8",
+                    "surface-bright": "#fff9e8",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed": "#f5dce5",
+                    "soft-rose": "#F4DCE4",
+                    "inverse-primary": "#e4beb2",
+                    "on-tertiary": "#ffffff"
             },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "inner-padding": "1.25rem",
+                    "section-gap": "3rem",
+                    "page-margin": "2rem",
+                    "element-gap": "1rem"
+            },
+            "fontFamily": {
+                    "label-bold": ["Plus Jakarta Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "display-lg": ["Plus Jakarta Sans"],
+                    "display-lg-mobile": ["Plus Jakarta Sans"],
+                    "label-caps": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "label-bold": ["11px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "300"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "display-lg-mobile": ["40px", {"lineHeight": "1.1", "fontWeight": "700"}],
+                    "label-caps": ["10px", {"lineHeight": "1.2", "letterSpacing": "0.4em", "fontWeight": "600"}]
+            }
           },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #fff9e8;
+            background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+            min-height: 100vh;
         }
-      </script>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .grain-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.05;
+            z-index: 9999;
+            background-image: url("https://www.transparenttextures.com/patterns/film-grain.png");
+        }
+        .organic-blob {
+            position: absolute;
+            filter: blur(80px);
+            z-index: -1;
+            border-radius: 50%;
+            opacity: 0.4;
+        }
+    </style>
 <style>
     body {
       min-height: max(884px, 100dvh);
     }
   </style>
   </head>
-<body class="bg-surface text-on-surface font-body-md overflow-x-hidden selection:bg-warm-apricot selection:text-primary">
+<body class="font-body-md text-on-surface overflow-x-hidden">
 <div class="grain-overlay"></div>
-<!-- Decorative Organic Backgrounds -->
-<div class="organic-blob bg-warm-apricot w-96 h-96 -top-20 -left-20 animate-float"></div>
-<div class="organic-blob bg-soft-rose w-[30rem] h-[30rem] bottom-0 -right-20 animate-float" style="animation-delay: -2s;"></div>
-<!-- Top Navigation Anchor -->
-<header class="fixed top-0 w-full z-50 bg-[#FFF9E6]/80 backdrop-blur-[20px] shadow-[0px_24px_48px_rgba(117,88,78,0.08)]">
-<div class="flex items-center justify-between px-6 py-4 w-full">
-<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-[#F6CFC2]/50 transition-colors active:scale-95 text-[#75584E]">
+<!-- Decorative Organic Blobs -->
+<div class="organic-blob bg-warm-apricot w-96 h-96 -top-20 -left-20"></div>
+<div class="organic-blob bg-soft-rose w-[30rem] h-[30rem] top-[40%] -right-40"></div>
+<!-- Top App Bar (Shared Component Reference) -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-primary/10 flex justify-between items-center h-16 px-page-margin">
+<button class="text-primary hover:opacity-80 transition-opacity active:scale-95 duration-200">
 <span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
 </button>
-<h1 class="text-xl font-extrabold text-[#75584E] tracking-tighter font-['Plus_Jakarta_Sans']">The Artisanal Pâtisserie</h1>
-<div class="w-10"></div> <!-- Spacer for balance -->
+<h1 class="font-display-lg-mobile text-display-lg-mobile text-primary tracking-tighter">Glaze &amp; Grain</h1>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-primary/20">
+<img class="w-full h-full object-cover" data-alt="A sophisticated close-up portrait of a professional baker in a clean white apron, set against a warm, sun-drenched artisanal kitchen background with soft morning light. The color palette is composed of creamy whites and rich mahogany browns, maintaining the high-end Glaze and Grain aesthetic. The lighting is soft and cinematic, highlighting the fine details of the craft environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyE29DnUAl0PIioxRFblXyb9RCxyPd4L-0CR8dMj5IV7Of7mHLnaCR6fsn9N2pDFVPrUxySAP4ezAPRI_Og2SjOABoxsNvFM6hIFw0yFb-aNqWwehiLDRjQ1392AGj_b3mTDvc25gZhHdyrHKSwIhV7f-POErc5XiIJYVb1SjowyRk7ZfhaV0hhjUgHLAMN6cpMn6R8IZHGqMA-k6oR_DlGoxakoGHHtuhZ0tGoj1Dj7x2t8ge4QpZV2jml3fQHe0BEbjspnW9UUHJ"/>
 </div>
 </header>
-<main class="pt-24 pb-32 px-page-margin max-w-[400px] mx-auto min-h-screen relative">
-<!-- Live Map Section -->
-<section class="relative mb-section-gap">
-<div class="relative w-full aspect-square rounded-full overflow-hidden shadow-lg border-2 border-surface-container-low group">
-<!-- Map Background -->
-<div class="absolute inset-0 bg-surface-container-high overflow-hidden">
-<div class="w-full h-full bg-cover bg-center grayscale opacity-60" data-alt="A minimalist artistic map of a premium urban neighborhood with soft pastel tones, cream streets, and warm brown highlights. The map is designed with an elegant, non-busy aesthetic, featuring high-end architecture icons and thin, clean lines reflecting a luxury pátisserie brand identity." data-location="Paris" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBLexxnxwQzNv4Cgn4dsFfBVckc8wNukjW_id7v_xaVPEbUj2FBwom_Ws2dc1lLTKfJlxMd7qqVu2fy8ONwfT05yaa2kPFMHkoOqvWH-VJZKplXZVKrI1B282otcT6CsMvcEGPh5zgZ88KdJ9tgPdT5TRxk_gV4uIsin5ZeDu3pjIqV7eCnVMieFM4icBIigsoySQYGxwF753aWfleEvFLmA1NOIQ3YrqOevtjPvv2-ClbuWkv1qHxW0qBkxygYSpeJPhtkSbkV5ZLU')"></div>
+<main class="pt-24 pb-32 px-page-margin max-w-[480px] mx-auto min-h-screen flex flex-col gap-8">
+<!-- Page Title -->
+<div class="flex flex-col gap-1">
+<span class="font-label-caps text-label-caps text-primary/60 tracking-[0.4em]">YOUR CURATION</span>
+<h2 class="font-headline-md text-headline-md text-primary">Your Basket</h2>
 </div>
-<!-- Animated Route Overlay (Simplified simulation) -->
-<div class="absolute inset-0 flex items-center justify-center">
-<div class="relative w-4/5 h-4/5">
-<svg class="w-full h-full" viewbox="0 0 100 100">
-<path class="opacity-30" d="M 20 80 Q 50 10 80 40" fill="none" stroke="#75584E" stroke-dasharray="4 4" stroke-width="2"></path>
-</svg>
-<!-- Driver Icon -->
-<div class="absolute top-[25%] left-[55%] -translate-x-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow-lg border border-primary/10 animate-bounce">
-<span class="material-symbols-outlined text-primary text-xl" data-icon="delivery_dining">delivery_dining</span>
+<!-- Cart Items List -->
+<section class="flex flex-col gap-6">
+<!-- Item 1: Lavender Honey Cake -->
+<div class="bg-surface-container-low rounded-lg p-5 flex gap-4 border border-outline-variant/30 shadow-sm transition-transform hover:translate-y-[-2px] duration-300">
+<div class="w-24 h-24 rounded-full flex-shrink-0 border-2 border-white shadow-md overflow-hidden bg-white">
+<img class="w-full h-full object-cover" data-alt="A gourmet lavender honey cake with delicate purple floral accents and golden honey glaze dripping down its sides, presented on a minimalist white ceramic plate. The lighting is soft and atmospheric, highlighting the intricate textures of the sponge and the glossy glaze. The background is a soft-focus warm cream, aligning with the artisanal Glaze and Grain luxury brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApXgsQfHvTC7eIHc5JMoNQsMnFUDAmeMxqxhKUoP0gDQ2XbCWiwSbhmVhlHEoNH1M65AE3Hl2Zk41Ua_For1uQvugFQwQiHk5Nt_I3Ml9-H5DQJcrCJZwypTk-WAJAHhPrU55lqOzX2BHpOJuXB7TWUksPul5UzcSvrZ8jRdq0_XVnp1RHZqZeHay4ylAXVpRdtG1RGuIQy5-S6YEPkICK68hflGHP7A8-JP0Uy-PxLMpMJQHTpRwtcZEAxXgSogDK_rsIDk0nxq-D"/>
 </div>
-</div>
-</div>
-<!-- Floating Badge -->
-<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 mt-20">
-<div class="bg-white px-4 py-2 rounded-full shadow-xl border border-primary/5 flex items-center gap-2 transform rotate-2 animate-float">
-<span class="w-2 h-2 rounded-full bg-accent-gold animate-pulse"></span>
-<span class="font-label-bold text-label-bold text-primary">ARRIVING IN 8 MINS</span>
-</div>
-</div>
-</div>
-<!-- Orbit Ring Decoration -->
-<div class="absolute inset-0 -m-4 border border-primary/10 rounded-full animate-[spin_20s_linear_infinite] pointer-events-none"></div>
-</section>
-<!-- Status Tracker Section -->
-<section class="mb-section-gap space-y-6">
-<div class="text-center">
-<h2 class="font-headline-md text-headline-md text-primary mb-1">Out for Delivery</h2>
-<p class="font-body-lg text-body-lg text-on-surface-variant">Your lavender honey cake is en route.</p>
-</div>
-<div class="flex items-center justify-between relative px-2">
-<!-- Progress Line Background -->
-<div class="absolute top-1/2 left-0 w-full h-[2px] bg-outline-variant -translate-y-1/2 z-0"></div>
-<!-- Active Progress Line -->
-<div class="absolute top-1/2 left-0 w-2/3 h-[2px] bg-primary-container -translate-y-1/2 z-0"></div>
-<!-- Step 1: Baking -->
-<div class="relative z-10 flex flex-col items-center">
-<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center shadow-md">
-<span class="material-symbols-outlined text-[16px]" data-icon="check" data-weight="fill">check</span>
-</div>
-<span class="mt-2 font-label-caps text-label-caps text-primary opacity-60">BAKING</span>
-</div>
-<!-- Step 2: Quality Check -->
-<div class="relative z-10 flex flex-col items-center">
-<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center shadow-md">
-<span class="material-symbols-outlined text-[16px]" data-icon="check" data-weight="fill">check</span>
-</div>
-<span class="mt-2 font-label-caps text-label-caps text-primary opacity-60">QUALITY</span>
-</div>
-<!-- Step 3: Out for Delivery -->
-<div class="relative z-10 flex flex-col items-center">
-<div class="w-10 h-10 rounded-full bg-warm-apricot border-4 border-surface text-primary flex items-center justify-center shadow-lg ring-2 ring-primary">
-<span class="material-symbols-outlined text-[20px]" data-icon="local_shipping" data-weight="fill">local_shipping</span>
-</div>
-<span class="mt-2 font-label-caps text-label-caps text-primary font-bold">SHIPPING</span>
-</div>
-<!-- Step 4: Arrived -->
-<div class="relative z-10 flex flex-col items-center">
-<div class="w-8 h-8 rounded-full bg-surface-container border-2 border-outline-variant text-outline flex items-center justify-center">
-<span class="material-symbols-outlined text-[16px]" data-icon="home">home</span>
-</div>
-<span class="mt-2 font-label-caps text-label-caps text-outline">ARRIVED</span>
-</div>
-</div>
-</section>
-<!-- Courier Card -->
-<section class="bg-white/80 backdrop-blur-md p-6 rounded-xl shadow-[0px_20px_40px_rgba(117,88,78,0.12)] border border-white mb-element-gap relative group hover:-translate-y-1 transition-all duration-300">
-<div class="flex items-center gap-4">
-<div class="relative">
-<div class="w-16 h-16 rounded-full overflow-hidden border-2 border-warm-apricot shadow-sm">
-<img class="w-full h-full object-cover" data-alt="A professional and friendly portrait of a delivery courier in a clean, high-end uniform. The background is softly blurred urban daylight, reflecting the premium Glaze &amp; Grain brand colors like cream and soft rose. The lighting is warm and natural, suggesting reliability and care." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaGmm7YQ41Y6V4jJs0L2dG2TzGY6WpXc8WNIEHMWSLhhZu15GmOW_EN52uG3ZwBGHjUQUGiAi5-ZSU-BVO7sWr1c_suB1V35m08b0YC-e3LfG3SzTK44OKTRCv0p4I6U5_1Dmq6AU4VPmpjf7FL07ch0gwkyEpiKDAz2Deg9FYUCJH8MoiQuifbPhu5oZt3LUaFSvLGrCkGu_r_FNWX-fzpaBK8u3Fg4Ozzg_YAdT-jqEWFtP1W1resbpSav4AeTTBZ2aQG3WW6p-0"/>
-</div>
-<div class="absolute -bottom-1 -right-1 bg-accent-gold text-white rounded-full p-1 shadow-md">
-<span class="material-symbols-outlined text-[12px]" data-icon="verified" data-weight="fill">verified</span>
-</div>
-</div>
-<div class="flex-1">
-<h3 class="font-headline-md text-body-lg font-bold text-primary">Bastien Rousseau</h3>
-<div class="flex items-center gap-1 mt-1">
-<span class="material-symbols-outlined text-accent-gold text-[16px]" data-icon="star" data-weight="fill">star</span>
-<span class="font-label-bold text-label-bold text-primary">4.9</span>
-<span class="text-on-surface-variant text-[12px] ml-1 opacity-60">• 1,240 deliveries</span>
-</div>
-</div>
-<div class="flex gap-2">
-<button class="w-10 h-10 rounded-full bg-soft-rose text-tertiary flex items-center justify-center hover:bg-tertiary hover:text-white transition-all active:scale-90">
-<span class="material-symbols-outlined text-[20px]" data-icon="call">call</span>
-</button>
-<button class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center hover:shadow-lg transition-all active:scale-90">
-<span class="material-symbols-outlined text-[20px]" data-icon="chat">chat</span>
+<div class="flex flex-col flex-grow gap-1">
+<div class="flex justify-between items-start">
+<h3 class="font-body-md font-semibold text-primary">Lavender Honey Cake</h3>
+<button class="text-primary/40 hover:text-error transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="close">close</span>
 </button>
 </div>
+<div class="flex flex-col gap-0.5 text-on-surface-variant/80 text-[13px]">
+<span>Size: 8-inch</span>
+<span>Flavor: Vanilla Bean</span>
+<div class="mt-1 italic text-primary/60 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="edit_note">edit_note</span>
+                            "Happy Birthday!"
+                        </div>
+</div>
+<div class="flex justify-between items-center mt-3">
+<span class="font-semibold text-primary">$64.00</span>
+<div class="flex items-center gap-3 bg-white/60 rounded-full px-3 py-1 border border-outline-variant/20">
+<button class="text-primary active:scale-90 transition-transform"><span class="material-symbols-outlined text-[18px]" data-icon="remove">remove</span></button>
+<span class="font-label-bold text-label-bold text-primary">01</span>
+<button class="text-primary active:scale-90 transition-transform"><span class="material-symbols-outlined text-[18px]" data-icon="add">add</span></button>
+</div>
+</div>
+</div>
+</div>
+<!-- Item 2: Velvet Cloud Cake -->
+<div class="bg-surface-container-low rounded-lg p-5 flex gap-4 border border-outline-variant/30 shadow-sm transition-transform hover:translate-y-[-2px] duration-300">
+<div class="w-24 h-24 rounded-full flex-shrink-0 border-2 border-white shadow-md overflow-hidden bg-white">
+<img class="w-full h-full object-cover" data-alt="A minimalist Velvet Cloud Cake, pure white with ethereal whipped peaks and a subtle pearlescent finish. The cake sits elegantly on a marble pedestal, illuminated by a soft golden glow. The overall mood is airy and sophisticated, featuring a clean palette of whites and soft browns, emphasizing the high-end craft of Glaze and Grain pâtisserie." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaOtgddx74BIilI-ifqVg9hu4fXPJT2QlUccsca3lLdTuuT8V0jAFzpw4FfxAbIe0UxmyoPWbykxog_cW5BpaXQME_T0myvmF5HqRrigj8ThkFEKXt6xCjO6m29hIRkumZ4x245aLK-16R_FitluCZ6uJE_zHAiZfmAq14GBVN2ZkbNvhReImQftTzFv4U_AMMQDBcqUt-bhKmnM1loVV7DsVheW9WDmT4AbXsT2sxOxOQH7x33UwD6O-ifAz8asr9XvkF2rEr1-7v"/>
+</div>
+<div class="flex flex-col flex-grow gap-1">
+<div class="flex justify-between items-start">
+<h3 class="font-body-md font-semibold text-primary">Velvet Cloud Cake</h3>
+<button class="text-primary/40 hover:text-error transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="close">close</span>
+</button>
+</div>
+<div class="flex flex-col gap-0.5 text-on-surface-variant/80 text-[13px]">
+<span>Size: 6-inch</span>
+<span>Flavor: White Chocolate</span>
+</div>
+<div class="flex justify-between items-center mt-3">
+<span class="font-semibold text-primary">$48.00</span>
+<div class="flex items-center gap-3 bg-white/60 rounded-full px-3 py-1 border border-outline-variant/20">
+<button class="text-primary active:scale-90 transition-transform"><span class="material-symbols-outlined text-[18px]" data-icon="remove">remove</span></button>
+<span class="font-label-bold text-label-bold text-primary">01</span>
+<button class="text-primary active:scale-90 transition-transform"><span class="material-symbols-outlined text-[18px]" data-icon="add">add</span></button>
+</div>
+</div>
+</div>
 </div>
 </section>
-<!-- Order Details Section -->
-<section class="bg-surface-container-low p-6 rounded-xl border border-primary/5 space-y-6">
-<div class="flex justify-between items-center pb-4 border-b border-outline-variant/40">
+<!-- Delivery Details Section -->
+<section class="bg-white/40 border border-outline-variant/40 rounded-lg p-6 flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<div class="bg-primary-container/10 p-2 rounded-full">
+<span class="material-symbols-outlined text-primary" data-icon="local_shipping">local_shipping</span>
+</div>
 <div>
-<p class="font-label-caps text-label-caps text-on-surface-variant opacity-60">ORDER NO.</p>
-<p class="font-label-bold text-primary mt-1">#GG-98231-FR</p>
-</div>
-<button class="text-primary/60 hover:text-primary flex items-center gap-1 transition-colors">
-<span class="font-label-bold text-[11px]">DETAILS</span>
-<span class="material-symbols-outlined text-[14px]" data-icon="open_in_new">open_in_new</span>
-</button>
-</div>
-<div class="space-y-4">
-<div class="flex items-start gap-4">
-<div class="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
-<img class="w-full h-full object-cover" data-alt="A close-up shot of a signature Lavender Honey Cake from Glaze &amp; Grain, featuring delicate purple lavender sprigs and golden honey drizzles over a creamy, textured frosting. High-end pâtisserie presentation in light mode, cream background, warm highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAK0pDshUhQoL7qysAChUFNIQVkazvGDaI3XGN1XcEO_DoZBoHsEVfpQ2EWAHDtQcFz8dtyGoB5xTlq8n7HkdabmEwe8qPuAcbEXbFAbelIZvwXhazzUVewAZYxfKZTkx9ko2U3cW6VXDIgSDIeVPqPPPdozOLr2YRJWUOmqTHkAihvjhAoQQtytAjEiRMS2v0stKZgjN59u_ke5-N8FZFNiyvmDFHzjmbPKEy2vWO5gH6Hj8uzjVYokFPSJIoTtJUs_2FqrFW1gHbd"/>
-</div>
-<div class="flex-1">
-<p class="font-label-bold text-primary">1x Lavender Honey Cake</p>
-<p class="text-[12px] text-on-surface-variant italic mt-0.5">Gluten-free base, seasonal honey</p>
-</div>
-<p class="font-label-bold text-primary">€42.00</p>
+<h4 class="font-label-bold text-label-bold text-primary uppercase">Delivery Details</h4>
+<p class="text-[14px] text-on-surface-variant">Estimated: 45-60 mins</p>
 </div>
 </div>
-<div class="pt-4 border-t border-outline-variant/40 space-y-4">
-<div class="flex gap-3">
-<span class="material-symbols-outlined text-primary/60 mt-0.5" data-icon="location_on">location_on</span>
-<div>
-<p class="font-label-caps text-label-caps text-on-surface-variant opacity-60">DELIVER TO</p>
-<p class="font-body-md text-primary mt-1 leading-snug">Apartment 4B, 24 Rue de Rivoli<br/>75001 Paris, France</p>
+<div class="h-px bg-outline-variant/40 w-full"></div>
+<div class="flex justify-between items-center">
+<div class="flex flex-col gap-0.5">
+<span class="text-[12px] uppercase tracking-wider text-primary/60 font-semibold">Ship to</span>
+<p class="text-[14px] text-primary">42 Artisan Grove, West Hollywood, CA</p>
 </div>
-</div>
+<button class="text-accent-gold font-semibold text-[13px] hover:underline transition-all">Change</button>
 </div>
 </section>
+<!-- Promo Code Input -->
+<div class="relative group">
+<input class="w-full bg-surface-container-low border border-outline-variant/30 rounded-full py-4 px-6 text-primary placeholder:text-primary/40 focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all" placeholder="Enter Promo Code" type="text"/>
+<button class="absolute right-2 top-2 bottom-2 px-6 bg-primary text-white rounded-full font-label-bold text-label-bold uppercase tracking-widest active:scale-95 transition-transform">Apply</button>
+</div>
+<!-- Bill Details -->
+<section class="flex flex-col gap-3 px-2">
+<div class="flex justify-between items-center text-on-surface-variant">
+<span class="text-[14px]">Subtotal</span>
+<span class="font-semibold">$112.00</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant">
+<span class="text-[14px]">Delivery Fee</span>
+<span class="font-semibold text-primary">FREE</span>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant">
+<span class="text-[14px]">Taxes (8%)</span>
+<span class="font-semibold">$8.96</span>
+</div>
+<div class="h-px bg-outline-variant/40 w-full my-2"></div>
+<div class="flex justify-between items-center text-primary">
+<span class="font-headline-md text-[20px]">Grand Total</span>
+<span class="font-headline-md text-[24px] tracking-tight">$120.96</span>
+</div>
+</section>
+<!-- Final Spacer -->
+<div class="h-10"></div>
 </main>
-<!-- Support FAB (Suppressed on most screens, but requested for this view) -->
-<button class="fixed bottom-24 right-6 w-14 h-14 bg-white rounded-full shadow-2xl border border-primary/5 flex items-center justify-center text-primary hover:scale-110 active:scale-95 transition-all z-40">
-<span class="material-symbols-outlined text-[28px]" data-icon="support_agent">support_agent</span>
+<!-- Fixed Bottom Action Bar -->
+<footer class="fixed bottom-0 w-full bg-surface-container-low/95 backdrop-blur-lg border-t border-primary/10 px-page-margin pt-4 pb-8 z-50 flex flex-col gap-4">
+<!-- Floating Checkout Button -->
+<button class="w-full bg-primary text-on-primary py-5 rounded-full shadow-lg shadow-primary/20 flex justify-center items-center gap-3 active:scale-[0.98] transition-all hover:opacity-90">
+<span class="font-headline-md text-[18px] tracking-wide">Proceed to Checkout</span>
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
 </button>
-<!-- Navigation Shell -->
-<nav class="fixed bottom-0 w-full rounded-t-[3rem] z-50 bg-[#FFF9E6] border-t border-[#B9B38D]/15 shadow-[0px_-10px_40px_rgba(117,88,78,0.05)]">
-<div class="flex justify-around items-center w-full px-4 py-3 pb-safe">
-<a class="flex flex-col items-center justify-center text-[#646040] px-5 py-1.5 hover:opacity-80 transition-all active:scale-90" href="#">
-<span class="material-symbols-outlined mb-1" data-icon="home">home</span>
-<span class="font-['Plus_Jakarta_Sans'] text-[11px] font-medium">Home</span>
-</a>
-<a class="flex flex-col items-center justify-center text-[#646040] px-5 py-1.5 hover:opacity-80 transition-all active:scale-90" href="#">
-<span class="material-symbols-outlined mb-1" data-icon="storefront">storefront</span>
-<span class="font-['Plus_Jakarta_Sans'] text-[11px] font-medium">Shop</span>
-</a>
-<!-- ACTIVE STATE: Orders -->
-<a class="flex flex-col items-center justify-center bg-[#F6CFC2] text-[#75584E] rounded-full px-5 py-1.5 transition-all active:scale-90" href="#">
-<span class="material-symbols-outlined mb-1" data-icon="receipt_long" data-weight="fill">receipt_long</span>
-<span class="font-['Plus_Jakarta_Sans'] text-[11px] font-bold">Orders</span>
-</a>
-<a class="flex flex-col items-center justify-center text-[#646040] px-5 py-1.5 hover:opacity-80 transition-all active:scale-90" href="#">
-<span class="material-symbols-outlined mb-1" data-icon="person">person</span>
-<span class="font-['Plus_Jakarta_Sans'] text-[11px] font-medium">Profile</span>
-</a>
-</div>
-</nav>
+</footer>
+<!-- Bottom Nav Bar (Shared Component logic - suppressed for checkout context) -->
+<!-- The BottomNavBar is suppressed here as per "Shell Visibility & Relevance" rule for Transactional/Focused screens -->
 <script>
-        // Micro-interactions for tracking simulation
-        document.addEventListener('DOMContentLoaded', () => {
-            const driverIcon = document.querySelector('[data-icon="delivery_dining"]').parentElement;
-            
-            // Subtle movement for the driver icon to simulate real-time tracking
-            setInterval(() => {
-                const randomX = (Math.random() - 0.5) * 4;
-                const randomY = (Math.random() - 0.5) * 4;
-                driverIcon.style.transform = `translate(calc(-50% + ${randomX}px), calc(-50% + ${randomY}px))`;
-            }, 3000);
+        // Micro-interaction for quantity buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                // Simple ripple/scale effect already handled by Tailwind classes
+            });
+        });
 
-            // Pulse effect for the active tracker step
-            const activeStep = document.querySelector('.ring-primary');
-            if (activeStep) {
-                activeStep.classList.add('animate-pulse');
-                setTimeout(() => activeStep.classList.remove('animate-pulse'), 2000);
-            }
+        // Hover effect for items
+        const cards = document.querySelectorAll('.bg-surface-container-low');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.borderColor = 'rgba(117, 88, 78, 0.4)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.borderColor = 'rgba(212, 195, 190, 0.3)';
+            });
         });
     </script>
 </body></html>

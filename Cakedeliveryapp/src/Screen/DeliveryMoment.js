@@ -99,7 +99,7 @@ const DeliveryMoment = ({ navigation, route }) => {
         setTimeout(() => {
             setLoading(false)
 
-            navigation.navigate("Cakedetails", {
+            navigation.navigate("Checkoutscreen", {
                 orderData
             })
         }, 1000)
