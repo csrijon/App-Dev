@@ -8,34 +8,63 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
-  Alert
+  Alert,
+  ActivityIndicator
 } from 'react-native';
 const { width } = Dimensions.get('window')
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BakeryHeader from "../components/BakeryHeader"
 import Floatingfixedbutton from "../components/Floatingfixedbutton"
 
-// --- ADDED IMPORT FOR GALLERY PICKER ---
+// --- GALLERY PICKER ---
 import { launchImageLibrary } from 'react-native-image-picker';
 
 const OnboardingpageFour = ({navigation})=>{
     const [fssaiNumber, setFssaiNumber] = useState('');
-    
-    // --- ADDED STATES FOR FILES ---
+    const [fssaiError, setFssaiError] = useState('');
+
+    // --- FILE STATES ---
     const [fssaiDocName, setFssaiDocName] = useState('fssal_cert.pdf');
     const [gstImageUri, setGstImageUri] = useState(null);
 
-    // const handleNext = () => {
-    //     if (fssaiNumber.trim().length !== 14) {
-    //         Alert.alert("Validation Error", "Please enter a valid 14-digit FSSAI License Number.");
-    //         return;
-    //     }
-    //     navigation.navigate("OnboardingpageFive", { 
-    //         fssaiNumber, 
-    //         fssaiDocName, 
-    //         gstImageUri 
-    //     });
-    // };
+    // --- LOADING STATES FOR IMAGE PICKERS ---
+    const [isReplacingDoc, setIsReplacingDoc] = useState(false);
+    const [isUploadingGst, setIsUploadingGst] = useState(false);
+
+    // --- VALIDATE + NAVIGATE ---
+    const handleNext = () => {
+        const trimmed = fssaiNumber.trim();
+
+        if (trimmed.length === 0) {
+            setFssaiError('FSSAI license number is required.');
+            return;
+        }
+
+        if (trimmed.length !== 14) {
+            setFssaiError('FSSAI number must be exactly 14 digits.');
+            return;
+        }
+
+        if (!/^\d{14}$/.test(trimmed)) {
+            setFssaiError('FSSAI number must contain digits only.');
+            return;
+        }
+
+        setFssaiError('');
+
+        navigation.navigate("OnboardingpageFive", {
+            fssaiNumber: trimmed,
+            fssaiDocName,
+            gstImageUri
+        });
+    };
+
+    const handleFssaiChange = (text) => {
+        // allow only digits while typing
+        const digitsOnly = text.replace(/[^0-9]/g, '');
+        setFssaiNumber(digitsOnly);
+        if (fssaiError) setFssaiError('');
+    };
 
     const handleBack = () => {
         navigation.goBack();
@@ -45,43 +74,62 @@ const OnboardingpageFour = ({navigation})=>{
         Alert.alert("View Document", `Opening ${fssaiDocName}...`);
     };
 
-    // --- ADDED GALLERY PICKER FUNCTIONALITY FOR FSSAI ---
+    // --- REPLACE FSSAI DOCUMENT ---
     const handleReplaceDocument = () => {
         const options = {
             mediaType: 'photo',
             quality: 0.8,
         };
 
+        setIsReplacingDoc(true);
+
         launchImageLibrary(options, (response) => {
+            setIsReplacingDoc(false);
+
             if (response.didCancel) {
                 console.log('User cancelled gallery picker');
             } else if (response.errorCode) {
-                Alert.alert('Error', response.errorMessage);
+                Alert.alert('Error', response.errorMessage || 'Something went wrong picking the file.');
             } else if (response.assets && response.assets.length > 0) {
-                // Update the UI with the selected file's name
                 const selectedFileName = response.assets[0].fileName || 'Updated_Certificate.jpg';
                 setFssaiDocName(selectedFileName);
+                Alert.alert('Success', 'FSSAI certificate updated.');
             }
         });
     };
 
-    // --- ADDED GALLERY PICKER FUNCTIONALITY FOR GST ---
+    // --- UPLOAD GST IMAGE ---
     const handleUploadGST = () => {
         const options = {
             mediaType: 'photo',
             quality: 0.8,
         };
 
+        setIsUploadingGst(true);
+
         launchImageLibrary(options, (response) => {
+            setIsUploadingGst(false);
+
             if (response.didCancel) {
                 console.log('User cancelled gallery picker');
             } else if (response.errorCode) {
-                Alert.alert('Error', response.errorMessage);
+                Alert.alert('Error', response.errorMessage || 'Something went wrong picking the file.');
             } else if (response.assets && response.assets.length > 0) {
-                // Save the image URI to show it in the UI
                 setGstImageUri(response.assets[0].uri);
             }
         });
+    };
+
+    // --- REMOVE GST IMAGE ---
+    const handleRemoveGST = () => {
+        Alert.alert(
+            "Remove Image",
+            "Are you sure you want to remove this GST document?",
+            [
+                { text: "Cancel", style: "cancel" },
+                { text: "Remove", style: "destructive", onPress: () => setGstImageUri(null) }
+            ]
+        );
     };
 
     return(
@@ -114,14 +162,26 @@ const OnboardingpageFour = ({navigation})=>{
         <View style={styles.inputSection}>
           <Text style={styles.inputLabel}>FSSAI LICENSE NUMBER</Text>
           <TextInput
-            style={styles.textInput}
+            style={[
+              styles.textInput,
+              fssaiError ? styles.textInputError : null
+            ]}
             placeholder="Enter 14-digit number"
             placeholderTextColor="#B0A39A"
             keyboardType="number-pad"
             maxLength={14}
             value={fssaiNumber}
-            onChangeText={setFssaiNumber}
+            onChangeText={handleFssaiChange}
           />
+          <View style={styles.inputFooterRow}>
+            {fssaiError ? (
+              <Text style={styles.errorText}>{fssaiError}</Text>
+            ) : (
+              <Text style={styles.helperText}>
+                {fssaiNumber.length}/14 digits
+              </Text>
+            )}
+          </View>
         </View>
 
         {/* --- Uploaded Document Card --- */}
@@ -131,30 +191,50 @@ const OnboardingpageFour = ({navigation})=>{
           </View>
           <View style={styles.uploadedTextContainer}>
             <Text style={styles.uploadedTitle}>FSSAI{'\n'}CERTIFICATE</Text>
-            {/* Dynamic File Name */}
             <Text style={styles.uploadedSubtitle} numberOfLines={1}>✅ {fssaiDocName}</Text>
           </View>
           <View style={styles.uploadedActions}>
-            <TouchableOpacity onPress={handleViewDocument}>
+            <TouchableOpacity onPress={handleViewDocument} disabled={isReplacingDoc}>
               <Text style={styles.actionTextDark}>View</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{ marginLeft: 16 }} onPress={handleReplaceDocument}>
-              <Text style={styles.actionTextRed}>Replace</Text>
+            <TouchableOpacity
+              style={{ marginLeft: 16, minWidth: 55, alignItems: 'flex-end' }}
+              onPress={handleReplaceDocument}
+              disabled={isReplacingDoc}
+            >
+              {isReplacingDoc ? (
+                <ActivityIndicator size="small" color="#B64B4B" />
+              ) : (
+                <Text style={styles.actionTextRed}>Replace</Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>
 
         {/* --- GST Upload Area --- */}
-        <TouchableOpacity style={styles.uploadArea} activeOpacity={0.7} onPress={handleUploadGST}>
-          {gstImageUri ? (
-            // Show the picked image if it exists
-            <Image 
-                source={{ uri: gstImageUri }} 
-                style={styles.uploadedImagePreview} 
-                resizeMode="cover"
-            />
+        <TouchableOpacity
+          style={styles.uploadArea}
+          activeOpacity={0.7}
+          onPress={gstImageUri ? undefined : handleUploadGST}
+          disabled={isUploadingGst}
+        >
+          {isUploadingGst ? (
+            <ActivityIndicator size="large" color="#8B7365" />
+          ) : gstImageUri ? (
+            <>
+              <Image
+                  source={{ uri: gstImageUri }}
+                  style={styles.uploadedImagePreview}
+                  resizeMode="cover"
+              />
+              <TouchableOpacity style={styles.removeImageBadge} onPress={handleRemoveGST}>
+                <Text style={styles.removeImageBadgeText}>✕</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.changeImageBadge} onPress={handleUploadGST}>
+                <Text style={styles.changeImageBadgeText}>Change</Text>
+              </TouchableOpacity>
+            </>
           ) : (
-            // Show the default upload UI if no image is picked
             <>
                 <View style={styles.uploadIconCircle}>
                   <Text style={styles.uploadIcon}>⬆️</Text>
@@ -195,7 +275,7 @@ const OnboardingpageFour = ({navigation})=>{
 
       <Floatingfixedbutton 
         onPressBack={handleBack} 
-        onPress={()=>navigation.navigate("OnboardingpageFive")} 
+        onPress={handleNext} 
         title={"Back"} 
         titletwo={"Send"} 
       />
@@ -282,6 +362,23 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#EAE1D3',
   },
+  textInputError: {
+    borderColor: '#B64B4B',
+    backgroundColor: '#FBF1F1',
+  },
+  inputFooterRow: {
+    marginTop: 8,
+    paddingHorizontal: 6,
+  },
+  errorText: {
+    fontSize: 11,
+    color: '#B64B4B',
+    fontWeight: '600',
+  },
+  helperText: {
+    fontSize: 11,
+    color: '#A08D82',
+  },
   uploadedCard: {
     width: '100%',
     backgroundColor: '#FFFFFF',
@@ -310,7 +407,7 @@ const styles = StyleSheet.create({
   },
   uploadedTextContainer: {
     flex: 1,
-    paddingRight: 10, // Prevents long file names from touching buttons
+    paddingRight: 10,
   },
   uploadedTitle: {
     fontSize: 12,
@@ -349,7 +446,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(243, 237, 226, 0.4)',
     marginBottom: 40,
-    overflow: 'hidden', // Added so the image respects the border radius
+    overflow: 'hidden',
   },
   uploadIconCircle: {
     width: 40,
@@ -379,10 +476,39 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: '#9E9087',
   },
-  // --- ADDED STYLE FOR GST IMAGE PREVIEW ---
   uploadedImagePreview: {
     width: '100%',
     height: '100%',
+  },
+  removeImageBadge: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: 'rgba(0,0,0,0.55)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  removeImageBadgeText: {
+    color: '#FFFFFF',
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  changeImageBadge: {
+    position: 'absolute',
+    bottom: 8,
+    right: 8,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 14,
+    backgroundColor: 'rgba(0,0,0,0.55)',
+  },
+  changeImageBadgeText: {
+    color: '#FFFFFF',
+    fontSize: 11,
+    fontWeight: '700',
   },
   dividerContainer: {
     flexDirection: 'row',

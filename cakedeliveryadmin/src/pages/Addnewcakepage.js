@@ -139,18 +139,50 @@ const Addnewcakepage = ({ navigation }) => {
     };
 
     // Submit
-    const addCake = () => {
+    const addCake = async () => {
         if (!validateForm()) return;
 
-        const cakeData = {
-            cakeName, description, price, discount, weight,
-            stockQuantity, prepTime, availableSizes, isEggless,
-            imageUri, isAvailable, isBestseller, isFeatured, allowCustomMessage,
-            flavorProfile, category, offers,
-        };
+        // const cakeData = {
+        //     cakeName, description, price, discount, weight,
+        //     stockQuantity, prepTime, availableSizes, isEggless,
+        //     imageUri, isAvailable, isBestseller, isFeatured, allowCustomMessage,
+        //     flavorProfile, category, offers,
+        // };
 
-        console.log(cakeData);
-        Alert.alert("Success", "Cake Added Successfully");
+        const formdata = new FormData()
+
+        formdata.append("Cakename", cakeName)
+        formdata.append("detalis", description)
+        formdata.append("price", price)
+        formdata.append("discount", discount)
+        formdata.append("weight", weight)
+        formdata.append("stockQuantity", stockQuantity)
+        formdata.append("preprationtime", prepTime)
+        formdata.append("availablesizes", availableSizes)
+        formdata.append("iseggless", isEggless)
+        formdata.append("isAvailable", isAvailable)
+        formdata.append("isBestseller", isBestseller)
+        formdata.append("isFeatured", isFeatured)
+        formdata.append("allowCustomMessage", allowCustomMessage)
+        formdata.append("flavorProfile", flavorProfile)
+        formdata.append("category", category)
+        formdata.append("offers", offers)
+        formdata.append('image', {
+            uri: imageUri.uri,
+            type: imageUri.type,
+            namee: imageUri.filename
+        })
+
+        const response = await fetch("", {
+            method: "POST",
+            body: formdata,
+        }
+        )
+        const resdata = await response.json()
+        console.log(resdata)
+
+        console.log(cakeData, imageUri);
+        Alert.alert("Success", "Cake Added Suc  cessfully");
         navigation.navigate("CatalogUpdatedScreen", { newCake: cakeData });
     };
 
@@ -226,7 +258,7 @@ const Addnewcakepage = ({ navigation }) => {
                 <View style={styles.mainScreenContainer}>
 
                     {/* Cake Name & Description */}
-                    <Text style={styles.formSectionLabel}>Cake Name</Text>
+                    <Text style={styles.formSectionLabel}>Item</Text>
                     <TextInput
                         value={cakeName}
                         onChangeText={setCakeName}
