@@ -73,7 +73,7 @@ const Addnewcakepage = ({ navigation }) => {
         });
 
         if (!result.didCancel && result.assets?.length > 0) {
-            setImageUri(result.assets[0].uri);
+            setImageUri(result.assets[0]);
         }
     };
 
@@ -166,14 +166,14 @@ const Addnewcakepage = ({ navigation }) => {
         formdata.append("allowCustomMessage", allowCustomMessage)
         formdata.append("flavorProfile", flavorProfile)
         formdata.append("category", category)
-        formdata.append("offers", offers)
-        formdata.append('image', {
+        formdata.append("offers", JSON.stringify(offers))
+        formdata.append("image", {
             uri: imageUri.uri,
             type: imageUri.type,
-            namee: imageUri.filename
-        })
+            name: imageUri.fileName,
+        });
 
-        const response = await fetch("", {
+        const response = await fetch("http://10.140.23.125:3000/api/add/itemdata", {
             method: "POST",
             body: formdata,
         }
@@ -181,9 +181,9 @@ const Addnewcakepage = ({ navigation }) => {
         const resdata = await response.json()
         console.log(resdata)
 
-        console.log(cakeData, imageUri);
-        Alert.alert("Success", "Cake Added Suc  cessfully");
-        navigation.navigate("CatalogUpdatedScreen", { newCake: cakeData });
+        // console.log(cakeData, imageUri);
+        Alert.alert("Success", "Cake Added Successfully");
+        navigation.navigate("CatalogUpdatedScreen");
     };
 
     const handleSaveDraft = () => {
@@ -233,7 +233,7 @@ const Addnewcakepage = ({ navigation }) => {
                     {/* Upload Box */}
                     <TouchableOpacity activeOpacity={0.85} onPress={selectImage} style={styles.uploadBox}>
                         {imageUri ? (
-                            <Image source={{ uri: imageUri }} style={styles.uploadedHeroImage} />
+                            <Image source={{ uri: imageUri.uri }} style={styles.uploadedHeroImage} />
                         ) : (
                             <>
                                 <View style={styles.iconCircle}>
