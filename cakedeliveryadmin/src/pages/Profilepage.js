@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { 
-    ScrollView, 
-    View, 
-    Text, 
-    Image, 
-    StyleSheet, 
-    TouchableOpacity, 
+import {
+    ScrollView,
+    View,
+    Text,
+    Image,
+    StyleSheet,
+    TouchableOpacity,
     TextInput,
     Platform
 } from "react-native";
@@ -17,7 +17,7 @@ import { launchImageLibrary } from "react-native-image-picker";
 const Profilepage = ({ navigation }) => {
     // State for toggling edit mode
     const [isEditable, setIsEditable] = useState(false);
-    
+
     // State for the profile image so it updates when picked
     const [profilePic, setProfilePic] = useState("https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400");
 
@@ -40,8 +40,8 @@ const Profilepage = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <Adminheader />
-            
-            <ScrollView 
+
+            <ScrollView
                 contentContainerStyle={styles.scrollContent}
                 showsVerticalScrollIndicator={false}
             >
@@ -52,9 +52,9 @@ const Profilepage = ({ navigation }) => {
                             source={{ uri: profilePic }}
                             style={styles.profileImage}
                         />
-                        <TouchableOpacity 
-                            activeOpacity={0.8} 
-                            onPress={pickImage} 
+                        <TouchableOpacity
+                            activeOpacity={0.8}
+                            onPress={pickImage}
                             style={styles.editButton}
                         >
                             <Ionicons name="camera" size={16} color="#FFFFFF" />
@@ -137,7 +137,6 @@ const Profilepage = ({ navigation }) => {
                         </View>
                     </View>
                 </View>
-
                 {/* --- Account Settings Section --- */}
                 <View style={styles.sectionContainer}>
                     <Text style={styles.sectionTitle}>Account Settings</Text>
@@ -184,9 +183,9 @@ const Profilepage = ({ navigation }) => {
 
                 {/* --- Account Actions Section --- */}
                 <View style={[styles.sectionContainer, { marginTop: 10 }]}>
-                    <TouchableOpacity 
+                    <TouchableOpacity
                         activeOpacity={0.7}
-                        onPress={() => navigation.reset({ routes: [{ name: "Welcome" }] })} 
+                        onPress={() => navigation.reset({ routes: [{ name: "Welcome" }] })}
                         style={styles.logoutButton}
                     >
                         <Ionicons name="log-out-outline" size={20} color="#D84C3E" />
@@ -204,14 +203,12 @@ export default Profilepage;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#FCF9F2", // Slightly softer, more modern cream
+        backgroundColor: "#FCF9F2", 
     },
     scrollContent: {
         paddingHorizontal: 20,
         paddingBottom: 60,
     },
-    
-    /* Profile Header */
     profileHeader: {
         justifyContent: "center",
         alignItems: "center",
@@ -223,7 +220,7 @@ const styles = StyleSheet.create({
         marginBottom: 16,
     },
     profileImage: {
-        width: 130, // Slightly larger for better visual hierarchy
+        width: 130, 
         height: 130,
         borderRadius: 65,
         borderWidth: 4,

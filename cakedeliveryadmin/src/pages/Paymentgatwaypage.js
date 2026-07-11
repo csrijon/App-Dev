@@ -14,11 +14,11 @@ import {
 } from "react-native";
 import Button from "../components/Button";
 
-const Paymentgatwaypage = () => {
+const Paymentgatwaypage = async () => {
   const [upiId, setUpiId] = useState("");
   const [isFocused, setIsFocused] = useState(false);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     // Basic validation to ensure it looks like a UPI ID
     if (upiId.trim() === "" || !upiId.includes("@")) {
       Alert.alert(
@@ -27,6 +27,16 @@ const Paymentgatwaypage = () => {
       );
       return;
     }
+
+    const upiidsendresponse = await fetch("http://10.140.23.125:3000/api/upi/save", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ upiid: upiId })
+    })
+    let resdata = await upiidsendresponse.json()
+     console.log(resdata)
 
     Alert.alert(
       "Success",
@@ -38,14 +48,14 @@ const Paymentgatwaypage = () => {
     <SafeAreaView style={styles.container}>
       <Securityheader title={"Payment"} />
 
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardAvoid}
       >
-        <ScrollView 
-            contentContainerStyle={styles.scrollContent}
-            showsVerticalScrollIndicator={false}
-            keyboardShouldPersistTaps="handled"
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
         >
           <View style={styles.headerWrapper}>
             <Text style={styles.screenTitle}>
@@ -93,8 +103,8 @@ const Paymentgatwaypage = () => {
               autoCapitalize="none"
               autoCorrect={false}
               style={[
-                  styles.textInput,
-                  isFocused && styles.textInputActive
+                styles.textInput,
+                isFocused && styles.textInputActive
               ]}
             />
 
@@ -106,10 +116,10 @@ const Paymentgatwaypage = () => {
             <View style={styles.dividerLine} />
 
             <View style={styles.buttonWrapper}>
-                <Button
-                    title="Save Changes"
-                    onPress={handleSave}
-                />
+              <Button
+                title="Save Changes"
+                onPress={handleSave}
+              />
             </View>
           </View>
         </ScrollView>
