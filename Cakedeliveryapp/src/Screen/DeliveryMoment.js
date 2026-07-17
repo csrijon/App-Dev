@@ -99,7 +99,7 @@ const DeliveryMoment = ({ navigation, route }) => {
         setTimeout(() => {
             setLoading(false)
 
-            navigation.navigate("Checkoutscreen", {
+            navigation.navigate("Cart", {
                 orderData
             })
         }, 1000)
@@ -111,7 +111,7 @@ const DeliveryMoment = ({ navigation, route }) => {
             <Detailsheader />
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }} style={styles.scrollcontainer} >
                 {/* Header */}
-                <Text style={styles.step}>ORDER STEP 02</Text>
+                {/* <Text style={styles.step}>ORDER STEP 02</Text> */}
                 <Text style={styles.title}>Choose Your Delivery Moment</Text>
 
                 <View style={styles.maincalender} >
@@ -124,7 +124,7 @@ const DeliveryMoment = ({ navigation, route }) => {
                             todayTextColor: "red",
                             arrowColor: "#000",
                             selectedDayTextColor: "black",
-                            borderRadius:9999
+                            borderRadius: 9999
                         }}
                         markedDates={{
                             [selecteddate]: { selected: true, selectedColor: "#f6cfc2", color: "black" }
@@ -261,7 +261,7 @@ const DeliveryMoment = ({ navigation, route }) => {
                         <ActivityIndicator color="#fff" />
                     ) : (
                         <Text style={styles.nextText}>
-                            Next: Summary →
+                            Next
                         </Text>
                     )}
                 </TouchableOpacity>

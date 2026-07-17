@@ -5,6 +5,7 @@ import { useState } from "react"
 import CategoryCard from "../components/CategoryCard"
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { launchImageLibrary } from 'react-native-image-picker';
+import { Screen } from "react-native-screens"
 
 const Customorderpage = ({ navigation }) => {
 
@@ -71,20 +72,16 @@ const Customorderpage = ({ navigation }) => {
             return;
         }
 
-        navigation.navigate("Datetimeselection", {
-            weight: selectedWeight,
-            flavor: selectedFlavorTitle,
-            message: cakeMessage,
-            referenceImage,
-            estimatedPrice,
-        });
+        navigation.navigate("Categorys", {
+            screen: "Delivery"
+        })
     };
 
     return (
         <SafeAreaView style={styles.maincustomorderpage} >
             <StatusBar backgroundColor="#FFF9E6" barStyle="dark-content" />
             <Simpleheader />
-            <ScrollView contentContainerStyle={{paddingBottom:40}} vartical showsVerticalScrollIndicator={false} style={styles.scrollcustomorderpage} >
+            <ScrollView contentContainerStyle={{ paddingBottom: 80 }} vartical showsVerticalScrollIndicator={false} style={styles.scrollcustomorderpage} >
                 {/* {top page text start} */}
                 <View style={styles.customfirsttext} >
                     <Text style={styles.textmasterpiece} >Design Your Masterpiece</Text>
@@ -506,9 +503,9 @@ const styles = StyleSheet.create({
 
     ctaBar: {
         backgroundColor: "#6b4f4f",
-        marginTop: -25,
+        marginTop: -22,
         position: "absolute",
-        bottom: 20,
+        bottom: -45,
         left: 0,
         right: 0,
         padding: 18,

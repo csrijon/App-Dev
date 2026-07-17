@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -8,54 +8,59 @@ import {
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-const CartCard = ({name,size,Flavor,price,image,icon}) => {
-  const [quantity, setQuantity] = useState(1);
+const CartCard = ({
+  name,
+  size,
+  Flavor,
+  price,
+  image,
+  note,
+  quantity = 1,
+  onIncrease,
+  onDecrease,
+  onRemove,
+}) => {
+  const lineTotal = (parseFloat(price) * quantity).toFixed(2);
 
   return (
     <View style={styles.card}>
       {/* Close Button */}
-      <TouchableOpacity style={styles.closeBtn}>
-        {/* <Ionicons name="close" size={20} color="#B7A58A" /> */}
-        {icon}
+      <TouchableOpacity style={styles.closeBtn} onPress={onRemove} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+        <Ionicons name="close" size={20} color="#B7A58A" />
       </TouchableOpacity>
 
       {/* Left Image */}
-      <Image
-        source={image}
-        style={styles.image}
-      />
+      <Image source={image} style={styles.image} />
 
       {/* Right Content */}
       <View style={styles.content}>
         <Text numberOfLines={1} style={styles.title}>
-         {name}
+          {name}
         </Text>
 
         <Text style={styles.info}>Size: {size}</Text>
 
         <Text style={styles.info}>Flavor: {Flavor}</Text>
 
-        <View style={styles.noteRow}>
-          <Ionicons
-            name="create-outline"
-            size={14}
-            color="#B5A188"
-          />
-        </View>
+        {!!note && (
+          <View style={styles.noteRow}>
+            <Ionicons name="create-outline" size={14} color="#B5A188" />
+            <Text style={styles.noteText}> "{note}"</Text>
+          </View>
+        )}
 
         <View style={styles.bottomRow}>
-          <Text style={styles.price}>{price}</Text>
+          <Text style={styles.price}>${lineTotal}</Text>
 
           <View style={styles.quantityBox}>
             <TouchableOpacity
-              onPress={() =>
-                quantity > 1 &&
-                setQuantity(quantity - 1)
-              }>
+              onPress={() => quantity > 1 && onDecrease?.()}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
               <Ionicons
                 name="remove"
                 size={18}
-                color="#7A563B"
+                color={quantity > 1 ? "#7A563B" : "#D8C9B4"}
               />
             </TouchableOpacity>
 
@@ -64,14 +69,10 @@ const CartCard = ({name,size,Flavor,price,image,icon}) => {
             </Text>
 
             <TouchableOpacity
-              onPress={() =>
-                setQuantity(quantity + 1)
-              }>
-              <Ionicons
-                name="add"
-                size={18}
-                color="#7A563B"
-              />
+              onPress={() => onIncrease?.()}
+              hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            >
+              <Ionicons name="add" size={18} color="#7A563B" />
             </TouchableOpacity>
           </View>
         </View>
@@ -86,7 +87,6 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: "row",
     backgroundColor: "#FBF3E3",
-    marginHorizontal: 18,
     marginTop: 18,
     borderRadius: 28,
     padding: 18,
@@ -124,14 +124,15 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "700",
     color: "#5A3D2C",
+    paddingRight: 24,
   },
 
   info: {
     marginTop: 4,
-    fontSize: 16,
+    fontSize: 15,
     color: "#8A7A67",
   },
 
@@ -139,6 +140,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginTop: 6,
+  },
+
+  noteText: {
+    fontSize: 14,
+    fontStyle: "italic",
+    color: "#B5A188",
   },
 
   bottomRow: {
@@ -149,7 +156,7 @@ const styles = StyleSheet.create({
   },
 
   price: {
-    fontSize: 30,
+    fontSize: 28,
     fontWeight: "700",
     color: "#5A3D2C",
   },
@@ -158,10 +165,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#fff",
-    paddingHorizontal: 18,
-    paddingVertical: 10,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
     borderRadius: 30,
-    gap: 18,
+    gap: 16,
 
     shadowColor: "#000",
     shadowOpacity: 0.06,
@@ -175,7 +182,7 @@ const styles = StyleSheet.create({
   },
 
   qtyText: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "700",
     color: "#5A3D2C",
   },

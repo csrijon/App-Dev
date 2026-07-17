@@ -30,6 +30,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 
+
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
 console.log(Stack)
@@ -59,6 +60,16 @@ const Stackscreen = () => {
 }
 
 
+const Checkoutstack=()=>{
+  return(
+     <Stack.Navigator initialRouteName="Cart" screenOptions={{headerShown:false}} >
+      <Stack.Screen name="Cart" component={Checkoutscreen} />
+        <Stack.Screen name="Ordesuccess" component={OrderSuccessScreen} />
+     </Stack.Navigator>
+  )
+}
+
+
 const Homestack = () => {
   return (
     <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }} >
@@ -71,14 +82,10 @@ const Orderstack = () => {
   return (
     <Stack.Navigator initialRouteName="Category" screenOptions={{ headerShown: false }} >
       <Stack.Screen name="Category" component={CategoryListing} />
-      <Stack.Screen name="Delivery" component={DeliveryMoment} />
       <Stack.Screen name="Cakedetails" component={CakeDetails} />
       <Stack.Screen name="Ordersummary" component={Ordersummarypage} />
       <Stack.Screen name="Customorder" component={Customorderpage} />
-      <Stack.Screen name="Ordesuccess" component={OrderSuccessScreen} />
-      <Stack.Screen name="Myorder" component={Myorderscreen} />
-      <Stack.Screen name="Ordertrackingscreen" component={Ordertrackingscreen}/>
-      <Stack.Screen name="Checkoutscreen" component={Checkoutscreen}/>
+      <Stack.Screen name="Delivery" component={DeliveryMoment} />
     </Stack.Navigator>
   )
 }
@@ -96,24 +103,28 @@ const TabScreen = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
+        tabBarShowLabel: false,
         tabBarStyle: {
           backgroundColor: "#FFF9E6",
           height: 70,
           borderTopLeftRadius: 40,
           borderTopRightRadius: 40,
           overflow: "hidden",
-          paddingHorizontal:10
+          paddingHorizontal: 10,
+          paddingTop: 10,
+          paddingBottom: 10,
         },
         tabBarItemStyle: {
           borderRadius: 9999,
-          marginHorizontal:10,
-          marginVertical:8,
-          overflow:"hidden"
+          paddingHorizontal: 20,
+          marginTop: 5,
+          overflow: "hidden"
         },
         tabBarActiveTintColor: "#75584E",
         tabBarInactiveTintColor: "#646040",
-        tabBarActiveBackgroundColor: "#F6CFC2",
-        tabBarHideOnKeyboard: true
+        // tabBarActiveBackgroundColor: "#F6CFC2",
+        tabBarHideOnKeyboard: true,
+
       }}
     >
       <Tab.Screen
@@ -122,7 +133,9 @@ const TabScreen = () => {
         options={{
 
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home-outline" color={color} size={size} />
+            <Ionicons name="home-outline" color={color} size={size} style={{
+              marginTop: 4
+            }} />
           )
         }}
       />
@@ -132,7 +145,9 @@ const TabScreen = () => {
         component={Orderstack}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="category" color={color} size={size} />
+            <MaterialIcons name="category" color={color} size={size} style={{
+              marginTop: 4
+            }} />
           )
         }}
       />
@@ -142,8 +157,26 @@ const TabScreen = () => {
         component={EmptyOrderScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="bag" color={color} size={size} />
+            <Ionicons name="bag" color={color} size={size} style={{
+              marginTop: 4
+            }} />
           )
+        }}
+      />
+      <Tab.Screen
+        name="Cart"
+        component={Checkoutstack}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons
+              name="cart"
+              color={color}
+              size={size}
+              style={{
+                marginTop:4
+              }}
+            />
+          ),
         }}
       />
 
@@ -152,7 +185,9 @@ const TabScreen = () => {
         component={Profilestack}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person" color={color} size={size} />
+            <Ionicons name="person" color={color} size={size} style={{
+              marginTop: 4
+            }} />
           )
         }}
       />

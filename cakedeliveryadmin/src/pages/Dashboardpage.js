@@ -259,8 +259,11 @@ const Dashboardpage = ({ navigation }) => {
                             onPress={() => {
                                 if (action.label === "Add Product") {
                                     navigation.navigate("Catalog");
-                                } else {
-                                    Alert.alert(action.label, `${action.label} tapped.`);
+                                }else if(action.label === "View Orders"){
+                                    navigation.navigate("Ordermanage")
+                                }
+                                else {
+                                    Alert.alert(action.label, `${action.label}  Comming soon.`);
                                 }
                             }}
                         >
@@ -395,7 +398,7 @@ const Dashboardpage = ({ navigation }) => {
                 <View style={Dashboardstyle.bestSellingCard}>
                     <View style={Dashboardstyle.salesOverviewHeaderRow}>
                         <View>
-                            <Text style={Dashboardstyle.sectionHeading}>Best Selling Cakes</Text>
+                            <Text style={Dashboardstyle.sectionHeading}>Best Selling Items</Text>
                             <Text style={Dashboardstyle.salesOverviewSubtitle}>Ranked by units sold this week</Text>
                         </View>
                         <View style={Dashboardstyle.salesOverviewTotalPill}>

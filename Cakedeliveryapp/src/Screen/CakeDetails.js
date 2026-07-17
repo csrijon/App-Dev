@@ -36,7 +36,7 @@ const CakeDetails = ({ navigation }) => {
             [
                 {
                     text: "OK",
-                    onPress: () => navigation.navigate("Ordersummary")
+                    onPress: () => navigation.navigate("Cart")
                 }
             ]
         );
