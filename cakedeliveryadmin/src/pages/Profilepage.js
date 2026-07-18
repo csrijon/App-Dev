@@ -12,9 +12,11 @@ import {
 } from "react-native";
 import Adminheader from "../components/Adminheader";
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Geolocation from "@react-native-community/geolocation";
 import { launchImageLibrary } from "react-native-image-picker";
 
 const Profilepage = ({ navigation }) => {
+    Geolocation.getCurrentPosition(info=>console.log(info))
     // State for toggling edit mode
     const [isEditable, setIsEditable] = useState(false);
 
@@ -161,7 +163,7 @@ const Profilepage = ({ navigation }) => {
                             </View>
                             <View style={styles.settingsTextContainer}>
                                 <Text style={styles.settingsPrimaryText}>Payment Methods</Text>
-                                <Text style={styles.settingsSecondaryText}>Visa ending in **** 4242</Text>
+                                <Text style={styles.settingsSecondaryText}>UPI Id Ending in **** 4242</Text>
                             </View>
                         </View>
                         <Ionicons name="chevron-forward" size={18} color="#A89572" />

@@ -234,8 +234,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 6,
-    elevation: 3, 
-  },
+    },
   
   dateButtonText: {
     fontSize: 16,

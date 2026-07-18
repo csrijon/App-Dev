@@ -55,6 +55,7 @@ const Stackscreen = () => {
       <Stack.Screen name="Setnewpass" component={Setpasswordpage} />
       <Stack.Screen name="PasswordChanged" component={PasswordChanged} />
       <Stack.Screen name="Tabs" component={TabScreen} />
+      <Stack.Screen name="Trackingscreen" component={Ordertrackingscreen}/>
     </Stack.Navigator>
   )
 }

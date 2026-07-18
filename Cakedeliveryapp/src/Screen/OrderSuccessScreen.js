@@ -168,7 +168,7 @@ const OrderSuccessScreen = ({ navigation }) => {
 
                 {/* buttons  */}
                 <View style={styles.Buttons} >
-                    <Button onPress={() => navigation.navigate("Myorder")} title="Track Order" />
+                    <Button onPress={() => navigation.navigate("Trackingscreen")} title="Track Order" />
                     <Button onPress={() => navigation.navigate("Home")} title="Go Home" />
                 </View>
 

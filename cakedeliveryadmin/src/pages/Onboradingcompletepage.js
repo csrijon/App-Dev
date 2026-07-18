@@ -13,14 +13,14 @@ const Onboradingcompletepage = ({navigation}) => {
                 <View style={styles.imageWrapper}>
                     <Image style={styles.Image} source={require("../images/unnamed.png")} />
                     <View style={styles.verifysection}>
-                        <MaterialIcons name="verified" color="#5b4138" size={20} />
-                        <Text style={styles.verifyText}>ACTIVE NOW</Text>
+                        <MaterialIcons name="hourglass-top" color="#5b4138" size={20} />
+                        <Text style={styles.verifyText}>WAITING FOR ADMIN APPROVAL</Text>
                     </View>
                 </View>
 
-                <Text style={styles.title}>You're All Set!</Text>
+                <Text style={styles.title}>You're Almost Set!</Text>
                 <Text style={styles.subtitle}>
-                    Your account has been created successfully.{"\n"}Time to explore fresh bakes near you.
+                    Your account has been created successfully.{"\n"}It is currently waiting for admin approval.{"\n"}You'll be notified once it's approved.
                 </Text>
             </View>
 

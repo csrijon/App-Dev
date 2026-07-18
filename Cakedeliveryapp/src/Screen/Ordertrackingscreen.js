@@ -18,23 +18,23 @@ const steps = [
     { key: "arrived", label: "ARRIVED", icon: "home-outline" },
 ];
 
-// Ekhon porjonto koto dur pouchese - "shipping" porjonto active dhore rakha hoyeche
 const currentStepIndex = 2;
 
 const OrderTrackingScreen = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
-            <StatusBar backgroundColor="#F8F1DF" barStyle="dark-content" />
+            <StatusBar backgroundColor="#FDF8EC" barStyle="dark-content" />
 
             {/* Header */}
             <View style={styles.header}>
                 <TouchableOpacity
                     onPress={() => navigation.goBack()}
                     style={styles.backBtn}
+                    activeOpacity={0.7}
                 >
-                    <Ionicons name="arrow-back-outline" size={20} color="#5D4037" />
+                    <Ionicons name="arrow-back-outline" size={22} color="#5D4037" />
                 </TouchableOpacity>
-                <View style={{ width: 36 }} />
+                <View style={{ width: 44 }} />
             </View>
 
             <ScrollView
@@ -42,10 +42,12 @@ const OrderTrackingScreen = ({ navigation }) => {
                 showsVerticalScrollIndicator={false}
             >
                 {/* Title */}
-                <Text style={styles.title}>Out for Delivery</Text>
-                <Text style={styles.subtitle}>
-                    Your lavender honey cake is en route.
-                </Text>
+                <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Out for Delivery</Text>
+                    <Text style={styles.subtitle}>
+                        Your lavender honey cake is en route.
+                    </Text>
+                </View>
 
                 {/* Progress Steps */}
                 <View style={styles.stepsRow}>
@@ -61,12 +63,13 @@ const OrderTrackingScreen = ({ navigation }) => {
                                         style={[
                                             styles.stepCircle,
                                             isCompletedOrActive && styles.stepCircleActive,
+                                            isActive && styles.stepCircleCurrent,
                                         ]}
                                     >
                                         <Ionicons
                                             name={isDone ? "checkmark" : step.icon}
-                                            size={16}
-                                            color={isCompletedOrActive ? "#fff" : "#B8AF8F"}
+                                            size={18}
+                                            color={isCompletedOrActive ? "#fff" : "#C4B598"}
                                         />
                                     </View>
                                     <Text
@@ -80,12 +83,14 @@ const OrderTrackingScreen = ({ navigation }) => {
                                 </View>
 
                                 {index < steps.length - 1 && (
-                                    <View
-                                        style={[
-                                            styles.stepConnector,
-                                            index < currentStepIndex && styles.stepConnectorActive,
-                                        ]}
-                                    />
+                                    <View style={styles.stepConnectorWrapper}>
+                                        <View
+                                            style={[
+                                                styles.stepConnector,
+                                                index < currentStepIndex && styles.stepConnectorActive,
+                                            ]}
+                                        />
+                                    </View>
                                 )}
                             </React.Fragment>
                         );
@@ -103,18 +108,18 @@ const OrderTrackingScreen = ({ navigation }) => {
                     <View style={styles.courierInfo}>
                         <Text style={styles.courierName}>Bastien Rousseau</Text>
                         <View style={styles.courierMetaRow}>
-                            <Ionicons name="star" size={12} color="#E0A939" />
+                            <Ionicons name="star" size={13} color="#F2A60C" />
                             <Text style={styles.courierMetaText}>4.9</Text>
                             <Text style={styles.courierMetaDot}>·</Text>
                             <Text style={styles.courierMetaText}>1,240 deliveries</Text>
                         </View>
                     </View>
                     <View style={styles.courierActions}>
-                        <TouchableOpacity style={styles.courierIconBtn}>
-                            <Ionicons name="call-outline" size={16} color="#5D4037" />
+                        <TouchableOpacity style={styles.courierIconBtn} activeOpacity={0.7}>
+                            <Ionicons name="call" size={18} color="#7B5A4E" />
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.courierIconBtn}>
-                            <Ionicons name="chatbubble-outline" size={16} color="#5D4037" />
+                        <TouchableOpacity style={styles.courierIconBtn} activeOpacity={0.7}>
+                            <Ionicons name="chatbubble" size={18} color="#7B5A4E" />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -125,9 +130,9 @@ const OrderTrackingScreen = ({ navigation }) => {
                         <Text style={styles.orderNoLabel}>ORDER NO.</Text>
                         <Text style={styles.orderNoValue}>#GQ-95231-FR</Text>
                     </View>
-                    <TouchableOpacity style={styles.detailsBtn}>
+                    <TouchableOpacity style={styles.detailsBtn} activeOpacity={0.6}>
                         <Text style={styles.detailsBtnText}>DETAILS</Text>
-                        <Ionicons name="open-outline" size={13} color="#8A7466" />
+                        <Ionicons name="chevron-forward-outline" size={14} color="#8A7466" />
                     </TouchableOpacity>
                 </View>
 
@@ -148,12 +153,17 @@ const OrderTrackingScreen = ({ navigation }) => {
                     <Text style={styles.itemPrice}>€42.00</Text>
                 </View>
 
-                {/* Delivery Address */}
-                <View style={styles.addressBlock}>
-                    <Text style={styles.addressLabel}>DELIVER TO</Text>
-                    <Text style={styles.addressValue}>
-                        Apartment 4B, 24 Rue de Rivoli{"\n"}75001 Paris, France
-                    </Text>
+                {/* Delivery Address Card */}
+                <View style={styles.addressCard}>
+                    <View style={styles.addressIconWrapper}>
+                        <Ionicons name="location" size={20} color="#7B5A4E" />
+                    </View>
+                    <View style={styles.addressInfo}>
+                        <Text style={styles.addressLabel}>DELIVER TO</Text>
+                        <Text style={styles.addressValue}>
+                            Apartment 4B, 24 Rue de Rivoli{"\n"}75001 Paris, France
+                        </Text>
+                    </View>
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -165,78 +175,101 @@ export default OrderTrackingScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#F8F1DF",
+        backgroundColor: "#FDF8EC", // Slightly cleaner cream background
     },
     header: {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        paddingHorizontal: 18,
-        paddingTop: 6,
+        paddingHorizontal: 20,
+        paddingTop: 10,
         paddingBottom: 4,
     },
     backBtn: {
-        width: 36,
-        height: 36,
-        borderRadius: 12,
-        backgroundColor: "#EFE7D2",
+        width: 44,
+        height: 44,
+        borderRadius: 22,
+        backgroundColor: "#FFFFFF",
         alignItems: "center",
         justifyContent: "center",
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 4,
+        elevation: 2,
     },
     scrollContent: {
         paddingHorizontal: 20,
-        paddingBottom: 40,
+        paddingBottom: 50,
+    },
+    titleContainer: {
+        marginTop: 12,
+        marginBottom: 28,
     },
     title: {
-        fontSize: 22,
-        fontWeight: "700",
-        color: "#4A362B",
-        marginTop: 6,
+        fontSize: 28,
+        fontWeight: "800",
+        color: "#3D2B1F",
+        letterSpacing: -0.5,
     },
     subtitle: {
-        fontSize: 13,
+        fontSize: 14,
         color: "#8A7466",
-        marginTop: 4,
-        marginBottom: 22,
+        marginTop: 6,
+        fontWeight: "500",
     },
 
     /* Steps */
     stepsRow: {
         flexDirection: "row",
         alignItems: "flex-start",
-        marginBottom: 24,
+        marginBottom: 32,
     },
     stepItem: {
         alignItems: "center",
-        gap: 6,
-        width: 56,
+        gap: 8,
+        width: 60,
     },
     stepCircle: {
-        width: 34,
-        height: 34,
-        borderRadius: 17,
-        backgroundColor: "#EFE7D2",
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        backgroundColor: "#FFFFFF",
         alignItems: "center",
         justifyContent: "center",
+        borderWidth: 1.5,
+        borderColor: "#EAE0C8",
     },
     stepCircleActive: {
         backgroundColor: "#7B5A4E",
+        borderColor: "#7B5A4E",
+    },
+    stepCircleCurrent: {
+        shadowColor: "#7B5A4E",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 6,
+        elevation: 4,
     },
     stepLabel: {
-        fontSize: 8.5,
-        fontWeight: "700",
+        fontSize: 9,
+        fontWeight: "800",
         color: "#B8AF8F",
-        letterSpacing: 0.3,
+        letterSpacing: 0.5,
     },
     stepLabelActive: {
-        color: "#7B5A4E",
+        color: "#3D2B1F",
+    },
+    stepConnectorWrapper: {
+        flex: 1,
+        marginTop: 20,
+        marginHorizontal: -8,
+        zIndex: -1,
     },
     stepConnector: {
-        flex: 1,
-        height: 2,
-        backgroundColor: "#EFE7D2",
-        marginTop: 17,
-        marginHorizontal: -4,
+        height: 3,
+        backgroundColor: "#EAE0C8",
+        borderRadius: 2,
     },
     stepConnectorActive: {
         backgroundColor: "#7B5A4E",
@@ -248,28 +281,33 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "#FFFFFF",
         borderRadius: 24,
-        padding: 14,
-        gap: 12,
-        marginBottom: 18,
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.05,
-        shadowRadius: 10,
-        elevation: 2,
+        padding: 16,
+        gap: 14,
+        marginBottom: 24,
+        borderWidth: 1,
+        borderColor: "#F4EBE1",
+        shadowColor: "#3D2B1F",
+        shadowOffset: { width: 0, height: 8 },
+        shadowOpacity: 0.04,
+        shadowRadius: 12,
+        elevation: 3,
     },
     courierAvatar: {
-        width: 52,
-        height: 52,
-        borderRadius: 18,
+        width: 56,
+        height: 56,
+        borderRadius: 28,
+        borderWidth: 2,
+        borderColor: "#FDF8EC",
     },
     courierInfo: {
         flex: 1,
         gap: 4,
     },
     courierName: {
-        fontSize: 15,
+        fontSize: 16,
         fontWeight: "700",
-        color: "#4A362B",
+        color: "#3D2B1F",
+        letterSpacing: -0.2,
     },
     courierMetaRow: {
         flexDirection: "row",
@@ -277,23 +315,24 @@ const styles = StyleSheet.create({
         gap: 4,
     },
     courierMetaText: {
-        fontSize: 12,
+        fontSize: 13,
         color: "#8A7466",
+        fontWeight: "500",
     },
     courierMetaDot: {
-        fontSize: 12,
-        color: "#C4B8A4",
+        fontSize: 13,
+        color: "#D0C4AF",
         marginHorizontal: 2,
     },
     courierActions: {
         flexDirection: "row",
-        gap: 8,
+        gap: 10,
     },
     courierIconBtn: {
-        width: 36,
-        height: 36,
-        borderRadius: 12,
-        backgroundColor: "#F5EDD8",
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        backgroundColor: "#F8F1DF",
         alignItems: "center",
         justifyContent: "center",
     },
@@ -301,26 +340,34 @@ const styles = StyleSheet.create({
     /* Order Number */
     orderNoRow: {
         flexDirection: "row",
-        alignItems: "center",
+        alignItems: "flex-end",
         justifyContent: "space-between",
-        marginBottom: 14,
+        marginBottom: 16,
+        paddingHorizontal: 4,
     },
     orderNoLabel: {
-        fontSize: 10.5,
-        fontWeight: "700",
+        fontSize: 11,
+        fontWeight: "800",
         color: "#A0907A",
-        letterSpacing: 0.5,
-        marginBottom: 2,
+        letterSpacing: 0.8,
+        marginBottom: 4,
     },
     orderNoValue: {
-        fontSize: 14,
-        fontWeight: "700",
-        color: "#4A362B",
+        fontSize: 16,
+        fontWeight: "800",
+        color: "#3D2B1F",
+        letterSpacing: -0.2,
     },
     detailsBtn: {
         flexDirection: "row",
         alignItems: "center",
+        backgroundColor: "#FFFFFF",
+        paddingVertical: 6,
+        paddingHorizontal: 12,
+        borderRadius: 12,
         gap: 4,
+        borderWidth: 1,
+        borderColor: "#EAE0C8",
     },
     detailsBtnText: {
         fontSize: 11,
@@ -336,49 +383,80 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFFFFF",
         borderRadius: 20,
         padding: 12,
-        gap: 12,
-        marginBottom: 18,
-        borderWidth: 0.5,
-        borderColor: "#EDE4CC",
+        gap: 14,
+        marginBottom: 24,
+        borderWidth: 1,
+        borderColor: "#F4EBE1",
+        shadowColor: "#3D2B1F",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.03,
+        shadowRadius: 8,
+        elevation: 2,
     },
     itemImage: {
-        width: 52,
-        height: 52,
-        borderRadius: 14,
+        width: 60,
+        height: 60,
+        borderRadius: 16,
     },
     itemInfo: {
         flex: 1,
-        gap: 3,
+        gap: 4,
     },
     itemTitle: {
-        fontSize: 14,
+        fontSize: 15,
         fontWeight: "700",
-        color: "#4A362B",
+        color: "#3D2B1F",
+        letterSpacing: -0.2,
     },
     itemSubtitle: {
-        fontSize: 11.5,
+        fontSize: 12.5,
         color: "#9B8070",
+        lineHeight: 18,
     },
     itemPrice: {
-        fontSize: 14,
-        fontWeight: "700",
-        color: "#4A362B",
+        fontSize: 16,
+        fontWeight: "800",
+        color: "#3D2B1F",
     },
 
-    /* Delivery Address */
-    addressBlock: {
-        paddingHorizontal: 4,
+    /* Delivery Address Card */
+    addressCard: {
+        flexDirection: "row",
+        backgroundColor: "#FFFFFF",
+        borderRadius: 20,
+        padding: 18,
+        gap: 16,
+        borderWidth: 1,
+        borderColor: "#F4EBE1",
+        shadowColor: "#3D2B1F",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.03,
+        shadowRadius: 8,
+        elevation: 2,
+    },
+    addressIconWrapper: {
+        width: 44,
+        height: 44,
+        borderRadius: 22,
+        backgroundColor: "#F8F1DF",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    addressInfo: {
+        flex: 1,
+        justifyContent: "center",
     },
     addressLabel: {
-        fontSize: 10.5,
-        fontWeight: "700",
+        fontSize: 11,
+        fontWeight: "800",
         color: "#A0907A",
-        letterSpacing: 0.5,
+        letterSpacing: 0.8,
         marginBottom: 6,
     },
     addressValue: {
-        fontSize: 13.5,
+        fontSize: 14,
         color: "#5D4037",
-        lineHeight: 20,
+        lineHeight: 22,
+        fontWeight: "500",
     },
 });
