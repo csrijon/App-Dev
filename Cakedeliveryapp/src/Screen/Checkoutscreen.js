@@ -161,7 +161,9 @@ const Checkoutscreen = ({ navigation }) => {
         <TouchableOpacity 
           style={styles.dateButton}
           activeOpacity={0.8}
-          onPress={() => navigation.navigate("SelectDateScreen")} // Update with your actual screen name
+          onPress={() => navigation.navigate("Categorys",{
+            screen:"Delivery"
+          })} // Update with your actual screen name
         >
           <Text style={styles.dateButtonText}>Select Delivery Date</Text>
         </TouchableOpacity>

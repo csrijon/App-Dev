@@ -33,6 +33,6 @@ const styles = StyleSheet.create({
         marginRight:20
     },
     placecardtext: {
-        color: "#75584E"
+        color: "#75584E"    
     }
 })
