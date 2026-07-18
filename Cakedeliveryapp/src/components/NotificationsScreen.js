@@ -109,7 +109,7 @@ export default NotificationsScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FCF7EC", // Warm, creamy background matching the image
+    backgroundColor: "#fff9e8", // Warm, creamy background matching the image
   },
   scrollContent: {
     paddingHorizontal: 20,

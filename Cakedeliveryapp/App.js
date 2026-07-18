@@ -20,6 +20,7 @@ import Setpasswordpage from "./src/Screen/Setpasswordpage"
 import PasswordChanged from "./src/Screen/PasswordChanged"
 import Ordertrackingscreen from "./src/Screen/Ordertrackingscreen.js"
 import Checkoutscreen from "./src/Screen/Checkoutscreen.js"
+import NotificationsScreen from "./src/components/NotificationsScreen"
 import RefineScreen from "./src/Screen/RefineScreen"
 import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
@@ -56,6 +57,7 @@ const Stackscreen = () => {
       <Stack.Screen name="PasswordChanged" component={PasswordChanged} />
       <Stack.Screen name="Tabs" component={TabScreen} />
       <Stack.Screen name="Trackingscreen" component={Ordertrackingscreen}/>
+      <Stack.Screen name="NotificationsScreen" component={NotificationsScreen}/>
     </Stack.Navigator>
   )
 }
@@ -104,10 +106,10 @@ const TabScreen = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarShowLabel: false,
+        // tabBarShowLabel: false,
         tabBarStyle: {
           backgroundColor: "#FFF9E6",
-          height: 70,
+          height: 90,
           borderTopLeftRadius: 40,
           borderTopRightRadius: 40,
           overflow: "hidden",
@@ -117,13 +119,13 @@ const TabScreen = () => {
         },
         tabBarItemStyle: {
           borderRadius: 9999,
-          paddingHorizontal: 20,
-          marginTop: 5,
+          // paddingHorizontal: 20,
+          marginTop: 10,
           overflow: "hidden"
         },
         tabBarActiveTintColor: "#75584E",
         tabBarInactiveTintColor: "#646040",
-        // tabBarActiveBackgroundColor: "#F6CFC2",
+        tabBarActiveBackgroundColor: "#F6CFC2",
         tabBarHideOnKeyboard: true,
 
       }}
@@ -147,7 +149,7 @@ const TabScreen = () => {
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="category" color={color} size={size} style={{
-              marginTop: 4
+              // marginTop: 4
             }} />
           )
         }}
@@ -159,7 +161,7 @@ const TabScreen = () => {
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="bag" color={color} size={size} style={{
-              marginTop: 4
+              // marginTop: 4
             }} />
           )
         }}
@@ -174,7 +176,7 @@ const TabScreen = () => {
               color={color}
               size={size}
               style={{
-                marginTop:4
+                // marginTop:4
               }}
             />
           ),
@@ -187,7 +189,7 @@ const TabScreen = () => {
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person" color={color} size={size} style={{
-              marginTop: 4
+              // marginTop: 4
             }} />
           )
         }}

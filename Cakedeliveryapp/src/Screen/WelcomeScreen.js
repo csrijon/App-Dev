@@ -24,7 +24,7 @@ const WelcomeScreen = () => {
         </Text>
 
         <Text style={styles.mainTitle}>
-          Cake Haven
+          Bakers Haven
         </Text>
 
         <View style={styles.titleDivider} />

@@ -5,7 +5,7 @@ import Geolocation from '@react-native-community/geolocation';
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
-const Header = () => {
+const Header = ({onPress}) => {
     const navigation = useNavigation()
 
     const [city, setcity] = useState("")
@@ -108,7 +108,7 @@ const Header = () => {
             {/* Right Section */}
             <View style={styles.rightContainer}>
 
-                <TouchableOpacity style={styles.bellContainer}>
+                <TouchableOpacity onPress={onPress} style={styles.bellContainer}>
                     <Ionicons
                         name="notifications-outline"
                         size={22}

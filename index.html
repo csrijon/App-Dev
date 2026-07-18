@@ -1,295 +1,320 @@
 <!DOCTYPE html>
 
-<html lang="en"><head>
+<html class="light" lang="en"><head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Your Basket | Glaze &amp; Grain</title>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>The Pâtisserie - Notifications</title>
+<!-- Tailwind & Plugins -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "surface-container-high": "#eee8d5",
-                    "surface-dim": "#dfdac8",
-                    "on-error": "#ffffff",
-                    "inverse-on-surface": "#f6f1de",
-                    "surface-container": "#f4eedb",
-                    "surface-container-low": "#f9f3e1",
-                    "primary-container": "#75584e",
-                    "error-container": "#ffdad6",
-                    "on-secondary-container": "#725f67",
-                    "on-primary-container": "#f7d1c4",
-                    "tertiary-container": "#805062",
-                    "secondary-container": "#f5dce5",
-                    "on-error-container": "#93000a",
-                    "primary-fixed-dim": "#e4beb2",
-                    "accent-gold": "#D4AF37",
-                    "tertiary-fixed": "#ffd9e4",
-                    "on-tertiary-container": "#ffcadb",
-                    "on-surface-variant": "#646040",
-                    "surface-container-lowest": "#ffffff",
-                    "outline-variant": "#d4c3be",
-                    "primary": "#5b4138",
-                    "secondary-fixed-dim": "#d8c1c9",
-                    "warm-apricot": "#F6CFC2",
-                    "on-primary-fixed-variant": "#5b4137",
-                    "background": "#fff9e8",
-                    "error": "#ba1a1a",
-                    "on-tertiary-fixed-variant": "#65394a",
-                    "on-surface": "#1e1c11",
-                    "surface-tint": "#75584e",
-                    "primary-fixed": "#ffdbcf",
-                    "on-primary": "#ffffff",
-                    "surface-variant": "#e8e2d0",
-                    "on-secondary-fixed": "#25181e",
-                    "on-background": "#1e1c11",
-                    "tertiary-fixed-dim": "#f2b6cb",
-                    "cream-surface": "#FFF9E6",
-                    "outline": "#827470",
-                    "secondary": "#6c5a61",
-                    "inverse-surface": "#333124",
-                    "on-secondary-fixed-variant": "#534249",
-                    "on-tertiary-fixed": "#330f1f",
-                    "on-primary-fixed": "#2b160f",
-                    "surface-container-highest": "#e8e2d0",
-                    "tertiary": "#65394a",
-                    "surface": "#fff9e8",
-                    "surface-bright": "#fff9e8",
-                    "on-secondary": "#ffffff",
-                    "secondary-fixed": "#f5dce5",
-                    "soft-rose": "#F4DCE4",
-                    "inverse-primary": "#e4beb2",
-                    "on-tertiary": "#ffffff"
-            },
-            "borderRadius": {
-                    "DEFAULT": "1rem",
-                    "lg": "2rem",
-                    "xl": "3rem",
-                    "full": "9999px"
-            },
-            "spacing": {
-                    "inner-padding": "1.25rem",
-                    "section-gap": "3rem",
-                    "page-margin": "2rem",
-                    "element-gap": "1rem"
-            },
-            "fontFamily": {
-                    "label-bold": ["Plus Jakarta Sans"],
-                    "headline-md": ["Plus Jakarta Sans"],
-                    "body-md": ["Plus Jakarta Sans"],
-                    "body-lg": ["Plus Jakarta Sans"],
-                    "display-lg": ["Plus Jakarta Sans"],
-                    "display-lg-mobile": ["Plus Jakarta Sans"],
-                    "label-caps": ["Plus Jakarta Sans"]
-            },
-            "fontSize": {
-                    "label-bold": ["11px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "700"}],
-                    "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
-                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
-                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "300"}],
-                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                    "display-lg-mobile": ["40px", {"lineHeight": "1.1", "fontWeight": "700"}],
-                    "label-caps": ["10px", {"lineHeight": "1.2", "letterSpacing": "0.4em", "fontWeight": "600"}]
-            }
-          },
-        },
-      }
-    </script>
 <style>
-        body {
-            background-color: #fff9e8;
-            background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
-            min-height: 100vh;
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    }
+    
+    /* Film Grain Texture Overlay */
+    .grain-overlay::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.04;
+      background-image: url("https://www.transparenttextures.com/patterns/stardust.png");
+    }
+
+    /* Organic Blob Animations */
+    @keyframes float {
+      0% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(10px, -20px) scale(1.1); }
+      66% { transform: translate(-15px, 10px) scale(0.9); }
+      100% { transform: translate(0, 0) scale(1); }
+    }
+    .blob {
+      filter: blur(60px);
+      position: absolute;
+      z-index: -1;
+      animation: float 12s infinite ease-in-out;
+    }
+
+    /* Custom Scrollbar for Artisanal Feel */
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #d4c3be;
+      border-radius: 10px;
+    }
+
+    /* Interaction Scale */
+    .active-press:active {
+      transform: scale(0.96);
+    }
+  </style>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary-container": "#ffcadb",
+            "on-secondary-fixed-variant": "#534249",
+            "on-primary-fixed": "#2b160f",
+            "cream-surface": "#FFF9E6",
+            "on-tertiary-fixed-variant": "#65394a",
+            "on-surface-variant": "#646040",
+            "tertiary": "#65394a",
+            "on-primary-container": "#f7d1c4",
+            "warm-apricot": "#F6CFC2",
+            "inverse-primary": "#e4beb2",
+            "error-container": "#ffdad6",
+            "surface-container-lowest": "#ffffff",
+            "primary": "#5b4138",
+            "surface": "#fff9e8",
+            "surface-dim": "#dfdac8",
+            "surface-variant": "#e8e2d0",
+            "secondary-fixed": "#f5dce5",
+            "on-surface": "#1e1c11",
+            "error": "#ba1a1a",
+            "on-background": "#1e1c11",
+            "secondary": "#6c5a61",
+            "secondary-fixed-dim": "#d8c1c9",
+            "tertiary-container": "#805062",
+            "on-tertiary": "#ffffff",
+            "secondary-container": "#f5dce5",
+            "surface-bright": "#fff9e8",
+            "on-secondary-fixed": "#25181e",
+            "inverse-surface": "#333124",
+            "soft-rose": "#F4DCE4",
+            "surface-container-low": "#f9f3e1",
+            "surface-container-highest": "#e8e2d0",
+            "surface-container-high": "#eee8d5",
+            "outline-variant": "#d4c3be",
+            "surface-container": "#f4eedb",
+            "primary-fixed": "#ffdbcf",
+            "on-tertiary-fixed": "#330f1f",
+            "on-error-container": "#93000a",
+            "on-error": "#ffffff",
+            "background": "#fff9e8",
+            "primary-fixed-dim": "#e4beb2",
+            "on-secondary": "#ffffff",
+            "primary-container": "#75584e",
+            "inverse-on-surface": "#f6f1de",
+            "accent-gold": "#D4AF37",
+            "surface-tint": "#75584e",
+            "on-primary-fixed-variant": "#5b4137",
+            "on-secondary-container": "#725f67",
+            "tertiary-fixed-dim": "#f2b6cb",
+            "on-primary": "#ffffff",
+            "tertiary-fixed": "#ffd9e4",
+            "outline": "#827470"
+          },
+          "borderRadius": {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          "fontFamily": {
+            "display": ["Plus Jakarta Sans", "sans-serif"],
+            "label": ["Plus Jakarta Sans", "sans-serif"],
+            "body": ["Plus Jakarta Sans", "sans-serif"]
+          }
         }
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
-            vertical-align: middle;
-        }
-        .grain-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            opacity: 0.05;
-            z-index: 9999;
-            background-image: url("https://www.transparenttextures.com/patterns/film-grain.png");
-        }
-        .organic-blob {
-            position: absolute;
-            filter: blur(80px);
-            z-index: -1;
-            border-radius: 50%;
-            opacity: 0.4;
-        }
-    </style>
+      }
+    }
+  </script>
 <style>
     body {
       min-height: max(884px, 100dvh);
     }
   </style>
   </head>
-<body class="font-body-md text-on-surface overflow-x-hidden">
-<div class="grain-overlay"></div>
-<!-- Decorative Organic Blobs -->
-<div class="organic-blob bg-warm-apricot w-96 h-96 -top-20 -left-20"></div>
-<div class="organic-blob bg-soft-rose w-[30rem] h-[30rem] top-[40%] -right-40"></div>
-<!-- Top App Bar (Shared Component Reference) -->
-<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-primary/10 flex justify-between items-center h-16 px-page-margin">
-<button class="text-primary hover:opacity-80 transition-opacity active:scale-95 duration-200">
-<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
-</button>
-<h1 class="font-display-lg-mobile text-display-lg-mobile text-primary tracking-tighter">Glaze &amp; Grain</h1>
-<div class="w-8 h-8 rounded-full overflow-hidden border border-primary/20">
-<img class="w-full h-full object-cover" data-alt="A sophisticated close-up portrait of a professional baker in a clean white apron, set against a warm, sun-drenched artisanal kitchen background with soft morning light. The color palette is composed of creamy whites and rich mahogany browns, maintaining the high-end Glaze and Grain aesthetic. The lighting is soft and cinematic, highlighting the fine details of the craft environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyE29DnUAl0PIioxRFblXyb9RCxyPd4L-0CR8dMj5IV7Of7mHLnaCR6fsn9N2pDFVPrUxySAP4ezAPRI_Og2SjOABoxsNvFM6hIFw0yFb-aNqWwehiLDRjQ1392AGj_b3mTDvc25gZhHdyrHKSwIhV7f-POErc5XiIJYVb1SjowyRk7ZfhaV0hhjUgHLAMN6cpMn6R8IZHGqMA-k6oR_DlGoxakoGHHtuhZ0tGoj1Dj7x2t8ge4QpZV2jml3fQHe0BEbjspnW9UUHJ"/>
+<body class="bg-background text-on-surface font-body overflow-x-hidden min-h-screen grain-overlay">
+<!-- Background Ornaments -->
+<div class="blob bg-soft-rose w-72 h-72 rounded-full -top-20 -left-20 opacity-40"></div>
+<div class="blob bg-warm-apricot w-96 h-96 rounded-full bottom-40 -right-20 opacity-30" style="animation-delay: -3s;"></div>
+<!-- Top App Bar (Shared Component Strategy) -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-lg shadow-[0px_10px_30px_rgba(117,88,78,0.04)] flex items-center justify-between px-6 h-20">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary active:scale-95 transition-transform duration-200">menu</button>
+<h1 class="font-display text-[24px] font-bold tracking-tight text-primary">The Pâtisserie</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary active:scale-95 transition-transform duration-200">shopping_bag</button>
 </div>
 </header>
-<main class="pt-24 pb-32 px-page-margin max-w-[480px] mx-auto min-h-screen flex flex-col gap-8">
-<!-- Page Title -->
-<div class="flex flex-col gap-1">
-<span class="font-label-caps text-label-caps text-primary/60 tracking-[0.4em]">YOUR CURATION</span>
-<h2 class="font-headline-md text-headline-md text-primary">Your Basket</h2>
-</div>
-<!-- Cart Items List -->
-<section class="flex flex-col gap-6">
-<!-- Item 1: Lavender Honey Cake -->
-<div class="bg-surface-container-low rounded-lg p-5 flex gap-4 border border-outline-variant/30 shadow-sm transition-transform hover:translate-y-[-2px] duration-300">
-<div class="w-24 h-24 rounded-full flex-shrink-0 border-2 border-white shadow-md overflow-hidden bg-white">
-<img class="w-full h-full object-cover" data-alt="A gourmet lavender honey cake with delicate purple floral accents and golden honey glaze dripping down its sides, presented on a minimalist white ceramic plate. The lighting is soft and atmospheric, highlighting the intricate textures of the sponge and the glossy glaze. The background is a soft-focus warm cream, aligning with the artisanal Glaze and Grain luxury brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApXgsQfHvTC7eIHc5JMoNQsMnFUDAmeMxqxhKUoP0gDQ2XbCWiwSbhmVhlHEoNH1M65AE3Hl2Zk41Ua_For1uQvugFQwQiHk5Nt_I3Ml9-H5DQJcrCJZwypTk-WAJAHhPrU55lqOzX2BHpOJuXB7TWUksPul5UzcSvrZ8jRdq0_XVnp1RHZqZeHay4ylAXVpRdtG1RGuIQy5-S6YEPkICK68hflGHP7A8-JP0Uy-PxLMpMJQHTpRwtcZEAxXgSogDK_rsIDk0nxq-D"/>
-</div>
-<div class="flex flex-col flex-grow gap-1">
-<div class="flex justify-between items-start">
-<h3 class="font-body-md font-semibold text-primary">Lavender Honey Cake</h3>
-<button class="text-primary/40 hover:text-error transition-colors">
-<span class="material-symbols-outlined text-[20px]" data-icon="close">close</span>
-</button>
-</div>
-<div class="flex flex-col gap-0.5 text-on-surface-variant/80 text-[13px]">
-<span>Size: 8-inch</span>
-<span>Flavor: Vanilla Bean</span>
-<div class="mt-1 italic text-primary/60 flex items-center gap-1">
-<span class="material-symbols-outlined text-[14px]" data-icon="edit_note">edit_note</span>
-                            "Happy Birthday!"
-                        </div>
-</div>
-<div class="flex justify-between items-center mt-3">
-<span class="font-semibold text-primary">$64.00</span>
-<div class="flex items-center gap-3 bg-white/60 rounded-full px-3 py-1 border border-outline-variant/20">
-<button class="text-primary active:scale-90 transition-transform"><span class="material-symbols-outlined text-[18px]" data-icon="remove">remove</span></button>
-<span class="font-label-bold text-label-bold text-primary">01</span>
-<button class="text-primary active:scale-90 transition-transform"><span class="material-symbols-outlined text-[18px]" data-icon="add">add</span></button>
-</div>
-</div>
-</div>
-</div>
-<!-- Item 2: Velvet Cloud Cake -->
-<div class="bg-surface-container-low rounded-lg p-5 flex gap-4 border border-outline-variant/30 shadow-sm transition-transform hover:translate-y-[-2px] duration-300">
-<div class="w-24 h-24 rounded-full flex-shrink-0 border-2 border-white shadow-md overflow-hidden bg-white">
-<img class="w-full h-full object-cover" data-alt="A minimalist Velvet Cloud Cake, pure white with ethereal whipped peaks and a subtle pearlescent finish. The cake sits elegantly on a marble pedestal, illuminated by a soft golden glow. The overall mood is airy and sophisticated, featuring a clean palette of whites and soft browns, emphasizing the high-end craft of Glaze and Grain pâtisserie." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaOtgddx74BIilI-ifqVg9hu4fXPJT2QlUccsca3lLdTuuT8V0jAFzpw4FfxAbIe0UxmyoPWbykxog_cW5BpaXQME_T0myvmF5HqRrigj8ThkFEKXt6xCjO6m29hIRkumZ4x245aLK-16R_FitluCZ6uJE_zHAiZfmAq14GBVN2ZkbNvhReImQftTzFv4U_AMMQDBcqUt-bhKmnM1loVV7DsVheW9WDmT4AbXsT2sxOxOQH7x33UwD6O-ifAz8asr9XvkF2rEr1-7v"/>
-</div>
-<div class="flex flex-col flex-grow gap-1">
-<div class="flex justify-between items-start">
-<h3 class="font-body-md font-semibold text-primary">Velvet Cloud Cake</h3>
-<button class="text-primary/40 hover:text-error transition-colors">
-<span class="material-symbols-outlined text-[20px]" data-icon="close">close</span>
-</button>
-</div>
-<div class="flex flex-col gap-0.5 text-on-surface-variant/80 text-[13px]">
-<span>Size: 6-inch</span>
-<span>Flavor: White Chocolate</span>
-</div>
-<div class="flex justify-between items-center mt-3">
-<span class="font-semibold text-primary">$48.00</span>
-<div class="flex items-center gap-3 bg-white/60 rounded-full px-3 py-1 border border-outline-variant/20">
-<button class="text-primary active:scale-90 transition-transform"><span class="material-symbols-outlined text-[18px]" data-icon="remove">remove</span></button>
-<span class="font-label-bold text-label-bold text-primary">01</span>
-<button class="text-primary active:scale-90 transition-transform"><span class="material-symbols-outlined text-[18px]" data-icon="add">add</span></button>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- Delivery Details Section -->
-<section class="bg-white/40 border border-outline-variant/40 rounded-lg p-6 flex flex-col gap-4">
-<div class="flex items-center gap-3">
-<div class="bg-primary-container/10 p-2 rounded-full">
-<span class="material-symbols-outlined text-primary" data-icon="local_shipping">local_shipping</span>
-</div>
+<!-- Main Canvas -->
+<main class="pt-24 pb-32 px-6 max-w-[480px] mx-auto relative min-h-screen">
+<!-- Page Header -->
+<div class="flex items-end justify-between mb-8">
 <div>
-<h4 class="font-label-bold text-label-bold text-primary uppercase">Delivery Details</h4>
-<p class="text-[14px] text-on-surface-variant">Estimated: 45-60 mins</p>
+<span class="font-label text-[10px] uppercase tracking-[0.4em] text-outline mb-1 block">Stay Updated</span>
+<h2 class="font-display text-[32px] font-semibold text-primary leading-tight">Notifications</h2>
+</div>
+<button class="text-primary font-semibold text-[13px] underline underline-offset-4 hover:opacity-70 transition-opacity active-press" onclick="clearNotifications()">
+        Mark all as read
+      </button>
+</div>
+<!-- Empty State (Hidden by default, shown via JS if list is empty) -->
+<div class="hidden flex flex-col items-center justify-center py-20 text-center animate-in fade-in duration-700" id="empty-state">
+<div class="relative w-48 h-48 mb-8">
+<!-- Orbiting ring from brand style -->
+<div class="absolute inset-0 border border-outline-variant/30 rounded-full animate-[spin_10s_linear_infinite]"></div>
+<div class="absolute inset-4 rounded-full overflow-hidden border border-primary/10 shadow-sm bg-surface-container-low">
+<img class="w-full h-full object-cover opacity-80 mix-blend-multiply" data-alt="A dreamy, high-end digital illustration of an empty, minimalist cake stand resting on a marble table. The background is a soft cream with warm golden sunlight filtering through a window, casting gentle shadows. The style is sophisticated and artisanal, reflecting the Glaze &amp; Grain brand identity with soft textures and muted warm tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBu5jEEpDe-RpaVTsMzW0F6yDephJ9RHDJPfOXSJvei6tvLepiSwMl6sCrupXw_u6Lamj61PKzyupsMeY8OHnuX9f00J8sRE01U6LRB0CyZ8Ahk18_roACPAo6E6uwG9tozOtFY2S_v2umBVT0dMPnuIGLtEIlZ6XxOoOHW91Q0qxBxpKB98wrP_PtJNm7vu_rxaowuDxT9rCvO8Lyj3nOIJcDQN4FFO4sJ9ffCnOCATi9YidWUWeLVZLhAfOsYLP_ZBKx9WvzQeKVV"/>
 </div>
 </div>
-<div class="h-px bg-outline-variant/40 w-full"></div>
-<div class="flex justify-between items-center">
-<div class="flex flex-col gap-0.5">
-<span class="text-[12px] uppercase tracking-wider text-primary/60 font-semibold">Ship to</span>
-<p class="text-[14px] text-primary">42 Artisan Grove, West Hollywood, CA</p>
+<h3 class="font-display text-[22px] font-semibold text-primary mb-2">A moment of peace</h3>
+<p class="text-on-surface-variant text-[15px] max-w-[280px] leading-relaxed">
+        Your bakery box is currently empty of updates. We'll let you know when the oven timer rings!
+      </p>
 </div>
-<button class="text-accent-gold font-semibold text-[13px] hover:underline transition-all">Change</button>
+<!-- Notification Feed -->
+<div class="space-y-10" id="notification-list">
+<!-- Category: Orders -->
+<section class="space-y-4">
+<h3 class="font-label text-[11px] font-bold tracking-[0.1em] text-outline px-2 uppercase">Orders</h3>
+<div class="space-y-3">
+<!-- Notification Card 1 -->
+<div class="group relative bg-surface-container-low/50 hover:bg-surface-container p-4 rounded-lg transition-all duration-300 border border-primary/5 active-press cursor-pointer overflow-hidden">
+<div class="flex gap-4 items-start relative z-10">
+<div class="relative flex-shrink-0">
+<div class="w-12 h-12 rounded-full overflow-hidden border border-primary/10 bg-white">
+<img class="w-full h-full object-cover" data-alt="A close-up shot of a gourmet Lavender Honey Cake with delicate frosting and real lavender sprigs on top. The lighting is soft and airy, shot in a high-end studio setting. The color palette features warm creams, soft purples, and rich browns, consistent with a premium artisanal pâtisserie aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEs0n2sZqJfNaB9gLDBKN-1elqGHdejfcCZUjOyhAmpvMOdbz0BilAKlxAaC0nKRkyJi-XQVibL0a87C5shPI1vg6M1mob3FGFsPuVIDIGjekp0l1PRkxu5TICUvP-YP0LTcGn6UcjCyI4ufTMlBff7ywQijAALeBJmXFRZXyXtzZJyPfHyT7S9M9jj5jsB_Rg2b_VgDuUpSIBv573ETy87ijNY1HgqAsC1D3OboMWY8pEgA83KWWp4dFA6wySEc4Hl3UYVkGWGXAb"/>
+</div>
+<div class="absolute -bottom-1 -right-1 w-5 h-5 bg-primary text-white rounded-full flex items-center justify-center shadow-md">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">local_shipping</span>
+</div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-1">
+<h4 class="font-semibold text-primary text-[16px] truncate pr-4">Order Out for Delivery</h4>
+<span class="w-2 h-2 bg-primary rounded-full mt-2"></span>
+</div>
+<p class="text-on-surface-variant text-[14px] leading-relaxed mb-2">Your Lavender Honey Cake is on its way to you! Our courier is approximately 10 minutes away.</p>
+<span class="text-outline text-[12px] font-medium">2 mins ago</span>
+</div>
+</div>
+</div>
+<!-- Notification Card 2 -->
+<div class="group relative bg-surface-container-low/50 hover:bg-surface-container p-4 rounded-lg transition-all duration-300 border border-primary/5 active-press cursor-pointer">
+<div class="flex gap-4 items-start">
+<div class="w-12 h-12 rounded-full flex items-center justify-center border border-primary/10 bg-white text-primary">
+<span class="material-symbols-outlined text-[24px]">check_circle</span>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="font-semibold text-primary text-[16px] mb-1">Payment Successful</h4>
+<p class="text-on-surface-variant text-[14px] leading-relaxed mb-2">Transaction for order #GK-8829 has been processed. We're preparing your treats now.</p>
+<span class="text-outline text-[12px] font-medium">1 hour ago</span>
+</div>
+</div>
+</div>
 </div>
 </section>
-<!-- Promo Code Input -->
-<div class="relative group">
-<input class="w-full bg-surface-container-low border border-outline-variant/30 rounded-full py-4 px-6 text-primary placeholder:text-primary/40 focus:ring-2 focus:ring-primary/20 focus:outline-none transition-all" placeholder="Enter Promo Code" type="text"/>
-<button class="absolute right-2 top-2 bottom-2 px-6 bg-primary text-white rounded-full font-label-bold text-label-bold uppercase tracking-widest active:scale-95 transition-transform">Apply</button>
+<!-- Category: Offers -->
+<section class="space-y-4">
+<h3 class="font-label text-[11px] font-bold tracking-[0.1em] text-outline px-2 uppercase">Offers</h3>
+<div class="space-y-3">
+<!-- Promo Card -->
+<div class="group relative bg-tertiary-fixed text-on-tertiary-fixed-variant p-5 rounded-lg border border-tertiary/10 overflow-hidden active-press cursor-pointer shadow-sm">
+<div class="absolute top-0 right-0 p-2 opacity-10">
+<span class="material-symbols-outlined text-[80px]" style="font-variation-settings: 'wght' 100;">featured_seasonal_and_gifts</span>
 </div>
-<!-- Bill Details -->
-<section class="flex flex-col gap-3 px-2">
-<div class="flex justify-between items-center text-on-surface-variant">
-<span class="text-[14px]">Subtotal</span>
-<span class="font-semibold">$112.00</span>
+<div class="flex gap-4 relative z-10">
+<div class="flex-1 min-w-0">
+<div class="inline-block bg-white/80 backdrop-blur shadow-sm rounded-full px-3 py-1 mb-3 rotate-[-2deg]">
+<span class="font-label text-[10px] font-bold tracking-wider text-tertiary uppercase">Weekly Special</span>
 </div>
-<div class="flex justify-between items-center text-on-surface-variant">
-<span class="text-[14px]">Delivery Fee</span>
-<span class="font-semibold text-primary">FREE</span>
+<h4 class="font-display text-[18px] font-bold mb-1">Golden Hour Delights</h4>
+<p class="text-[14px] opacity-90 leading-snug mb-3">Enjoy 20% off all Citrus Tarts this weekend only. Use code: CITRUS20</p>
+<span class="text-[12px] font-semibold opacity-70">Expires in 2 days</span>
 </div>
-<div class="flex justify-between items-center text-on-surface-variant">
-<span class="text-[14px]">Taxes (8%)</span>
-<span class="font-semibold">$8.96</span>
 </div>
-<div class="h-px bg-outline-variant/40 w-full my-2"></div>
-<div class="flex justify-between items-center text-primary">
-<span class="font-headline-md text-[20px]">Grand Total</span>
-<span class="font-headline-md text-[24px] tracking-tight">$120.96</span>
+</div>
 </div>
 </section>
-<!-- Final Spacer -->
-<div class="h-10"></div>
+<!-- Category: Account -->
+<section class="space-y-4">
+<h3 class="font-label text-[11px] font-bold tracking-[0.1em] text-outline px-2 uppercase">Account</h3>
+<div class="space-y-3">
+<!-- Standard Row Item -->
+<div class="flex items-center gap-4 p-4 hover:bg-surface-container-low transition-colors rounded-lg group active-press cursor-pointer">
+<div class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary border border-primary/10">
+<span class="material-symbols-outlined text-[20px]">person</span>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="font-semibold text-primary text-[15px]">Profile Updated</h4>
+<p class="text-on-surface-variant text-[13px] truncate">Your delivery preferences have been saved.</p>
+</div>
+<span class="text-outline text-[12px]">Yesterday</span>
+</div>
+</div>
+</section>
+</div>
 </main>
-<!-- Fixed Bottom Action Bar -->
-<footer class="fixed bottom-0 w-full bg-surface-container-low/95 backdrop-blur-lg border-t border-primary/10 px-page-margin pt-4 pb-8 z-50 flex flex-col gap-4">
-<!-- Floating Checkout Button -->
-<button class="w-full bg-primary text-on-primary py-5 rounded-full shadow-lg shadow-primary/20 flex justify-center items-center gap-3 active:scale-[0.98] transition-all hover:opacity-90">
-<span class="font-headline-md text-[18px] tracking-wide">Proceed to Checkout</span>
-<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
-</button>
-</footer>
-<!-- Bottom Nav Bar (Shared Component logic - suppressed for checkout context) -->
-<!-- The BottomNavBar is suppressed here as per "Shell Visibility & Relevance" rule for Transactional/Focused screens -->
+<!-- Bottom Nav Bar (Shared Component Logic) -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-surface-container-low/95 backdrop-blur-md z-50 rounded-t-xl shadow-[0px_-10px_40px_rgba(117,88,78,0.06)]">
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:text-primary transition-colors active:scale-90 duration-300 ease-out" href="#">
+<span class="material-symbols-outlined text-[24px]">home_storage</span>
+<span class="font-label text-[11px] mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:text-primary transition-colors active:scale-90 duration-300 ease-out" href="#">
+<span class="material-symbols-outlined text-[24px]">storefront</span>
+<span class="font-label text-[11px] mt-1">Shop</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:text-primary transition-colors active:scale-90 duration-300 ease-out" href="#">
+<span class="material-symbols-outlined text-[24px]">receipt_long</span>
+<span class="font-label text-[11px] mt-1">Orders</span>
+</a>
+<!-- Profile is Active since Notifications is usually part of Account/Profile context -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-6 py-2 active:scale-90 transition-transform duration-300 ease-out" href="#">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label text-[11px] mt-0.5">Profile</span>
+</a>
+</nav>
 <script>
-        // Micro-interaction for quantity buttons
-        document.querySelectorAll('button').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                // Simple ripple/scale effect already handled by Tailwind classes
-            });
-        });
+    function clearNotifications() {
+      const list = document.getElementById('notification-list');
+      const emptyState = document.getElementById('empty-state');
+      const unreadDots = document.querySelectorAll('.bg-primary.rounded-full.w-2.h-2');
+      
+      // Simulate "mark as read" first
+      unreadDots.forEach(dot => {
+        dot.style.opacity = '0';
+        dot.style.transform = 'scale(0)';
+        dot.style.transition = 'all 0.4s ease-out';
+      });
 
-        // Hover effect for items
-        const cards = document.querySelectorAll('.bg-surface-container-low');
-        cards.forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                card.style.borderColor = 'rgba(117, 88, 78, 0.4)';
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.borderColor = 'rgba(212, 195, 190, 0.3)';
-            });
-        });
-    </script>
+      // Optional: Logic to clear entire list for demo purposes
+      // list.style.opacity = '0';
+      // list.style.transform = 'translateY(20px)';
+      // list.style.transition = 'all 0.5s ease-in';
+      // setTimeout(() => {
+      //   list.classList.add('hidden');
+      //   emptyState.classList.remove('hidden');
+      // }, 500);
+    }
+
+    // Micro-interaction for cards
+    document.querySelectorAll('#notification-list div[class*="group"]').forEach(card => {
+      card.addEventListener('click', function() {
+        const dot = this.querySelector('.bg-primary.rounded-full');
+        if (dot) {
+          dot.style.opacity = '0';
+          dot.style.transform = 'scale(0)';
+        }
+      });
+    });
+  </script>
 </body></html>
