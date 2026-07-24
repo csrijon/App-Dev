@@ -173,7 +173,7 @@ const Addnewcakepage = ({ navigation }) => {
             name: imageUri.fileName,
         });
 
-        const response = await fetch("http://10.140.23.125:3000/api/add/itemdata", {
+        const response = await fetch("http://10.140.21.192:3000/api/add/itemdata", {
             method: "POST",
             body: formdata,
         }

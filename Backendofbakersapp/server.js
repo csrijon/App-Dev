@@ -1,5 +1,5 @@
 import express from "express"
-import db from "./config/db.js"
+import pool from "./config/db.js"
 import main from "./routes/main.js"
 
 
@@ -12,11 +12,9 @@ app.use(main)
 app.use(express.static("./uploads"))
 
 app.get("/", async (req, res) => {
-    const result = await db.query("SELECT current_database()")
-    res.json({
-        mess: "database connected successfully",
-        name: result
-    })
+    const result = await pool.query("SELECT * FROM USER_TABLE")
+    console.log(result)
+    res.send("database connection established ")
 })
 
 app.listen(PORT, () => {

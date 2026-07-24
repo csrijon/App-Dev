@@ -47,7 +47,9 @@ const Loginpage = ({navigation}) => {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data?.message || "Login failed. Please check your credentials.");
+            return Alert.alert("Login Faild",
+                data.mess
+            )
             }
 
             // Success hole onboarding e navigate
