@@ -66,7 +66,7 @@ const onclickloginbutton = async () => {
     try {
         setLoading(true);
 
-        const response = await fetch("http://10.140.23.125:3000/api/auth/loginmain", {
+        const response = await fetch("http://10.140.21.192:3000/api/auth/loginmain", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
