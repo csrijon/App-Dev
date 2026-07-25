@@ -1,19 +1,51 @@
 import pool from "../config/db.js"
+import jwt from "jsonwebtoken"
+import dotenv from "dotenv"
+
+
+dotenv.config()
 
 const Loginmainapp = async (req, res) => {
-    
+
     try {
         const { mobile, password } = req.body
         console.log(mobile, password)
 
-        res.json({
-            meess: "Login Successfully",
-            details: mobile
-        })
+        let logincheck = await pool.query("SELECT * FROM MAINAPPLOGIN WHERE MOBILENUMBER=$1 AND PASSWORD=$2", [
+            mobile, password
+        ])
+        console.log(logincheck.rows[0].personid)
+        const user = logincheck.rows[0]
+        if (logincheck.rowCount > 0) {
+            let jwttoken = jwt.sign(
+                {
+                    id: user.personid,
+                    name: user.name,
+                    Number: user.mobilenumber
+                },
+                process.env.jwt_secret,
+                {
+                    expiresIn: "1h"
+                }
+
+            )
+            return res.status(200).json({
+                meessage: "Login Successfully",
+                details: mobile,
+                ids: jwttoken
+            })
+        }
+        if (logincheck.rowCount === 0) {
+            return res.status(401).json({
+                message: "Invalid Mobile Number or Password"
+            })
+        }
+
     } catch (error) {
         console.log(error)
-        res.json({
-            meess: "Not Working"
+        res.status(500).json({
+            err: error,
+            meessage: "internal server error"
         })
     }
 }

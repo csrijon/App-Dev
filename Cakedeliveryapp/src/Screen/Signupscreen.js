@@ -1,6 +1,6 @@
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useState } from "react";
-import { View, StyleSheet, ScrollView, Text, StatusBar, Image, TextInput, TouchableOpacity, ActivityIndicator } from "react-native"
+import { View, StyleSheet, ScrollView, Text, StatusBar, Image, TextInput, TouchableOpacity, ActivityIndicator, Alert } from "react-native"
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Button from "../components/Button";
 import Socialmediabutton from "../components/Socialmediabutton"
@@ -19,7 +19,7 @@ const Signupscreen = ({ navigation }) => {
         try {
             setLoading(true);
 
-            const response = await fetch("http://10.140.23.125:3000/api/auth/signupmain", {
+            const response = await fetch("http://10.140.21.192:3000/api/auth/signupmain", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -34,7 +34,9 @@ const Signupscreen = ({ navigation }) => {
             const data = await response.json();
 
             if (!response.ok) {
-                throw new Error(data.message);
+                return Alert.alert("Signup Faild",
+                    data.mess
+                )
             }
 
             console.log(data);

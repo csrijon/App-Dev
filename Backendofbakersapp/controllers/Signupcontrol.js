@@ -4,15 +4,29 @@ const UserappSignup = async (req, res) => {
     try {
         const { fullname, mobile, password } = req.body
         console.log(mobile, fullname, password)
+        let checknumber = await pool.query("SELECT * FROM MAINAPPLOGIN WHERE MOBILENUMBER =$1", [
+            mobile
+        ])
+        if (checknumber.rowCount > 0) {
+            return res.status(409).json({
+                mess: "Number Already exist used Different NUmber"
+            })
+        }
 
-        res.json({
-            mess: "ALL DONE",
-            detalis: fullname
-        })
+        let signupprocess = await pool.query("INSERT INTO MAINAPPLOGIN(NAME,MOBILENUMBER,PASSWORD) VALUES($1,$2,$3)", [
+            fullname, mobile, password
+        ])
+        console.log(signupprocess)
+        if (signupprocess.rowCount > 0) {
+            return res.status(201).json({
+                mess: "Signup Successfully",
+                detalis: fullname
+            })
+        }
     } catch (error) {
         console.log(error)
-        res.json({
-            mess: "NOT WORKING"
+        res.status(500).json({
+            mess: "Faild to Signup"
         })
     }
 }

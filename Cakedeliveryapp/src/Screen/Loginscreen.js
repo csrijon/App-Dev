@@ -1,5 +1,5 @@
 import { SafeAreaView } from "react-native-safe-area-context"
-import { StatusBar, View, Image, Text, TextInput, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native"
+import { StatusBar, View, Image, Text, TextInput, StyleSheet, TouchableOpacity, ActivityIndicator, Alert } from "react-native"
 import Octicons from 'react-native-vector-icons/Octicons';
 import Feather from 'react-native-vector-icons/Feather';
 import Button from "../components/Button";
@@ -55,44 +55,44 @@ const Loginscreen = ({ navigation }) => {
         }
     }
 
-const onclickloginbutton = async () => {
-    console.log("login button clicked ")
-    setTouched(true);
+    const onclickloginbutton = async () => {
+        console.log("login button clicked ")
+        setTouched(true);
 
-    if (!loginemail || !loginpassword || !isMobileValid || !isPasswordValid) {
-        return;
-    }
-
-    try {
-        setLoading(true);
-
-        const response = await fetch("http://10.140.21.192:3000/api/auth/loginmain", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                mobile: loginemail,
-                password: loginpassword,
-            }),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.message);
+        if (!loginemail || !loginpassword) {
+            return;
         }
 
-        console.log(data);
+        try {
+            setLoading(true);
 
-        navigation.replace("Tabs");
+            const response = await fetch("http://10.140.21.192:3000/api/auth/loginmain", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    mobile: loginemail,
+                    password: loginpassword,
+                }),
+            });
 
-    } catch (error) {
-        console.log(error.message);
-    } finally {
-        setLoading(false);
-    }
-};
+            const data = await response.json();
+
+            if (!response.ok) {
+                return Alert.alert("Login Failed", data.message)
+            }
+
+            console.log(data);
+
+            navigation.replace("Tabs");
+
+        } catch (error) {
+            console.log(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <SafeAreaView style={styles.loginsafearea} >
