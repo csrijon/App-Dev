@@ -7,6 +7,7 @@ import Socialmediabutton from "../components/Socialmediabutton"
 import { useState, useEffect } from "react";
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+// import AsyncStorage from "react-native-async-storage/async-storage"
 
 const Loginscreen = ({ navigation }) => {
 
