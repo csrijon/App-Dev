@@ -1,6 +1,7 @@
 import pool from "../config/db.js"
 
 const Loginmainapp = async (req, res) => {
+    
     try {
         const { mobile, password } = req.body
         console.log(mobile, password)
@@ -33,7 +34,6 @@ const LoginAdminapp = async (req, res) => {
             mess: "Invalid email and password"
         })
     } catch (error) {
-        // console.log(error)
         res.status(500).json({
             mess: "Login Faild "
         })
