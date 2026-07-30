@@ -217,7 +217,7 @@ const Addnewcakepage = ({ navigation }) => {
                         <View style={styles.headingAccentBar} />
                         <Text style={styles.smallHeading}>CATALOG MANAGEMENT</Text>
                     </View>
-                    <Text style={styles.mainHeading}>Add New Cake</Text>
+                    <Text style={styles.mainHeading}>Add New Product</Text>
 
                     {/* Gallery Section */}
                     <View style={styles.sectionTitleRow}>

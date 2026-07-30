@@ -121,7 +121,7 @@ const Signuppage = ({ navigation }) => {
         setLoading(true);
         try {
             // API call - URL ta nijer backend endpoint diye replace koro
-            const response = await fetch("http://10.140.21.192:3000/api/auth/adminsignup", {
+            const response = await fetch("http://192.168.29.19:3000/api/auth/adminsignup", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

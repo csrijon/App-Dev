@@ -1,4 +1,4 @@
-import { View, Text, StatusBar, StyleSheet, ScrollView,TextInput, TouchableOpacity, FlatList, RefreshControl, } from "react-native"
+import { View, Text, StatusBar, StyleSheet, ScrollView, TextInput, TouchableOpacity, FlatList, RefreshControl, } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../components/Header"
 import Search from "../components/Search";
@@ -6,7 +6,7 @@ import Cakecard from "../components/Cakecard";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FoodCard from "../components/FoodCard";
 import { useWindowDimensions } from "react-native";
-import { useState,useMemo } from "react";
+import { useState, useMemo } from "react";
 
 
 
@@ -134,6 +134,14 @@ const categoryChips = [
     { id: "c3", label: "Pastries", icon: "gift-outline" },
     { id: "c4", label: "Bread", icon: "pizza-outline" },
     { id: "c5", label: "Cookies", icon: "nutrition-outline" },
+    { id: "c6", label: "Donuts", icon: "fast-food-outline" },
+    { id: "c7", label: "Croissants", icon: "fast-food-outline" },
+    { id: "c8", label: "Rolls & Buns", icon: "fast-food-outline" },
+    { id: "c9", label: "Muffins", icon: "fast-food-outline" },
+    { id: "c10", label: "Pies & Tarts", icon: "fast-food-outline" },
+    { id: "c11", label: "Savory Bakery", icon: "fast-food-outline" },
+    { id: "c12", label: "Desserts", icon: "fast-food-outline" },
+    { id: "c13", label: "Chocolates & Confectionery", icon: "fast-food-outline" }
 ];
 
 const reorderData = [
@@ -184,7 +192,7 @@ const Homescreen = ({ navigation }) => {
         <SafeAreaView style={styles.Homecontainer}>
             <StatusBar backgroundColor="#f8f1df" barStyle="dark-content" />
 
-            <Header onPress={()=>navigation.navigate("NotificationsScreen")} />
+            <Header onPress={() => navigation.navigate("NotificationsScreen")} />
 
             <ScrollView
                 contentContainerStyle={{ paddingBottom: 40 }}
@@ -557,137 +565,137 @@ const styles = StyleSheet.create({
         overflow: "hidden"
     },
     searchBox: {
-  flexDirection: "row",
-  alignItems: "center",
-  backgroundColor: "#ffffff",
-  borderRadius: 18,
-  paddingHorizontal: 15,
-  marginBottom: 18,
-  marginTop: 10,
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: "#ffffff",
+        borderRadius: 18,
+        paddingHorizontal: 15,
+        marginBottom: 18,
+        marginTop: 10,
 
-  shadowColor: "#000",
-  shadowOffset: {
-    width: 0,
-    height: 2,
-  },
-  shadowOpacity: 0.08,
-  shadowRadius: 4,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.08,
+        shadowRadius: 4,
 
-  elevation: 3,
-},
+        elevation: 3,
+    },
 
-searchInput: {
-  flex: 1,
-  height: 50,
-  marginLeft: 10,
-  color: "#333",
-  fontSize: 15,
-},
+    searchInput: {
+        flex: 1,
+        height: 50,
+        marginLeft: 10,
+        color: "#333",
+        fontSize: 15,
+    },
 
-emptyContainer: {
-  justifyContent: "center",
-  alignItems: "center",
-  paddingVertical: 40,
-},
+    emptyContainer: {
+        justifyContent: "center",
+        alignItems: "center",
+        paddingVertical: 40,
+    },
 
-emptyText: {
-  marginTop: 10,
-  fontSize: 16,
-  color: "#999",
-  fontWeight: "600",
-},
+    emptyText: {
+        marginTop: 10,
+        fontSize: 16,
+        color: "#999",
+        fontWeight: "600",
+    },
 
-/* ── Naya additions er style ── */
-greetingText: {
-  fontSize: 16,
-  fontWeight: "700",
-  color: "#5D4037",
-  marginTop: 12,
-  marginBottom: 2,
-},
+    /* ── Naya additions er style ── */
+    greetingText: {
+        fontSize: 16,
+        fontWeight: "700",
+        color: "#5D4037",
+        marginTop: 12,
+        marginBottom: 2,
+    },
 
-promoCard: {
-  width: 260,
-  borderRadius: 24,
-  padding: 18,
-  justifyContent: "center",
-  gap: 6,
-},
+    promoCard: {
+        width: 260,
+        borderRadius: 24,
+        padding: 18,
+        justifyContent: "center",
+        gap: 6,
+    },
 
-promoTitle: {
-  fontSize: 15,
-  fontWeight: "700",
-  color: "#5D4037",
-},
+    promoTitle: {
+        fontSize: 15,
+        fontWeight: "700",
+        color: "#5D4037",
+    },
 
-promoSubtitle: {
-  fontSize: 12,
-  color: "#7A5F52",
-},
+    promoSubtitle: {
+        fontSize: 12,
+        color: "#7A5F52",
+    },
 
-categoryChip: {
-  flexDirection: "row",
-  alignItems: "center",
-  gap: 6,
-  backgroundColor: "#EDE0D4",
-  borderRadius: 20,
-  paddingHorizontal: 14,
-  paddingVertical: 9,
-},
+    categoryChip: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 6,
+        backgroundColor: "#EDE0D4",
+        borderRadius: 20,
+        paddingHorizontal: 14,
+        paddingVertical: 9,
+    },
 
-categoryChipActive: {
-  backgroundColor: "#6D4C41",
-},
+    categoryChipActive: {
+        backgroundColor: "#6D4C41",
+    },
 
-categoryChipText: {
-  fontSize: 13,
-  fontWeight: "600",
-  color: "#6D4C41",
-},
+    categoryChipText: {
+        fontSize: 13,
+        fontWeight: "600",
+        color: "#6D4C41",
+    },
 
-categoryChipTextActive: {
-  color: "#fff",
-},
+    categoryChipTextActive: {
+        color: "#fff",
+    },
 
-reorderCard: {
-  flexDirection: "row",
-  alignItems: "center",
-  justifyContent: "space-between",
-  width: 220,
-  backgroundColor: "#ffffff",
-  borderRadius: 20,
-  paddingHorizontal: 16,
-  paddingVertical: 14,
-  gap: 10,
-  shadowColor: "#000",
-  shadowOffset: { width: 0, height: 2 },
-  shadowOpacity: 0.06,
-  shadowRadius: 4,
-  elevation: 2,
-},
+    reorderCard: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        width: 220,
+        backgroundColor: "#ffffff",
+        borderRadius: 20,
+        paddingHorizontal: 16,
+        paddingVertical: 14,
+        gap: 10,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.06,
+        shadowRadius: 4,
+        elevation: 2,
+    },
 
-reorderTextWrap: {
-  flex: 1,
-  gap: 2,
-},
+    reorderTextWrap: {
+        flex: 1,
+        gap: 2,
+    },
 
-reorderName: {
-  fontSize: 14,
-  fontWeight: "700",
-  color: "#5D4037",
-},
+    reorderName: {
+        fontSize: 14,
+        fontWeight: "700",
+        color: "#5D4037",
+    },
 
-reorderMeta: {
-  fontSize: 11,
-  color: "#9B8070",
-},
+    reorderMeta: {
+        fontSize: 11,
+        color: "#9B8070",
+    },
 
-reorderBtn: {
-  width: 30,
-  height: 30,
-  borderRadius: 15,
-  backgroundColor: "#6D4C41",
-  alignItems: "center",
-  justifyContent: "center",
-},
+    reorderBtn: {
+        width: 30,
+        height: 30,
+        borderRadius: 15,
+        backgroundColor: "#6D4C41",
+        alignItems: "center",
+        justifyContent: "center",
+    },
 })
