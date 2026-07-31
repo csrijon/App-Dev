@@ -3,7 +3,7 @@ import { View, Image, Text, StyleSheet,TouchableOpacity } from "react-native"
 const Cakecard = ({image,trend,name,price}) => {
     return (
         <TouchableOpacity activeOpacity={0.8} style={styles.Cakecard} >
-            <Image style={styles.Cakeimage} source={image} />
+            <Image style={styles.Cakeimage} source={{uri:image}} />
             <View style={styles.cakedetails} >
                 <Text style={styles.caketexttrend} >{trend}</Text>
                 <Text style={styles.caketextname} >{name}</Text>

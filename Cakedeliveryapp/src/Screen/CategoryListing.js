@@ -31,79 +31,135 @@ import Animated, {
 
 const { width } = Dimensions.get("window");
 
-const categories = [
-    { id: 1, title: "Burger" },
-    { id: 2, title: "Pizza" },
-    { id: 3, title: "Chicken" },
-    { id: 4, title: "Drinks" },
-    { id: 5, title: "Dessert" },
-    { id: 6, title: "Biryani" },
-    { id: 7, title: "Pasta" },
-    { id: 8, title: "Ice Cream" },
-];
+// const categories = [
+//     { id: 1, title: "Burger" },
+//     { id: 2, title: "Pizza" },
+//     { id: 3, title: "Chicken" },
+//     { id: 4, title: "Drinks" },
+//     { id: 5, title: "Dessert" },
+//     { id: 6, title: "Biryani" },
+//     { id: 7, title: "Pasta" },
+//     { id: 8, title: "Ice Cream" },
+// ];
 
 const menuItems = [
     {
         id: 1,
-        image: "https://legateaucakes.com/cdn/shop/files/28d729eb-0915-4e9a-87be-c015e085d598.png?v=1772039786",
-        rating: "4.5",
+        image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600",
+        rating: "4.9",
         bakingTime: "48h",
-        title: "Midnight Forest",
-        description: "A mysterious and enchanting forest that comes alive under the cover of darkness.",
-        price: "$500.00",
+        title: "Chocolate Cake",
+        description: "Rich chocolate sponge layered with silky chocolate ganache.",
+        price: "$20.00",
     },
     {
         id: 2,
-        image: "https://imgcdn.floweraura.com/black-forest-cake-9817490ca-A.jpg",
-        rating: "4.7",
-        bakingTime: "24h",
-        title: "Black Forest",
-        description: "Rich chocolate sponge layered with fresh cream and cherries.",
-        price: "$420.00",
+        image: "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=600",
+        rating: "4.8",
+        bakingTime: "2h",
+        title: "Glazed Donut",
+        description: "Soft and fluffy donut coated with classic sugar glaze.",
+        price: "$3.50",
     },
     {
         id: 3,
-        image: "https://www.fnp.com/images/pr/l/v20221205202838/choco-truffle-cake-half-kg_1.jpg",
-        rating: "4.8",
-        bakingTime: "12h",
-        title: "Choco Truffle",
-        description: "Smooth chocolate truffle cake topped with rich ganache.",
-        price: "$650.00",
+        image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600",
+        rating: "4.7",
+        bakingTime: "5h",
+        title: "Butter Croissant",
+        description: "Freshly baked buttery croissant with crispy flaky layers.",
+        price: "$4.50",
     },
     {
         id: 4,
-        image: "https://www.cakexpo.com/cdn/shop/products/redvelvetcake.jpg",
-        rating: "4.6",
-        bakingTime: "36h",
-        title: "Red Velvet",
-        description: "Classic red velvet cake with creamy cheese frosting.",
-        price: "$550.00",
+        image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=600",
+        rating: "4.8",
+        bakingTime: "1h",
+        title: "Chocolate Chip Cookie",
+        description: "Crunchy outside, chewy inside with premium chocolate chips.",
+        price: "$2.50",
     },
     {
         id: 5,
-        image: "https://www.fnp.com/images/pr/l/v20221205202854/fresh-fruit-cake-half-kg_1.jpg",
-        rating: "4.4",
-        bakingTime: "18h",
-        title: "Fresh Fruit Cake",
-        description: "Soft vanilla sponge loaded with seasonal fresh fruits.",
-        price: "$480.00",
+        image: "https://images.unsplash.com/photo-1586985289906-406988974504?w=600",
+        rating: "4.9",
+        bakingTime: "3h",
+        title: "Red Velvet Cupcake",
+        description: "Moist cupcake topped with smooth cream cheese frosting.",
+        price: "$4.50",
     },
     {
         id: 6,
-        image: "https://www.fnp.com/images/pr/l/v20221205202843/blueberry-cake-half-kg_1.jpg",
+        image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600",
+        rating: "4.7",
+        bakingTime: "2h",
+        title: "Blueberry Muffin",
+        description: "Fresh blueberry muffin with a soft and fluffy texture.",
+        price: "$4.25",
+    },
+    {
+        id: 7,
+        image: "https://images.unsplash.com/photo-1601979031925-424e53b6caaa?w=600",
         rating: "4.9",
-        bakingTime: "20h",
-        title: "Blueberry Bliss",
-        description: "Creamy blueberry cake with juicy berry filling.",
-        price: "$720.00",
+        bakingTime: "4h",
+        title: "Fudge Brownie",
+        description: "Dense chocolate brownie with a gooey fudgy center.",
+        price: "$5.00",
+    },
+    {
+        id: 8,
+        image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=600",
+        rating: "4.8",
+        bakingTime: "24h",
+        title: "New York Cheesecake",
+        description: "Creamy cheesecake with a buttery biscuit base.",
+        price: "$8.50",
+    },
+    {
+        id: 9,
+        image: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=600",
+        rating: "4.6",
+        bakingTime: "6h",
+        title: "French Macarons",
+        description: "Colorful almond macarons with assorted fillings.",
+        price: "$9.00",
+    },
+    {
+        id: 10,
+        image: "https://images.unsplash.com/photo-1519864600265-abb23847ef2c?w=600",
+        rating: "4.7",
+        bakingTime: "8h",
+        title: "Apple Pie",
+        description: "Classic apple pie filled with cinnamon-spiced apples.",
+        price: "$7.50",
+    },
+    {
+        id: 11,
+        image: "https://images.unsplash.com/photo-1608198093002-ad4e005484ec?w=600",
+        rating: "4.8",
+        bakingTime: "4h",
+        title: "Garlic Bread",
+        description: "Fresh baked bread topped with garlic butter and herbs.",
+        price: "$4.00",
+    },
+    {
+        id: 12,
+        image: "https://images.unsplash.com/photo-1519869325930-281384150729?w=600",
+        rating: "4.9",
+        bakingTime: "30h",
+        title: "Black Forest Cake",
+        description: "Chocolate sponge layered with whipped cream and cherries.",
+        price: "$22.00",
     },
 ];
 
+
+
 const SORT_OPTIONS = [
     { key: "default", label: "Default", icon: "apps-outline" },
-    { key: "low",     label: "Price: Low to High", icon: "arrow-up-outline" },
-    { key: "high",    label: "Price: High to Low", icon: "arrow-down-outline" },
-    { key: "rating",  label: "Top Rated", icon: "star-outline" },
+    { key: "low", label: "Price: Low to High", icon: "arrow-up-outline" },
+    { key: "high", label: "Price: High to Low", icon: "arrow-down-outline" },
+    { key: "rating", label: "Top Rated", icon: "star-outline" },
 ];
 
 const parsePrice = (price) => parseFloat(price.replace(/[^0-9.]/g, "")) || 0;
@@ -131,7 +187,7 @@ const CategoryListing = ({ navigation }) => {
     };
 
     const handleGoToCart = () => {
-        navigation.navigate("Cart");
+        navigation.navigate("CategoryProducts");
     };
 
     const activeSortLabel = SORT_OPTIONS.find(o => o.key === sortOrder)?.label || "Sort";
@@ -289,7 +345,7 @@ const CategoryListing = ({ navigation }) => {
                 )}
 
                 {/* ── Category chips ── */}
-                <FlatList
+                {/* <FlatList
                     horizontal
                     showsHorizontalScrollIndicator={false}
                     style={styles.CategoryCardsContainer}
@@ -304,7 +360,7 @@ const CategoryListing = ({ navigation }) => {
                             title={item.title}
                         />
                     )}
-                />
+                /> */}
 
                 {/* Result count */}
                 {sortedItems.length > 0 && (

@@ -21,6 +21,7 @@ import PasswordChanged from "./src/Screen/PasswordChanged"
 import Ordertrackingscreen from "./src/Screen/Ordertrackingscreen.js"
 import Checkoutscreen from "./src/Screen/Checkoutscreen.js"
 import NotificationsScreen from "./src/components/NotificationsScreen"
+import CategoryProducts from "./src/Screen/CategoryProducts.js"
 import RefineScreen from "./src/Screen/RefineScreen"
 import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
@@ -56,19 +57,19 @@ const Stackscreen = () => {
       <Stack.Screen name="Setnewpass" component={Setpasswordpage} />
       <Stack.Screen name="PasswordChanged" component={PasswordChanged} />
       <Stack.Screen name="Tabs" component={TabScreen} />
-      <Stack.Screen name="Trackingscreen" component={Ordertrackingscreen}/>
-      <Stack.Screen name="NotificationsScreen" component={NotificationsScreen}/>
+      <Stack.Screen name="Trackingscreen" component={Ordertrackingscreen} />
+      <Stack.Screen name="NotificationsScreen" component={NotificationsScreen} />
     </Stack.Navigator>
   )
 }
 
 
-const Checkoutstack=()=>{
-  return(
-     <Stack.Navigator initialRouteName="Cart" screenOptions={{headerShown:false}} >
+const Checkoutstack = () => {
+  return (
+    <Stack.Navigator initialRouteName="Cart" screenOptions={{ headerShown: false }} >
       <Stack.Screen name="Cart" component={Checkoutscreen} />
-        <Stack.Screen name="Ordesuccess" component={OrderSuccessScreen} />
-     </Stack.Navigator>
+      <Stack.Screen name="Ordesuccess" component={OrderSuccessScreen} />
+    </Stack.Navigator>
   )
 }
 
@@ -85,6 +86,7 @@ const Orderstack = () => {
   return (
     <Stack.Navigator initialRouteName="Category" screenOptions={{ headerShown: false }} >
       <Stack.Screen name="Category" component={CategoryListing} />
+      <Stack.Screen name="CategoryProducts" component={CategoryProducts} />
       <Stack.Screen name="Cakedetails" component={CakeDetails} />
       <Stack.Screen name="Ordersummary" component={Ordersummarypage} />
       <Stack.Screen name="Customorder" component={Customorderpage} />

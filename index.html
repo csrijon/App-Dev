@@ -1,24 +1,35 @@
 <!DOCTYPE html>
 
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
-<title>The Pâtisserie - Notifications</title>
-<!-- Tailwind & Plugins -->
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<!-- Material Symbols -->
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<!-- Google Fonts: Plus Jakarta Sans -->
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<style>
+<html class="light" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport" />
+  <title>Glaze &amp; Grain | Artisanal Cakes</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <style>
     .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+      font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0, "opsz" 24;
+      display: inline-block;
+      line-height: 1
     }
-    
-    /* Film Grain Texture Overlay */
-    .grain-overlay::before {
-      content: "";
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(117, 88, 78, 0.05)
+    }
+
+    .grain-overlay {
       position: fixed;
       top: 0;
       left: 0;
@@ -26,98 +37,102 @@
       height: 100%;
       pointer-events: none;
       z-index: 9999;
-      opacity: 0.04;
-      background-image: url("https://www.transparenttextures.com/patterns/stardust.png");
+      opacity: 0.03;
+      background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuDzq22PvRo1lCTieiOXwQxeVnVbHEckTegTmP3VYRv-QgQNfZTCoJLUy4hmxwPhD9oeniEmENkGtMxZM2LGDwbUdfB_yUALOlAevAn-zLjKvxeRQIyj3oth6voAZTekH9dgUT4XxnqN75fFfGRAynxmuYyxJnf-iohzQdk1glBsfMFHUxK0NgxxQ7FyY97uhyLPN4TFWxgTQ05p48ZY4FAD7W-nvkRZN0CbixInqhX6TqmOe8j6LAGdVQ);
+      /* This is a mental model for the film grain effect described in style guide */
+      background-repeat: repeat
     }
 
-    /* Organic Blob Animations */
-    @keyframes float {
-      0% { transform: translate(0, 0) scale(1); }
-      33% { transform: translate(10px, -20px) scale(1.1); }
-      66% { transform: translate(-15px, 10px) scale(0.9); }
-      100% { transform: translate(0, 0) scale(1); }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-    .blob {
-      filter: blur(60px);
+
+    .fade-in-card {
+      animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0
+    }
+
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none
+    }
+
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none
+    }
+
+    .orbit-ring {
+      border: 1px solid rgba(117, 88, 78, 0.1);
+      border-radius: 50%;
       position: absolute;
-      z-index: -1;
-      animation: float 12s infinite ease-in-out;
-    }
-
-    /* Custom Scrollbar for Artisanal Feel */
-    ::-webkit-scrollbar {
-      width: 4px;
-    }
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #d4c3be;
-      border-radius: 10px;
-    }
-
-    /* Interaction Scale */
-    .active-press:active {
-      transform: scale(0.96);
+      pointer-events: none
     }
   </style>
-<script id="tailwind-config">
+  <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
       theme: {
         extend: {
           "colors": {
-            "on-tertiary-container": "#ffcadb",
-            "on-secondary-fixed-variant": "#534249",
-            "on-primary-fixed": "#2b160f",
-            "cream-surface": "#FFF9E6",
-            "on-tertiary-fixed-variant": "#65394a",
-            "on-surface-variant": "#646040",
-            "tertiary": "#65394a",
-            "on-primary-container": "#f7d1c4",
-            "warm-apricot": "#F6CFC2",
-            "inverse-primary": "#e4beb2",
-            "error-container": "#ffdad6",
-            "surface-container-lowest": "#ffffff",
-            "primary": "#5b4138",
-            "surface": "#fff9e8",
-            "surface-dim": "#dfdac8",
-            "surface-variant": "#e8e2d0",
-            "secondary-fixed": "#f5dce5",
-            "on-surface": "#1e1c11",
-            "error": "#ba1a1a",
-            "on-background": "#1e1c11",
-            "secondary": "#6c5a61",
-            "secondary-fixed-dim": "#d8c1c9",
-            "tertiary-container": "#805062",
-            "on-tertiary": "#ffffff",
-            "secondary-container": "#f5dce5",
-            "surface-bright": "#fff9e8",
             "on-secondary-fixed": "#25181e",
-            "inverse-surface": "#333124",
             "soft-rose": "#F4DCE4",
-            "surface-container-low": "#f9f3e1",
-            "surface-container-highest": "#e8e2d0",
-            "surface-container-high": "#eee8d5",
-            "outline-variant": "#d4c3be",
-            "surface-container": "#f4eedb",
-            "primary-fixed": "#ffdbcf",
-            "on-tertiary-fixed": "#330f1f",
-            "on-error-container": "#93000a",
-            "on-error": "#ffffff",
-            "background": "#fff9e8",
-            "primary-fixed-dim": "#e4beb2",
+            "on-tertiary": "#ffffff",
             "on-secondary": "#ffffff",
-            "primary-container": "#75584e",
+            "tertiary-fixed": "#ffd9e4",
+            "surface-variant": "#e8e2d0",
+            "outline": "#827470",
+            "on-tertiary-fixed": "#330f1f",
+            "on-primary-container": "#f7d1c4",
+            "surface-container-highest": "#e8e2d0",
             "inverse-on-surface": "#f6f1de",
-            "accent-gold": "#D4AF37",
-            "surface-tint": "#75584e",
-            "on-primary-fixed-variant": "#5b4137",
+            "tertiary": "#65394a",
+            "inverse-surface": "#333124",
+            "secondary": "#6c5a61",
+            "primary-container": "#75584e",
+            "on-tertiary-fixed-variant": "#65394a",
+            "surface-container-high": "#eee8d5",
+            "cream-surface": "#FFF9E6",
+            "on-secondary-fixed-variant": "#534249",
+            "on-error": "#ffffff",
+            "surface-container": "#f4eedb",
+            "inverse-primary": "#e4beb2",
+            "surface-container-low": "#f9f3e1",
+            "on-primary": "#ffffff",
             "on-secondary-container": "#725f67",
             "tertiary-fixed-dim": "#f2b6cb",
-            "on-primary": "#ffffff",
-            "tertiary-fixed": "#ffd9e4",
-            "outline": "#827470"
+            "surface-tint": "#75584e",
+            "on-tertiary-container": "#ffcadb",
+            "background": "#fff9e8",
+            "secondary-fixed": "#f5dce5",
+            "primary-fixed": "#ffdbcf",
+            "secondary-container": "#f5dce5",
+            "surface-dim": "#dfdac8",
+            "on-surface-variant": "#504441",
+            "primary": "#5b4138",
+            "error-container": "#ffdad6",
+            "error": "#ba1a1a",
+            "on-primary-fixed": "#2b160f",
+            "accent-gold": "#D4AF37",
+            "on-primary-fixed-variant": "#5b4137",
+            "on-error-container": "#93000a",
+            "surface-container-lowest": "#ffffff",
+            "on-surface": "#1e1c11",
+            "secondary-fixed-dim": "#d8c1c9",
+            "surface": "#fff9e8",
+            "warm-apricot": "#F6CFC2",
+            "tertiary-container": "#805062",
+            "surface-bright": "#fff9e8",
+            "primary-fixed-dim": "#e4beb2",
+            "on-background": "#1e1c11",
+            "outline-variant": "#d4c3be"
           },
           "borderRadius": {
             "DEFAULT": "1rem",
@@ -126,195 +141,267 @@
             "full": "9999px"
           },
           "fontFamily": {
-            "display": ["Plus Jakarta Sans", "sans-serif"],
-            "label": ["Plus Jakarta Sans", "sans-serif"],
-            "body": ["Plus Jakarta Sans", "sans-serif"]
+            "display-lg": ["Plus Jakarta Sans"],
+            "label-bold": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "label-caps": ["Plus Jakarta Sans"],
+            "display-lg-mobile": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "display-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-bold": ["11px", { "lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "700" }],
+            "headline-md": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+            "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+            "label-caps": ["10px", { "lineHeight": "1.2", "letterSpacing": "0.4em", "fontWeight": "600" }],
+            "display-lg-mobile": ["40px", { "lineHeight": "1.1", "fontWeight": "700" }],
+            "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "300" }]
           }
-        }
-      }
+        },
+      },
     }
   </script>
-<style>
-    body {
-      min-height: max(884px, 100dvh);
-    }
-  </style>
-  </head>
-<body class="bg-background text-on-surface font-body overflow-x-hidden min-h-screen grain-overlay">
-<!-- Background Ornaments -->
-<div class="blob bg-soft-rose w-72 h-72 rounded-full -top-20 -left-20 opacity-40"></div>
-<div class="blob bg-warm-apricot w-96 h-96 rounded-full bottom-40 -right-20 opacity-30" style="animation-delay: -3s;"></div>
-<!-- Top App Bar (Shared Component Strategy) -->
-<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-lg shadow-[0px_10px_30px_rgba(117,88,78,0.04)] flex items-center justify-between px-6 h-20">
-<div class="flex items-center gap-4">
-<button class="material-symbols-outlined text-primary active:scale-95 transition-transform duration-200">menu</button>
-<h1 class="font-display text-[24px] font-bold tracking-tight text-primary">The Pâtisserie</h1>
-</div>
-<div class="flex items-center gap-4">
-<button class="material-symbols-outlined text-primary active:scale-95 transition-transform duration-200">shopping_bag</button>
-</div>
-</header>
-<!-- Main Canvas -->
-<main class="pt-24 pb-32 px-6 max-w-[480px] mx-auto relative min-h-screen">
-<!-- Page Header -->
-<div class="flex items-end justify-between mb-8">
-<div>
-<span class="font-label text-[10px] uppercase tracking-[0.4em] text-outline mb-1 block">Stay Updated</span>
-<h2 class="font-display text-[32px] font-semibold text-primary leading-tight">Notifications</h2>
-</div>
-<button class="text-primary font-semibold text-[13px] underline underline-offset-4 hover:opacity-70 transition-opacity active-press" onclick="clearNotifications()">
-        Mark all as read
-      </button>
-</div>
-<!-- Empty State (Hidden by default, shown via JS if list is empty) -->
-<div class="hidden flex flex-col items-center justify-center py-20 text-center animate-in fade-in duration-700" id="empty-state">
-<div class="relative w-48 h-48 mb-8">
-<!-- Orbiting ring from brand style -->
-<div class="absolute inset-0 border border-outline-variant/30 rounded-full animate-[spin_10s_linear_infinite]"></div>
-<div class="absolute inset-4 rounded-full overflow-hidden border border-primary/10 shadow-sm bg-surface-container-low">
-<img class="w-full h-full object-cover opacity-80 mix-blend-multiply" data-alt="A dreamy, high-end digital illustration of an empty, minimalist cake stand resting on a marble table. The background is a soft cream with warm golden sunlight filtering through a window, casting gentle shadows. The style is sophisticated and artisanal, reflecting the Glaze &amp; Grain brand identity with soft textures and muted warm tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBu5jEEpDe-RpaVTsMzW0F6yDephJ9RHDJPfOXSJvei6tvLepiSwMl6sCrupXw_u6Lamj61PKzyupsMeY8OHnuX9f00J8sRE01U6LRB0CyZ8Ahk18_roACPAo6E6uwG9tozOtFY2S_v2umBVT0dMPnuIGLtEIlZ6XxOoOHW91Q0qxBxpKB98wrP_PtJNm7vu_rxaowuDxT9rCvO8Lyj3nOIJcDQN4FFO4sJ9ffCnOCATi9YidWUWeLVZLhAfOsYLP_ZBKx9WvzQeKVV"/>
-</div>
-</div>
-<h3 class="font-display text-[22px] font-semibold text-primary mb-2">A moment of peace</h3>
-<p class="text-on-surface-variant text-[15px] max-w-[280px] leading-relaxed">
-        Your bakery box is currently empty of updates. We'll let you know when the oven timer rings!
-      </p>
-</div>
-<!-- Notification Feed -->
-<div class="space-y-10" id="notification-list">
-<!-- Category: Orders -->
-<section class="space-y-4">
-<h3 class="font-label text-[11px] font-bold tracking-[0.1em] text-outline px-2 uppercase">Orders</h3>
-<div class="space-y-3">
-<!-- Notification Card 1 -->
-<div class="group relative bg-surface-container-low/50 hover:bg-surface-container p-4 rounded-lg transition-all duration-300 border border-primary/5 active-press cursor-pointer overflow-hidden">
-<div class="flex gap-4 items-start relative z-10">
-<div class="relative flex-shrink-0">
-<div class="w-12 h-12 rounded-full overflow-hidden border border-primary/10 bg-white">
-<img class="w-full h-full object-cover" data-alt="A close-up shot of a gourmet Lavender Honey Cake with delicate frosting and real lavender sprigs on top. The lighting is soft and airy, shot in a high-end studio setting. The color palette features warm creams, soft purples, and rich browns, consistent with a premium artisanal pâtisserie aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEs0n2sZqJfNaB9gLDBKN-1elqGHdejfcCZUjOyhAmpvMOdbz0BilAKlxAaC0nKRkyJi-XQVibL0a87C5shPI1vg6M1mob3FGFsPuVIDIGjekp0l1PRkxu5TICUvP-YP0LTcGn6UcjCyI4ufTMlBff7ywQijAALeBJmXFRZXyXtzZJyPfHyT7S9M9jj5jsB_Rg2b_VgDuUpSIBv573ETy87ijNY1HgqAsC1D3OboMWY8pEgA83KWWp4dFA6wySEc4Hl3UYVkGWGXAb"/>
-</div>
-<div class="absolute -bottom-1 -right-1 w-5 h-5 bg-primary text-white rounded-full flex items-center justify-center shadow-md">
-<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">local_shipping</span>
-</div>
-</div>
-<div class="flex-1 min-w-0">
-<div class="flex justify-between items-start mb-1">
-<h4 class="font-semibold text-primary text-[16px] truncate pr-4">Order Out for Delivery</h4>
-<span class="w-2 h-2 bg-primary rounded-full mt-2"></span>
-</div>
-<p class="text-on-surface-variant text-[14px] leading-relaxed mb-2">Your Lavender Honey Cake is on its way to you! Our courier is approximately 10 minutes away.</p>
-<span class="text-outline text-[12px] font-medium">2 mins ago</span>
-</div>
-</div>
-</div>
-<!-- Notification Card 2 -->
-<div class="group relative bg-surface-container-low/50 hover:bg-surface-container p-4 rounded-lg transition-all duration-300 border border-primary/5 active-press cursor-pointer">
-<div class="flex gap-4 items-start">
-<div class="w-12 h-12 rounded-full flex items-center justify-center border border-primary/10 bg-white text-primary">
-<span class="material-symbols-outlined text-[24px]">check_circle</span>
-</div>
-<div class="flex-1 min-w-0">
-<h4 class="font-semibold text-primary text-[16px] mb-1">Payment Successful</h4>
-<p class="text-on-surface-variant text-[14px] leading-relaxed mb-2">Transaction for order #GK-8829 has been processed. We're preparing your treats now.</p>
-<span class="text-outline text-[12px] font-medium">1 hour ago</span>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- Category: Offers -->
-<section class="space-y-4">
-<h3 class="font-label text-[11px] font-bold tracking-[0.1em] text-outline px-2 uppercase">Offers</h3>
-<div class="space-y-3">
-<!-- Promo Card -->
-<div class="group relative bg-tertiary-fixed text-on-tertiary-fixed-variant p-5 rounded-lg border border-tertiary/10 overflow-hidden active-press cursor-pointer shadow-sm">
-<div class="absolute top-0 right-0 p-2 opacity-10">
-<span class="material-symbols-outlined text-[80px]" style="font-variation-settings: 'wght' 100;">featured_seasonal_and_gifts</span>
-</div>
-<div class="flex gap-4 relative z-10">
-<div class="flex-1 min-w-0">
-<div class="inline-block bg-white/80 backdrop-blur shadow-sm rounded-full px-3 py-1 mb-3 rotate-[-2deg]">
-<span class="font-label text-[10px] font-bold tracking-wider text-tertiary uppercase">Weekly Special</span>
-</div>
-<h4 class="font-display text-[18px] font-bold mb-1">Golden Hour Delights</h4>
-<p class="text-[14px] opacity-90 leading-snug mb-3">Enjoy 20% off all Citrus Tarts this weekend only. Use code: CITRUS20</p>
-<span class="text-[12px] font-semibold opacity-70">Expires in 2 days</span>
-</div>
-</div>
-</div>
-</div>
-</section>
-<!-- Category: Account -->
-<section class="space-y-4">
-<h3 class="font-label text-[11px] font-bold tracking-[0.1em] text-outline px-2 uppercase">Account</h3>
-<div class="space-y-3">
-<!-- Standard Row Item -->
-<div class="flex items-center gap-4 p-4 hover:bg-surface-container-low transition-colors rounded-lg group active-press cursor-pointer">
-<div class="w-10 h-10 rounded-full bg-primary/5 flex items-center justify-center text-primary border border-primary/10">
-<span class="material-symbols-outlined text-[20px]">person</span>
-</div>
-<div class="flex-1 min-w-0">
-<h4 class="font-semibold text-primary text-[15px]">Profile Updated</h4>
-<p class="text-on-surface-variant text-[13px] truncate">Your delivery preferences have been saved.</p>
-</div>
-<span class="text-outline text-[12px]">Yesterday</span>
-</div>
-</div>
-</section>
-</div>
-</main>
-<!-- Bottom Nav Bar (Shared Component Logic) -->
-<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-surface-container-low/95 backdrop-blur-md z-50 rounded-t-xl shadow-[0px_-10px_40px_rgba(117,88,78,0.06)]">
-<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:text-primary transition-colors active:scale-90 duration-300 ease-out" href="#">
-<span class="material-symbols-outlined text-[24px]">home_storage</span>
-<span class="font-label text-[11px] mt-1">Home</span>
-</a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:text-primary transition-colors active:scale-90 duration-300 ease-out" href="#">
-<span class="material-symbols-outlined text-[24px]">storefront</span>
-<span class="font-label text-[11px] mt-1">Shop</span>
-</a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:text-primary transition-colors active:scale-90 duration-300 ease-out" href="#">
-<span class="material-symbols-outlined text-[24px]">receipt_long</span>
-<span class="font-label text-[11px] mt-1">Orders</span>
-</a>
-<!-- Profile is Active since Notifications is usually part of Account/Profile context -->
-<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-6 py-2 active:scale-90 transition-transform duration-300 ease-out" href="#">
-<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">person</span>
-<span class="font-label text-[11px] mt-0.5">Profile</span>
-</a>
-</nav>
-<script>
-    function clearNotifications() {
-      const list = document.getElementById('notification-list');
-      const emptyState = document.getElementById('empty-state');
-      const unreadDots = document.querySelectorAll('.bg-primary.rounded-full.w-2.h-2');
-      
-      // Simulate "mark as read" first
-      unreadDots.forEach(dot => {
-        dot.style.opacity = '0';
-        dot.style.transform = 'scale(0)';
-        dot.style.transition = 'all 0.4s ease-out';
-      });
+</head>
 
-      // Optional: Logic to clear entire list for demo purposes
-      // list.style.opacity = '0';
-      // list.style.transform = 'translateY(20px)';
-      // list.style.transition = 'all 0.5s ease-in';
-      // setTimeout(() => {
-      //   list.classList.add('hidden');
-      //   emptyState.classList.remove('hidden');
-      // }, 500);
-    }
+<body class="bg-background text-on-surface font-body-md selection:bg-soft-rose min-h-screen pb-32">
+  <!-- Atmospheric Background Elements -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] rounded-full bg-warm-apricot/20 blur-[120px]"></div>
+    <div class="absolute top-[40%] -right-[5%] w-[40%] h-[40%] rounded-full bg-soft-rose/30 blur-[100px]"></div>
+    <div class="orbit-ring w-[600px] h-[600px] -top-64 -right-32 opacity-20"></div>
+    <div class="orbit-ring w-[400px] h-[400px] -top-32 -right-16 opacity-10"></div>
+  </div>
+  <!-- Header Section -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-xl transition-all duration-300">
+    <div class="max-w-2xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <button
+          class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-variant/20 active:scale-95 transition-all text-primary">
+          <span class="material-symbols-outlined">arrow_back</span>
+        </button>
+        <div class="flex flex-col">
+          <h1 class="font-headline-md text-body-md font-bold text-primary tracking-tight">Cakes</h1>
+          <span class="text-[10px] font-label-caps text-on-surface-variant uppercase tracking-widest">24 Items</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button
+          class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-variant/20 active:scale-95 transition-all text-primary">
+          <span class="material-symbols-outlined">search</span>
+        </button>
+        <button
+          class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-variant/20 active:scale-95 transition-all text-primary">
+          <span class="material-symbols-outlined">tune</span>
+        </button>
+      </div>
+    </div>
+  </header>
+  <main class="max-w-2xl mx-auto px-6 pt-24">
+    <!-- Search Bar -->
+    <div class="relative mb-6">
+      <input
+        class="w-full h-12 pl-12 pr-4 bg-surface-container-lowest border-none rounded-full text-on-surface placeholder:text-outline-variant shadow-sm focus:ring-2 focus:ring-primary/20 transition-all font-body-md"
+        placeholder="Search cakes..." type="text" />
+      <span
+        class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline-variant">search</span>
+    </div>
+    <!-- Filter Chips -->
+    <div class="flex overflow-x-auto hide-scrollbar gap-2 mb-8 -mx-6 px-6">
+      <button
+        class="whitespace-nowrap px-6 py-2.5 rounded-full bg-primary-container text-on-primary-container font-label-bold text-label-bold transition-all shadow-md">ALL</button>
+      <button
+        class="whitespace-nowrap px-6 py-2.5 rounded-full bg-white text-on-surface-variant border border-outline-variant/30 font-label-bold text-label-bold hover:bg-surface-variant/20 transition-all">POPULAR</button>
+      <button
+        class="whitespace-nowrap px-6 py-2.5 rounded-full bg-white text-on-surface-variant border border-outline-variant/30 font-label-bold text-label-bold hover:bg-surface-variant/20 transition-all">TRENDING</button>
+      <button
+        class="whitespace-nowrap px-6 py-2.5 rounded-full bg-white text-on-surface-variant border border-outline-variant/30 font-label-bold text-label-bold hover:bg-surface-variant/20 transition-all">NEW</button>
+      <button
+        class="whitespace-nowrap px-6 py-2.5 rounded-full bg-white text-on-surface-variant border border-outline-variant/30 font-label-bold text-label-bold hover:bg-surface-variant/20 transition-all">BEST
+        SELLER</button>
+    </div>
+    <!-- Product Grid -->
+    <div class="grid grid-cols-2 gap-x-4 gap-y-8">
+      <!-- Product 1 -->
+      <div class="fade-in-card group" style="animation-delay: 0.1s;">
+        <div
+          class="relative aspect-[4/5] rounded-[24px] overflow-hidden mb-3 shadow-[0_8px_30px_rgb(117,88,78,0.08)] bg-surface-container-low transition-transform duration-500 group-hover:-translate-y-1">
+          <img class="w-full h-full object-cover"
+            data-alt="A high-end, professionally styled minimalist velvet cake with smooth, deep-red cocoa glazing and a single gold-leaf garnish on a marble pedestal. Soft, warm morning light creates elegant shadows, highlighting the organic geometry of the cake against a soft cream backdrop that matches the Glaze and Grain warm artisanal aesthetic."
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnvtFJmh2zZwBHiBXA-5IQv_vnB__xaXEnjtZxxxG3NH_cKKlPA3_L3qKTP1x1BoIvEiOTvVm7cazx0jG1jf5lpLq2NqblbI9GopcJNwl303n6MxK6yo5pmfq4HHZeOQHbLKJJ-ebqMPTTz-k4vvlBkEANu2KdrjUKVtnKZoLlwvmXkYzqnJA5ZvI-irLxhDdtCZdtI6mvrmjX5-kve2Ov-9-ryDXgXgp8RodU4gw8a83v8kxA8kz9qw" />
+          <button
+            class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-primary active:scale-90 transition-transform">
+            <span class="material-symbols-outlined text-[20px]">favorite</span>
+          </button>
+          <div class="absolute bottom-3 left-3">
+            <span
+              class="bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-label-caps font-label-caps text-primary shadow-sm">SIGNATURE</span>
+          </div>
+        </div>
+        <div class="px-1">
+          <div class="flex items-center gap-1 mb-1 text-accent-gold">
+            <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span class="text-[11px] font-bold">4.9</span>
+          </div>
+          <h3 class="font-display-lg text-body-md font-bold text-on-surface mb-0.5 leading-tight">Velvet Cocoa</h3>
+          <p class="text-on-surface-variant text-[12px] line-clamp-2 leading-relaxed mb-3">Rich mahogany sponge with
+            organic whipped mascarpone.</p>
+          <div class="flex items-center justify-between">
+            <span class="text-primary font-bold text-body-md">$48.00</span>
+            <button
+              class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary-container transition-colors active:scale-90">
+              <span class="material-symbols-outlined text-[18px]">add</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Product 2 -->
+      <div class="fade-in-card group" style="animation-delay: 0.2s;">
+        <div
+          class="relative aspect-[4/5] rounded-[24px] overflow-hidden mb-3 shadow-[0_8px_30px_rgb(117,88,78,0.08)] bg-surface-container-low transition-transform duration-500 group-hover:-translate-y-1">
+          <img class="w-full h-full object-cover"
+            data-alt="An artisanal lemon-infused layer cake with pale yellow frosting and delicate dried chamomile flowers on top. The cake sits on a ceramic plate with a rustic, handmade texture. The background is a clean, warm cream color with soft, out-of-focus bokeh lighting that evokes a sophisticated boutique bakery atmosphere."
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKussKsDwE1e7EUqBX1qrE3PiQS2f1uymWpjxJcMF4xQ2Da1M1YOFov5tGTSHbXn_yY_TNbcbq17_LM_WlilgqOEX-bvHW7kQPo7jfE9FqNEGbLPr66NtdQwwqva_6DfvRfgQy9tXDv3BQFmlmEf0eS7ugjnXi90AH53bInf3-9XTQd0noFsm57Owyn4gm9HBc_J6ezxdjAcGNPIihfgid-VLH5YQhQ6S8adCKMyQ06LKElGgnL2XVwA" />
+          <button
+            class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-primary">
+            <span class="material-symbols-outlined text-[20px]"
+              style="font-variation-settings: 'FILL' 1;">favorite</span>
+          </button>
+          <div class="absolute bottom-3 left-3">
+            <span
+              class="bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-label-caps font-label-caps text-primary shadow-sm">PREMIUM</span>
+          </div>
+        </div>
+        <div class="px-1">
+          <div class="flex items-center gap-1 mb-1 text-accent-gold">
+            <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span class="text-[11px] font-bold">4.8</span>
+          </div>
+          <h3 class="font-display-lg text-body-md font-bold text-on-surface mb-0.5 leading-tight">Lemon Chamomile</h3>
+          <p class="text-on-surface-variant text-[12px] line-clamp-2 leading-relaxed mb-3">Zesty citrus layers infused
+            with calming tea notes.</p>
+          <div class="flex items-center justify-between">
+            <span class="text-primary font-bold text-body-md">$42.00</span>
+            <button
+              class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary-container transition-colors active:scale-90">
+              <span class="material-symbols-outlined text-[18px]">add</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Product 3 -->
+      <div class="fade-in-card group" style="animation-delay: 0.3s;">
+        <div
+          class="relative aspect-[4/5] rounded-[24px] overflow-hidden mb-3 shadow-[0_8px_30px_rgb(117,88,78,0.08)] bg-surface-container-low transition-transform duration-500 group-hover:-translate-y-1">
+          <img class="w-full h-full object-cover"
+            data-alt="A decadent dark chocolate ganache cake with a perfectly reflective mirrored glaze. A dusting of gold dust creates a galaxy-like effect on the surface. Minimalist composition on a dark oak wooden surface. The lighting is moody and focused, highlighting the premium, sophisticated nature of the dessert."
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlcwGjUMgpcJYPMQWfqftb5QU0_kRjTcFGsFfSWk3EfrK1HPbvmObbdwKBdj7_anYOgzgq7ZbcmZS6Bv5enxKFL_Pibj-p11FL9__Y1CS56RoCMS0FJXFlqhwvdtmpmBk5alhplHcGtVX4YH9AgO8mvKAjoySWVlB4RI1G9KxvvWoMcnWlNUptQeD3196YfVI6il9xvv3MQrwYicbLK1rOX9vvwxVxfC7SzSLv-0jCGdsnMtt624VLzw" />
+          <button
+            class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-primary">
+            <span class="material-symbols-outlined text-[20px]">favorite</span>
+          </button>
+          <div class="absolute bottom-3 left-3">
+            <span
+              class="bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-label-caps font-label-caps text-primary shadow-sm">NEW</span>
+          </div>
+        </div>
+        <div class="px-1">
+          <div class="flex items-center gap-1 mb-1 text-accent-gold">
+            <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span class="text-[11px] font-bold">5.0</span>
+          </div>
+          <h3 class="font-display-lg text-body-md font-bold text-on-surface mb-0.5 leading-tight">Midnight Ganache</h3>
+          <p class="text-on-surface-variant text-[12px] line-clamp-2 leading-relaxed mb-3">72% dark chocolate with a
+            hint of espresso cream.</p>
+          <div class="flex items-center justify-between">
+            <span class="text-primary font-bold text-body-md">$56.00</span>
+            <button
+              class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary-container transition-colors active:scale-90">
+              <span class="material-symbols-outlined text-[18px]">add</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Product 4 -->
+      <div class="fade-in-card group" style="animation-delay: 0.4s;">
+        <div
+          class="relative aspect-[4/5] rounded-[24px] overflow-hidden mb-3 shadow-[0_8px_30px_rgb(117,88,78,0.08)] bg-surface-container-low transition-transform duration-500 group-hover:-translate-y-1">
+          <img class="w-full h-full object-cover"
+            data-alt="A delicate pistachio sponge cake with light green cream layers and crushed nuts on the side. Topped with fresh raspberries for a color contrast. The image is bright and airy, using soft-focus natural light coming from a window. The overall aesthetic is clean, organic, and highly artisanal, reflecting premium pâtisserie craft."
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeuEZaEkQnrfCI9r0P5aFA9RHWHAE0Eh93UkWCvv76Cym1OS2OQT3JDU4omploBIJIqPlXV7kLV0OmdQ5JIXOoALJ7nNE0aTJoFTj1AwE2Pe-xQqfp7eebw4Wpt_QOvOivItrnO-wQCTOGFiMp1oBH0vKygAXl6FwNfyX5cUNTVPWJKf2PaiuWdtZAoSkscTUuO6nCxwN7uHMUA1Pcq_65g3Hp2Ax2dcDuKd_HxO4HblRRkRr79-8kvg" />
+          <button
+            class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-primary">
+            <span class="material-symbols-outlined text-[20px]">favorite</span>
+          </button>
+        </div>
+        <div class="px-1">
+          <div class="flex items-center gap-1 mb-1 text-accent-gold">
+            <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+            <span class="text-[11px] font-bold">4.7</span>
+          </div>
+          <h3 class="font-display-lg text-body-md font-bold text-on-surface mb-0.5 leading-tight">Pistachio Bloom</h3>
+          <p class="text-on-surface-variant text-[12px] line-clamp-2 leading-relaxed mb-3">Sicilian nut sponge with
+            hand-picked berries.</p>
+          <div class="flex items-center justify-between">
+            <span class="text-primary font-bold text-body-md">$45.00</span>
+            <button
+              class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center hover:bg-primary-container transition-colors active:scale-90">
+              <span class="material-symbols-outlined text-[18px]">add</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- Bottom Navigation Bar -->
+  <nav
+    class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-surface/80 dark:bg-surface-container-low/80 backdrop-blur-xl shadow-[0px_-24px_48px_rgba(117,88,78,0.08)] rounded-t-lg">
+    <a class="flex flex-col items-center justify-center text-on-secondary-fixed-variant hover:bg-secondary-container/30 transition-all px-4 py-1"
+      href="#">
+      <span class="material-symbols-outlined" data-icon="bakery_dining">bakery_dining</span>
+      <span class="font-label text-label-md font-medium">Shop</span>
+    </a>
+    <a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 transition-all"
+      href="#">
+      <span class="material-symbols-outlined" data-icon="restaurant_menu">restaurant_menu</span>
+      <span class="font-label text-label-md font-medium">Menu</span>
+    </a>
+    <a class="flex flex-col items-center justify-center text-on-secondary-fixed-variant hover:bg-secondary-container/30 transition-all px-4 py-1"
+      href="#">
+      <span class="material-symbols-outlined" data-icon="shopping_basket">shopping_basket</span>
+      <span class="font-label text-label-md font-medium">Basket</span>
+    </a>
+    <a class="flex flex-col items-center justify-center text-on-secondary-fixed-variant hover:bg-secondary-container/30 transition-all px-4 py-1"
+      href="#">
+      <span class="material-symbols-outlined" data-icon="person">person</span>
+      <span class="font-label text-label-md font-medium">Account</span>
+    </a>
+  </nav>
+  <div class="grain-overlay"></div>
+  <script>
+    // Micro-interactions for header on scroll
+    window.addEventListener('scroll', () => {
+      const header = document.querySelector('header');
+      if (window.scrollY > 20) {
+        header.classList.add('shadow-[0_4px_30px_rgba(117,88,78,0.05)]');
+      } else {
+        header.classList.remove('shadow-[0_4px_30px_rgba(117,88,78,0.05)]');
+      }
+    });
 
-    // Micro-interaction for cards
-    document.querySelectorAll('#notification-list div[class*="group"]').forEach(card => {
-      card.addEventListener('click', function() {
-        const dot = this.querySelector('.bg-primary.rounded-full');
-        if (dot) {
-          dot.style.opacity = '0';
-          dot.style.transform = 'scale(0)';
-        }
+    // Horizontal scroll button activation
+    const filterButtons = document.querySelectorAll('.hide-scrollbar button');
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => {
+          b.classList.remove('bg-primary-container', 'text-on-primary-container', 'shadow-md');
+          b.classList.add('bg-white', 'text-on-surface-variant', 'border', 'border-outline-variant/30');
+        });
+        btn.classList.add('bg-primary-container', 'text-on-primary-container', 'shadow-md');
+        btn.classList.remove('bg-white', 'text-on-surface-variant', 'border', 'border-outline-variant/30');
       });
     });
   </script>
-</body></html>
+</body>
+
+</html>
