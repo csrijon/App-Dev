@@ -2,7 +2,7 @@ import { View,StyleSheet } from "react-native"
 import { Badge } from "react-native-paper"
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const CartTabicon = ({color,size}) => {
+const CartTabicon = ({color,size,count}) => {
     return (
         <View  style={styles.CartTabicon} >
             <Ionicons
@@ -12,7 +12,9 @@ const CartTabicon = ({color,size}) => {
                 style={{
                 }}
             />
-            <Badge style={styles.badge} >23 </Badge>
+           {
+            count>0 &&  <Badge style={styles.badge} >{count}</Badge>
+           }
         </View>
     )
 }

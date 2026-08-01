@@ -186,7 +186,7 @@ const products = [
 ];
 
 
-const CategoryProducts = () => {
+const CategoryProducts = ({navigation}) => {
 
     const inset = useSafeAreaInsets()
 
@@ -221,7 +221,7 @@ const CategoryProducts = () => {
                     contentContainerStyle={{
                         paddingBottom: inset.bottom
                     }}
-                    renderItem={({ item }) => (<ProductShowcaseCard title={item.title} des={item.description} price={item.price} rating={item.rating} badge={item.badge} image={item.image} />)}
+                    renderItem={({ item }) => (<ProductShowcaseCard title={item.title} des={item.description} price={item.price} rating={item.rating} badge={item.badge} image={item.image} onPress={()=>navigation.navigate("Cakedetails")} />)}
                     keyExtractor={item => item.id}
                 />
             </View>

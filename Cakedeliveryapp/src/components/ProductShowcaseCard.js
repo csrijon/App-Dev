@@ -1,11 +1,12 @@
 import { View, StyleSheet, Image, TouchableOpacity, Text, useWindowDimensions } from "react-native"
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-const ProductShowcaseCard = ({ title, des, price, rating, badge, image, }) => {
+const ProductShowcaseCard = ({ title, des, price, rating, badge, image,onPress }) => {
     const { width, height } = useWindowDimensions()
     const cardwidth = (width - 48) / 2
     return (
         <View style={[styles.ProductShowcaseCard, { width: cardwidth }]} >
+            <TouchableOpacity onPress={onPress} activeOpacity={0.8} >
             <View style={styles.imageproductsection} >
                 <Image style={styles.imagetag} source={{ uri: image }} />
                 <TouchableOpacity style={styles.heartButton}>
@@ -20,7 +21,7 @@ const ProductShowcaseCard = ({ title, des, price, rating, badge, image, }) => {
                     <AntDesign name="star" color="#D4A017" size={14} />
                     <Text style={styles.ratingText}>{rating}</Text>
                 </View>
-                <Text style={styles.titleText}>Velvet Cocoa</Text>
+                <Text style={styles.titleText}>{title}</Text>
                 <Text style={styles.descriptionText}>
                     {des}
                 </Text>
@@ -31,6 +32,7 @@ const ProductShowcaseCard = ({ title, des, price, rating, badge, image, }) => {
                     </TouchableOpacity>
                 </View>
             </View>
+            </TouchableOpacity>
         </View>
     )
 }

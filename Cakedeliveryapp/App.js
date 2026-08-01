@@ -222,7 +222,7 @@ const TabScreen = () => {
               alignItems:"center",
               justifyContent:"center"
             }} >
-              <CartTabicon color={color} size={size} />
+              <CartTabicon count={2} color={color} size={size} />
             </View>
 
           ),
