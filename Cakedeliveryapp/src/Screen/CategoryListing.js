@@ -44,115 +44,90 @@ const { width } = Dimensions.get("window");
 
 const menuItems = [
     {
-        id: 1,
+        id: "1",
         image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600",
         rating: "4.9",
-        bakingTime: "48h",
-        title: "Chocolate Cake",
-        description: "Rich chocolate sponge layered with silky chocolate ganache.",
-        price: "$20.00",
+        title: "Cake",
+        description: "Freshly baked layered cake with a soft and moist texture.",
     },
     {
-        id: 2,
+        id: "2",
+        image: "https://images.unsplash.com/photo-1464306076886-da185f6a9d05?w=600",
+        rating: "4.8",
+        title: "Pastry",
+        description: "Light and flaky pastry filled with delicious cream.",
+    },
+    {
+        id: "3",
         image: "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=600",
         rating: "4.8",
-        bakingTime: "2h",
-        title: "Glazed Donut",
-        description: "Soft and fluffy donut coated with classic sugar glaze.",
-        price: "$3.50",
+        title: "Donut",
+        description: "Soft and fluffy donut with a sweet glazed topping.",
     },
     {
-        id: 3,
+        id: "4",
+        image: "https://images.unsplash.com/photo-1623334044303-241021148842?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y3JvaXNzYW50fGVufDB8fDB8fHww",
+        rating: "4.7",
+        title: "Croissant",
+        description: "Golden buttery croissant with crispy flaky layers.",
+    },
+    {
+        id: "5",
         image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600",
-        rating: "4.7",
-        bakingTime: "5h",
-        title: "Butter Croissant",
-        description: "Freshly baked buttery croissant with crispy flaky layers.",
-        price: "$4.50",
+        rating: "4.8",
+        title: "Bread",
+        description: "Fresh artisan bread baked daily with premium flour.",
     },
     {
-        id: 4,
+        id: "6",
+        image: "https://images.unsplash.com/photo-1607958996333-41aef7caefaa?w=600",
+        rating: "4.7",
+        title: "Muffin",
+        description: "Soft and fluffy muffin perfect for breakfast or snacks.",
+    },
+    {
+        id: "7",
         image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=600",
-        rating: "4.8",
-        bakingTime: "1h",
-        title: "Chocolate Chip Cookie",
-        description: "Crunchy outside, chewy inside with premium chocolate chips.",
-        price: "$2.50",
-    },
-    {
-        id: 5,
-        image: "https://images.unsplash.com/photo-1586985289906-406988974504?w=600",
         rating: "4.9",
-        bakingTime: "3h",
-        title: "Red Velvet Cupcake",
-        description: "Moist cupcake topped with smooth cream cheese frosting.",
-        price: "$4.50",
+        title: "Cookie",
+        description: "Crunchy cookies baked with rich butter and chocolate chips.",
     },
     {
-        id: 6,
+        id: "8",
         image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600",
-        rating: "4.7",
-        bakingTime: "2h",
-        title: "Blueberry Muffin",
-        description: "Fresh blueberry muffin with a soft and fluffy texture.",
-        price: "$4.25",
-    },
-    {
-        id: 7,
-        image: "https://images.unsplash.com/photo-1601979031925-424e53b6caaa?w=600",
-        rating: "4.9",
-        bakingTime: "4h",
-        title: "Fudge Brownie",
-        description: "Dense chocolate brownie with a gooey fudgy center.",
-        price: "$5.00",
-    },
-    {
-        id: 8,
-        image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=600",
         rating: "4.8",
-        bakingTime: "24h",
-        title: "New York Cheesecake",
-        description: "Creamy cheesecake with a buttery biscuit base.",
-        price: "$8.50",
+        title: "Brownie",
+        description: "Rich chocolate brownie with a soft fudgy center.",
     },
     {
-        id: 9,
-        image: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?w=600",
-        rating: "4.6",
-        bakingTime: "6h",
-        title: "French Macarons",
-        description: "Colorful almond macarons with assorted fillings.",
-        price: "$9.00",
-    },
-    {
-        id: 10,
-        image: "https://images.unsplash.com/photo-1519864600265-abb23847ef2c?w=600",
+        id: "9",
+        image: "https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dGFydHxlbnwwfHwwfHx8MA%3D%3D",
         rating: "4.7",
-        bakingTime: "8h",
-        title: "Apple Pie",
-        description: "Classic apple pie filled with cinnamon-spiced apples.",
-        price: "$7.50",
+        title: "Tart",
+        description: "Crispy tart shell filled with seasonal fruit and cream.",
     },
     {
-        id: 11,
-        image: "https://images.unsplash.com/photo-1608198093002-ad4e005484ec?w=600",
+        id: "10",
+        image: "https://images.unsplash.com/photo-1612203985729-70726954388c?w=600",
         rating: "4.8",
-        bakingTime: "4h",
-        title: "Garlic Bread",
-        description: "Fresh baked bread topped with garlic butter and herbs.",
-        price: "$4.00",
+        title: "Bagel",
+        description: "Freshly baked bagel with a chewy texture and crisp crust.",
     },
     {
-        id: 12,
-        image: "https://images.unsplash.com/photo-1519869325930-281384150729?w=600",
+        id: "11",
+        image: "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=600",
         rating: "4.9",
-        bakingTime: "30h",
-        title: "Black Forest Cake",
-        description: "Chocolate sponge layered with whipped cream and cherries.",
-        price: "$22.00",
+        title: "Éclair",
+        description: "Classic éclair filled with smooth vanilla cream.",
+    },
+    {
+        id: "12",
+        image: "https://images.unsplash.com/photo-1621939514649-280e2ee25f60?w=600",
+        rating: "4.8",
+        title: "Pretzel",
+        description: "Traditional baked pretzel with a soft center and crisp crust.",
     },
 ];
-
 
 
 const SORT_OPTIONS = [
@@ -365,7 +340,7 @@ const CategoryListing = ({ navigation }) => {
                 {/* Result count */}
                 {sortedItems.length > 0 && (
                     <Text style={styles.countText}>
-                        {sortedItems.length} {sortedItems.length === 1 ? "cake" : "cakes"} found
+                        {sortedItems.length} {sortedItems.length === 1 ? "Item" : "Items"} found
                     </Text>
                 )}
 
@@ -386,7 +361,7 @@ const CategoryListing = ({ navigation }) => {
                             renderItem={({ item }) => (
                                 <MenuCard
                                     onPress={() =>
-                                        navigation.navigate("Cakedetails", {
+                                        navigation.navigate("CategoryProducts", {
                                             title: item.title,
                                             description: item.description,
                                             image: item.image,
@@ -400,8 +375,8 @@ const CategoryListing = ({ navigation }) => {
                                     price={item.price}
                                     // ── The three props that actually make + → Go to Cart work ──
                                     isAdded={addedIds.has(item.id)}
-                                    onAddToCart={() => handleAddToCart(item.id)}
-                                    onGoToCart={handleGoToCart}
+                                    // onAddToCart={() => handleAddToCart(item.id)}
+                                    // onGoToCart={handleGoToCart}
                                 />
                             )}
                         />

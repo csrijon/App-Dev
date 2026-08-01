@@ -158,11 +158,11 @@ const Checkoutscreen = ({ navigation }) => {
         )}
 
         {/* <-- ADDED: Themed Select Delivery Date Button --> */}
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.dateButton}
           activeOpacity={0.8}
-          onPress={() => navigation.navigate("Categorys",{
-            screen:"Delivery"
+          onPress={() => navigation.navigate("Categorys", {
+            screen: "Delivery"
           })} // Update with your actual screen name
         >
           <Text style={styles.dateButtonText}>Select Delivery Date</Text>
@@ -236,8 +236,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 6,
-    },
-  
+  },
+
   dateButtonText: {
     fontSize: 16,
     fontWeight: "700",

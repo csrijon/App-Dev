@@ -26,9 +26,10 @@ import RefineScreen from "./src/Screen/RefineScreen"
 import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-
+import CartTabicon from "./src/components/CartTabicon.js"
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 
 
@@ -103,27 +104,30 @@ const Profilestack = () => {
     </Stack.Navigator>
   )
 }
+
 const TabScreen = () => {
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        // tabBarShowLabel: false,
+        tabBarShowLabel: false,
         tabBarStyle: {
           backgroundColor: "#FFF9E6",
-          height: 90,
+          height: 80,
           borderTopLeftRadius: 40,
           borderTopRightRadius: 40,
           overflow: "hidden",
-          paddingHorizontal: 10,
-          paddingTop: 10,
-          paddingBottom: 10,
+          paddingTop:10,
+          paddingBottom:10,
+          paddingLeft:20
         },
         tabBarItemStyle: {
           borderRadius: 9999,
-          // paddingHorizontal: 20,
-          marginTop: 10,
-          overflow: "hidden"
+          paddingTop:10,
+          // overflow: "hidden",
+          // alignItems:"center"
+          justifyContent: "center",
+         
         },
         tabBarActiveTintColor: "#75584E",
         tabBarInactiveTintColor: "#646040",
@@ -173,14 +177,14 @@ const TabScreen = () => {
         component={Checkoutstack}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons
-              name="cart"
-              color={color}
-              size={size}
-              style={{
-                // marginTop:4
-              }}
-            />
+            // <Ionicons
+            //   name="cart"
+            //   color={color}
+            //   size={size}
+            //   style={{
+            //   }}
+            // />
+            <CartTabicon />
           ),
         }}
       />

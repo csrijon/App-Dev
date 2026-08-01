@@ -233,7 +233,7 @@ export default CategoryProducts
 const styles = StyleSheet.create({
     CategoryProducts_section: {
         flex: 1,
-        backgroundColor: "#faf3e3"
+        backgroundColor: "#FAF6EE"
     },
     CategoryProductscontainer: {
         flex: 1,
