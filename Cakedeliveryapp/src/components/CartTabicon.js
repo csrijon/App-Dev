@@ -2,13 +2,13 @@ import { View,StyleSheet } from "react-native"
 import { Badge } from "react-native-paper"
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const CartTabicon = () => {
+const CartTabicon = ({color,size}) => {
     return (
         <View  style={styles.CartTabicon} >
             <Ionicons
                 name="cart"
-                color={"#75584E"}
-                size={26}
+                color={color}
+                size={size}
                 style={{
                 }}
             />
@@ -23,15 +23,16 @@ const styles = StyleSheet.create({
  
     CartTabicon:{
         position:"relative",
-        paddingTop:1,
-        // flex:1,
-        justifyContent:"center",
-        alignItems:"center"
     },
     badge:{
         position:"absolute",
         right:-15,
-        top:-5
+        top:-5,
+        backgroundColor:"#75584e",
+        color:"#fff7f6",
+        fontWeight:700,
+       justifyContent:"center",
+       alignItems:"center"
     }
 
 })

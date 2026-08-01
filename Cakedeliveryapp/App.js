@@ -29,6 +29,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import CartTabicon from "./src/components/CartTabicon.js"
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { View, TouchableOpacity } from "react-native"
 
 
 
@@ -109,42 +110,54 @@ const TabScreen = () => {
   return (
     <Tab.Navigator
       screenOptions={{
+        animation: "fade",
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {
           backgroundColor: "#FFF9E6",
           height: 80,
-          borderTopLeftRadius: 40,
-          borderTopRightRadius: 40,
-          overflow: "hidden",
-          paddingTop:10,
-          paddingBottom:10,
-          paddingLeft:20
+          paddingTop: 10,
+          paddingBottom: 10,
+          paddingLeft: 10,
+          paddingRight:10
         },
         tabBarItemStyle: {
-          borderRadius: 9999,
-          paddingTop:10,
-          // overflow: "hidden",
-          // alignItems:"center"
-          justifyContent: "center",
-         
+          overflow: "hidden",
+          borderRadius: 999
         },
         tabBarActiveTintColor: "#75584E",
         tabBarInactiveTintColor: "#646040",
         tabBarActiveBackgroundColor: "#F6CFC2",
         tabBarHideOnKeyboard: true,
-
       }}
     >
       <Tab.Screen
         name="Home"
         component={Homestack}
         options={{
+          tabBarButton: (props) => (
+            <TouchableOpacity
+              {...props}
+            />
+          ),
 
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home-outline" color={color} size={size} style={{
-              marginTop: 4
-            }} />
+            <View
+              style={{
+                width: 62,
+                height: 52,
+                marginTop: 20,
+                borderRadius: 999,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Ionicons
+                name="home-outline"
+                size={size}
+                color={color}
+              />
+            </View>
           )
         }}
       />
@@ -153,10 +166,25 @@ const TabScreen = () => {
         name="Categorys"
         component={Orderstack}
         options={{
+
+          tabBarButton: (props) => (
+            <TouchableOpacity
+              {...props}
+            />
+          ),
+
           tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="category" color={color} size={size} style={{
-              // marginTop: 4
-            }} />
+            <View style={{
+              width: 62,
+              height: 52,
+              marginTop: 20,
+              borderRadius: 999,
+              justifyContent: "center",
+              alignItems: "center",
+            }} >
+              <MaterialIcons name="category" color={color} size={size} />
+            </View>
+
           )
         }}
       />
@@ -166,9 +194,15 @@ const TabScreen = () => {
         component={EmptyOrderScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="bag" color={color} size={size} style={{
-              // marginTop: 4
-            }} />
+            <View style={{
+              width: 62,
+              height: 52,
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: 20
+            }}  >
+              <Ionicons name="bag" color={color} size={size} />
+            </View>
           )
         }}
       />
@@ -176,15 +210,21 @@ const TabScreen = () => {
         name="Cart"
         component={Checkoutstack}
         options={{
+          tabBarButton:(props)=>(
+           <TouchableOpacity
+           {...props}/>
+          ),
           tabBarIcon: ({ color, size }) => (
-            // <Ionicons
-            //   name="cart"
-            //   color={color}
-            //   size={size}
-            //   style={{
-            //   }}
-            // />
-            <CartTabicon />
+            <View style={{
+              width:62,
+              height:52,
+              marginTop:20,
+              alignItems:"center",
+              justifyContent:"center"
+            }} >
+              <CartTabicon color={color} size={size} />
+            </View>
+
           ),
         }}
       />
@@ -193,10 +233,20 @@ const TabScreen = () => {
         name="Blog"
         component={Profilestack}
         options={{
+          tabBarButton:(props)=>(
+             <TouchableOpacity
+             {...props}/>
+          ),
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person" color={color} size={size} style={{
-              // marginTop: 4
-            }} />
+            <View style={{
+              width:62,
+              height:52,
+              marginTop:20,
+              alignItems:"center",
+              justifyContent:"center"
+            }} >
+              <Ionicons name="person" color={color} size={size}  />
+            </View>
           )
         }}
       />
