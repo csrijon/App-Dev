@@ -3,7 +3,8 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, PermissionsAndroid, Al
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Geolocation from '@react-native-community/geolocation';
 import { useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native"; 
+import Notificaton from "../components/Notificaton.js"
 
 const Header = ({onPress}) => {
     const navigation = useNavigation()
@@ -108,13 +109,17 @@ const Header = ({onPress}) => {
             {/* Right Section */}
             <View style={styles.rightContainer}>
 
-                <TouchableOpacity onPress={onPress} style={styles.bellContainer}>
-                    <Ionicons
-                        name="notifications-outline"
-                        size={22}
-                        color="#6B5B53"
-                    />
-                </TouchableOpacity>
+                <TouchableOpacity onPress={onPress} style={styles.notificationcontainer} >
+                           <View style={styles.bellContainer}>
+                               <Ionicons
+                                   name="notifications-outline"
+                                   size={22}
+                                   color="#6B5B53"
+                               />
+                           </View>
+                           <View style={styles.notificationbadge} />
+                       </TouchableOpacity>
+                {/* <Notificaton onPress={() => navigation.navigate("NotificationsScreen")} /> */}
 
                 <TouchableOpacity onPress={()=>navigation.navigate("Blog")} >
                     <Image
@@ -185,13 +190,25 @@ const styles = StyleSheet.create({
         gap: 12,
     },
 
-    bellContainer: {
+ bellContainer: {
         width: 42,
         height: 42,
         borderRadius: 21,
         backgroundColor: "#EEE5C8",
         justifyContent: "center",
         alignItems: "center",
+    },
+    notificationcontainer: {
+        position: "relative"
+    },
+    notificationbadge: {
+        position: "absolute",
+        top: 4,
+        right: 10,
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        backgroundColor: "#C0392B",
     },
 
     profileImage: {

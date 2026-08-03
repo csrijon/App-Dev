@@ -19,7 +19,7 @@ const Signupscreen = ({ navigation }) => {
         try {
             setLoading(true);
 
-            const response = await fetch("http://10.140.21.192:3000/api/auth/signupmain", {
+            const response = await fetch("http://192.168.1.33:3000/api/auth/signupmain", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -341,7 +341,7 @@ const Homescreen = ({ navigation }) => {
         <SafeAreaView style={styles.Homecontainer}>
             <StatusBar backgroundColor="#f8f1df" barStyle="dark-content" />
 
-            <Header notification={2} onPress={() => navigation.navigate("NotificationsScreen")} />
+            <Header  onPress={() => navigation.navigate("NotificationsScreen")}  />
 
             <ScrollView
                 contentContainerStyle={{ paddingBottom: 40 }}
