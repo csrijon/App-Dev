@@ -16,11 +16,6 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-// npm install react-native-image-picker
-// iOS: run `pod install` in the ios folder, and add NSCameraUsageDescription /
-//      NSPhotoLibraryUsageDescription keys to Info.plist
-// Android: add CAMERA permission to AndroidManifest.xml (storage permission is
-//      requested at runtime below for API < 33)
 import BakeryHeader from '../components/BakeryHeader';
 import Floatingfixedbutton from "../components/Floatingfixedbutton"
 
