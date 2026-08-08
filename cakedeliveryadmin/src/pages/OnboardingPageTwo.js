@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -15,6 +15,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import BakeryHeader from "../components/BakeryHeader"
 import Floatingfixedbutton from "../components/Floatingfixedbutton"
+import { OnbordingContext } from '../context/Context';
 
 // --- Color Palette matching the design ---
 const COLORS = {
@@ -171,25 +172,25 @@ const StatePickerModal = ({ visible, onClose, onSelect, selectedState }) => {
 
 // --- Main Screen Component ---
 const OnboardingPageTwo = ({ navigation }) => {
-  const [form, setForm] = useState({
-    address: '',
-    landmark: '',
-    city: '',
-    pin: '',
-    state: '',
-  });
+  const { formdata, setformdata } = useContext(OnbordingContext)
 
   const [errors, setErrors] = useState({
-    address: '',
-    city: '',
-    pin: '',
-    state: '',
+    shopaddress: "",
+    landmark:"",
+    city: "",
+    pincode: "",
+    state: ""
   });
 
   const [statePickerVisible, setStatePickerVisible] = useState(false);
 
   const updateField = (field, text) => {
-    setForm((prev) => ({ ...prev, [field]: text }));
+    setformdata((prev) => ({
+      ...prev, location: {
+        ...prev.location,
+        [field]: text
+      }
+    }));
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: '' }));
     }
@@ -197,16 +198,16 @@ const OnboardingPageTwo = ({ navigation }) => {
 
   const validateField = (field) => {
     let message = '';
-    const value = form[field];
+    const value = formdata.location[field];
 
     switch (field) {
-      case 'address':
+      case 'shopaddress':
         if (!value.trim()) message = 'Shop address is required';
         break;
-      case 'city':
+      case ' city':
         if (!value.trim()) message = 'City is required';
         break;
-      case 'pin':
+      case 'pincode':
         if (!value.trim()) message = 'PIN code is required';
         else if (!isValidPin(value)) message = 'Enter a valid 6-digit PIN code';
         break;
@@ -222,18 +223,27 @@ const OnboardingPageTwo = ({ navigation }) => {
   };
 
   const validateAll = () => {
-    const fields = ['address', 'city', 'pin', 'state'];
+    const fields = ['shopaddress', 'city', 'pincode', 'state'];
     const results = fields.map((field) => validateField(field));
     return results.every(Boolean);
   };
 
   const handleSelectState = (state) => {
-    setForm((prev) => ({ ...prev, state }));
+    setformdata((prev) => ({
+      ...prev,
+      location: {
+        ...prev.location,
+        state: state,
+      },
+    }));
+
     if (errors.state) {
-      setErrors((prev) => ({ ...prev, state: '' }));
+      setErrors((prev) => ({
+        ...prev,
+        state: '',
+      }));
     }
   };
-
   const handleNext = () => {
     const valid = validateAll();
     if (!valid) {
@@ -283,50 +293,76 @@ const OnboardingPageTwo = ({ navigation }) => {
           <CustomTextInput
             placeholder="Shop Address"
             multiline={true}
-            value={form.address}
-            onChangeText={(text) => updateField('address', text)}
-            onBlur={() => validateField('address')}
-            error={errors.address}
+            value={formdata.location.shopaddress}
+            onChangeText={(text) =>
+              updateField("shopaddress", text)
+            }
+            onBlur={() =>
+              validateField("shopaddress")
+            }
+            error={errors.shopaddress}
           />
+
 
           <CustomTextInput
             placeholder="Landmark"
-            value={form.landmark}
-            onChangeText={(text) => updateField('landmark', text)}
+            value={formdata.location.landmark}
+            onChangeText={(text) =>
+              updateField("landmark", text)
+            }
           />
 
-          {/* Row for City and PIN */}
+
           <View style={styles.row}>
+
             <CustomTextInput
               style={styles.flexInput}
               placeholder="City"
-              value={form.city}
-              onChangeText={(text) => updateField('city', text)}
-              onBlur={() => validateField('city')}
+              value={formdata.location.city}
+              onChangeText={(text) =>
+                updateField("city", text)
+              }
+              onBlur={() =>
+                validateField("city")
+              }
               error={errors.city}
             />
+
+
             <CustomTextInput
               style={styles.flexInput}
               placeholder="PIN Code"
               keyboardType="number-pad"
-              value={form.pin}
-              onChangeText={(text) => updateField('pin', text.replace(/[^0-9]/g, ''))}
-              onBlur={() => validateField('pin')}
-              error={errors.pin}
+              value={formdata.location.pincode}
+              onChangeText={(text) =>
+                updateField(
+                  "pincode",
+                  text.replace(/[^0-9]/g, "")
+                )
+              }
+              onBlur={() =>
+                validateField("pincode")
+              }
+              error={errors.pincode}
               maxLength={6}
             />
+
           </View>
 
-          {/* Dropdown Style Box */}
+
           <LabelBox
             label="STATE"
-            value={form.state || 'Select State'}
+            value={
+              formdata.location.state || "Select State"
+            }
             icon="chevron-down"
-            onPress={() => setStatePickerVisible(true)}
+            onPress={() =>
+              setStatePickerVisible(true)
+            }
             error={errors.state}
           />
 
-          {/* Locked Box */}
+
           <LabelBox
             label="COUNTRY"
             value="India"
@@ -342,7 +378,7 @@ const OnboardingPageTwo = ({ navigation }) => {
         visible={statePickerVisible}
         onClose={() => setStatePickerVisible(false)}
         onSelect={handleSelectState}
-        selectedState={form.state}
+        selectedState={formdata.location.state}
       />
 
       <Floatingfixedbutton onPress={handleNext} onPressBack={handleBack} title={"Back"} titletwo={"Next"} />

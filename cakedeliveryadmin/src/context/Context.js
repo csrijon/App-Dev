@@ -13,7 +13,7 @@ export const Onbordingprovider = ({ children }) => {
             ownername: "",
             Bemail: "",
             phonenumber: "",
-            business: ""
+            businesstype: ""
         },
         location: {
             shopaddress: "",
@@ -41,7 +41,7 @@ export const Onbordingprovider = ({ children }) => {
             minimumordervalue: ""
         },
     })
-    console.log(children)
+   console.log(formdata.personaldetails);
     return (
         <OnbordingContext.Provider value={{ formdata, setformdata }} >
             {children}

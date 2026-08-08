@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
     View,
     Text,
@@ -18,7 +18,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import BakeryHeader from '../components/BakeryHeader';
 import Floatingfixedbutton from "../components/Floatingfixedbutton"
-
+import { OnbordingContext } from '../context/Context';
 
 // --- Color Palette ---
 const COLORS = {
@@ -120,25 +120,27 @@ const BusinessTypeCard = ({ title, iconName, isSelected, onPress }) => {
 
 // --- Main Screen Component ---
 const Onbordingpageone = ({ navigation }) => {
-    const [form, setForm] = useState({
-        bakeryName: '',
-        ownerName: '',
-        email: '',
-        phone: '',
-    });
+
+
+    const { formdata, setformdata } = useContext(OnbordingContext)
 
     const [errors, setErrors] = useState({
-        bakeryName: '',
-        ownerName: '',
-        email: '',
-        phone: '',
+        bakersname: '',
+        ownername: '',
+        Bemail: '',
+        phonenumber: '',
     });
 
     const [selectedBusiness, setSelectedBusiness] = useState('Home Bakery');
     const [logoUri, setLogoUri] = useState(null);
 
     const updateField = (field, text) => {
-        setForm((prev) => ({ ...prev, [field]: text }));
+        setformdata((prev) => ({
+            ...prev, personaldetails: {
+                ...prev.personaldetails,
+                [field]: text
+            },
+        }));
         if (errors[field]) {
             setErrors((prev) => ({ ...prev, [field]: '' }));
         }
@@ -146,20 +148,20 @@ const Onbordingpageone = ({ navigation }) => {
 
     const validateField = (field) => {
         let message = '';
-        const value = form[field];
+        const value = formdata.personaldetails[field];
 
         switch (field) {
-            case 'bakeryName':
+            case 'bakersname':
                 if (!value.trim()) message = 'Bakery name is required';
                 break;
-            case 'ownerName':
+            case 'ownername':
                 if (!value.trim()) message = 'Owner name is required';
                 break;
-            case 'email':
+            case 'Bemail':
                 if (!value.trim()) message = 'Email is required';
                 else if (!isValidEmail(value)) message = 'Enter a valid email address';
                 break;
-            case 'phone':
+            case 'phonenumber':
                 if (!value.trim()) message = 'Phone number is required';
                 else if (!isValidPhone(value)) message = 'Enter a valid 10-digit phone number';
                 break;
@@ -172,7 +174,7 @@ const Onbordingpageone = ({ navigation }) => {
     };
 
     const validateAll = () => {
-        const fields = ['bakeryName', 'ownerName', 'email', 'phone'];
+        const fields = ['bakersname', 'ownername', 'Bemail', 'phonenumber'];
         const results = fields.map((field) => validateField(field));
         return results.every(Boolean);
     };
@@ -272,16 +274,13 @@ const Onbordingpageone = ({ navigation }) => {
     };
 
     const handleNext = () => {
+        console.log("button clicked")
         const valid = validateAll();
         if (!valid) {
             Alert.alert('Missing information', 'Please fill in all required fields correctly before continuing.');
             return;
         }
-        navigation.navigate('OnboardingPageTwo', {
-            ...form,
-            businessType: selectedBusiness,
-            logoUri,
-        });
+        navigation.navigate('OnboardingPageTwo');
     };
 
     const handleBack = () => {
@@ -324,32 +323,32 @@ const Onbordingpageone = ({ navigation }) => {
                 <View style={styles.formSection}>
                     <FloatingLabelInput
                         label="BAKERY NAME"
-                        value={form.bakeryName}
-                        onChangeText={(text) => updateField('bakeryName', text)}
+                        value={formdata.personaldetails.bakersname}
+                        onChangeText={(text) => updateField('bakersname', text)}
                         onBlur={() => validateField('bakeryName')}
-                        error={errors.bakeryName}
+                        error={errors.bakersname}
                     />
                     <FloatingLabelInput
                         label="OWNER NAME"
-                        value={form.ownerName}
-                        onChangeText={(text) => updateField('ownerName', text)}
+                        value={formdata.personaldetails.ownername}
+                        onChangeText={(text) => updateField('ownername', text)}
                         onBlur={() => validateField('ownerName')}
-                        error={errors.ownerName}
+                        error={errors.ownername}
                     />
                     <FloatingLabelInput
                         label="BUSINESS EMAIL"
-                        value={form.email}
-                        onChangeText={(text) => updateField('email', text)}
-                        onBlur={() => validateField('email')}
-                        error={errors.email}
+                        value={formdata.personaldetails.Bemail}
+                        onChangeText={(text) => updateField('Bemail', text)}
+                        onBlur={() => validateField('Bemail')}
+                        error={errors.Bemail}
                         keyboardType="email-address"
                     />
                     <FloatingLabelInput
                         label="PHONE NUMBER"
-                        value={form.phone}
-                        onChangeText={(text) => updateField('phone', text.replace(/[^0-9]/g, ''))}
-                        onBlur={() => validateField('phone')}
-                        error={errors.phone}
+                        value={formdata.personaldetails.phonenumber}
+                        onChangeText={(text) => updateField('phonenumber', text.replace(/[^0-9]/g, ''))}
+                        onBlur={() => validateField('phonenumber')}
+                        error={errors.phonenumber}
                         keyboardType="phone-pad"
                         maxLength={10}
                     />
@@ -365,27 +364,72 @@ const Onbordingpageone = ({ navigation }) => {
                                 title="BAKERY"
                                 iconName="bread-slice"
                                 isSelected={selectedBusiness === 'Bakery'}
-                                onPress={() => setSelectedBusiness('Bakery')}
+                                onPress={() => {
+                                    setSelectedBusiness('Bakery'),
+                                        setformdata((prev) => {
+                                            return {
+                                                ...prev, personaldetails: {
+                                                    ...prev.personaldetails,
+                                                    businesstype: "Bakery"
+                                                }
+                                            }
+                                        })
+                                }}
                             />
                             <BusinessTypeCard
                                 title="HOME BAKERY"
                                 iconName="home-outline"
                                 isSelected={selectedBusiness === 'Home Bakery'}
-                                onPress={() => setSelectedBusiness('Home Bakery')}
+                                onPress={() => {
+                                    setSelectedBusiness('Home Bakery')
+                                        ,
+
+                                        setformdata((prev) => {
+                                            return {
+                                                ...prev, personaldetails: {
+                                                    ...prev.personaldetails,
+                                                    businesstype: "HOME BAKERY",
+                                                }
+                                            }
+                                        })
+
+                                }}
                             />
                         </View>
                         <View style={styles.row}>
                             <BusinessTypeCard
                                 title="BAKERY & CAFÉ"
                                 iconName="coffee-outline"
-                                isSelected={selectedBusiness === 'Bakery & Café'}
-                                onPress={() => setSelectedBusiness('Bakery & Café')}
+                                isSelected={selectedBusiness === "Bakery & Café"}
+                                onPress={() => {
+                                    setSelectedBusiness("Bakery & Café");
+
+                                    setformdata((prev) => {
+                                        return {
+                                            ...prev,
+                                            personaldetails: {
+                                                ...prev.personaldetails,
+                                                businesstype: "Bakery & Café",
+                                            },
+                                        };
+                                    });
+                                }}
                             />
                             <BusinessTypeCard
                                 title="PASTRY SHOP"
                                 iconName="cupcake"
                                 isSelected={selectedBusiness === 'Pastry Shop'}
-                                onPress={() => setSelectedBusiness('Pastry Shop')}
+                                onPress={() => {
+                                    setSelectedBusiness('Pastry Shop'),
+                                        setformdata((prev) => {
+                                            return {
+                                                ...prev, personaldetails: {
+                                                    ...prev.personaldetails,
+                                                    businesstype: "Pastry Shop",
+                                                }
+                                            }
+                                        })
+                                }}
                             />
                         </View>
                     </View>
