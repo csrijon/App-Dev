@@ -23,7 +23,7 @@ export const Onbordingprovider = ({ children }) => {
             state: ""
         },
         bakedetalis: {
-            productnames: ""
+            productnames: []
         },
         documentdetalis: {
             fssainumber: "",

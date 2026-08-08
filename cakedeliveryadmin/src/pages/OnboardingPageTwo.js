@@ -176,7 +176,7 @@ const OnboardingPageTwo = ({ navigation }) => {
 
   const [errors, setErrors] = useState({
     shopaddress: "",
-    landmark:"",
+    landmark: "",
     city: "",
     pincode: "",
     state: ""
@@ -204,7 +204,7 @@ const OnboardingPageTwo = ({ navigation }) => {
       case 'shopaddress':
         if (!value.trim()) message = 'Shop address is required';
         break;
-      case ' city':
+      case 'city':
         if (!value.trim()) message = 'City is required';
         break;
       case 'pincode':
@@ -250,10 +250,7 @@ const OnboardingPageTwo = ({ navigation }) => {
       Alert.alert('Missing information', 'Please fill in all required fields correctly before continuing.');
       return;
     }
-    navigation.navigate('OnboardingpageThree', {
-      ...form,
-      country: 'India',
-    });
+    navigation.navigate('OnboardingpageThree');
   };
 
   const handleBack = () => {

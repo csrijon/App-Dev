@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   StyleSheet,
   Text,
@@ -15,128 +15,136 @@ const { width } = Dimensions.get('window')
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BakeryHeader from "../components/BakeryHeader"
 import Floatingfixedbutton from "../components/Floatingfixedbutton"
-
+import { OnbordingContext } from '../context/Context';
 // --- GALLERY PICKER ---
 import { launchImageLibrary } from 'react-native-image-picker';
 
-const OnboardingpageFour = ({navigation})=>{
-    const [fssaiNumber, setFssaiNumber] = useState('');
-    const [fssaiError, setFssaiError] = useState('');
+const OnboardingpageFour = ({ navigation }) => {
 
-    // --- FILE STATES ---
-    const [fssaiDocName, setFssaiDocName] = useState('fssal_cert.pdf');
-    const [gstImageUri, setGstImageUri] = useState(null);
+  const { formdata, setformdata } = useContext(OnbordingContext)
 
-    // --- LOADING STATES FOR IMAGE PICKERS ---
-    const [isReplacingDoc, setIsReplacingDoc] = useState(false);
-    const [isUploadingGst, setIsUploadingGst] = useState(false);
+  const [fssaiError, setFssaiError] = useState('');
 
-    // --- VALIDATE + NAVIGATE ---
-    const handleNext = () => {
-        const trimmed = fssaiNumber.trim();
+  // --- FILE STATES ---
+  const [fssaiDocName, setFssaiDocName] = useState('fssal_cert.pdf');
+  const [gstImageUri, setGstImageUri] = useState(null);
 
-        if (trimmed.length === 0) {
-            setFssaiError('FSSAI license number is required.');
-            return;
-        }
+  // --- LOADING STATES FOR IMAGE PICKERS ---
+  const [isReplacingDoc, setIsReplacingDoc] = useState(false);
+  const [isUploadingGst, setIsUploadingGst] = useState(false);
 
-        if (trimmed.length !== 14) {
-            setFssaiError('FSSAI number must be exactly 14 digits.');
-            return;
-        }
+  // --- VALIDATE + NAVIGATE ---
+  const fssaiNumber =
+    formdata?.documentdetalis?.fssainumber || '';
 
-        if (!/^\d{14}$/.test(trimmed)) {
-            setFssaiError('FSSAI number must contain digits only.');
-            return;
-        }
+  const handleNext = () => {
+    const trimmed = fssaiNumber.trim();
 
-        setFssaiError('');
+    if (trimmed.length === 0) {
+      setFssaiError('FSSAI license number is required.');
+      return;
+    }
 
-        navigation.navigate("OnboardingpageFive", {
-            fssaiNumber: trimmed,
-            fssaiDocName,
-            gstImageUri
-        });
+    if (trimmed.length !== 14) {
+      setFssaiError('FSSAI number must be exactly 14 digits.');
+      return;
+    }
+
+    if (!/^\d{14}$/.test(trimmed)) {
+      setFssaiError('FSSAI number must contain digits only.');
+      return;
+    }
+
+    setFssaiError('');
+
+    navigation.navigate("OnboardingpageFive");
+  };
+
+  const handleFssaiChange = (text) => {
+    // allow only digits while typing
+    const digitsOnly = text.replace(/[^0-9]/g, '');
+    setformdata((prev) => {
+      return {
+        ...prev, documentdetalis: {
+          ...prev.documentdetalis,
+          fssainumber: digitsOnly
+        },
+      }
+    })
+    if (fssaiError) setFssaiError('');
+  };
+
+  const handleBack = () => {
+    navigation.goBack();
+  };
+
+  const handleViewDocument = () => {
+    Alert.alert("View Document", `Opening ${fssaiDocName}...`);
+  };
+
+  // --- REPLACE FSSAI DOCUMENT ---
+  const handleReplaceDocument = () => {
+    const options = {
+      mediaType: 'photo',
+      quality: 0.8,
     };
 
-    const handleFssaiChange = (text) => {
-        // allow only digits while typing
-        const digitsOnly = text.replace(/[^0-9]/g, '');
-        setFssaiNumber(digitsOnly);
-        if (fssaiError) setFssaiError('');
+    setIsReplacingDoc(true);
+
+    launchImageLibrary(options, (response) => {
+      setIsReplacingDoc(false);
+
+      if (response.didCancel) {
+        console.log('User cancelled gallery picker');
+      } else if (response.errorCode) {
+        Alert.alert('Error', response.errorMessage || 'Something went wrong picking the file.');
+      } else if (response.assets && response.assets.length > 0) {
+        const selectedFileName = response.assets[0].fileName || 'Updated_Certificate.jpg';
+        setFssaiDocName(selectedFileName);
+        Alert.alert('Success', 'FSSAI certificate updated.');
+      }
+    });
+  };
+
+  // --- UPLOAD GST IMAGE ---
+  const handleUploadGST = () => {
+    const options = {
+      mediaType: 'photo',
+      quality: 0.8,
     };
 
-    const handleBack = () => {
-        navigation.goBack();
-    };
+    setIsUploadingGst(true);
 
-    const handleViewDocument = () => {
-        Alert.alert("View Document", `Opening ${fssaiDocName}...`);
-    };
+    launchImageLibrary(options, (response) => {
+      setIsUploadingGst(false);
 
-    // --- REPLACE FSSAI DOCUMENT ---
-    const handleReplaceDocument = () => {
-        const options = {
-            mediaType: 'photo',
-            quality: 0.8,
-        };
+      if (response.didCancel) {
+        console.log('User cancelled gallery picker');
+      } else if (response.errorCode) {
+        Alert.alert('Error', response.errorMessage || 'Something went wrong picking the file.');
+      } else if (response.assets && response.assets.length > 0) {
+        setGstImageUri(response.assets[0].uri);
+      }
+    });
+  };
 
-        setIsReplacingDoc(true);
+  // --- REMOVE GST IMAGE ---
+  const handleRemoveGST = () => {
+    Alert.alert(
+      "Remove Image",
+      "Are you sure you want to remove this GST document?",
+      [
+        { text: "Cancel", style: "cancel" },
+        { text: "Remove", style: "destructive", onPress: () => setGstImageUri(null) }
+      ]
+    );
+  };
 
-        launchImageLibrary(options, (response) => {
-            setIsReplacingDoc(false);
-
-            if (response.didCancel) {
-                console.log('User cancelled gallery picker');
-            } else if (response.errorCode) {
-                Alert.alert('Error', response.errorMessage || 'Something went wrong picking the file.');
-            } else if (response.assets && response.assets.length > 0) {
-                const selectedFileName = response.assets[0].fileName || 'Updated_Certificate.jpg';
-                setFssaiDocName(selectedFileName);
-                Alert.alert('Success', 'FSSAI certificate updated.');
-            }
-        });
-    };
-
-    // --- UPLOAD GST IMAGE ---
-    const handleUploadGST = () => {
-        const options = {
-            mediaType: 'photo',
-            quality: 0.8,
-        };
-
-        setIsUploadingGst(true);
-
-        launchImageLibrary(options, (response) => {
-            setIsUploadingGst(false);
-
-            if (response.didCancel) {
-                console.log('User cancelled gallery picker');
-            } else if (response.errorCode) {
-                Alert.alert('Error', response.errorMessage || 'Something went wrong picking the file.');
-            } else if (response.assets && response.assets.length > 0) {
-                setGstImageUri(response.assets[0].uri);
-            }
-        });
-    };
-
-    // --- REMOVE GST IMAGE ---
-    const handleRemoveGST = () => {
-        Alert.alert(
-            "Remove Image",
-            "Are you sure you want to remove this GST document?",
-            [
-                { text: "Cancel", style: "cancel" },
-                { text: "Remove", style: "destructive", onPress: () => setGstImageUri(null) }
-            ]
-        );
-    };
-
-    return(
- <SafeAreaView style={styles.safeArea}>
-    <BakeryHeader/>
+  return (
+    <SafeAreaView style={styles.safeArea}>
+      <BakeryHeader />
       <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
-        
+
         {/* --- Step Indicator --- */}
         <View style={styles.stepContainer}>
           <Text style={styles.stepText}>S t e p  4  o f  6</Text>
@@ -170,7 +178,7 @@ const OnboardingpageFour = ({navigation})=>{
             placeholderTextColor="#B0A39A"
             keyboardType="number-pad"
             maxLength={14}
-            value={fssaiNumber}
+            value={formdata.documentdetalis.fssainumber}
             onChangeText={handleFssaiChange}
           />
           <View style={styles.inputFooterRow}>
@@ -223,9 +231,9 @@ const OnboardingpageFour = ({navigation})=>{
           ) : gstImageUri ? (
             <>
               <Image
-                  source={{ uri: gstImageUri }}
-                  style={styles.uploadedImagePreview}
-                  resizeMode="cover"
+                source={{ uri: gstImageUri }}
+                style={styles.uploadedImagePreview}
+                resizeMode="cover"
               />
               <TouchableOpacity style={styles.removeImageBadge} onPress={handleRemoveGST}>
                 <Text style={styles.removeImageBadgeText}>✕</Text>
@@ -236,11 +244,11 @@ const OnboardingpageFour = ({navigation})=>{
             </>
           ) : (
             <>
-                <View style={styles.uploadIconCircle}>
-                  <Text style={styles.uploadIcon}>⬆️</Text>
-                </View>
-                <Text style={styles.uploadAreaTitle}>GST NUMBER (OPTIONAL)</Text>
-                <Text style={styles.uploadAreaSubtitle}>PDF, JPG, PNG • Max 5MB</Text>
+              <View style={styles.uploadIconCircle}>
+                <Text style={styles.uploadIcon}>⬆️</Text>
+              </View>
+              <Text style={styles.uploadAreaTitle}>GST NUMBER (OPTIONAL)</Text>
+              <Text style={styles.uploadAreaSubtitle}>PDF, JPG, PNG • Max 5MB</Text>
             </>
           )}
         </TouchableOpacity>
@@ -264,7 +272,7 @@ const OnboardingpageFour = ({navigation})=>{
               />
             </View>
           </View>
-          
+
           <View style={styles.secureBadge}>
             <Text style={styles.secureBadgeIcon}>🛡️</Text>
             <Text style={styles.secureBadgeText}>SECURE VERIFICATION</Text>
@@ -273,14 +281,14 @@ const OnboardingpageFour = ({navigation})=>{
 
       </ScrollView>
 
-      <Floatingfixedbutton 
-        onPressBack={handleBack} 
-        onPress={handleNext} 
-        title={"Back"} 
-        titletwo={"Send"} 
+      <Floatingfixedbutton
+        onPressBack={handleBack}
+        onPress={handleNext}
+        title={"Back"}
+        titletwo={"Send"}
       />
     </SafeAreaView>
-    )
+  )
 }
 
 export default OnboardingpageFour
@@ -288,12 +296,12 @@ export default OnboardingpageFour
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#FAF5EE', 
+    backgroundColor: '#FAF5EE',
   },
   container: {
     paddingHorizontal: 18,
     paddingTop: 30,
-    paddingBottom: 100, 
+    paddingBottom: 100,
     alignItems: 'center',
   },
   stepContainer: {
@@ -418,7 +426,7 @@ const styles = StyleSheet.create({
   },
   uploadedSubtitle: {
     fontSize: 12,
-    color: '#71A16C', 
+    color: '#71A16C',
     fontWeight: '600',
   },
   uploadedActions: {
