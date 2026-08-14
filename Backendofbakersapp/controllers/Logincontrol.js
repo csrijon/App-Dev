@@ -1,7 +1,8 @@
 import pool from "../config/db.js"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
-
+import { PrismaClient } from "../config/prisma.js"
+// import 
 
 dotenv.config()
 

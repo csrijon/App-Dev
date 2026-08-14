@@ -1,28 +1,41 @@
 import pool from "../config/db.js"
+import prisma from "../config/prisma.js";
+
 
 const UserappSignup = async (req, res) => {
     try {
-        const { fullname, mobile, password } = req.body
-        console.log(mobile, fullname, password)
-        let checknumber = await pool.query("SELECT * FROM MAINAPPLOGIN WHERE MOBILENUMBER =$1", [
-            mobile
-        ])
-        if (checknumber.rowCount > 0) {
-            return res.status(409).json({
-                mess: "Number Already exist used Different NUmber"
+        const { fullname, mobile, password, email } = req.body
+        console.log(mobile, fullname, password, email)
+        // 
+        let checkaccount = await Prisma.User.findFirst({
+            where: {
+                AND: [
+                    { email },
+                    { mobile }
+                ]
+            }
+        })
+        if (!checkaccount) {
+            return res.status(200).json({
+                mess: "user Found Please go to Login"
             })
         }
 
-        let signupprocess = await pool.query("INSERT INTO MAINAPPLOGIN(NAME,MOBILENUMBER,PASSWORD) VALUES($1,$2,$3)", [
-            fullname, mobile, password
-        ])
-        console.log(signupprocess)
-        if (signupprocess.rowCount > 0) {
-            return res.status(201).json({
-                mess: "Signup Successfully",
-                detalis: fullname
-            })
-        }
+        const Saveuser = await Prisma.User.create({
+            data: {
+                Name: fullname,
+                Email: email,
+                Password: password
+            }
+        })
+        console.log("Signup successfully");
+
+        res.status(201).json({
+            success: true,
+            message: "Signup successfully",
+            user: Saveuser
+        });
+
     } catch (error) {
         console.log(error)
         res.status(500).json({

@@ -11,22 +11,21 @@ import Feather from 'react-native-vector-icons/Feather';
 const Signupscreen = ({ navigation }) => {
     const onclickcreateaccount = async () => {
         setTouched(true);
-
         if (!isFormValid) {
             return;
         }
-
         try {
             setLoading(true);
 
-            const response = await fetch("http://192.168.1.33:3000/api/auth/signupmain", {
+            const response = await fetch("http://10.140.21.192:3000/api/auth/signupmain", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                     fullname: fullname,
-                    mobile: fullemail,
+                    mobile: fullmobile,
+                    email: fullemail,
                     password: password
                 }),
             });
@@ -51,6 +50,7 @@ const Signupscreen = ({ navigation }) => {
     };
     const [checkbox, setcheckbox] = useState(false)
     const [fullname, setfullname] = useState("")
+    const [fullmobile, setfullmobile] = useState("")
     const [fullemail, setfullemail] = useState("")
     const [password, setpassword] = useState("")
     const [confirmpassword, setconfirmpassword] = useState("")
@@ -61,7 +61,8 @@ const Signupscreen = ({ navigation }) => {
     const [loading, setLoading] = useState(false)
 
     const isNameValid = fullname.trim().length >= 3
-    const isMobileValid = /^[6-9]\d{9}$/.test(fullemail)
+    const isMobileValid = /^[6-9]\d{9}$/.test(fullmobile)
+    const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fullemail)
     const hasMinLength = password.length >= 8
     const hasNumber = /\d/.test(password)
     const isPasswordValid = hasMinLength && hasNumber
@@ -69,9 +70,10 @@ const Signupscreen = ({ navigation }) => {
 
     const errorMessage = (() => {
         if (!touched) return ""
-        if (!fullname || !fullemail || !password || !confirmpassword) return "Please fill in all fields."
+        if (!fullname || !fullmobile || !fullemail || !password || !confirmpassword) return "Please fill in all fields."
         if (!isNameValid) return "Full name must be at least 3 characters."
         if (!isMobileValid) return "Please enter a valid 10-digit mobile number."
+        if (!isEmailValid) return "Please enter a valid email address."
         if (!hasMinLength) return "Password must be at least 8 characters."
         if (!hasNumber) return "Password must include at least 1 number."
         if (!passwordsMatch) return "Passwords do not match."
@@ -79,7 +81,7 @@ const Signupscreen = ({ navigation }) => {
         return ""
     })()
 
-    const isFormValid = isNameValid && isMobileValid && isPasswordValid && passwordsMatch && checkbox
+    const isFormValid = isNameValid && isMobileValid && isEmailValid && isPasswordValid && passwordsMatch && checkbox
 
 
     return (
@@ -143,8 +145,8 @@ const Signupscreen = ({ navigation }) => {
                             <View style={[styles.inputcontainer, focusedField === "mobile" && styles.inputFocused]} >
                                 <FontAwesome style={styles.iconcolor} name="mobile-phone" color="#A67C52" size={22} />
                                 <TextInput
-                                    onChangeText={(text) => setfullemail(text.replace(/[^0-9]/g, ""))}
-                                    value={fullemail}
+                                    onChangeText={(text) => setfullmobile(text.replace(/[^0-9]/g, ""))}
+                                    value={fullmobile}
                                     onFocus={() => setFocusedField("mobile")}
                                     onBlur={() => setFocusedField(null)}
                                     maxLength={10}
@@ -156,7 +158,25 @@ const Signupscreen = ({ navigation }) => {
                             </View>
                         </View>
                         {/* {Mobile input end} */}
-
+                        {/* {email input start} */}
+                        <View style={styles.signupforminput} >
+                            <Text style={styles.labelText}>EMAIL ID</Text>
+                            <View style={[styles.inputcontainer, focusedField === "email" && styles.inputFocused]} >
+                                <Ionicons style={styles.iconcolor} name="mail-outline" color="#A67C52" size={22} />
+                                <TextInput
+                                    onChangeText={setfullemail}
+                                    value={fullemail}
+                                    onFocus={() => setFocusedField("email")}
+                                    onBlur={() => setFocusedField(null)}
+                                    keyboardType="email-address"
+                                    autoCapitalize="none"
+                                    placeholderTextColor="#b8a888"
+                                    style={styles.textinput}
+                                    placeholder="Enter Your Email Id"
+                                />
+                            </View>
+                        </View>
+                        {/* {email input end} */}
                         {/* {Password input start} */}
                         <View style={styles.signupforminput} >
                             <Text style={styles.labelText}>PASSWORD</Text>
