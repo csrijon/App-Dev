@@ -1,4 +1,4 @@
-import pool from "../config/db.js"
+
 import prisma from "../config/prisma.js";
 
 
@@ -7,24 +7,25 @@ const UserappSignup = async (req, res) => {
         const { fullname, mobile, password, email } = req.body
         console.log(mobile, fullname, password, email)
         // 
-        let checkaccount = await Prisma.User.findFirst({
+        let checkaccount = await prisma.user.findFirst({
             where: {
-                AND: [
-                    { email },
-                    { mobile }
+                OR: [
+                    { Email: email },
+                    { Mobile: mobile }
                 ]
             }
         })
-        if (!checkaccount) {
+        if (checkaccount) {
             return res.status(200).json({
                 mess: "user Found Please go to Login"
             })
         }
 
-        const Saveuser = await Prisma.User.create({
+        const Saveuser = await prisma.user.create({
             data: {
                 Name: fullname,
                 Email: email,
+                Mobile: mobile,
                 Password: password
             }
         })

@@ -4,14 +4,171 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model User {
   id       Int    @id @default(autoincrement())
   Name     String
   Email    String @unique
+  Mobile   String @unique
   Password String
 
   @@map("Login&signupsystem")
+}
+
+model Address {
+  id        Int     @id @default(autoincrement())
+  userId    Int
+  fullName  String? @db.VarChar(100)
+  phone     String? @db.VarChar(15)
+  address   String?
+  city      String? @db.VarChar(100)
+  state     String? @db.VarChar(100)
+  pincode   String? @db.VarChar(10)
+  isDefault Boolean @default(false)
+
+  @@index([userId])
+}
+
+model Cart {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  productId Int
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [productId], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([productId])
+}
+
+model DeliveryTracking {
+  id            Int      @id @default(autoincrement())
+  orderId       Int
+  deliveryBoyId Int
+  latitude      Decimal? @db.Decimal(10, 7)
+  longitude     Decimal? @db.Decimal(10, 7)
+  status        String?  @db.VarChar(50)
+  updatedAt     DateTime @default(now())
+
+  order       Order       @relation(fields: [orderId], references: [orderId], onDelete: Cascade)
+  deliveryBoy DeliveryBoy @relation(fields: [deliveryBoyId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([deliveryBoyId])
+}
+
+model DeliveryBoy {
+  id Int @id @default(autoincrement())
+
+  deliveryTracking DeliveryTracking[]
+}
+
+model Discount {
+  discountId      Int       @id @default(autoincrement())
+  discountName    String?   @db.VarChar(100)
+  discountPercent Decimal?  @db.Decimal(5, 2)
+  discountCode    String?   @db.VarChar(50)
+  startDate       DateTime?
+  endDate         DateTime?
+  isActive        Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+}
+
+model Notifications {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  title     String?  @db.VarChar(255)
+  message   String?
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  quantity  Int
+  price     Decimal @db.Decimal(10, 2)
+
+  order   Order   @relation(fields: [orderId], references: [orderId], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [productId], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+model Order {
+  orderId         Int       @id @default(autoincrement())
+  orderNumber     String?   @db.VarChar(50)
+  customerName    String?   @db.VarChar(150)
+  customerPhone   String?   @db.VarChar(20)
+  customerAddress String?
+  totalAmount     Decimal?  @db.Decimal(10, 2)
+  paymentMethod   String?   @db.VarChar(50)
+  paymentStatus   String?   @db.VarChar(20)
+  orderStatus     String?   @db.VarChar(20)
+  orderDate       DateTime?
+  updatedAt       DateTime?
+
+  orderItems       OrderItem[]
+  payments         Payment[]
+  deliveryTracking DeliveryTracking[]
+}
+
+model Payment {
+  id            Int       @id @default(autoincrement())
+  orderId       Int
+  amount        Decimal?  @db.Decimal(10, 2)
+  paymentMethod String?   @db.VarChar(50)
+  paymentStatus String?   @db.VarChar(30)
+  transactionId String?   @db.VarChar(255)
+  paidAt        DateTime?
+
+  order Order @relation(fields: [orderId], references: [orderId], onDelete: Cascade)
+
+  @@index([orderId])
+}
+
+model Product {
+  productId          Int       @id @default(autoincrement())
+  productName        String?   @db.VarChar(150)
+  description        String?   @db.VarChar(220)
+  imageUrl           String?
+  price              Decimal?  @db.Decimal(10, 2)
+  weight             Decimal?  @db.Decimal(10, 2)
+  weightUnit         String?   @db.VarChar(10)
+  stockQty           Int?
+  prepTimeMinutes    Int?
+  availableSizes     String?
+  isEggless          Boolean   @default(false)
+  flavorProfile      String?   @db.VarChar(100)
+  category           String?   @db.VarChar(100)
+  publicCatalog      Boolean   @default(false)
+  bestseller         Boolean   @default(false)
+  featured           Boolean   @default(false)
+  allowCustomMessage Boolean   @default(false)
+  createdAt          DateTime?
+  updatedAt          DateTime?
+
+  carts      Cart[]
+  reviews    Review[]
+  orderItems OrderItem[]
+}
+
+model Review {
+  id        Int       @id @default(autoincrement())
+  userId    Int
+  productId Int
+  rating    Int?
+  comment   String?
+  createdAt DateTime?
+
+  product Product @relation(fields: [productId], references: [productId], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([productId])
 }
