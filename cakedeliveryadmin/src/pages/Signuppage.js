@@ -73,6 +73,7 @@ const InputField = ({
     onChangeText,
     keyboardType,
     autoCapitalize,
+    maxLength,
 }) => (
     <View style={styles.fieldWrapper}>
         <Text style={styles.fieldLabel}>{label}</Text>
@@ -87,6 +88,7 @@ const InputField = ({
                 onChangeText={onChangeText}
                 keyboardType={keyboardType || "default"}
                 autoCapitalize={autoCapitalize || "none"}
+                maxLength={maxLength}
             />
             {showToggle && (
                 <TouchableOpacity onPress={toggleSecure}>
@@ -103,14 +105,19 @@ const Signuppage = ({ navigation }) => {
 
     // Form fields er jonno state - eigulo API call e directly pathano jabe
     const [fullName, setFullName] = useState("");
+    const [mobile, setMobile] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
 
     const handleSignup = async () => {
         // Basic validation
-        if (!fullName.trim() || !email.trim() || !password.trim()) {
+        if (!fullName.trim() || !mobile.trim() || !email.trim() || !password.trim()) {
             Alert.alert("Missing Info", "Please fill in all fields.");
+            return;
+        }
+        if (mobile.trim().length !== 10) {
+            Alert.alert("Invalid Mobile", "Please enter a valid 10-digit mobile number.");
             return;
         }
         if (!check) {
@@ -121,13 +128,14 @@ const Signuppage = ({ navigation }) => {
         setLoading(true);
         try {
             // API call - URL ta nijer backend endpoint diye replace koro
-            const response = await fetch("http://192.168.29.19:3000/api/auth/adminsignup", {
+            const response = await fetch("http://10.140.21.221:3000/api/auth/adminsignup", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                     fullName,
+                    mobile,
                     email,
                     password,
                 }),
@@ -183,6 +191,17 @@ const Signuppage = ({ navigation }) => {
                         onChangeText={setFullName}
                         autoCapitalize="words"
                     />
+                    {/* {Mobile number input start} */}
+                    <InputField
+                        label="MOBILE NUMBER"
+                        placeholder="Enter your mobile number"
+                        icon="call-outline"
+                        value={mobile}
+                        onChangeText={(text) => setMobile(text.replace(/[^0-9]/g, ""))}
+                        keyboardType="phone-pad"
+                        maxLength={10}
+                    />
+                    {/* {Mobile number input end} */}
                     <InputField
                         label="EMAIL ADDRESS"
                         placeholder="hello@patisserie.com"

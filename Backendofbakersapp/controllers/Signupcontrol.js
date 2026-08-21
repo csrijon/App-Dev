@@ -47,22 +47,52 @@ const UserappSignup = async (req, res) => {
 
 
 const Adminappsignup = async (req, res) => {
-
     try {
-        const { fullName, email, password } = req.body
-        console.log(fullName, email, password)
-        const signupdata = await pool.query("INSERT INTO USER_TABLE (NAME, EMAIL, PASSWORD) VALUES($1,$2,$3)", [fullName, email, password])
-        console.log(signupdata)
-        return res.status(200).json({
-            mess: "Sign Up Done"
-        })
+        const { fullName, email, password, mobile } = req.body;
+
+        console.log(fullName, email, password, mobile);
+
+        const checkaccount = await prisma.user.findFirst({
+            where: {
+                OR: [
+                    { Email: email },
+                    { Mobile: mobile }
+                ]
+            }
+        });
+
+        if (checkaccount) {
+            return res.status(409).json({
+                success: false,
+                message: "Email or mobile number already exists."
+            });
+        }
+
+        const signupdata = await prisma.user.create({
+            data: {
+                Name: fullName,
+                Email: email,
+                Mobile: mobile,
+                Password: password
+            }
+        });
+
+        console.log("Admin signup successfully");
+
+        return res.status(201).json({
+            success: true,
+            message: "Sign Up Done",
+            user: signupdata
+        });
+
     } catch (error) {
         console.log("Database Error:", error);
 
         return res.status(500).json({
-            message: "Email Already Exist used different email"
+            success: false,
+            message: "Failed to sign up"
         });
     }
-}
+};
 
 export { UserappSignup, Adminappsignup }
