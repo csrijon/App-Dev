@@ -342,195 +342,270 @@ const Ordersummarypage = ({ navigation }) => {
 };
 
 export default Ordersummarypage;
-
 const styles = StyleSheet.create({
+
     Ordersummarypagecontainer: {
         flex: 1,
-        backgroundColor: "#fdf7e4"
+        backgroundColor: "#fdf7e4",
     },
+
     summaryscrollcontainer: {
         padding: 20,
-        flex: 1
+        flex: 1,
     },
+
     saffronStage: {},
+
+    /* ── Header ── */
+
     microLabel: {
-        fontSize: 15,
+        fontSize: 13,
         color: "#75584e",
-        fontWeight: "800",   // FIX: was number 800, must be string
-        letterSpacing: 1,
-        marginBottom: 4
+        fontWeight: "800",
+        letterSpacing: 0.8,
+        lineHeight: 18,
+        marginBottom: 4,
     },
+
     heroLine: {
-        fontSize: 18,
-        fontWeight: "800",   // FIX: was number 800, must be string
+        fontSize: 21,
+        fontWeight: "800",
         color: "#2f241d",
-        lineHeight: 36,
-        marginBottom: 25
+        lineHeight: 28,
+        marginBottom: 25,
     },
+
+    /* ── Main Cake Card ── */
+
     creamPanel: {
         backgroundColor: "#ffffff",
         borderRadius: 30,
         padding: 20,
+
         shadowColor: "#000",
-        shadowOffset: { width: 0, height: 6 },
+        shadowOffset: {
+            width: 0,
+            height: 6,
+        },
         shadowOpacity: 0.08,
         shadowRadius: 12,
         elevation: 5,
     },
+
     heroCake: {
         width: "100%",
         height: 250,
         borderRadius: 24,
     },
+
     copyWrap: {
         paddingHorizontal: 5,
     },
+
     rowHead: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
         marginTop: 14,
     },
+
     cakeTitle: {
-        fontSize: 16,
+        fontSize: 17,
         fontWeight: "700",
         color: "#75584e",
+        lineHeight: 22,
         flex: 1,
     },
+
     badgeCapsule: {
         backgroundColor: "#FFE8A3",
         paddingHorizontal: 12,
         paddingVertical: 6,
         borderRadius: 50,
     },
+
     badgeText: {
         fontSize: 11,
         fontWeight: "700",
         color: "#7a5c50",
+        lineHeight: 15,
     },
+
     cakeDesc: {
         fontSize: 14,
+        fontWeight: "400",
         color: "#6e5a4f",
         marginVertical: 10,
-        lineHeight: 25,
+        lineHeight: 21,
     },
+
     metaRow: {
         flexDirection: "row",
         justifyContent: "space-between",
         marginTop: 10,
     },
+
     metaLabel: {
-        fontSize: 10,
+        fontSize: 11,
+        fontWeight: "500",
         color: "#8b7d6b",
+        lineHeight: 15,
     },
+
     metaValue: {
         fontSize: 14,
-        fontWeight: "bold",
+        fontWeight: "700",
         color: "#5c4033",
+        lineHeight: 19,
     },
+
+    /* ── Address / Delivery Section ── */
+
     almondStage: {
-        marginTop: 20
+        marginTop: 20,
     },
+
     butterBlock: {
         backgroundColor: "#fff",
         borderRadius: 28,
         padding: 18,
         marginBottom: 16,
+
         shadowColor: "#000",
-        shadowOffset: { width: 0, height: 4 },
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
         shadowOpacity: 0.06,
         shadowRadius: 10,
         elevation: 4,
     },
+
     rowLine: {
         flexDirection: "row",
         alignItems: "center",
         gap: 8,
     },
+
     rowBetween: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
         marginBottom: 10,
     },
+
     blockTitle: {
-        fontSize: 14,
+        fontSize: 15,
         fontWeight: "700",
         color: "#75584e",
+        lineHeight: 20,
     },
+
+    /* ── Message ── */
+
     creamBubble: {
         backgroundColor: "#f2f2f2",
         borderRadius: 20,
         padding: 15,
     },
+
     messageText: {
         fontSize: 13,
+        fontWeight: "400",
         color: "#6e5a4f",
         fontStyle: "italic",
+        lineHeight: 19,
     },
+
     messageInput: {
         fontSize: 13,
+        fontWeight: "400",
         color: "#6e5a4f",
         fontStyle: "italic",
         minHeight: 60,
+        lineHeight: 19,
         textAlignVertical: "top",
     },
+
+    /* ── Address Details ── */
+
     boldLine: {
         fontSize: 15,
-        fontWeight: "bold",
+        fontWeight: "700",
         color: "#5c4033",
+        lineHeight: 20,
     },
+
     subLine: {
         fontSize: 13,
+        fontWeight: "400",
         color: "#7a6a58",
         marginTop: 3,
+        lineHeight: 18,
     },
+
     changeBtn: {
         fontSize: 12,
         color: "#8b7d6b",
         fontWeight: "600",
-        letterSpacing: 1,
+        letterSpacing: 0.6,
+        lineHeight: 17,
     },
+
     addressRow: {
         flexDirection: "row",
         alignItems: "flex-start",
         marginTop: 5,
     },
+
+    /* ── Billing ── */
+
     billingcard: {
         padding: 24,
         borderRadius: 30,
         backgroundColor: "#fff",
         marginTop: 15,
+
         shadowColor: "#000",
-        shadowOffset: { width: 0, height: 6 },
+        shadowOffset: {
+            width: 0,
+            height: 6,
+        },
         shadowOpacity: 0.08,
         shadowRadius: 12,
         elevation: 6,
     },
+
     billingdetalis: {
         marginBottom: 16,
         fontSize: 18,
-        fontWeight: "700",   // FIX: was number 700, must be string
-        color: "#75584e"
+        fontWeight: "700",
+        color: "#75584e",
+        lineHeight: 24,
     },
-    // FIX: renamed from "row" to "billingRow" with proper vertical spacing
+
     billingRow: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
         paddingVertical: 8,
     },
+
     divider: {
         height: 1,
         backgroundColor: "#f0e8d8",
         marginVertical: 12,
     },
+
+    /* ── Promo Code ── */
+
     promoRow: {
         flexDirection: "row",
         gap: 10,
         marginTop: 4,
         alignItems: "center",
     },
+
     promoInput: {
         flex: 1,
         borderWidth: 1,
@@ -539,31 +614,43 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         paddingVertical: 10,
         fontSize: 14,
+        fontWeight: "500",
         color: "#5c4033",
+        lineHeight: 19,
     },
+
     promoBtn: {
         backgroundColor: "#6b4f4f",
         paddingHorizontal: 18,
         paddingVertical: 12,
         borderRadius: 15,
     },
+
     promoBtnText: {
         color: "#fff",
         fontWeight: "700",
         fontSize: 12,
+        lineHeight: 16,
     },
+
     promoErrorText: {
         color: "#c0392b",
         fontSize: 12,
+        fontWeight: "500",
+        lineHeight: 17,
         marginTop: 8,
     },
+
     promoSuccessText: {
         color: "#2e7d32",
         fontSize: 12,
-        marginTop: 8,
         fontWeight: "600",
+        lineHeight: 17,
+        marginTop: 8,
     },
-    // FIX: separated total row style from generic row
+
+    /* ── Total ── */
+
     totalRow: {
         flexDirection: "row",
         justifyContent: "space-between",
@@ -571,20 +658,30 @@ const styles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 16,
     },
+
     totalammounttext: {
-        fontSize: 18,
-        fontWeight: "700",   // FIX: was number 700
+        fontSize: 17,
+        fontWeight: "700",
         color: "#2f241d",
+        lineHeight: 22,
     },
+
     totalammountrupy: {
         fontSize: 24,
-        fontWeight: "800",   // FIX: was number 800
-        color: "#75584e"
+        fontWeight: "800",
+        color: "#75584e",
+        lineHeight: 30,
     },
+
     normaltext: {
         fontSize: 14,
-        color: "#646040"
+        fontWeight: "400",
+        color: "#646040",
+        lineHeight: 20,
     },
+
+    /* ── Processing / Place Order Button ── */
+
     processingBtn: {
         backgroundColor: "#6b4f4f",
         flexDirection: "row",
@@ -594,15 +691,22 @@ const styles = StyleSheet.create({
         paddingVertical: 16,
         borderRadius: 25,
     },
+
     processingText: {
         color: "#fff",
+        fontSize: 15,
         fontWeight: "700",
+        lineHeight: 20,
     },
+
+    /* ── Address Modal ── */
+
     modalOverlay: {
         flex: 1,
         backgroundColor: "rgba(0,0,0,0.4)",
         justifyContent: "flex-end",
     },
+
     modalContent: {
         backgroundColor: "#fff",
         borderTopLeftRadius: 30,
@@ -610,12 +714,15 @@ const styles = StyleSheet.create({
         padding: 24,
         paddingBottom: 40,
     },
+
     modalTitle: {
-        fontSize: 18,
+        fontSize: 19,
         fontWeight: "700",
         color: "#5c4033",
+        lineHeight: 25,
         marginBottom: 20,
     },
+
     addressOption: {
         flexDirection: "row",
         alignItems: "center",
@@ -624,18 +731,23 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         backgroundColor: "#f7f2e8",
     },
+
     addressOptionSelected: {
         backgroundColor: "#f3e8d9",
         borderWidth: 1,
         borderColor: "#6b4f4f",
     },
+
     modalCloseBtn: {
         marginTop: 10,
         alignItems: "center",
         paddingVertical: 12,
     },
+
     modalCloseText: {
+        fontSize: 14,
         color: "#8b7d6b",
         fontWeight: "600",
+        lineHeight: 19,
     },
 });

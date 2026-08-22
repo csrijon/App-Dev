@@ -35,23 +35,23 @@ const CartCard = ({
 
   return (
     <View style={styles.card}>
-      {/* Close Button */}
-      <TouchableOpacity
-        style={styles.closeBtn}
-        onPress={onRemove}
-        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-      >
-        <Ionicons name="close" size={ms(16)} color="#B7A58A" />
-      </TouchableOpacity>
-
       {/* Left Image */}
       <Image source={image} style={styles.image} />
 
       {/* Right Content */}
       <View style={styles.content}>
-        <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
-          {name}
-        </Text>
+        <View style={styles.titleRow}>
+          <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
+            {name}
+          </Text>
+
+          <TouchableOpacity
+            onPress={onRemove}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <Ionicons name="close" size={ms(16)} color="#B5A188" />
+          </TouchableOpacity>
+        </View>
 
         <View style={styles.tagRow}>
           {!!size && (
@@ -69,23 +69,15 @@ const CartCard = ({
         </View>
 
         {!!note && (
-          <View style={styles.noteRow}>
-            <Ionicons name="create-outline" size={ms(13)} color="#B5A188" />
-            <Text style={styles.noteText} numberOfLines={1}>
-              {" "}"{note}"
-            </Text>
-          </View>
+          <Text style={styles.noteText} numberOfLines={1}>
+            "{note}"
+          </Text>
         )}
 
-        <View style={styles.divider} />
-
         <View style={styles.bottomRow}>
-          <View style={styles.priceWrap}>
-            <Text style={styles.priceLabel}>Total</Text>
-            <Text style={styles.price} numberOfLines={1} adjustsFontSizeToFit>
-              ${lineTotal}
-            </Text>
-          </View>
+          <Text style={styles.price} numberOfLines={1} adjustsFontSizeToFit>
+            ${lineTotal}
+          </Text>
 
           <View style={styles.quantityBox}>
             <TouchableOpacity
@@ -95,8 +87,8 @@ const CartCard = ({
             >
               <Ionicons
                 name="remove"
-                size={ms(16)}
-                color={quantity > 1 ? "#7A563B" : "#D8C9B4"}
+                size={ms(14)}
+                color={quantity > 1 ? "#5A3D2C" : "#D8C9B4"}
               />
             </TouchableOpacity>
 
@@ -109,7 +101,7 @@ const CartCard = ({
               hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               style={styles.qtyBtn}
             >
-              <Ionicons name="add" size={ms(16)} color="#7A563B" />
+              <Ionicons name="add" size={ms(14)} color="#5A3D2C" />
             </TouchableOpacity>
           </View>
         </View>
@@ -125,100 +117,68 @@ const getStyles = (ms, width) =>
     card: {
       flexDirection: "row",
       backgroundColor: "#FBF3E3",
-      marginTop: ms(18),
-      borderRadius: ms(28),
-      padding: ms(16),
+      marginTop: ms(14),
+      borderRadius: ms(14),
+      borderWidth: 1,
+      borderColor: "#EDE0C4",
+      padding: ms(14),
       width: "100%",
-
-      shadowColor: "#5A3D2C",
-      shadowOpacity: 0.1,
-      shadowOffset: { width: 0, height: 6 },
-      shadowRadius: 14,
-      elevation: 3,
-    },
-
-    closeBtn: {
-      position: "absolute",
-      top: ms(14),
-      right: ms(14),
-      zIndex: 10,
-      backgroundColor: "#fff",
-      borderRadius: 20,
-      padding: ms(5),
-
-      shadowColor: "#000",
-      shadowOpacity: 0.08,
-      shadowOffset: { width: 0, height: 2 },
-      shadowRadius: 3,
-      elevation: 2,
     },
 
     image: {
-      width: ms(84),
-      height: ms(84),
-      borderRadius: ms(42),
-      borderWidth: ms(4),
-      borderColor: "#fff",
-
-      shadowColor: "#5A3D2C",
-      shadowOpacity: 0.18,
-      shadowOffset: { width: 0, height: 4 },
-      shadowRadius: 8,
-      elevation: 4,
+      width: ms(76),
+      height: ms(76),
+      borderRadius: ms(10),
+      backgroundColor: "#F1E4CC",
     },
 
     content: {
       flex: 1,
       marginLeft: ms(14),
-      justifyContent: "space-between",
       minWidth: 0, // prevents text overflow on small screens
     },
 
+    titleRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+    },
+
     title: {
-      fontSize: ms(18),
-      fontWeight: "700",
+      flex: 1,
+      fontSize: ms(15),
+      fontWeight: "600",
       color: "#5A3D2C",
-      paddingRight: ms(24),
+      paddingRight: ms(10),
     },
 
     tagRow: {
       flexDirection: "row",
       flexWrap: "wrap",
       gap: ms(6),
-      marginTop: ms(7),
+      marginTop: ms(6),
     },
 
     tag: {
-      backgroundColor: "#F1E4CC",
-      paddingHorizontal: ms(10),
-      paddingVertical: ms(4),
-      borderRadius: 20,
+      borderWidth: 1,
+      borderColor: "#E2D2AF",
+      paddingHorizontal: ms(8),
+      paddingVertical: ms(3),
+      borderRadius: ms(6),
       maxWidth: width * 0.32,
     },
 
     tagText: {
-      fontSize: ms(11),
-      fontWeight: "600",
+      fontSize: ms(10),
+      fontWeight: "500",
       color: "#8A7A67",
     },
 
-    noteRow: {
-      flexDirection: "row",
-      alignItems: "center",
-      marginTop: ms(8),
-    },
-
     noteText: {
-      fontSize: ms(12),
+      fontSize: ms(11),
       fontStyle: "italic",
       color: "#B5A188",
-      flexShrink: 1,
-    },
-
-    divider: {
-      height: 1,
-      backgroundColor: "#EFDFC4",
-      marginTop: ms(12),
+      marginTop: ms(6),
     },
 
     bottomRow: {
@@ -226,26 +186,10 @@ const getStyles = (ms, width) =>
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      flexWrap: "wrap",
-      gap: ms(8),
-    },
-
-    priceWrap: {
-      flexShrink: 1,
-      minWidth: 0,
-    },
-
-    priceLabel: {
-      fontSize: ms(10),
-      fontWeight: "700",
-      color: "#C2AF95",
-      textTransform: "uppercase",
-      letterSpacing: 0.8,
-      marginBottom: 2,
     },
 
     price: {
-      fontSize: ms(22),
+      fontSize: ms(16),
       fontWeight: "700",
       color: "#5A3D2C",
     },
@@ -253,32 +197,26 @@ const getStyles = (ms, width) =>
     quantityBox: {
       flexDirection: "row",
       alignItems: "center",
-      backgroundColor: "#fff",
-      paddingHorizontal: ms(8),
-      paddingVertical: ms(6),
-      borderRadius: 30,
-      gap: ms(10),
-
-      shadowColor: "#000",
-      shadowOpacity: 0.06,
-      shadowOffset: { width: 0, height: 2 },
-      shadowRadius: 4,
-      elevation: 2,
+      borderWidth: 1,
+      borderColor: "#E2D2AF",
+      borderRadius: ms(8),
+      paddingHorizontal: ms(6),
+      paddingVertical: ms(3),
+      gap: ms(8),
     },
 
     qtyBtn: {
-      width: ms(24),
-      height: ms(24),
-      borderRadius: ms(12),
+      width: ms(20),
+      height: ms(20),
       alignItems: "center",
       justifyContent: "center",
     },
 
     qtyText: {
-      fontSize: ms(14),
-      fontWeight: "700",
+      fontSize: ms(12),
+      fontWeight: "600",
       color: "#5A3D2C",
-      minWidth: ms(18),
+      minWidth: ms(16),
       textAlign: "center",
     },
   });

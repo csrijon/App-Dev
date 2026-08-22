@@ -211,7 +211,6 @@ const CakeDetails = ({ navigation }) => {
     )
 }
 export default CakeDetails;
-
 const styles = StyleSheet.create({
     CakeDetails: {
         flex: 1,
@@ -235,7 +234,10 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 50,
         borderBottomRightRadius: 50,
         shadowColor: "#000",
-        shadowOffset: { width: 0, height: 10 },
+        shadowOffset: {
+            width: 0,
+            height: 10,
+        },
         shadowOpacity: 0.15,
         shadowRadius: 20,
         elevation: 10,
@@ -249,7 +251,10 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 9999,
         shadowColor: "#000",
-        shadowOffset: { width: 0, height: 4 },
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
         shadowOpacity: 0.15,
         shadowRadius: 6,
         elevation: 6,
@@ -259,16 +264,16 @@ const styles = StyleSheet.create({
         position: "absolute",
         bottom: 20,
         right: 20,
-
         backgroundColor: "#ffffff",
         paddingVertical: 12,
         paddingHorizontal: 18,
-
         borderRadius: 20,
 
-        // shadow
         shadowColor: "#000",
-        shadowOffset: { width: 0, height: 5 },
+        shadowOffset: {
+            width: 0,
+            height: 5,
+        },
         shadowOpacity: 0.1,
         shadowRadius: 10,
         elevation: 6,
@@ -276,68 +281,90 @@ const styles = StyleSheet.create({
 
     cakeinfoTitle: {
         fontSize: 12,
+        fontWeight: "500",
         color: "#777",
+        lineHeight: 16,
         marginBottom: 4,
     },
 
     cakeinfoPrice: {
         fontSize: 18,
-        fontWeight: "bold",
+        fontWeight: "700",
         color: "#000",
+        lineHeight: 23,
     },
+
     detailsContainer: {
         marginTop: 20,
     },
+
+    /* ── Rating ── */
+
     ratingcircle: {
         paddingVertical: 4,
         paddingHorizontal: 12,
         backgroundColor: "#f8bbd0",
-        borderRadius: 9999
+        borderRadius: 9999,
     },
+
     ratingRow: {
         flexDirection: "row",
         alignItems: "center",
         marginBottom: 16,
-        gap: 10
+        gap: 10,
     },
+
     rating: {
-        fontWeight: "bold",
+        fontSize: 13,
+        fontWeight: "700",
         marginRight: 6,
-        color: "#623648"
+        color: "#623648",
+        lineHeight: 18,
     },
 
     review: {
+        fontSize: 13,
+        fontWeight: "500",
         color: "#777",
+        lineHeight: 18,
     },
 
+    /* ── Cake Title ── */
+
     title: {
-        fontSize: 30,
-        fontWeight: "bold",
+        fontSize: 28,
+        fontWeight: "700",
         color: "#5c4033",
-        marginBottom: 15,
+        lineHeight: 34,
+        marginBottom: 14,
     },
 
     description: {
+        fontSize: 14,
+        fontWeight: "400",
         color: "#363317",
-        lineHeight: 20,
-        letterSpacing: 0.6
+        lineHeight: 21,
+        letterSpacing: 0.2,
     },
 
     readMore: {
-        color: "#75584e",
+        fontSize: 13,
         fontWeight: "700",
+        color: "#75584e",
+        lineHeight: 18,
         marginTop: 6,
         marginBottom: 20,
     },
+
+    /* ── Chef Card ── */
 
     chefCard: {
         flexDirection: "row",
         alignItems: "center",
         backgroundColor: "#f3e8d9",
         padding: 16,
-        borderRadius: 20,
+        borderRadius: 9999,
         marginBottom: 20,
-        borderRadius: 9999
     },
 
     chefImage: {
@@ -348,28 +375,38 @@ const styles = StyleSheet.create({
     },
 
     chefLabel: {
-        fontSize: 12,
+        fontSize: 11,
         color: "#646040",
-        fontWeight: 500
+        fontWeight: "500",
+        lineHeight: 15,
     },
 
     chefName: {
+        fontSize: 14,
         fontWeight: "700",
-        color: "#75584e"
+        color: "#75584e",
+        lineHeight: 19,
     },
 
     portfolio: {
+        fontSize: 13,
         color: "#5c4033",
         fontWeight: "500",
+        lineHeight: 18,
     },
 
+    /* ── Section Title ── */
+
     sectionTitle: {
-        fontSize: 15,
-        fontWeight:"700",
-        letterSpacing: 1,
+        fontSize: 16,
+        fontWeight: "700",
+        letterSpacing: 0.5,
         color: "#646040",
+        lineHeight: 21,
         marginBottom: 10,
     },
+
+    /* ── Tags ── */
 
     tagsContainer: {
         flexDirection: "row",
@@ -386,10 +423,13 @@ const styles = StyleSheet.create({
     },
 
     tagText: {
-        fontSize: 14,
+        fontSize: 13,
         color: "#623648",
-        fontWeight:600
+        fontWeight: "600",
+        lineHeight: 18,
     },
+
+    /* ── Quantity ── */
 
     quantityRow: {
         flexDirection: "row",
@@ -407,19 +447,23 @@ const styles = StyleSheet.create({
     },
 
     quantityText: {
-        fontSize: 18,
+        fontSize: 17,
         fontWeight: "700",
         color: "#5c4033",
         minWidth: 25,
         textAlign: "center",
+        lineHeight: 22,
     },
 
     totalPriceText: {
         marginLeft: "auto",
-        fontSize: 15,
+        fontSize: 16,
         fontWeight: "700",
         color: "#6b4f4f",
+        lineHeight: 21,
     },
+
+    /* ── Buttons ── */
 
     buttonContainer: {
         gap: 12,
@@ -427,45 +471,53 @@ const styles = StyleSheet.create({
 
     primaryBtn: {
         backgroundColor: "#6b4f4f",
-        paddingVertical:20,
-        paddingHorizontal:32,
+        paddingVertical: 17,
+        paddingHorizontal: 32,
         borderRadius: 25,
         alignItems: "center",
     },
 
     primaryText: {
         color: "#fff",
-        fontWeight: "bold",
+        fontSize: 15,
+        fontWeight: "700",
+        lineHeight: 20,
     },
 
     secondaryBtn: {
         backgroundColor: "#e6c7b8",
-        paddingVertical:20,
-        paddingHorizontal:32,
+        paddingVertical: 17,
+        paddingHorizontal: 32,
         borderRadius: 25,
         alignItems: "center",
     },
 
     secondaryText: {
         color: "#5c4033",
-        fontWeight: "bold",
+        fontSize: 15,
+        fontWeight: "700",
+        lineHeight: 20,
     },
+
+    /* ── Process Card ── */
+
     processCard: {
         backgroundColor: "#faf4d6",
-        padding: 32,
+        padding: 28,
         borderRadius: 30,
-        marginTop: 60,
+        marginTop: 50,
     },
 
     processTitle: {
         fontSize: 20,
-        fontWeight: "bold",
+        fontWeight: "700",
         color: "#75584e",
+        lineHeight: 26,
         marginBottom: 15,
     },
 
     processItem: {
-        gap:10,
+        gap: 10,
         marginBottom: 15,
     },
 
@@ -475,17 +527,21 @@ const styles = StyleSheet.create({
     },
 
     processHeading: {
+        fontSize: 15,
         fontWeight: "700",
         color: "#000",
+        lineHeight: 20,
         marginBottom: 4,
-        fontSize:15
     },
 
     processText: {
         color: "#646040",
-        fontSize: 14,
-        lineHeight:20
+        fontSize: 13,
+        fontWeight: "400",
+        lineHeight: 20,
     },
+
+    /* ── Handcrafted Card ── */
 
     handcraftedCard: {
         backgroundColor: "#6b4f4f",
@@ -496,14 +552,18 @@ const styles = StyleSheet.create({
     },
 
     percent: {
-        fontSize: 36,
-        fontWeight: "bold",
+        fontSize: 34,
+        fontWeight: "700",
         color: "#fff",
+        lineHeight: 40,
     },
 
     handcraftedTitle: {
+        fontSize: 12,
+        fontWeight: "600",
         color: "#ddd",
         letterSpacing: 1,
+        lineHeight: 17,
         marginVertical: 8,
     },
 
@@ -518,6 +578,7 @@ const styles = StyleSheet.create({
         color: "#eee",
         textAlign: "center",
         fontSize: 13,
-        lineHeight: 18,
+        fontWeight: "400",
+        lineHeight: 19,
     },
 });

@@ -418,7 +418,6 @@ const CategoryListing = ({ navigation }) => {
 };
 
 export default CategoryListing;
-
 const styles = StyleSheet.create({
     Categorycontainer: {
         flex: 1,
@@ -431,26 +430,29 @@ const styles = StyleSheet.create({
         paddingTop: 20,
     },
 
-    /* ── Section heading ── */
+    /* ── Section Heading ── */
     FilterSection: {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
         marginBottom: 14,
     },
+
     FilterText: {
-        fontSize: 18,
+        fontSize: 19,
         fontWeight: "700",
         color: "#5C3D2E",
+        lineHeight: 24,
     },
 
-    /* ── Search + Sort row ── */
+    /* ── Search + Sort Row ── */
     searchSortRow: {
         flexDirection: "row",
         alignItems: "center",
         gap: 10,
         marginBottom: 12,
     },
+
     searchContainer: {
         flex: 1,
         flexDirection: "row",
@@ -463,14 +465,17 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderColor: "#E0D5BE",
     },
+
     searchInput: {
         flex: 1,
         fontSize: 14,
+        fontWeight: "500",
         color: "#3D2B1F",
         paddingVertical: 0,
+        lineHeight: 19,
     },
 
-    /* ── Sort trigger button ── */
+    /* ── Sort Trigger ── */
     sortTrigger: {
         flexDirection: "row",
         alignItems: "center",
@@ -482,6 +487,7 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderColor: "#E0D5BE",
     },
+
     sortTriggerActive: {
         backgroundColor: "#7B5E57",
         borderColor: "#7B5E57",
@@ -498,20 +504,26 @@ const styles = StyleSheet.create({
         zIndex: 100,
         elevation: 10,
         shadowColor: "#5C3D2E",
-        shadowOffset: { width: 0, height: 4 },
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
         shadowOpacity: 0.08,
         shadowRadius: 10,
     },
+
     dropdownHeader: {
         fontSize: 11,
-        fontWeight: "600",
+        fontWeight: "700",
         color: "#A0907A",
-        letterSpacing: 0.8,
+        letterSpacing: 0.7,
+        lineHeight: 15,
         textTransform: "uppercase",
         paddingHorizontal: 16,
         paddingTop: 14,
         paddingBottom: 8,
     },
+
     dropdownItem: {
         flexDirection: "row",
         alignItems: "center",
@@ -519,18 +531,22 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingVertical: 13,
     },
+
     dropdownItemBorder: {
         borderBottomWidth: 0.5,
         borderBottomColor: "#F0E8D8",
     },
+
     dropdownItemActive: {
         backgroundColor: "#FDF7E8",
     },
+
     dropdownItemLeft: {
         flexDirection: "row",
         alignItems: "center",
         gap: 10,
     },
+
     dropdownIconWrap: {
         width: 30,
         height: 30,
@@ -539,19 +555,26 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
+
     dropdownIconWrapActive: {
         backgroundColor: "#EDD9C4",
     },
+
     dropdownItemText: {
         fontSize: 14,
+        fontWeight: "500",
         color: "#5C3D2E",
-    },
-    dropdownItemTextActive: {
-        fontWeight: "600",
-        color: "#7B5E57",
+        lineHeight: 19,
     },
 
-    /* ── Active sort badge ── */
+    dropdownItemTextActive: {
+        fontSize: 14,
+        fontWeight: "700",
+        color: "#7B5E57",
+        lineHeight: 19,
+    },
+
+    /* ── Active Sort Badge ── */
     activeSortBadge: {
         flexDirection: "row",
         alignItems: "center",
@@ -563,10 +586,12 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         marginBottom: 10,
     },
+
     activeSortText: {
         fontSize: 12,
         fontWeight: "600",
         color: "#7B5230",
+        lineHeight: 16,
     },
 
     /* ── Categories ── */
@@ -576,35 +601,42 @@ const styles = StyleSheet.create({
         flexGrow: 0,
     },
 
-    /* ── Count ── */
+    /* ── Product Count ── */
     countText: {
         fontSize: 13,
-        color: "#9B7A65",
         fontWeight: "600",
+        color: "#9B7A65",
+        lineHeight: 18,
         marginTop: 12,
         marginBottom: 8,
     },
 
-    /* ── Menu cards ── */
+    /* ── Menu Cards ── */
     MenuCardsContainer: {
         marginTop: 4,
     },
 
-    /* ── Empty state ── */
+    /* ── Empty State ── */
     emptyContainer: {
         justifyContent: "center",
         alignItems: "center",
         paddingVertical: 60,
         gap: 8,
     },
+
     emptyText: {
         color: "#9B7A65",
         fontSize: 16,
-        fontWeight: "600",
+        fontWeight: "700",
+        lineHeight: 21,
     },
+
     emptySubText: {
         color: "#C4B8A4",
         fontSize: 13,
+        fontWeight: "400",
+        lineHeight: 18,
+        textAlign: "center",
     },
 
     /* ── Overlays ── */
@@ -612,10 +644,12 @@ const styles = StyleSheet.create({
         ...StyleSheet.absoluteFillObject,
         zIndex: 50,
     },
+
     overlay: {
         ...StyleSheet.absoluteFillObject,
         backgroundColor: "rgba(0,0,0,0.3)",
     },
+
     refinePanel: {
         position: "absolute",
         left: 0,

@@ -242,7 +242,6 @@ const Customorderpage = ({ navigation }) => {
 }
 
 export default Customorderpage
-
 const styles = StyleSheet.create({
     maincustomorderpage: {
         flex: 1,
@@ -258,7 +257,7 @@ const styles = StyleSheet.create({
         gap: 10,
     },
     textmasterpiece: {
-        fontSize: 25,
+        fontSize: 24,
         fontWeight: 800,
         lineHeight: 36,
         letterSpacing: 1,
@@ -266,14 +265,14 @@ const styles = StyleSheet.create({
     },
     smalltextmasterpiece: {
         color: "#646040",
-        fontSize: 16
+        fontSize: 14
     },
     weightcakesection: {
         marginVertical: 25
     },
     cakeweighttext: {
         color: "#75584e",
-        fontSize: 18,
+        fontSize: 17,
         fontWeight: 700,
         marginBottom: 15
     },
@@ -292,12 +291,12 @@ const styles = StyleSheet.create({
     },
     cakeweight: {
         color: "#75584e",
-        fontSize: 24,
+        fontSize: 22,
         fontWeight: 700,
         textAlign: "center"
     },
     servetext: {
-        fontSize: 12,
+        fontSize: 11,
         color: "#646040",
         fontWeight: 500,
         textAlign: "center",
@@ -313,7 +312,7 @@ const styles = StyleSheet.create({
     },
     flavortext: {
         color: "#75584e",
-        fontSize: 18,
+        fontSize: 17,
         fontWeight: 700
     },
     uploadcontainer: {
@@ -321,7 +320,7 @@ const styles = StyleSheet.create({
     },
 
     heading: {
-        fontSize: 18,
+        fontSize: 17,
         fontWeight: 700,
         color: "#75584e",
         marginBottom: 20,
@@ -407,7 +406,7 @@ const styles = StyleSheet.create({
     },
 
     rareHeading: {
-        fontSize: 18,
+        fontSize: 17,
         fontWeight: "700",
         color: "#75584e",
     },
@@ -480,7 +479,7 @@ const styles = StyleSheet.create({
     },
 
     heroTitle: {
-        fontSize: 20,
+        fontSize: 19,
         fontWeight: "bold",
         color: "#5c4033",
         marginBottom: 8,

@@ -622,7 +622,6 @@ const Homescreen = ({ navigation }) => {
     )
 }
 export default Homescreen;
-
 const styles = StyleSheet.create({
     Homecontainer: {
         flex: 1,
@@ -631,34 +630,39 @@ const styles = StyleSheet.create({
         borderBottomColor: "#e5e7eb",
         borderBottomWidth: 1,
     },
+
     subhomecontainer: {
-        paddingHorizontal: 18
+        paddingHorizontal: 18,
     },
+
     featuredBakesContainer: {
         flexDirection: "row",
-        // paddingHorizontal: 20,
         justifyContent: "space-between",
         alignItems: "center",
     },
+
+    // Main section headings
     featuredBakesText: {
-        fontSize: 18,
+        fontSize: 19,
         fontWeight: "700",
         color: "#75584e",
+        letterSpacing: 0.1,
     },
+
     exploreCollectionsText: {
-        fontSize: 18,
-        fontWeight: "bold",
+        fontSize: 19,
+        fontWeight: "700",
         color: "#75584e",
-        // paddingHorizontal: 20,
-        marginVertical: 10,
-        letterSpacing: 0.4,
+        marginVertical: 12,
+        letterSpacing: 0.2,
     },
+
     container: {
         flexDirection: "row",
-        // marginHorizontal: 20,
-        marginTop: 20,
+        marginTop: 18,
         gap: 15,
     },
+
     bigCard: {
         flex: 1,
         backgroundColor: "#E8DCCB",
@@ -667,21 +671,28 @@ const styles = StyleSheet.create({
         gap: 19,
         justifyContent: "space-between",
     },
+
     bigTitle: {
-        fontSize: 16,
-        fontWeight: "600",
+        fontSize: 17,
+        fontWeight: "700",
         color: "#5D4037",
+        lineHeight: 22,
     },
+
     subText: {
-        fontSize: 10,
+        fontSize: 11,
+        fontWeight: "600",
         color: "#8D6E63",
         marginTop: 5,
+        letterSpacing: 0.5,
     },
+
     rightContainer: {
         flex: 1,
         justifyContent: "space-between",
         gap: 10,
     },
+
     smallCard: {
         backgroundColor: "#EDE0D4",
         borderRadius: 35,
@@ -694,6 +705,7 @@ const styles = StyleSheet.create({
     pinkCard: {
         backgroundColor: "#E7C8C8",
     },
+
     iconCircle: {
         borderRadius: 20,
         padding: 5,
@@ -701,19 +713,19 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
+
     smallText: {
         fontSize: 15,
         fontWeight: "600",
         color: "#5D4037",
     },
+
     foodCardContainer: {
         justifyContent: "center",
-        // alignItems: "center",
         width: "100%",
-        // paddingLeft: 0,
-        // paddingHorizontal: 20,
-        overflow: "hidden"
+        overflow: "hidden",
     },
+
     searchBox: {
         flexDirection: "row",
         alignItems: "center",
@@ -740,6 +752,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         color: "#333",
         fontSize: 15,
+        lineHeight: 20,
     },
 
     emptyContainer: {
@@ -755,15 +768,17 @@ const styles = StyleSheet.create({
         fontWeight: "600",
     },
 
-    /* ── Naya additions er style ── */
+    // Greeting
     greetingText: {
-        fontSize: 16,
+        fontSize: 17,
         fontWeight: "700",
         color: "#5D4037",
         marginTop: 12,
         marginBottom: 2,
+        letterSpacing: 0.1,
     },
 
+    // Promotional cards
     promoCard: {
         width: 260,
         borderRadius: 24,
@@ -773,16 +788,20 @@ const styles = StyleSheet.create({
     },
 
     promoTitle: {
-        fontSize: 15,
+        fontSize: 16,
         fontWeight: "700",
         color: "#5D4037",
+        lineHeight: 21,
     },
 
     promoSubtitle: {
-        fontSize: 12,
+        fontSize: 13,
+        fontWeight: "500",
         color: "#7A5F52",
+        lineHeight: 18,
     },
 
+    // Category chips
     categoryChip: {
         flexDirection: "row",
         alignItems: "center",
@@ -807,6 +826,7 @@ const styles = StyleSheet.create({
         color: "#fff",
     },
 
+    // Order Again
     reorderCard: {
         flexDirection: "row",
         alignItems: "center",
@@ -817,27 +837,35 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingVertical: 14,
         gap: 10,
+
         shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
         shadowOpacity: 0.06,
         shadowRadius: 4,
+
         elevation: 2,
     },
 
     reorderTextWrap: {
         flex: 1,
-        gap: 2,
+        gap: 3,
     },
 
     reorderName: {
-        fontSize: 14,
+        fontSize: 15,
         fontWeight: "700",
         color: "#5D4037",
+        lineHeight: 20,
     },
 
     reorderMeta: {
-        fontSize: 11,
+        fontSize: 12,
+        fontWeight: "500",
         color: "#9B8070",
+        lineHeight: 17,
     },
 
     reorderBtn: {
@@ -848,4 +876,4 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
-})
+});

@@ -119,7 +119,7 @@ const Checkoutscreen = ({ navigation }) => {
 
       <ScrollView
         contentContainerStyle={{
-          paddingHorizontal: 18,
+          paddingHorizontal: 20,
           paddingBottom: 24,
         }}
         showsVerticalScrollIndicator={false}
@@ -127,6 +127,11 @@ const Checkoutscreen = ({ navigation }) => {
         <View style={styles.headerTextBlock}>
           <Text style={styles.eyebrow}>YOUR CURATION</Text>
           <Text style={styles.pageTitle}>Your Basket</Text>
+          {cartItems.length > 0 && (
+            <Text style={styles.itemCount}>
+              {cartItems.length} {cartItems.length === 1 ? "item" : "items"}
+            </Text>
+          )}
         </View>
 
         {cartItems.length === 0 ? (
@@ -157,17 +162,15 @@ const Checkoutscreen = ({ navigation }) => {
           />
         )}
 
-        {/* <-- ADDED: Themed Select Delivery Date Button --> */}
         <TouchableOpacity
           style={styles.dateButton}
           activeOpacity={0.8}
           onPress={() => navigation.navigate("Categorys", {
             screen: "Delivery"
-          })} // Update with your actual screen name
+          })}
         >
           <Text style={styles.dateButtonText}>Select Delivery Date</Text>
         </TouchableOpacity>
-        {/* <-- ADDED SECTION ENDS HERE --> */}
 
         <OrderSummaryCard
           subtotal={subtotal}
@@ -190,25 +193,32 @@ export default Checkoutscreen;
 const styles = StyleSheet.create({
   Checkout_section: {
     flex: 1,
-    backgroundColor: "#FDF6E9",
+    backgroundColor: "#fff9e6",
   },
 
   headerTextBlock: {
-    marginTop: 12,
-    marginBottom: 4,
+    marginTop: 16,
+    marginBottom: 8,
   },
 
   eyebrow: {
-    fontSize: 12,
-    fontWeight: "700",
-    color: "#B5A188",
-    letterSpacing: 1,
+    fontSize: 11,
+    fontWeight: "600",
+    color: "#A6A6A6",
+    letterSpacing: 1.5,
   },
 
   pageTitle: {
-    fontSize: 26,
+    fontSize: 28,
     fontWeight: "700",
-    color: "#5A3D2C",
+    color: "#1A1A1A",
+    marginTop: 4,
+  },
+
+  itemCount: {
+    fontSize: 13,
+    fontWeight: "500",
+    color: "#A6A6A6",
     marginTop: 4,
   },
 
@@ -218,30 +228,25 @@ const styles = StyleSheet.create({
   },
 
   emptyText: {
-    fontSize: 16,
-    color: "#8A7A67",
+    fontSize: 15,
+    color: "#A6A6A6",
   },
 
-  // <-- ADDED: Themed Styles for Delivery Date Button -->
   dateButton: {
-    backgroundColor: "#5A3D2C", // Matches the dark brown text theme
-    borderRadius: 8,
-    paddingVertical: 16,
+    backgroundColor: "#1A1A1A",
+    borderRadius: 10,
+    paddingVertical: 15,
     paddingHorizontal: 20,
     marginTop: 20,
-    marginBottom: 10,
+    marginBottom: 12,
     alignItems: "center",
     justifyContent: "center",
-    shadowColor: "#5A3D2C",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 6,
   },
 
   dateButtonText: {
-    fontSize: 16,
-    fontWeight: "700",
-    color: "#FDF6E9", // Matches the background cream color for perfect contrast
-    letterSpacing: 0.5,
+    fontSize: 15,
+    fontWeight: "600",
+    color: "#FFFFFF",
+    letterSpacing: 0.3,
   },
 });

@@ -21,6 +21,8 @@ const STATES = [
 ];
 
 const AddressUI = ({ navigation }) => {
+    const [name, setName] = useState("");
+    const [phone, setPhone] = useState("");
     const [street, setStreet] = useState("");
     const [apartment, setApartment] = useState("");
     const [city, setCity] = useState("");
@@ -32,7 +34,14 @@ const AddressUI = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
 
     const handleSave = async () => {
-        if (!street.trim() || !city.trim() || !selectedState || !zip.trim()) {
+        if (
+            !name.trim() ||
+            !phone.trim() ||
+            !street.trim() ||
+            !city.trim() ||
+            !selectedState ||
+            !zip.trim()
+        ) {
             Alert.alert("Required", "Please fill in all required fields.");
             return;
         }
@@ -41,13 +50,15 @@ const AddressUI = ({ navigation }) => {
 
         try {
             const response = await fetch(
-                "http://10.140.23.125:3000/api/address/save",
+                "http://10.140.21.221:3000/api/address/save",
                 {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
+                        name,
+                        phone,
                         street,
                         apartment,
                         city,
@@ -76,6 +87,8 @@ const AddressUI = ({ navigation }) => {
     };
 
     const handleDiscard = () => {
+        setName("");
+        setPhone("");
         setStreet("");
         setApartment("");
         setCity("");
@@ -92,6 +105,7 @@ const AddressUI = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar backgroundColor="#FAF6EE" barStyle="dark-content" />
+
             <Detailsheader />
 
             <ScrollView
@@ -102,10 +116,21 @@ const AddressUI = ({ navigation }) => {
                 {/* Hero Card */}
                 <View style={styles.heroCard}>
                     <View style={styles.heroBadge}>
-                        <Ionicons name="location-outline" size={16} color="#7B5230" />
-                        <Text style={styles.heroBadgeText}>Delivery address</Text>
+                        <Ionicons
+                            name="location-outline"
+                            size={16}
+                            color="#7B5230"
+                        />
+
+                        <Text style={styles.heroBadgeText}>
+                            Delivery address
+                        </Text>
                     </View>
-                    <Text style={styles.heroTitle}>Deliver the Magic</Text>
+
+                    <Text style={styles.heroTitle}>
+                        Deliver the Magic
+                    </Text>
+
                     <Text style={styles.heroSub}>
                         Ensure your artisanal treats arrive perfectly. Update your
                         delivery coordinates below for seamless cake delivery.
@@ -113,83 +138,259 @@ const AddressUI = ({ navigation }) => {
                 </View>
 
                 {/* Form Section */}
-                <Text style={styles.sectionLabel}>Address details</Text>
+                <Text style={styles.sectionLabel}>
+                    Address details
+                </Text>
+
                 <View style={styles.fieldsCard}>
 
-                    {/* Street */}
-                    <View style={[styles.fieldRow, { borderBottomWidth: 0.5, borderBottomColor: "#F0E8D8" }]}>
+                    {/* Name */}
+                    <View
+                        style={[
+                            styles.fieldRow,
+                            {
+                                borderBottomWidth: 0.5,
+                                borderBottomColor: "#F0E8D8",
+                            },
+                        ]}
+                    >
                         <View style={styles.fieldIconWrap}>
-                            <Ionicons name="map-outline" size={17} color="#9B6E55" />
+                            <Ionicons
+                                name="person-outline"
+                                size={17}
+                                color="#9B6E55"
+                            />
                         </View>
+
                         <View style={styles.fieldContent}>
-                            <Text style={styles.fieldLabel}>Street address</Text>
+                            <Text style={styles.fieldLabel}>
+                                Name
+                            </Text>
+
+                            <TextInput
+                                style={styles.fieldInput}
+                                placeholder="Your full name"
+                                placeholderTextColor="#C4B8A4"
+                                value={name}
+                                onChangeText={setName}
+                                onFocus={() =>
+                                    setFocusedField("name")
+                                }
+                                onBlur={() =>
+                                    setFocusedField(null)
+                                }
+                            />
+                        </View>
+                    </View>
+
+                    {/* Phone Number */}
+                    <View
+                        style={[
+                            styles.fieldRow,
+                            {
+                                borderBottomWidth: 0.5,
+                                borderBottomColor: "#F0E8D8",
+                            },
+                        ]}
+                    >
+                        <View style={styles.fieldIconWrap}>
+                            <Ionicons
+                                name="call-outline"
+                                size={17}
+                                color="#9B6E55"
+                            />
+                        </View>
+
+                        <View style={styles.fieldContent}>
+                            <Text style={styles.fieldLabel}>
+                                Phone number
+                            </Text>
+
+                            <TextInput
+                                style={styles.fieldInput}
+                                placeholder="9876543210"
+                                placeholderTextColor="#C4B8A4"
+                                keyboardType="phone-pad"
+                                maxLength={10}
+                                value={phone}
+                                onChangeText={setPhone}
+                                onFocus={() =>
+                                    setFocusedField("phone")
+                                }
+                                onBlur={() =>
+                                    setFocusedField(null)
+                                }
+                            />
+                        </View>
+                    </View>
+
+                    {/* Street */}
+                    <View
+                        style={[
+                            styles.fieldRow,
+                            {
+                                borderBottomWidth: 0.5,
+                                borderBottomColor: "#F0E8D8",
+                            },
+                        ]}
+                    >
+                        <View style={styles.fieldIconWrap}>
+                            <Ionicons
+                                name="map-outline"
+                                size={17}
+                                color="#9B6E55"
+                            />
+                        </View>
+
+                        <View style={styles.fieldContent}>
+                            <Text style={styles.fieldLabel}>
+                                Street address
+                            </Text>
+
                             <TextInput
                                 style={styles.fieldInput}
                                 placeholder="123 Patisserie Lane"
                                 placeholderTextColor="#C4B8A4"
                                 value={street}
                                 onChangeText={setStreet}
-                                onFocus={() => setFocusedField("street")}
-                                onBlur={() => setFocusedField(null)}
+                                onFocus={() =>
+                                    setFocusedField("street")
+                                }
+                                onBlur={() =>
+                                    setFocusedField(null)
+                                }
                             />
                         </View>
                     </View>
 
                     {/* Apartment */}
-                    <View style={[styles.fieldRow, { borderBottomWidth: 0.5, borderBottomColor: "#F0E8D8" }]}>
+                    <View
+                        style={[
+                            styles.fieldRow,
+                            {
+                                borderBottomWidth: 0.5,
+                                borderBottomColor: "#F0E8D8",
+                            },
+                        ]}
+                    >
                         <View style={styles.fieldIconWrap}>
-                            <Ionicons name="business-outline" size={17} color="#9B6E55" />
+                            <Ionicons
+                                name="business-outline"
+                                size={17}
+                                color="#9B6E55"
+                            />
                         </View>
+
                         <View style={styles.fieldContent}>
-                            <Text style={styles.fieldLabel}>Apartment / Suite <Text style={styles.optional}>(optional)</Text></Text>
+                            <Text style={styles.fieldLabel}>
+                                Apartment / Suite{" "}
+                                <Text style={styles.optional}>
+                                    (optional)
+                                </Text>
+                            </Text>
+
                             <TextInput
                                 style={styles.fieldInput}
                                 placeholder="Suite 4B"
                                 placeholderTextColor="#C4B8A4"
                                 value={apartment}
                                 onChangeText={setApartment}
-                                onFocus={() => setFocusedField("apt")}
-                                onBlur={() => setFocusedField(null)}
+                                onFocus={() =>
+                                    setFocusedField("apt")
+                                }
+                                onBlur={() =>
+                                    setFocusedField(null)
+                                }
                             />
                         </View>
                     </View>
 
                     {/* City */}
-                    <View style={[styles.fieldRow, { borderBottomWidth: 0.5, borderBottomColor: "#F0E8D8" }]}>
+                    <View
+                        style={[
+                            styles.fieldRow,
+                            {
+                                borderBottomWidth: 0.5,
+                                borderBottomColor: "#F0E8D8",
+                            },
+                        ]}
+                    >
                         <View style={styles.fieldIconWrap}>
-                            <Ionicons name="storefront-outline" size={17} color="#9B6E55" />
+                            <Ionicons
+                                name="storefront-outline"
+                                size={17}
+                                color="#9B6E55"
+                            />
                         </View>
+
                         <View style={styles.fieldContent}>
-                            <Text style={styles.fieldLabel}>City</Text>
+                            <Text style={styles.fieldLabel}>
+                                City
+                            </Text>
+
                             <TextInput
                                 style={styles.fieldInput}
                                 placeholder="Confection City"
                                 placeholderTextColor="#C4B8A4"
                                 value={city}
                                 onChangeText={setCity}
-                                onFocus={() => setFocusedField("city")}
-                                onBlur={() => setFocusedField(null)}
+                                onFocus={() =>
+                                    setFocusedField("city")
+                                }
+                                onBlur={() =>
+                                    setFocusedField(null)
+                                }
                             />
                         </View>
                     </View>
 
                     {/* State Dropdown */}
-                    <View style={[styles.fieldRow, { borderBottomWidth: 0.5, borderBottomColor: "#F0E8D8" }]}>
+                    <View
+                        style={[
+                            styles.fieldRow,
+                            {
+                                borderBottomWidth: 0.5,
+                                borderBottomColor: "#F0E8D8",
+                            },
+                        ]}
+                    >
                         <View style={styles.fieldIconWrap}>
-                            <Ionicons name="flag-outline" size={17} color="#9B6E55" />
+                            <Ionicons
+                                name="flag-outline"
+                                size={17}
+                                color="#9B6E55"
+                            />
                         </View>
+
                         <View style={styles.fieldContent}>
-                            <Text style={styles.fieldLabel}>State</Text>
+                            <Text style={styles.fieldLabel}>
+                                State
+                            </Text>
+
                             <TouchableOpacity
-                                onPress={() => setShowDropdown(!showDropdown)}
+                                onPress={() =>
+                                    setShowDropdown(!showDropdown)
+                                }
                                 style={styles.dropdownTrigger}
                                 activeOpacity={0.7}
                             >
-                                <Text style={[styles.fieldInput, !selectedState && { color: "#C4B8A4" }]}>
+                                <Text
+                                    style={[
+                                        styles.fieldInput,
+                                        !selectedState && {
+                                            color: "#C4B8A4",
+                                        },
+                                    ]}
+                                >
                                     {selectedState || "Select state"}
                                 </Text>
+
                                 <Ionicons
-                                    name={showDropdown ? "chevron-up-outline" : "chevron-down-outline"}
+                                    name={
+                                        showDropdown
+                                            ? "chevron-up-outline"
+                                            : "chevron-down-outline"
+                                    }
                                     size={16}
                                     color="#9B7A65"
                                 />
@@ -200,10 +401,18 @@ const AddressUI = ({ navigation }) => {
                     {/* ZIP */}
                     <View style={styles.fieldRow}>
                         <View style={styles.fieldIconWrap}>
-                            <Ionicons name="pin-outline" size={17} color="#9B6E55" />
+                            <Ionicons
+                                name="pin-outline"
+                                size={17}
+                                color="#9B6E55"
+                            />
                         </View>
+
                         <View style={styles.fieldContent}>
-                            <Text style={styles.fieldLabel}>ZIP / PIN code</Text>
+                            <Text style={styles.fieldLabel}>
+                                ZIP / PIN code
+                            </Text>
+
                             <TextInput
                                 style={styles.fieldInput}
                                 placeholder="700001"
@@ -212,23 +421,32 @@ const AddressUI = ({ navigation }) => {
                                 maxLength={6}
                                 value={zip}
                                 onChangeText={setZip}
-                                onFocus={() => setFocusedField("zip")}
-                                onBlur={() => setFocusedField(null)}
+                                onFocus={() =>
+                                    setFocusedField("zip")
+                                }
+                                onBlur={() =>
+                                    setFocusedField(null)
+                                }
                             />
                         </View>
                     </View>
+
                 </View>
 
                 {/* Dropdown list */}
                 {showDropdown && (
                     <View style={styles.dropdownList}>
-                        <ScrollView nestedScrollEnabled style={{ maxHeight: 220 }}>
+                        <ScrollView
+                            nestedScrollEnabled
+                            style={{ maxHeight: 220 }}
+                        >
                             {STATES.map((s) => (
                                 <TouchableOpacity
                                     key={s}
                                     style={[
                                         styles.dropdownItem,
-                                        selectedState === s && styles.dropdownItemActive,
+                                        selectedState === s &&
+                                            styles.dropdownItemActive,
                                     ]}
                                     onPress={() => {
                                         setSelectedState(s);
@@ -238,13 +456,19 @@ const AddressUI = ({ navigation }) => {
                                     <Text
                                         style={[
                                             styles.dropdownItemText,
-                                            selectedState === s && styles.dropdownItemTextActive,
+                                            selectedState === s &&
+                                                styles.dropdownItemTextActive,
                                         ]}
                                     >
                                         {s}
                                     </Text>
+
                                     {selectedState === s && (
-                                        <Ionicons name="checkmark-outline" size={16} color="#7B5E57" />
+                                        <Ionicons
+                                            name="checkmark-outline"
+                                            size={16}
+                                            color="#7B5E57"
+                                        />
                                     )}
                                 </TouchableOpacity>
                             ))}
@@ -256,19 +480,38 @@ const AddressUI = ({ navigation }) => {
                 <View style={styles.toggleCard}>
                     <View style={styles.toggleLeft}>
                         <View style={styles.toggleIconWrap}>
-                            <Ionicons name="home-outline" size={18} color="#7B5230" />
+                            <Ionicons
+                                name="home-outline"
+                                size={18}
+                                color="#7B5230"
+                            />
                         </View>
+
                         <View>
-                            <Text style={styles.toggleTitle}>Set as default</Text>
-                            <Text style={styles.toggleSub}>Use as my primary delivery address</Text>
+                            <Text style={styles.toggleTitle}>
+                                Set as default
+                            </Text>
+
+                            <Text style={styles.toggleSub}>
+                                Use as my primary delivery address
+                            </Text>
                         </View>
                     </View>
+
                     <TouchableOpacity
                         onPress={() => setIsDefault(!isDefault)}
                         activeOpacity={0.8}
-                        style={[styles.toggleTrack, isDefault && styles.toggleTrackOn]}
+                        style={[
+                            styles.toggleTrack,
+                            isDefault && styles.toggleTrackOn,
+                        ]}
                     >
-                        <View style={[styles.toggleKnob, isDefault && styles.toggleKnobOn]} />
+                        <View
+                            style={[
+                                styles.toggleKnob,
+                                isDefault && styles.toggleKnobOn,
+                            ]}
+                        />
                     </TouchableOpacity>
                 </View>
 
@@ -279,18 +522,35 @@ const AddressUI = ({ navigation }) => {
                     activeOpacity={0.85}
                 >
                     {loading ? (
-                        <ActivityIndicator color="#fff" size="small" />
+                        <ActivityIndicator
+                            color="#fff"
+                            size="small"
+                        />
                     ) : (
                         <>
-                            <Ionicons name="checkmark-outline" size={18} color="#fff" style={{ marginRight: 6 }} />
-                            <Text style={styles.saveBtnText}>Save address</Text>
+                            <Ionicons
+                                name="checkmark-outline"
+                                size={18}
+                                color="#fff"
+                                style={{ marginRight: 6 }}
+                            />
+
+                            <Text style={styles.saveBtnText}>
+                                Save address
+                            </Text>
                         </>
                     )}
                 </TouchableOpacity>
 
                 {/* Discard */}
-                <TouchableOpacity onPress={handleDiscard} style={styles.discardBtn} activeOpacity={0.7}>
-                    <Text style={styles.discardText}>Discard changes</Text>
+                <TouchableOpacity
+                    onPress={handleDiscard}
+                    style={styles.discardBtn}
+                    activeOpacity={0.7}
+                >
+                    <Text style={styles.discardText}>
+                        Discard changes
+                    </Text>
                 </TouchableOpacity>
 
             </ScrollView>
@@ -324,6 +584,7 @@ const styles = StyleSheet.create({
         borderColor: "#D4C8A4",
         gap: 8,
     },
+
     heroBadge: {
         flexDirection: "row",
         alignItems: "center",
@@ -335,17 +596,20 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         marginBottom: 4,
     },
+
     heroBadgeText: {
         fontSize: 11,
         fontWeight: "600",
         color: "#7B5230",
         letterSpacing: 0.4,
     },
+
     heroTitle: {
         fontSize: 22,
         fontWeight: "700",
         color: "#5C3D2E",
     },
+
     heroSub: {
         fontSize: 13,
         color: "#8B7055",
@@ -371,6 +635,7 @@ const styles = StyleSheet.create({
         borderColor: "#E0D5BE",
         overflow: "hidden",
     },
+
     fieldRow: {
         flexDirection: "row",
         alignItems: "center",
@@ -378,6 +643,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingVertical: 14,
     },
+
     fieldIconWrap: {
         width: 36,
         height: 36,
@@ -387,24 +653,29 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         flexShrink: 0,
     },
+
     fieldContent: {
         flex: 1,
         gap: 2,
     },
+
     fieldLabel: {
         fontSize: 11,
         color: "#A0907A",
     },
+
     optional: {
         fontSize: 10,
         color: "#C4B8A4",
         fontWeight: "400",
     },
+
     fieldInput: {
         fontSize: 14,
         color: "#3D2B1F",
         paddingVertical: 0,
     },
+
     dropdownTrigger: {
         flexDirection: "row",
         alignItems: "center",
@@ -420,6 +691,7 @@ const styles = StyleSheet.create({
         overflow: "hidden",
         marginTop: -8,
     },
+
     dropdownItem: {
         flexDirection: "row",
         alignItems: "center",
@@ -429,19 +701,21 @@ const styles = StyleSheet.create({
         borderBottomWidth: 0.5,
         borderBottomColor: "#F0E8D8",
     },
+
     dropdownItemActive: {
         backgroundColor: "#FDF7E8",
     },
+
     dropdownItemText: {
         fontSize: 14,
         color: "#5C3D2E",
     },
+
     dropdownItemTextActive: {
         fontWeight: "600",
         color: "#7B5E57",
     },
 
-    /* ── Toggle Card ── */
     toggleCard: {
         backgroundColor: "#fff",
         borderRadius: 20,
@@ -453,12 +727,14 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "space-between",
     },
+
     toggleLeft: {
         flexDirection: "row",
         alignItems: "center",
         gap: 12,
         flex: 1,
     },
+
     toggleIconWrap: {
         width: 42,
         height: 42,
@@ -468,16 +744,19 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         flexShrink: 0,
     },
+
     toggleTitle: {
         fontSize: 14,
         fontWeight: "600",
         color: "#5C3D2E",
         marginBottom: 2,
     },
+
     toggleSub: {
         fontSize: 11,
         color: "#9B8070",
     },
+
     toggleTrack: {
         width: 46,
         height: 26,
@@ -487,9 +766,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: 3,
         flexShrink: 0,
     },
+
     toggleTrackOn: {
         backgroundColor: "#7B5E57",
     },
+
     toggleKnob: {
         width: 20,
         height: 20,
@@ -497,6 +778,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         alignSelf: "flex-start",
     },
+
     toggleKnobOn: {
         alignSelf: "flex-end",
     },
@@ -511,17 +793,18 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         marginTop: 4,
     },
+
     saveBtnText: {
         fontSize: 15,
         fontWeight: "600",
         color: "#fff",
     },
 
-    /* ── Discard ── */
     discardBtn: {
         alignItems: "center",
         paddingVertical: 8,
     },
+
     discardText: {
         fontSize: 13,
         color: "#9B7A65",

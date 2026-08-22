@@ -12,9 +12,10 @@ model User {
   Email    String @unique
   Mobile   String @unique
   Password String
-
+  addresses Address[]
   @@map("Login&signupsystem")
 }
+
 
 model Address {
   id        Int     @id @default(autoincrement())
