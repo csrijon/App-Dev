@@ -25,9 +25,31 @@ const GUIDELINE_WIDTH = 390;
 
 const OrderTrackingScreen = ({ navigation }) => {
     const pulseAnim = useRef(new Animated.Value(1)).current;
+
     const { width } = useWindowDimensions();
+
     const scale = width / GUIDELINE_WIDTH;
-    const ms = (size, factor = 0.5) => size + (scale * size - size) * factor;
+
+    /*
+     * Responsive font size.
+     *
+     * 390px = reference phone width.
+     * Smaller phones  -> slightly smaller text.
+     * Larger phones   -> slightly larger text.
+     *
+     * The factor prevents extreme scaling.
+     */
+    const ms = (size, factor = 0.5) => {
+        const scaledSize = size + (scale * size - size) * factor;
+
+        return Math.round(
+            Math.min(
+                Math.max(scaledSize, size * 0.88),
+                size * 1.08
+            )
+        );
+    };
+
     const styles = getStyles(ms, width);
 
     useEffect(() => {
@@ -45,13 +67,18 @@ const OrderTrackingScreen = ({ navigation }) => {
                 }),
             ])
         );
+
         loop.start();
+
         return () => loop.stop();
     }, [pulseAnim]);
 
     return (
         <SafeAreaView style={styles.container}>
-            <StatusBar backgroundColor="#FDF8EC" barStyle="dark-content" />
+            <StatusBar
+                backgroundColor="#FDF8EC"
+                barStyle="dark-content"
+            />
 
             {/* Header */}
             <View style={styles.header}>
@@ -60,9 +87,17 @@ const OrderTrackingScreen = ({ navigation }) => {
                     style={styles.backBtn}
                     activeOpacity={0.7}
                 >
-                    <Ionicons name="arrow-back-outline" size={22} color="#5D4037" />
+                    <Ionicons
+                        name="arrow-back-outline"
+                        size={22}
+                        color="#5D4037"
+                    />
                 </TouchableOpacity>
-                <Text style={styles.headerTitle}>Track Order</Text>
+
+                <Text style={styles.headerTitle}>
+                    Track Order
+                </Text>
+
                 <View style={{ width: 44 }} />
             </View>
 
@@ -72,7 +107,10 @@ const OrderTrackingScreen = ({ navigation }) => {
             >
                 {/* Title */}
                 <View style={styles.titleContainer}>
-                    <Text style={styles.title}>Out for Delivery</Text>
+                    <Text style={styles.title}>
+                        Out for Delivery
+                    </Text>
+
                     <Text style={styles.subtitle}>
                         Your lavender honey cake is en route.
                     </Text>
@@ -86,13 +124,26 @@ const OrderTrackingScreen = ({ navigation }) => {
                     <View style={styles.etaTopRow}>
                         <View style={styles.liveBadge}>
                             <View style={styles.liveDot} />
-                            <Text style={styles.liveBadgeText}>LIVE</Text>
+
+                            <Text style={styles.liveBadgeText}>
+                                LIVE
+                            </Text>
                         </View>
-                        <Ionicons name="bicycle" size={ms(22)} color="#F2E4CE" />
+
+                        <Ionicons
+                            name="bicycle"
+                            size={ms(22)}
+                            color="#F2E4CE"
+                        />
                     </View>
 
-                    <Text style={styles.etaLabel}>ARRIVING IN</Text>
-                    <Text style={styles.etaValue}>15–20 min</Text>
+                    <Text style={styles.etaLabel}>
+                        ARRIVING IN
+                    </Text>
+
+                    <Text style={styles.etaValue}>
+                        15–20 min
+                    </Text>
 
                     <View style={styles.etaProgressTrack}>
                         <View style={styles.etaProgressFill} />
@@ -102,50 +153,83 @@ const OrderTrackingScreen = ({ navigation }) => {
                 {/* Progress Steps */}
                 <View style={styles.stepsRow}>
                     <View style={styles.trackLine} />
+
                     <View
                         style={[
                             styles.trackLineActive,
                             {
-                                width: `${(currentStepIndex / (steps.length - 1)) * 100}%`,
+                                width: `${(
+                                    currentStepIndex /
+                                    (steps.length - 1)
+                                ) * 100}%`,
                             },
                         ]}
                     />
 
                     {steps.map((step, index) => {
-                        const isDone = index < currentStepIndex;
-                        const isActive = index === currentStepIndex;
-                        const isCompletedOrActive = isDone || isActive;
+                        const isDone =
+                            index < currentStepIndex;
+
+                        const isActive =
+                            index === currentStepIndex;
+
+                        const isCompletedOrActive =
+                            isDone || isActive;
 
                         return (
-                            <View style={styles.stepItem} key={step.key}>
-                                <View style={styles.stepCircleWrapper}>
+                            <View
+                                style={styles.stepItem}
+                                key={step.key}
+                            >
+                                <View
+                                    style={styles.stepCircleWrapper}
+                                >
                                     {isActive && (
                                         <Animated.View
                                             style={[
                                                 styles.pulseRing,
-                                                { transform: [{ scale: pulseAnim }] },
+                                                {
+                                                    transform: [
+                                                        {
+                                                            scale: pulseAnim,
+                                                        },
+                                                    ],
+                                                },
                                             ]}
                                         />
                                     )}
+
                                     <View
                                         style={[
                                             styles.stepCircle,
-                                            isCompletedOrActive && styles.stepCircleActive,
-                                            isActive && styles.stepCircleCurrent,
+                                            isCompletedOrActive &&
+                                                styles.stepCircleActive,
+                                            isActive &&
+                                                styles.stepCircleCurrent,
                                         ]}
                                     >
                                         <Ionicons
-                                            name={isDone ? "checkmark" : step.icon}
+                                            name={
+                                                isDone
+                                                    ? "checkmark"
+                                                    : step.icon
+                                            }
                                             size={ms(18)}
-                                            color={isCompletedOrActive ? "#fff" : "#C4B598"}
+                                            color={
+                                                isCompletedOrActive
+                                                    ? "#fff"
+                                                    : "#C4B598"
+                                            }
                                         />
                                     </View>
                                 </View>
+
                                 <Text
                                     numberOfLines={1}
                                     style={[
                                         styles.stepLabel,
-                                        isCompletedOrActive && styles.stepLabelActive,
+                                        isCompletedOrActive &&
+                                            styles.stepLabelActive,
                                     ]}
                                 >
                                     {step.label}
@@ -155,7 +239,7 @@ const OrderTrackingScreen = ({ navigation }) => {
                     })}
                 </View>
 
-                {/* Courier Card — RESPONSIVE */}
+                {/* Courier Card */}
                 <View style={styles.courierCard}>
                     <View style={styles.courierAccentBar} />
 
@@ -167,10 +251,19 @@ const OrderTrackingScreen = ({ navigation }) => {
                                 }}
                                 style={styles.courierAvatar}
                             />
+
                             <View style={styles.onlineDot} />
+
                             <View style={styles.ratingBadge}>
-                                <Ionicons name="star" size={ms(9)} color="#fff" />
-                                <Text style={styles.ratingBadgeText}>4.9</Text>
+                                <Ionicons
+                                    name="star"
+                                    size={ms(9)}
+                                    color="#fff"
+                                />
+
+                                <Text style={styles.ratingBadgeText}>
+                                    4.9
+                                </Text>
                             </View>
                         </View>
 
@@ -183,17 +276,26 @@ const OrderTrackingScreen = ({ navigation }) => {
                                 >
                                     Bastien Rousseau
                                 </Text>
+
                                 <Ionicons
                                     name="shield-checkmark"
                                     size={ms(14)}
                                     color="#7B5A4E"
                                 />
                             </View>
+
                             <View style={styles.courierMetaRow}>
-                                <Text style={styles.courierMetaText} numberOfLines={1}>
+                                <Text
+                                    style={styles.courierMetaText}
+                                    numberOfLines={1}
+                                >
                                     1,240 deliveries
                                 </Text>
-                                <Text style={styles.courierMetaDot}>·</Text>
+
+                                <Text style={styles.courierMetaDot}>
+                                    ·
+                                </Text>
+
                                 <Text
                                     style={styles.courierMetaText}
                                     numberOfLines={1}
@@ -212,8 +314,15 @@ const OrderTrackingScreen = ({ navigation }) => {
                             style={styles.courierActionBtn}
                             activeOpacity={0.7}
                         >
-                            <Ionicons name="call" size={ms(16)} color="#7B5A4E" />
-                            <Text style={styles.courierActionText}>Call</Text>
+                            <Ionicons
+                                name="call"
+                                size={ms(16)}
+                                color="#7B5A4E"
+                            />
+
+                            <Text style={styles.courierActionText}>
+                                Call
+                            </Text>
                         </TouchableOpacity>
 
                         <View style={styles.courierActionDivider} />
@@ -222,8 +331,15 @@ const OrderTrackingScreen = ({ navigation }) => {
                             style={styles.courierActionBtn}
                             activeOpacity={0.7}
                         >
-                            <Ionicons name="chatbubble" size={ms(16)} color="#7B5A4E" />
-                            <Text style={styles.courierActionText}>Message</Text>
+                            <Ionicons
+                                name="chatbubble"
+                                size={ms(16)}
+                                color="#7B5A4E"
+                            />
+
+                            <Text style={styles.courierActionText}>
+                                Message
+                            </Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -231,12 +347,28 @@ const OrderTrackingScreen = ({ navigation }) => {
                 {/* Order Number */}
                 <View style={styles.orderNoRow}>
                     <View>
-                        <Text style={styles.orderNoLabel}>ORDER NO.</Text>
-                        <Text style={styles.orderNoValue}>#GQ-95231-FR</Text>
+                        <Text style={styles.orderNoLabel}>
+                            ORDER NO.
+                        </Text>
+
+                        <Text style={styles.orderNoValue}>
+                            #GQ-95231-FR
+                        </Text>
                     </View>
-                    <TouchableOpacity style={styles.detailsBtn} activeOpacity={0.6}>
-                        <Text style={styles.detailsBtnText}>DETAILS</Text>
-                        <Ionicons name="chevron-forward-outline" size={14} color="#8A7466" />
+
+                    <TouchableOpacity
+                        style={styles.detailsBtn}
+                        activeOpacity={0.6}
+                    >
+                        <Text style={styles.detailsBtnText}>
+                            DETAILS
+                        </Text>
+
+                        <Ionicons
+                            name="chevron-forward-outline"
+                            size={ms(14)}
+                            color="#8A7466"
+                        />
                     </TouchableOpacity>
                 </View>
 
@@ -248,26 +380,46 @@ const OrderTrackingScreen = ({ navigation }) => {
                         }}
                         style={styles.itemImage}
                     />
+
                     <View style={styles.itemInfo}>
-                        <Text style={styles.itemTitle} numberOfLines={1}>
+                        <Text
+                            style={styles.itemTitle}
+                            numberOfLines={1}
+                        >
                             1x Lavender Honey Cake
                         </Text>
-                        <Text style={styles.itemSubtitle} numberOfLines={1}>
+
+                        <Text
+                            style={styles.itemSubtitle}
+                            numberOfLines={1}
+                        >
                             Gluten-free base, seasonal honey
                         </Text>
                     </View>
-                    <Text style={styles.itemPrice}>€42.00</Text>
+
+                    <Text style={styles.itemPrice}>
+                        €42.00
+                    </Text>
                 </View>
 
                 {/* Delivery Address Card */}
                 <View style={styles.addressCard}>
                     <View style={styles.addressIconWrapper}>
-                        <Ionicons name="location" size={20} color="#7B5A4E" />
+                        <Ionicons
+                            name="location"
+                            size={20}
+                            color="#7B5A4E"
+                        />
                     </View>
+
                     <View style={styles.addressInfo}>
-                        <Text style={styles.addressLabel}>DELIVER TO</Text>
+                        <Text style={styles.addressLabel}>
+                            DELIVER TO
+                        </Text>
+
                         <Text style={styles.addressValue}>
-                            Apartment 4B, 24 Rue de Rivoli{"\n"}75001 Paris, France
+                            Apartment 4B, 24 Rue de Rivoli{"\n"}
+                            75001 Paris, France
                         </Text>
                     </View>
                 </View>
@@ -284,6 +436,7 @@ const getStyles = (ms, width) =>
             flex: 1,
             backgroundColor: "#FDF8EC",
         },
+
         header: {
             flexDirection: "row",
             alignItems: "center",
@@ -292,12 +445,14 @@ const getStyles = (ms, width) =>
             paddingTop: 10,
             paddingBottom: 4,
         },
+
         headerTitle: {
             fontSize: ms(15),
             fontWeight: "700",
             color: "#5D4037",
             letterSpacing: 0.3,
         },
+
         backBtn: {
             width: 44,
             height: 44,
@@ -306,20 +461,24 @@ const getStyles = (ms, width) =>
             justifyContent: "center",
             shadowOpacity: 0.05,
         },
+
         scrollContent: {
             paddingHorizontal: ms(20),
             paddingBottom: 50,
         },
+
         titleContainer: {
             marginTop: 8,
             marginBottom: 20,
         },
+
         title: {
             fontSize: ms(28),
             fontWeight: "800",
             color: "#3D2B1F",
             letterSpacing: -0.5,
         },
+
         subtitle: {
             fontSize: ms(14),
             color: "#8A7466",
@@ -335,11 +494,15 @@ const getStyles = (ms, width) =>
             marginBottom: 28,
             overflow: "hidden",
             shadowColor: "#3D2B1F",
-            shadowOffset: { width: 0, height: 10 },
+            shadowOffset: {
+                width: 0,
+                height: 10,
+            },
             shadowOpacity: 0.25,
             shadowRadius: 16,
             elevation: 6,
         },
+
         etaCircleLarge: {
             position: "absolute",
             width: 160,
@@ -349,6 +512,7 @@ const getStyles = (ms, width) =>
             top: -60,
             right: -40,
         },
+
         etaCircleSmall: {
             position: "absolute",
             width: 90,
@@ -358,12 +522,14 @@ const getStyles = (ms, width) =>
             bottom: -30,
             right: 40,
         },
+
         etaTopRow: {
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
             marginBottom: 18,
         },
+
         liveBadge: {
             flexDirection: "row",
             alignItems: "center",
@@ -373,18 +539,21 @@ const getStyles = (ms, width) =>
             borderRadius: 20,
             gap: 6,
         },
+
         liveDot: {
             width: 6,
             height: 6,
             borderRadius: 3,
             backgroundColor: "#8BC97A",
         },
+
         liveBadgeText: {
-            fontSize: 10,
+            fontSize: ms(10),
             fontWeight: "800",
             color: "#F2E4CE",
             letterSpacing: 0.8,
         },
+
         etaLabel: {
             fontSize: ms(11),
             fontWeight: "800",
@@ -392,6 +561,7 @@ const getStyles = (ms, width) =>
             letterSpacing: 1,
             marginBottom: 4,
         },
+
         etaValue: {
             fontSize: ms(34),
             fontWeight: "800",
@@ -399,12 +569,14 @@ const getStyles = (ms, width) =>
             letterSpacing: -0.5,
             marginBottom: 18,
         },
+
         etaProgressTrack: {
             height: 6,
             borderRadius: 3,
             backgroundColor: "rgba(255,255,255,0.12)",
             overflow: "hidden",
         },
+
         etaProgressFill: {
             width: "65%",
             height: "100%",
@@ -420,6 +592,7 @@ const getStyles = (ms, width) =>
             marginBottom: 32,
             position: "relative",
         },
+
         trackLine: {
             position: "absolute",
             top: ms(20),
@@ -429,6 +602,7 @@ const getStyles = (ms, width) =>
             backgroundColor: "#EAE0C8",
             borderRadius: 2,
         },
+
         trackLineActive: {
             position: "absolute",
             top: ms(20),
@@ -437,15 +611,18 @@ const getStyles = (ms, width) =>
             backgroundColor: "#7B5A4E",
             borderRadius: 2,
         },
+
         stepItem: {
             alignItems: "center",
             gap: 8,
             width: 60,
         },
+
         stepCircleWrapper: {
             alignItems: "center",
             justifyContent: "center",
         },
+
         pulseRing: {
             position: "absolute",
             width: ms(40),
@@ -453,6 +630,7 @@ const getStyles = (ms, width) =>
             borderRadius: ms(20),
             backgroundColor: "rgba(123,90,78,0.35)",
         },
+
         stepCircle: {
             width: ms(40),
             height: ms(40),
@@ -463,28 +641,35 @@ const getStyles = (ms, width) =>
             borderWidth: 1.5,
             borderColor: "#EAE0C8",
         },
+
         stepCircleActive: {
             backgroundColor: "#7B5A4E",
             borderColor: "#7B5A4E",
         },
+
         stepCircleCurrent: {
             shadowColor: "#7B5A4E",
-            shadowOffset: { width: 0, height: 4 },
+            shadowOffset: {
+                width: 0,
+                height: 4,
+            },
             shadowOpacity: 0.3,
             shadowRadius: 6,
             elevation: 4,
         },
+
         stepLabel: {
             fontSize: ms(9),
             fontWeight: "800",
             color: "#B8AF8F",
             letterSpacing: 0.5,
         },
+
         stepLabelActive: {
             color: "#3D2B1F",
         },
 
-        /* Courier Card — responsive */
+        /* Courier Card */
         courierCard: {
             backgroundColor: "#FFFFFF",
             borderRadius: ms(24),
@@ -494,11 +679,15 @@ const getStyles = (ms, width) =>
             borderColor: "#F4EBE1",
             overflow: "hidden",
             shadowColor: "#3D2B1F",
-            shadowOffset: { width: 0, height: 8 },
+            shadowOffset: {
+                width: 0,
+                height: 8,
+            },
             shadowOpacity: 0.04,
             shadowRadius: 12,
             elevation: 3,
         },
+
         courierAccentBar: {
             position: "absolute",
             top: 0,
@@ -507,15 +696,18 @@ const getStyles = (ms, width) =>
             height: "100%",
             backgroundColor: "#E8B75D",
         },
+
         courierTopRow: {
             flexDirection: "row",
             alignItems: "center",
             gap: ms(14),
             minWidth: 0,
         },
+
         avatarWrapper: {
             position: "relative",
         },
+
         courierAvatar: {
             width: ms(56),
             height: ms(56),
@@ -523,6 +715,7 @@ const getStyles = (ms, width) =>
             borderWidth: 2,
             borderColor: "#FDF8EC",
         },
+
         onlineDot: {
             position: "absolute",
             top: 0,
@@ -534,6 +727,7 @@ const getStyles = (ms, width) =>
             borderWidth: 2,
             borderColor: "#FFFFFF",
         },
+
         ratingBadge: {
             position: "absolute",
             bottom: -4,
@@ -548,21 +742,25 @@ const getStyles = (ms, width) =>
             borderWidth: 2,
             borderColor: "#FFFFFF",
         },
+
         ratingBadgeText: {
-            fontSize: 10,
+            fontSize: ms(10),
             fontWeight: "800",
             color: "#fff",
         },
+
         courierInfo: {
             flex: 1,
             minWidth: 0,
             gap: 4,
         },
+
         courierNameRow: {
             flexDirection: "row",
             alignItems: "center",
             gap: 5,
         },
+
         courierName: {
             fontSize: ms(16),
             fontWeight: "700",
@@ -570,32 +768,38 @@ const getStyles = (ms, width) =>
             letterSpacing: -0.2,
             flexShrink: 1,
         },
+
         courierMetaRow: {
             flexDirection: "row",
             alignItems: "center",
             gap: 4,
             flexWrap: "wrap",
         },
+
         courierMetaText: {
             fontSize: ms(12.5),
             color: "#8A7466",
             fontWeight: "500",
             flexShrink: 1,
         },
+
         courierMetaDot: {
-            fontSize: 13,
+            fontSize: ms(13),
             color: "#D0C4AF",
             marginHorizontal: 2,
         },
+
         courierDivider: {
             height: 1,
             backgroundColor: "#F4EBE1",
             marginVertical: ms(14),
         },
+
         courierActions: {
             flexDirection: "row",
             alignItems: "center",
         },
+
         courierActionBtn: {
             flex: 1,
             flexDirection: "row",
@@ -604,11 +808,13 @@ const getStyles = (ms, width) =>
             gap: 6,
             paddingVertical: ms(10),
         },
+
         courierActionText: {
             fontSize: ms(13),
             fontWeight: "700",
             color: "#7B5A4E",
         },
+
         courierActionDivider: {
             width: 1,
             height: "70%",
@@ -623,19 +829,22 @@ const getStyles = (ms, width) =>
             marginBottom: 16,
             paddingHorizontal: 4,
         },
+
         orderNoLabel: {
-            fontSize: 11,
+            fontSize: ms(11),
             fontWeight: "800",
             color: "#A0907A",
             letterSpacing: 0.8,
             marginBottom: 4,
         },
+
         orderNoValue: {
-            fontSize: 16,
+            fontSize: ms(16),
             fontWeight: "800",
             color: "#3D2B1F",
             letterSpacing: -0.2,
         },
+
         detailsBtn: {
             flexDirection: "row",
             alignItems: "center",
@@ -647,8 +856,9 @@ const getStyles = (ms, width) =>
             borderWidth: 1,
             borderColor: "#EAE0C8",
         },
+
         detailsBtnText: {
-            fontSize: 11,
+            fontSize: ms(11),
             fontWeight: "700",
             color: "#8A7466",
             letterSpacing: 0.5,
@@ -666,34 +876,42 @@ const getStyles = (ms, width) =>
             borderWidth: 1,
             borderColor: "#F4EBE1",
             shadowColor: "#3D2B1F",
-            shadowOffset: { width: 0, height: 4 },
+            shadowOffset: {
+                width: 0,
+                height: 4,
+            },
             shadowOpacity: 0.03,
             shadowRadius: 8,
             elevation: 2,
         },
+
         itemImage: {
             width: 60,
             height: 60,
             borderRadius: 16,
         },
+
         itemInfo: {
             flex: 1,
             gap: 4,
             minWidth: 0,
         },
+
         itemTitle: {
-            fontSize: 15,
+            fontSize: ms(15),
             fontWeight: "700",
             color: "#3D2B1F",
             letterSpacing: -0.2,
         },
+
         itemSubtitle: {
-            fontSize: 12.5,
+            fontSize: ms(12.5),
             color: "#9B8070",
-            lineHeight: 18,
+            lineHeight: ms(18),
         },
+
         itemPrice: {
-            fontSize: 16,
+            fontSize: ms(16),
             fontWeight: "800",
             color: "#3D2B1F",
         },
@@ -708,11 +926,15 @@ const getStyles = (ms, width) =>
             borderWidth: 1,
             borderColor: "#F4EBE1",
             shadowColor: "#3D2B1F",
-            shadowOffset: { width: 0, height: 4 },
+            shadowOffset: {
+                width: 0,
+                height: 4,
+            },
             shadowOpacity: 0.03,
             shadowRadius: 8,
             elevation: 2,
         },
+
         addressIconWrapper: {
             width: 44,
             height: 44,
@@ -721,21 +943,24 @@ const getStyles = (ms, width) =>
             alignItems: "center",
             justifyContent: "center",
         },
+
         addressInfo: {
             flex: 1,
             justifyContent: "center",
         },
+
         addressLabel: {
-            fontSize: 11,
+            fontSize: ms(11),
             fontWeight: "800",
             color: "#A0907A",
             letterSpacing: 0.8,
             marginBottom: 6,
         },
+
         addressValue: {
-            fontSize: 14,
+            fontSize: ms(14),
             color: "#5D4037",
-            lineHeight: 22,
+            lineHeight: ms(22),
             fontWeight: "500",
         },
     });

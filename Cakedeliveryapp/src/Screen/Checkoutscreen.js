@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Alert,
   TouchableOpacity,
+  useWindowDimensions,
 } from "react-native";
 import Detailsheader from "../components/Detailsheader.js";
 import CartCard from "../components/CartCard.js";
@@ -47,11 +48,30 @@ const initialCart = [
 ];
 
 const Checkoutscreen = ({ navigation }) => {
+  const { width } = useWindowDimensions();
+
   const [cartItems, setCartItems] = useState(initialCart);
   const [loading, setLoading] = useState(false);
 
+  /*
+   * Responsive font scale
+   *
+   * 320px  → smaller phone
+   * 375px  → normal phone
+   * 430px  → large phone
+   * 768px+ → tablet
+   */
+  const fontScale = Math.min(Math.max(width / 375, 0.90), 1.15);
+
+  const responsiveFont = (size) =>
+    Math.round(size * fontScale);
+
   const subtotal = useMemo(
-    () => cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
+    () =>
+      cartItems.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+      ),
     [cartItems]
   );
 
@@ -76,7 +96,9 @@ const Checkoutscreen = ({ navigation }) => {
   };
 
   const removeItem = (id) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
+    setCartItems((prev) =>
+      prev.filter((item) => item.id !== id)
+    );
   };
 
   const handleChangeAddress = () => {
@@ -97,8 +119,9 @@ const Checkoutscreen = ({ navigation }) => {
     try {
       setLoading(true);
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) =>
+        setTimeout(resolve, 2000)
+      );
 
       Alert.alert(
         "Order placed",
@@ -107,7 +130,10 @@ const Checkoutscreen = ({ navigation }) => {
 
       navigation.navigate("Ordesuccess");
     } catch (error) {
-      Alert.alert("Error", "Something went wrong.");
+      Alert.alert(
+        "Error",
+        "Something went wrong."
+      );
     } finally {
       setLoading(false);
     }
@@ -115,6 +141,7 @@ const Checkoutscreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.Checkout_section}>
+
       <Detailsheader />
 
       <ScrollView
@@ -124,23 +151,58 @@ const Checkoutscreen = ({ navigation }) => {
         }}
         showsVerticalScrollIndicator={false}
       >
+
         <View style={styles.headerTextBlock}>
-          <Text style={styles.eyebrow}>YOUR CURATION</Text>
-          <Text style={styles.pageTitle}>Your Basket</Text>
+
+          <Text
+            style={[
+              styles.eyebrow,
+              { fontSize: responsiveFont(11) },
+            ]}
+          >
+            YOUR CURATION
+          </Text>
+
+          <Text
+            style={[
+              styles.pageTitle,
+              { fontSize: responsiveFont(28) },
+            ]}
+          >
+            Your Basket
+          </Text>
+
           {cartItems.length > 0 && (
-            <Text style={styles.itemCount}>
-              {cartItems.length} {cartItems.length === 1 ? "item" : "items"}
+            <Text
+              style={[
+                styles.itemCount,
+                { fontSize: responsiveFont(13) },
+              ]}
+            >
+              {cartItems.length}{" "}
+              {cartItems.length === 1
+                ? "item"
+                : "items"}
             </Text>
           )}
+
         </View>
 
         {cartItems.length === 0 ? (
+
           <View style={styles.emptyState}>
-            <Text style={styles.emptyText}>
+            <Text
+              style={[
+                styles.emptyText,
+                { fontSize: responsiveFont(15) },
+              ]}
+            >
               Your basket is empty.
             </Text>
           </View>
+
         ) : (
+
           <FlatList
             data={cartItems}
             scrollEnabled={false}
@@ -154,22 +216,38 @@ const Checkoutscreen = ({ navigation }) => {
                 note={item.note}
                 image={item.image}
                 quantity={item.quantity}
-                onIncrease={() => increaseQty(item.id)}
-                onDecrease={() => decreaseQty(item.id)}
-                onRemove={() => removeItem(item.id)}
+                onIncrease={() =>
+                  increaseQty(item.id)
+                }
+                onDecrease={() =>
+                  decreaseQty(item.id)
+                }
+                onRemove={() =>
+                  removeItem(item.id)
+                }
               />
             )}
           />
+
         )}
 
         <TouchableOpacity
           style={styles.dateButton}
           activeOpacity={0.8}
-          onPress={() => navigation.navigate("Categorys", {
-            screen: "Delivery"
-          })}
+          onPress={() =>
+            navigation.navigate("Categorys", {
+              screen: "Delivery",
+            })
+          }
         >
-          <Text style={styles.dateButtonText}>Select Delivery Date</Text>
+          <Text
+            style={[
+              styles.dateButtonText,
+              { fontSize: responsiveFont(15) },
+            ]}
+          >
+            Select Delivery Date
+          </Text>
         </TouchableOpacity>
 
         <OrderSummaryCard
@@ -180,10 +258,15 @@ const Checkoutscreen = ({ navigation }) => {
           address="42 Artisan Grove, West Hollywood, CA"
           onChangeAddress={handleChangeAddress}
           onCheckout={handleCheckout}
-          disabled={cartItems.length === 0 || loading}
+          disabled={
+            cartItems.length === 0 ||
+            loading
+          }
           loading={loading}
         />
+
       </ScrollView>
+
     </SafeAreaView>
   );
 };

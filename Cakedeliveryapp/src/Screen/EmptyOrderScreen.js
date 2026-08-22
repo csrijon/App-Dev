@@ -8,7 +8,8 @@ import {
     ScrollView,
     RefreshControl,
     ActivityIndicator,
-    StatusBar
+    StatusBar,
+    useWindowDimensions
 } from "react-native";
 import { useState } from "react";
 
@@ -17,8 +18,24 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import Header from "../components/Header";
 
 const EmptyOrderScreen = ({ navigation }) => {
+
+    const { width } = useWindowDimensions();
+
+    // Responsive font scale
+    // 375px = base mobile width
+    // Minimum scale = 0.90
+    // Maximum scale = 1.15
+    const fontScale = Math.min(
+        Math.max(width / 375, 0.90),
+        1.15
+    );
+
+    const responsiveFont = (size) =>
+        Math.round(size * fontScale);
+
     const [refreshing, setRefreshing] = useState(false);
     const [loading, setLoading] = useState(false);
+
     const onRefresh = () => {
         setRefreshing(true);
 
@@ -26,10 +43,17 @@ const EmptyOrderScreen = ({ navigation }) => {
             setRefreshing(false);
         }, 1500);
     };
+
     return (
         <SafeAreaView style={styles.container}>
-            <StatusBar backgroundColor={"#f8f1df"} barStyle={"dark-content"} />
+
+            <StatusBar
+                backgroundColor={"#f8f1df"}
+                barStyle={"dark-content"}
+            />
+
             <Header name={"Srijon chowdhury"} />
+
             <ScrollView
                 contentContainerStyle={styles.mainContainer}
                 refreshControl={
@@ -39,6 +63,7 @@ const EmptyOrderScreen = ({ navigation }) => {
                     />
                 }
             >
+
                 <View style={styles.imageContainer}>
 
                     <Image
@@ -65,17 +90,45 @@ const EmptyOrderScreen = ({ navigation }) => {
                             color="#fff"
                         />
                     </TouchableOpacity>
+
                 </View>
 
                 <View style={styles.badge}>
-                    <Text style={styles.badgeText}>NEW BEGINNINGS</Text>
+
+                    <Text
+                        style={[
+                            styles.badgeText,
+                            {
+                                fontSize: responsiveFont(13)
+                            }
+                        ]}
+                    >
+                        NEW BEGINNINGS
+                    </Text>
+
                 </View>
 
-                <Text style={styles.title}>
+                <Text
+                    style={[
+                        styles.title,
+                        {
+                            fontSize: responsiveFont(27),
+                            lineHeight: responsiveFont(36)
+                        }
+                    ]}
+                >
                     Your Sweet Journey{"\n"}Begins
                 </Text>
 
-                <Text style={styles.description}>
+                <Text
+                    style={[
+                        styles.description,
+                        {
+                            fontSize: responsiveFont(14),
+                            lineHeight: responsiveFont(23)
+                        }
+                    ]}
+                >
                     You haven't placed any orders yet. Once you order your favorite
                     cakes, they'll appear here for quick reordering.
                 </Text>
@@ -83,21 +136,85 @@ const EmptyOrderScreen = ({ navigation }) => {
                 <View style={styles.statsRow}>
 
                     <View style={styles.statCard}>
-                        <Text style={styles.statNumber}>50+</Text>
-                        <Text style={styles.statLabel}>Cakes</Text>
+
+                        <Text
+                            style={[
+                                styles.statNumber,
+                                {
+                                    fontSize: responsiveFont(16)
+                                }
+                            ]}
+                        >
+                            50+
+                        </Text>
+
+                        <Text
+                            style={[
+                                styles.statLabel,
+                                {
+                                    fontSize: responsiveFont(11)
+                                }
+                            ]}
+                        >
+                            Cakes
+                        </Text>
+
                     </View>
 
                     <View style={styles.statCard}>
-                        <Text style={styles.statNumber}>4.9★</Text>
-                        <Text style={styles.statLabel}>Rating</Text>
+
+                        <Text
+                            style={[
+                                styles.statNumber,
+                                {
+                                    fontSize: responsiveFont(16)
+                                }
+                            ]}
+                        >
+                            4.9★
+                        </Text>
+
+                        <Text
+                            style={[
+                                styles.statLabel,
+                                {
+                                    fontSize: responsiveFont(11)
+                                }
+                            ]}
+                        >
+                            Rating
+                        </Text>
+
                     </View>
 
                     <View style={styles.statCard}>
-                        <Text style={styles.statNumber}>24h</Text>
-                        <Text style={styles.statLabel}>Delivery</Text>
+
+                        <Text
+                            style={[
+                                styles.statNumber,
+                                {
+                                    fontSize: responsiveFont(16)
+                                }
+                            ]}
+                        >
+                            24h
+                        </Text>
+
+                        <Text
+                            style={[
+                                styles.statLabel,
+                                {
+                                    fontSize: responsiveFont(11)
+                                }
+                            ]}
+                        >
+                            Delivery
+                        </Text>
+
                     </View>
 
                 </View>
+
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => {
@@ -125,7 +242,14 @@ const EmptyOrderScreen = ({ navigation }) => {
                             :
 
                             <>
-                                <Text style={styles.buttonText}>
+                                <Text
+                                    style={[
+                                        styles.buttonText,
+                                        {
+                                            fontSize: responsiveFont(15)
+                                        }
+                                    ]}
+                                >
                                     Explore the Gallery
                                 </Text>
 
@@ -149,6 +273,7 @@ const EmptyOrderScreen = ({ navigation }) => {
 export default EmptyOrderScreen;
 
 const styles = StyleSheet.create({
+
     container: {
         flex: 1,
         backgroundColor: "#fdf7e3",
@@ -160,6 +285,7 @@ const styles = StyleSheet.create({
         paddingTop: 25,
         paddingBottom: 40
     },
+
     statsRow: {
         flexDirection: "row",
         marginTop: 30,
@@ -184,16 +310,17 @@ const styles = StyleSheet.create({
     },
 
     statNumber: {
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: "800",
         color: "#75584e",
     },
 
     statLabel: {
-        fontSize: 12,
+        fontSize: 11,
         color: "#8B7D6B",
         marginTop: 4,
     },
+
     imageContainer: {
         width: "100%",
         height: 320,
@@ -236,26 +363,28 @@ const styles = StyleSheet.create({
 
     badgeText: {
         color: "#5e4d54",
-        fontSize: 16,
+        fontSize: 13,
         fontWeight: "500",
     },
 
     title: {
-        fontSize: 32,
+        fontSize: 27,
         fontWeight: "800",
         color: "#75584e",
         textAlign: "center",
         marginTop: 22,
-        lineHeight: 42,
+        lineHeight: 36,
     },
+
     description: {
         textAlign: "center",
-        fontSize: 17,
+        fontSize: 14,
         color: "#7A6A58",
         marginTop: 18,
-        lineHeight: 30,
+        lineHeight: 23,
         maxWidth: 320,
     },
+
     button: {
         marginTop: 40,
         backgroundColor: "#75584e",
@@ -279,9 +408,10 @@ const styles = StyleSheet.create({
 
     buttonText: {
         color: "#fff",
-        fontSize: 18,
+        fontSize: 15,
         fontWeight: "bold",
     },
+
     favoriteBtn: {
         position: "absolute",
         top: 15,
@@ -290,12 +420,14 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 30
     },
-    shareBtn:{
-    position:"absolute",
-    top:15,
-    left:15,
-    backgroundColor:"rgba(0,0,0,0.4)",
-    padding:10,
-    borderRadius:30
-},
+
+    shareBtn: {
+        position: "absolute",
+        top: 15,
+        left: 15,
+        backgroundColor: "rgba(0,0,0,0.4)",
+        padding: 10,
+        borderRadius: 30
+    },
+
 });
