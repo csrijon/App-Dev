@@ -31,6 +31,8 @@ const bardata = [
     { id: 2, title: "Birthday" },
     { id: 3, title: "Wedding" },
     { id: 4, title: "Pastries" },
+    { id: 5, title: "Anniversary" },
+    { id: 6, title: "Custom" },
 ];
 
 const initialCatalogData = [

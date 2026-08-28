@@ -17,6 +17,11 @@ const MenuCard = ({
     title,
     description,
     image,
+    price,
+    bakingTime,
+    isAdded,
+    onAddToCart,
+    onGoToCart,
 }) => {
     return (
         <TouchableOpacity
@@ -48,6 +53,26 @@ const MenuCard = ({
                 <Text style={styles.description}>
                     {description}
                 </Text>
+
+                {price !== undefined && (
+                    <Text style={styles.priceText}>${price}</Text>
+                )}
+
+                {bakingTime !== undefined && (
+                    <Text style={styles.bakingText}>{bakingTime}</Text>
+                )}
+            </View>
+
+            <View style={styles.actionRow}>
+                {isAdded ? (
+                    <TouchableOpacity onPress={onGoToCart} style={styles.addedBtn}>
+                        <Text style={styles.addedBtnText}>Go to Cart</Text>
+                    </TouchableOpacity>
+                ) : (
+                    <TouchableOpacity onPress={onAddToCart} style={styles.addBtn}>
+                        <Text style={styles.addBtnText}>+ Add</Text>
+                    </TouchableOpacity>
+                )}
             </View>
         </TouchableOpacity>
     );
@@ -98,5 +123,51 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: "#646040",
         lineHeight: 22,
+    },
+
+    priceText: {
+        fontSize: 16,
+        fontWeight: "700",
+        color: "#5c4033",
+        marginTop: 8,
+    },
+
+    bakingText: {
+        fontSize: 12,
+        color: "#8b7d6b",
+        marginTop: 4,
+    },
+
+    actionRow: {
+        flexDirection: "row",
+        marginTop: 12,
+    },
+
+    addBtn: {
+        backgroundColor: "#6b4f4f",
+        paddingVertical: 8,
+        paddingHorizontal: 20,
+        borderRadius: 20,
+        alignItems: "center",
+    },
+
+    addBtnText: {
+        color: "#fff",
+        fontWeight: "600",
+        fontSize: 14,
+    },
+
+    addedBtn: {
+        backgroundColor: "#ddd",
+        paddingVertical: 8,
+        paddingHorizontal: 20,
+        borderRadius: 20,
+        alignItems: "center",
+    },
+
+    addedBtnText: {
+        color: "#555",
+        fontWeight: "600",
+        fontSize: 14,
     },
 });

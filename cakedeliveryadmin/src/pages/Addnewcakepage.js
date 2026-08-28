@@ -86,6 +86,15 @@ const Addnewcakepage = ({ navigation }) => {
             Alert.alert("Error", "Price Required");
             return false;
         }
+        const priceNum = parseFloat(price);
+        if (isNaN(priceNum) || priceNum <= 0) {
+            Alert.alert("Error", "Price must be a valid positive number.");
+            return false;
+        }
+        if (stockQuantity.trim() && (isNaN(parseFloat(stockQuantity)) || parseFloat(stockQuantity) < 0)) {
+            Alert.alert("Error", "Stock quantity must be a positive number.");
+            return false;
+        }
         if (!imageUri) {
             Alert.alert("Error", "Upload Cake Image");
             return false;
@@ -179,7 +188,6 @@ const Addnewcakepage = ({ navigation }) => {
         }
         )
         const resdata = await response.json()
-        console.log(resdata)
 
         // console.log(cakeData, imageUri);
         Alert.alert("Success", "Cake Added Successfully");

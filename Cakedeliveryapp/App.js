@@ -37,7 +37,6 @@ import { View, TouchableOpacity } from "react-native"
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
-console.log(Stack)
 const App = () => {
   return (
     <SafeAreaProvider>
@@ -163,7 +162,7 @@ const TabScreen = () => {
       />
 
       <Tab.Screen
-        name="Categorys"
+        name="Categories"
         component={Orderstack}
         options={{
 
@@ -190,7 +189,7 @@ const TabScreen = () => {
       />
 
       <Tab.Screen
-        name="Orderagain"
+        name="Orders"
         component={EmptyOrderScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -230,7 +229,7 @@ const TabScreen = () => {
       />
 
       <Tab.Screen
-        name="Blog"
+        name="ProfileTab"
         component={Profilestack}
         options={{
           tabBarButton:(props)=>(

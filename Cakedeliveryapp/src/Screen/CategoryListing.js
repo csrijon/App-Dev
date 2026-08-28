@@ -48,6 +48,8 @@ const menuItems = [
         image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600",
         rating: "4.9",
         title: "Cake",
+        price: 48.0,
+        bakingTime: "45 min",
         description: "Freshly baked layered cake with a soft and moist texture.",
     },
     {
@@ -55,6 +57,8 @@ const menuItems = [
         image: "https://images.unsplash.com/photo-1464306076886-da185f6a9d05?w=600",
         rating: "4.8",
         title: "Pastry",
+        price: 24.5,
+        bakingTime: "30 min",
         description: "Light and flaky pastry filled with delicious cream.",
     },
     {
@@ -62,27 +66,41 @@ const menuItems = [
         image: "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=600",
         rating: "4.8",
         title: "Donut",
+        price: 4.0,
+        bakingTime: "20 min",
         description: "Soft and fluffy donut with a sweet glazed topping.",
+        price: 4.0,
+        bakingTime: "20 min",
     },
     {
         id: "4",
         image: "https://images.unsplash.com/photo-1623334044303-241021148842?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y3JvaXNzYW50fGVufDB8fDB8fHww",
         rating: "4.7",
         title: "Croissant",
+        price: 4.5,
+        bakingTime: "25 min",
         description: "Golden buttery croissant with crispy flaky layers.",
+        price: 4.5,
+        bakingTime: "25 min",
     },
     {
         id: "5",
         image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600",
         rating: "4.8",
         title: "Bread",
+        price: 3.5,
+        bakingTime: "40 min",
         description: "Fresh artisan bread baked daily with premium flour.",
+        price: 3.5,
+        bakingTime: "40 min",
     },
     {
         id: "6",
         image: "https://images.unsplash.com/photo-1607958996333-41aef7caefaa?w=600",
         rating: "4.7",
         title: "Muffin",
+        price: 4.0,
+        bakingTime: "35 min",
         description: "Soft and fluffy muffin perfect for breakfast or snacks.",
     },
     {
@@ -90,6 +108,8 @@ const menuItems = [
         image: "https://images.unsplash.com/photo-1499636136210-6f4ee915583e?w=600",
         rating: "4.9",
         title: "Cookie",
+        price: 2.5,
+        bakingTime: "15 min",
         description: "Crunchy cookies baked with rich butter and chocolate chips.",
     },
     {
@@ -97,6 +117,8 @@ const menuItems = [
         image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600",
         rating: "4.8",
         title: "Brownie",
+        price: 5.0,
+        bakingTime: "30 min",
         description: "Rich chocolate brownie with a soft fudgy center.",
     },
     {
@@ -104,6 +126,8 @@ const menuItems = [
         image: "https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dGFydHxlbnwwfHwwfHx8MA%3D%3D",
         rating: "4.7",
         title: "Tart",
+        price: 16.0,
+        bakingTime: "50 min",
         description: "Crispy tart shell filled with seasonal fruit and cream.",
     },
     {
@@ -111,6 +135,8 @@ const menuItems = [
         image: "https://images.unsplash.com/photo-1612203985729-70726954388c?w=600",
         rating: "4.8",
         title: "Bagel",
+        price: 3.5,
+        bakingTime: "35 min",
         description: "Freshly baked bagel with a chewy texture and crisp crust.",
     },
     {
@@ -118,6 +144,8 @@ const menuItems = [
         image: "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=600",
         rating: "4.9",
         title: "Éclair",
+        price: 12.0,
+        bakingTime: "55 min",
         description: "Classic éclair filled with smooth vanilla cream.",
     },
     {
@@ -125,6 +153,8 @@ const menuItems = [
         image: "https://images.unsplash.com/photo-1621939514649-280e2ee25f60?w=600",
         rating: "4.8",
         title: "Pretzel",
+        price: 4.0,
+        bakingTime: "30 min",
         description: "Traditional baked pretzel with a soft center and crisp crust.",
     },
 ];
@@ -375,8 +405,8 @@ const CategoryListing = ({ navigation }) => {
                                     price={item.price}
                                     // ── The three props that actually make + → Go to Cart work ──
                                     isAdded={addedIds.has(item.id)}
-                                    // onAddToCart={() => handleAddToCart(item.id)}
-                                    // onGoToCart={handleGoToCart}
+                                    onAddToCart={() => handleAddToCart(item.id)}
+                                    onGoToCart={handleGoToCart}
                                 />
                             )}
                         />

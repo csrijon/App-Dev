@@ -6,7 +6,8 @@ import {
     ScrollView, 
     Text, 
     TouchableOpacity, 
-    FlatList 
+    FlatList,
+    Alert
 } from "react-native";
 import Securityheader from "../components/Securityheader";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -69,6 +70,11 @@ const notificationsData = [
 ];
 
 const Notificationpage = () => {
+    const [simulatedEvent, setSimulatedEvent] = useState(0);
+    const addSimulatedEvent = () => {
+        Alert.alert("Simulated Event", "A new simulated notification has been added to the list.");
+        setSimulatedEvent(prev => prev + 1);
+    };
     // State to track which tab is selected
     const [activeTab, setActiveTab] = useState(1);
 
@@ -129,6 +135,11 @@ const Notificationpage = () => {
                         })}
                     </ScrollView>
                 </View>
+
+                {/* Simulated Event Trigger */}
+                <TouchableOpacity activeOpacity={0.8} style={styles.simulateBtn} onPress={addSimulatedEvent}>
+                    <Text style={styles.simulateBtnText}>+ Simulate New Event</Text>
+                </TouchableOpacity>
 
                 {/* NOTIFICATIONS LIST */}
                 <FlatList
@@ -275,6 +286,19 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         marginTop: 60,
+    },
+    simulateBtn: {
+        backgroundColor: "#75584e",
+        paddingVertical: 12,
+        borderRadius: 20,
+        alignItems: "center",
+        marginHorizontal: 16,
+        marginBottom: 12,
+    },
+    simulateBtnText: {
+        color: "#fff",
+        fontWeight: "700",
+        fontSize: 14,
     },
     emptyText: {
         marginTop: 12,

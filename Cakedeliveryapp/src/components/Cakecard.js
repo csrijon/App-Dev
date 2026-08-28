@@ -1,8 +1,8 @@
 import { View, Image, Text, StyleSheet,TouchableOpacity } from "react-native"
 
-const Cakecard = ({image,trend,name,price}) => {
+const Cakecard = ({image,trend,name,price,onPress}) => {
     return (
-        <TouchableOpacity activeOpacity={0.8} style={styles.Cakecard} >
+        <TouchableOpacity activeOpacity={0.8} style={styles.Cakecard} onPress={onPress} >
             <Image style={styles.Cakeimage} source={{uri:image}} />
             <View style={styles.cakedetails} >
                 <Text style={styles.caketexttrend} >{trend}</Text>

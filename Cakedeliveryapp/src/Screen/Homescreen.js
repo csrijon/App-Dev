@@ -412,7 +412,7 @@ const Homescreen = ({ navigation }) => {
                                     activeOpacity={0.8}
                                     onPress={() => {
                                         setSelectedCategory(active ? null : item.id)
-                                        navigation.navigate("Categorys")
+                                        navigation.navigate("Categories")
                                     }
                                     }
                                     style={[
@@ -446,7 +446,7 @@ const Homescreen = ({ navigation }) => {
 
                         <TouchableOpacity
                             onPress={() =>
-                                navigation.navigate("Categorys")
+                                navigation.navigate("Categories")
                             }
                         >
                             <Text style={styles.featuredBakesText}>
@@ -457,7 +457,7 @@ const Homescreen = ({ navigation }) => {
 
                     <FlatList
                         horizontal
-                        data={bakeryData}
+                        data={selectedCategory ? bakeryData.filter(i => i.category === categoryChips.find(c => c.id === selectedCategory)?.label || selectedCategory) : bakeryData}
                         showsHorizontalScrollIndicator={false}
                         initialNumToRender={8}
                         keyExtractor={(item) =>
@@ -469,6 +469,7 @@ const Homescreen = ({ navigation }) => {
                                 trend={item.trend}
                                 name={item.name}
                                 price={item.price}
+                                onPress={() => navigation.navigate("Cakedetails", { name: item.name })}
                             />
                         )}
                     />

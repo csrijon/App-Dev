@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context"
 import { StatusBar, ScrollView, View, Text, StyleSheet, Alert, TouchableOpacity } from "react-native"
 import Adminheader from "../components/Adminheader"
@@ -180,6 +181,12 @@ const Dashboardpage = ({ navigation }) => {
         customerReviews.reduce((sum, r) => sum + r.rating, 0) / customerReviews.length
     ).toFixed(1);
 
+    const [simulatedRefresh, setSimulatedRefresh] = useState(0);
+    const refreshDashboard = () => {
+        setSimulatedRefresh(prev => prev + 1);
+        setTimeout(() => setSimulatedRefresh(prev => prev + 1), 500);
+    };
+
     const getInitials = (name) =>
         name
             .split(" ")
@@ -198,6 +205,11 @@ const Dashboardpage = ({ navigation }) => {
                     <Text style={Dashboardstyle.headingparagraph} >Your artisanal gallery is bustling today. Here is the morning's oversight for your confectionary empire.</Text>
                 </View>
                 <View style={Dashboardstyle.buttonsection} >
+                    <Dashboardbutton
+                        title="Refresh"
+                        name="Live"
+                        onPress={() => refreshDashboard()}
+                    />
                     <Dashboardbutton
                         title="Download"
                         name="Reports"
@@ -478,7 +490,7 @@ const Dashboardpage = ({ navigation }) => {
                     ))}
                 </View>
 
-                {/* <AnalyticsCard /> */}
+                <AnalyticsCard />
                 <RecentOrders />
                 <BakingCard />
                 <Footer />

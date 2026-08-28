@@ -19,6 +19,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 const Securitypage = ({ navigation }) => {
     const [permission, setPermission] = useState(true);
     const [twoFactor, setTwoFactor] = useState(false);
+    const [locationAccess, setLocationAccess] = useState(false);
 
     const delacc = () => {
         Alert.alert(
@@ -26,7 +27,7 @@ const Securitypage = ({ navigation }) => {
             "Are you sure you want to permanently delete your Artisanal Pâtisserie account? This action cannot be undone.", 
             [
                 { text: "Cancel", style: "cancel" },
-                { text: "Delete", onPress: () => console.log("Account Deleted"), style: "destructive" }
+                { text: "Delete", onPress: () => Alert.alert("Account Deleted", "Your account deletion request has been submitted for review."), style: "destructive" }
             ]
         );
     };
@@ -74,7 +75,7 @@ const Securitypage = ({ navigation }) => {
                             </View>
                             <Switch
                                 value={twoFactor}
-                                onValueChange={(val) => setTwoFactor(val)}
+                                onValueChange={(val) => { setTwoFactor(val); Alert.alert("Two-Factor Auth", val ? "Two-factor authentication enabled." : "Two-factor authentication disabled."); }}
                                 trackColor={{ false: "#EFE8E2", true: "#8B6A5B" }}
                                 thumbColor={Platform.OS === 'ios' ? "#FFFFFF" : (twoFactor ? "#FFFFFF" : "#F4F4F4")}
                             />
@@ -159,7 +160,14 @@ const Securitypage = ({ navigation }) => {
                     <Text style={styles.sectionTitle}>Permissions</Text>
 
                     <View style={styles.card}>
-                        <TouchableOpacity style={styles.listItem} activeOpacity={0.7}>
+                        <TouchableOpacity
+                            style={styles.listItem}
+                            activeOpacity={0.7}
+                            onPress={() => {
+                                // Automatically turn on only when needed, not always
+                                setLocationAccess(prev => !prev);
+                            }}
+                        >
                             <View style={styles.rowCentered}>
                                 <View style={[styles.iconNest, { backgroundColor: "#FDF3D5", width: 38, height: 38, borderRadius: 19, marginRight: 12 }]}>
                                     <Ionicons name="location-outline" size={18} color="#B58A24" />
@@ -167,8 +175,15 @@ const Securitypage = ({ navigation }) => {
                                 <Text style={styles.itemTitle}>Location Access</Text>
                             </View>
                             <View style={styles.rowCentered}>
-                                <Text style={styles.statusText}>While Using</Text>
-                                <MaterialCommunityIcons name="chevron-right" size={20} color="#A8A085" />
+                                <Text style={styles.statusText}>
+                                    {locationAccess ? "When Needed" : "Off"}
+                                </Text>
+                                <Switch
+                                    value={locationAccess}
+                                    onValueChange={(val) => setLocationAccess(val)}
+                                    trackColor={{ false: "#EFE8E2", true: "#B58A24" }}
+                                    thumbColor={locationAccess ? "#FFFFFF" : "#F4F4F4"}
+                                />
                             </View>
                         </TouchableOpacity>
                     </View>

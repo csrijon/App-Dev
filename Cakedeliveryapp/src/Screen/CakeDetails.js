@@ -6,7 +6,8 @@ import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
-const CakeDetails = ({ navigation }) => {
+const CakeDetails = ({ navigation, route }) => {
+    const productName = route?.params?.name || "The Celestial Peony";
 
     const [isFavorite, setIsFavorite] = useState(false);
     const [quantity, setQuantity] = useState(1);
@@ -87,7 +88,7 @@ const CakeDetails = ({ navigation }) => {
                         </View>
 
                         {/* Title */}
-                        <Text style={styles.title}>The Celestial Peony</Text>
+                        <Text style={styles.title}>{productName}</Text>
 
                         {/* Description with Read More */}
                         <Text style={styles.description}>

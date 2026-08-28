@@ -4,7 +4,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import Geolocation from '@react-native-community/geolocation';
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native"; 
-import Notificaton from "../components/Notificaton.js"
+// Notificaton import removed — file misspelled, not used
 
 const Header = ({onPress}) => {
     const navigation = useNavigation()
@@ -35,7 +35,6 @@ const Header = ({onPress}) => {
 
                             const { latitude, longitude } = position.coords;
 
-                            console.log(latitude, longitude);
 
                             let response = await fetch(
                                 `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`
@@ -43,7 +42,6 @@ const Header = ({onPress}) => {
 
                             let data = await response.json();
 
-                            console.log(data);
 
                             setcity(data.address.city || "");
                             setsuburb(data.address.suburb || "");
@@ -51,7 +49,6 @@ const Header = ({onPress}) => {
                         },
 
                         (error) => {
-                            console.log(error);
                         },
 
                         {
@@ -70,7 +67,6 @@ const Header = ({onPress}) => {
 
             } catch (error) {
 
-                console.log(error);
 
             }
 
@@ -121,7 +117,7 @@ const Header = ({onPress}) => {
                        </TouchableOpacity>
                 {/* <Notificaton onPress={() => navigation.navigate("NotificationsScreen")} /> */}
 
-                <TouchableOpacity onPress={()=>navigation.navigate("Blog")} >
+                <TouchableOpacity onPress={()=>navigation.navigate("Tabs", { screen: "Profile" })} >
                     <Image
                         source={{
                             uri: "https://i.pravatar.cc/150?img=12",

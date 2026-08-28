@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
     View,
     Text,
@@ -16,8 +16,10 @@ import Button from "../components/Button"
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 import { SafeAreaView } from "react-native-safe-area-context";
+import { OnbordingContext } from "../context/Context";
 
 const Loginpage = ({navigation}) => {
+    const onboardingCtx = useContext(OnbordingContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
@@ -52,9 +54,13 @@ const Loginpage = ({navigation}) => {
             )
             }
 
-            // Success hole onboarding e navigate
-            // ekhane token/user data thakle AsyncStorage ba context e save korte paro
-            navigation.navigate("Onbordingpageone");
+            // Check onboarding status from context
+            const isOnboarded = onboardingCtx?.formdata?.personaldetails?.bakersname?.trim();
+            if (isOnboarded) {
+                navigation.navigate("TabScreens");
+            } else {
+                navigation.navigate("Onbordingpageone");
+            }
         } catch (error) {
             Alert.alert("Login Error", error.message);
         } finally {

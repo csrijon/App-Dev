@@ -16,7 +16,6 @@ import Geolocation from "@react-native-community/geolocation";
 import { launchImageLibrary } from "react-native-image-picker";
 
 const Profilepage = ({ navigation }) => {
-    Geolocation.getCurrentPosition(info=>console.log(info))
     // State for toggling edit mode
     const [isEditable, setIsEditable] = useState(false);
 
@@ -75,7 +74,7 @@ const Profilepage = ({ navigation }) => {
                 <View style={styles.sectionContainer}>
                     <View style={styles.sectionHeader}>
                         <Text style={styles.sectionTitle}>Personal Details</Text>
-                        <TouchableOpacity onPress={() => setIsEditable(!isEditable)}>
+                        <TouchableOpacity onPress={() => { setIsEditable(!isEditable); if (isEditable) Alert.alert("Saved", "Profile changes saved locally."); }}>
                             <Text style={[styles.editActionText, isEditable && styles.saveActionText]}>
                                 {isEditable ? "Save Changes" : "Edit"}
                             </Text>

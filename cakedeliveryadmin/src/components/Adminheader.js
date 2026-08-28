@@ -4,18 +4,18 @@ import { useNavigation } from "@react-navigation/native";
 
 const Adminheader = () => {
 
-    const naviagtion = useNavigation()
+    const navigation = useNavigation()
     return (
         <View style={headerstyle.adminheadersection} >
             <Text style={headerstyle.headertitle} >
                 The Patisserie
             </Text>
             <View style={headerstyle.headersubheading} >
-                <TouchableOpacity onPress={()=>naviagtion.navigate("Notificationpage")} >
+                <TouchableOpacity onPress={()=>navigation.navigate("Notificationpage")} accessibilityRole="button" accessibilityLabel="Notifications" >
                     <Ionicons name="notifications" color="#7B5A4E" size={24} />
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => naviagtion.navigate("Profile")} >
+                <TouchableOpacity onPress={() => navigation.navigate("Profile")} accessibilityRole="button" accessibilityLabel="Profile" >
                     <Image
                         source={{
                             uri: "https://plus.unsplash.com/premium_photo-1690407617542-2f210cf20d7e?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGVyc29ufGVufDB8fDB8fHww"

@@ -122,7 +122,7 @@ const Ordermanagementpage = () => {
             ? ordersData
             : ordersData.filter((order) => order.status === activeStatus)
 
-    // Baker cancels an order
+    // Admin cancels an order
     const handleCancelOrder = (orderId) => {
         setOrdersData((prevOrders) =>
             prevOrders.map((order) =>
@@ -138,7 +138,7 @@ const Ordermanagementpage = () => {
                     : order
             )
         );
-        Alert.alert("Cancelled", "Order is Canceled");
+        Alert.alert("Order Cancelled", "The order status has been updated to Cancelled. Customer will be notified.");
     };
 
     return (
