@@ -1,16 +1,19 @@
-import { View, StyleSheet, Image, TouchableOpacity, Text, useWindowDimensions } from "react-native"
+import { View, StyleSheet, Image, TouchableOpacity, Text, useWindowDimensions, Alert } from "react-native"
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { useState } from "react";
 
 const ProductShowcaseCard = ({ title, des, price, rating, badge, image,onPress }) => {
     const { width, height } = useWindowDimensions()
     const cardwidth = (width - 48) / 2
+    const [isFavorite, setIsFavorite] = useState(false)
+    const [cartAdded, setCartAdded] = useState(false)
     return (
         <View style={[styles.ProductShowcaseCard, { width: cardwidth }]} >
             <TouchableOpacity onPress={onPress} activeOpacity={0.8} >
             <View style={styles.imageproductsection} >
                 <Image style={styles.imagetag} source={{ uri: image }} />
-                <TouchableOpacity style={styles.heartButton}>
-                    <AntDesign name="hearto" color="#000" size={18} />
+                <TouchableOpacity style={styles.heartButton} onPress={() => setIsFavorite(!isFavorite)}>
+                    <AntDesign name={isFavorite ? "heart" : "hearto"} color={isFavorite ? "#E53935" : "#000"} size={18} />
                 </TouchableOpacity>
                 <View style={styles.signatureBadge}>
                     <Text style={styles.signatureText}>{badge}</Text>
@@ -27,8 +30,8 @@ const ProductShowcaseCard = ({ title, des, price, rating, badge, image,onPress }
                 </Text>
                 <View style={styles.priceRow}>
                     <Text style={styles.priceText}>${price}</Text>
-                    <TouchableOpacity style={styles.plusButton}>
-                        <AntDesign name="plus" color="#fff" size={18} />
+                    <TouchableOpacity style={styles.plusButton} onPress={() => setCartAdded(!cartAdded)}>
+                        <AntDesign name={cartAdded ? "check" : "plus"} color="#fff" size={18} />
                     </TouchableOpacity>
                 </View>
             </View>

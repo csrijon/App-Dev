@@ -19,6 +19,10 @@ const BakeryHeader = ({onPress}) => {
                 The Artisanal Pâtisserie
             </Text>
 
+            <TouchableOpacity style={styles.profileCircle}>
+                <MaterialIcons name="person-outline" color="#4A3320" size={22} />
+            </TouchableOpacity>
+
             <TouchableOpacity style={styles.cakeButton}>
                 <MaterialIcons name="bakery-dining" color="#75584e" size={26} />
             </TouchableOpacity>
@@ -57,6 +61,18 @@ const styles = StyleSheet.create({
         fontWeight: "700",
         color: "#75584e",
         marginLeft: 14,
+    },
+
+    profileCircle: {
+        width: 36,
+        height: 36,
+        borderRadius: 18,
+        borderWidth: 1.5,
+        borderColor: '#4A3320',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff8e6',
+        marginRight: 8,
     },
 
     cakeButton: {

@@ -1,14 +1,14 @@
 import { View, Image, Text, StyleSheet, TouchableOpacity } from "react-native"
 
-const CategoryProductscard = ({ title, img }) => {
+const CategoryProductscard = ({ title, img, isSelected }) => {
     return (
-        <TouchableOpacity activeOpacity={0.5} style={styles.CategoryProductscard} >
-            <View style={styles.imageWrapper} >
+        <View style={[styles.CategoryProductscard, isSelected && { opacity: 1 }]}>
+            <View style={[styles.imageWrapper, isSelected && { borderColor: "#E53935", backgroundColor: "#fff5f0" }]} >
                 <Image style={styles.image} source={{ uri: img }} />
             </View>
 
             <Text style={styles.producttext} >{title}</Text>
-        </TouchableOpacity>
+        </View>
     )
 }
 

@@ -15,6 +15,7 @@ const { width } = Dimensions.get('window')
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BakeryHeader from "../components/BakeryHeader"
 import Floatingfixedbutton from "../components/Floatingfixedbutton"
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { OnbordingContext } from '../context/Context';
 // --- GALLERY PICKER ---
 import { launchImageLibrary } from 'react-native-image-picker';
@@ -195,7 +196,7 @@ const OnboardingpageFour = ({ navigation }) => {
         {/* --- Uploaded Document Card --- */}
         <View style={styles.uploadedCard}>
           <View style={styles.uploadedIconContainer}>
-            <Text style={styles.documentIcon}>📄</Text>
+            <Icon name="file-document-outline" size={24} color="#FFFFFF" />
           </View>
           <View style={styles.uploadedTextContainer}>
             <Text style={styles.uploadedTitle}>FSSAI{'\n'}CERTIFICATE</Text>
@@ -274,7 +275,10 @@ const OnboardingpageFour = ({ navigation }) => {
           </View>
 
           <View style={styles.secureBadge}>
-            <Text style={styles.secureBadgeIcon}>🛡️</Text>
+            <Image
+              source={{ uri: 'https://images.unsplash.com/photo-1555507036-ab1e4006aaeb?q=80&w=1000&auto=format&fit=crop' }}
+              style={styles.secureImage}
+            />
             <Text style={styles.secureBadgeText}>SECURE VERIFICATION</Text>
           </View>
         </View>
@@ -389,29 +393,27 @@ const styles = StyleSheet.create({
   },
   uploadedCard: {
     width: '100%',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 30,
+    backgroundColor: '#F7F0E6',
+    borderRadius: 24,
     padding: 16,
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    elevation: 3,
+    borderWidth: 1.5,
+    borderColor: '#E3D7CC',
   },
   uploadedIconContainer: {
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: '#F7E9E9',
+    backgroundColor: '#8B7365',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
   },
   documentIcon: {
     fontSize: 20,
+    color: '#FFFFFF',
   },
   uploadedTextContainer: {
     flex: 1,
@@ -585,6 +587,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 10,
     elevation: 5,
+  },
+  secureImage: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    marginRight: 6,
   },
   secureBadgeIcon: {
     fontSize: 12,

@@ -31,10 +31,10 @@ const FLAVOR_OPTIONS = [
 
 const CATEGORY_OPTIONS = ["Birthday", "Wedding", "Pastries", "Anniversary"];
 
-const Addnewcakepage = ({ navigation }) => {
+const Addnewitempage = ({ navigation }) => {
 
     // Basic Info
-    const [cakeName, setCakeName] = useState("");
+    const [itemName, setItemName] = useState("");
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
     const [discount, setDiscount] = useState("");
@@ -78,8 +78,8 @@ const Addnewcakepage = ({ navigation }) => {
     };
 
     const validateForm = () => {
-        if (!cakeName.trim()) {
-            Alert.alert("Error", "Cake Name Required");
+        if (!itemName.trim()) {
+            Alert.alert("Error", "Item Name Required");
             return false;
         }
         if (!price.trim()) {
@@ -96,13 +96,13 @@ const Addnewcakepage = ({ navigation }) => {
             return false;
         }
         if (!imageUri) {
-            Alert.alert("Error", "Upload Cake Image");
+            Alert.alert("Error", "Upload Item Image");
             return false;
         }
         return true;
     };
 
-    const isFormReady = cakeName.trim().length > 0 && price.trim().length > 0 && !!imageUri;
+    const isFormReady = itemName.trim().length > 0 && price.trim().length > 0 && !!imageUri;
 
     const discountedPrice = (() => {
         const p = parseFloat(price);
@@ -148,11 +148,11 @@ const Addnewcakepage = ({ navigation }) => {
     };
 
     // Submit
-    const addCake = async () => {
+    const addItem = async () => {
         if (!validateForm()) return;
 
-        // const cakeData = {
-        //     cakeName, description, price, discount, weight,
+        // const itemData = {
+        //     itemName, description, price, discount, weight,
         //     stockQuantity, prepTime, availableSizes, isEggless,
         //     imageUri, isAvailable, isBestseller, isFeatured, allowCustomMessage,
         //     flavorProfile, category, offers,
@@ -160,7 +160,7 @@ const Addnewcakepage = ({ navigation }) => {
 
         const formdata = new FormData()
 
-        formdata.append("Cakename", cakeName)
+        formdata.append("Itemname", itemName)
         formdata.append("detalis", description)
         formdata.append("price", price)
         formdata.append("discount", discount)
@@ -189,14 +189,14 @@ const Addnewcakepage = ({ navigation }) => {
         )
         const resdata = await response.json()
 
-        // console.log(cakeData, imageUri);
-        Alert.alert("Success", "Cake Added Successfully");
+        // console.log(itemData, imageUri);
+        Alert.alert("Success", "Item Added Successfully");
         navigation.navigate("CatalogUpdatedScreen");
     };
 
     const handleSaveDraft = () => {
-        if (!cakeName.trim()) {
-            Alert.alert("Error", "Give the draft a cake name first");
+        if (!itemName.trim()) {
+            Alert.alert("Error", "Give the draft an item name first");
             return;
         }
         Alert.alert("Saved", "Draft saved. You can finish it later.");
@@ -213,7 +213,7 @@ const Addnewcakepage = ({ navigation }) => {
     };
 
     return (
-        <SafeAreaView style={styles.Addnewcakecontainer}>
+        <SafeAreaView style={styles.Addnewitemcontainer}>
             <StatusBar backgroundColor="#F6F0DF" barStyle="dark-content" />
             <BakeryHeader onPress={() => navigation.goBack()} />
 
@@ -265,14 +265,14 @@ const Addnewcakepage = ({ navigation }) => {
 
                 <View style={styles.mainScreenContainer}>
 
-                    {/* Cake Name & Description */}
+                    {/* Item Name & Description */}
                     <Text style={styles.formSectionLabel}>Item</Text>
                     <TextInput
-                        value={cakeName}
-                        onChangeText={setCakeName}
+                        value={itemName}
+                        onChangeText={setItemName}
                         placeholder="e.g. Midnight Truffle Rose"
                         placeholderTextColor="#B4AA8D"
-                        style={styles.cakeNameInputField}
+                        style={styles.itemNameInputField}
                     />
 
                     <View style={styles.sectionTitleRow}>
@@ -284,9 +284,9 @@ const Addnewcakepage = ({ navigation }) => {
                         onChangeText={(text) => setDescription(text.slice(0, MAX_DESCRIPTION_LENGTH))}
                         multiline
                         textAlignVertical="top"
-                        placeholder="Describe the flavor, texture, and occasion this cake is perfect for..."
+                        placeholder="Describe the flavor, texture, and occasion this item is perfect for..."
                         placeholderTextColor="#B4AA8D"
-                        style={styles.cakeDescriptionInput}
+                        style={styles.itemDescriptionInput}
                     />
 
                     {/* Economics Section */}
@@ -429,7 +429,7 @@ const Addnewcakepage = ({ navigation }) => {
                     <View style={styles.couponTopSection}>
                         <View style={{ flex: 1 }}>
                             <Text style={styles.couponOfferHeading}>Coupon Offer</Text>
-                            <Text style={styles.couponOfferDescription}>Add a promotional discount for this cake listing.</Text>
+                            <Text style={styles.couponOfferDescription}>Add a promotional discount for this item listing.</Text>
                         </View>
                         <TouchableOpacity onPress={() => setOfferEnabled(!offerEnabled)}>
                             <MaterialIcons name={offerEnabled ? "toggle-on" : "toggle-off"} color={offerEnabled ? "#75584e" : "#C9BCA0"} size={52} />
@@ -516,7 +516,7 @@ const Addnewcakepage = ({ navigation }) => {
                     <Text style={styles.draftButtonText}>Save Draft</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={addCake} activeOpacity={0.85} style={[styles.catalogButton, !isFormReady && styles.catalogButtonDisabled]}>
+                <TouchableOpacity onPress={addItem} activeOpacity={0.85} style={[styles.catalogButton, !isFormReady && styles.catalogButtonDisabled]}>
                     <Ionicons name="checkmark-circle-outline" size={20} color="#FFFFFF" style={styles.checkIcon} />
                     <Text style={styles.catalogButtonText}>Add to Catalog</Text>
                 </TouchableOpacity>
@@ -572,7 +572,7 @@ const Addnewcakepage = ({ navigation }) => {
                                 {isFeatured && <Text style={[styles.previewTag, { backgroundColor: '#ECE4BE', color: '#6D5348' }]}>Featured</Text>}
                             </View>
 
-                            <Text style={styles.previewItemName}>{cakeName || "Product Name"}</Text>
+                            <Text style={styles.previewItemName}>{itemName || "Product Name"}</Text>
                             <Text style={styles.previewItemDesc} numberOfLines={2}>{description || "Product description will appear here..."}</Text>
 
                             <View style={styles.previewPriceRow}>
@@ -595,7 +595,7 @@ const Addnewcakepage = ({ navigation }) => {
     );
 };
 
-export default Addnewcakepage;
+export default Addnewitempage;
 
 const cardShadow = {
     shadowColor: "#3D2E22",
@@ -606,7 +606,7 @@ const cardShadow = {
 };
 
 const styles = StyleSheet.create({
-    Addnewcakecontainer:
+    Addnewitemcontainer:
     {
         flex: 1,
         backgroundColor: "#F6F0DF"
@@ -633,8 +633,8 @@ const styles = StyleSheet.create({
     mainScreenContainer: { paddingTop: 28 },
     formSectionLabel: { fontSize: 17, fontWeight: "600", color: "#4A4030", marginBottom: 10 },
     charCounter: { fontSize: 12, color: "#9A8E70", marginBottom: 10 },
-    cakeNameInputField: { width: "100%", height: 56, backgroundColor: "#FFFFFF", borderRadius: 18, paddingHorizontal: 20, fontSize: 17, color: "#3D3127", marginBottom: 22, borderWidth: 1, borderColor: "#E9DFC0", ...cardShadow },
-    cakeDescriptionInput: { width: "100%", height: 120, backgroundColor: "#FFFFFF", borderRadius: 22, paddingHorizontal: 20, paddingTop: 16, fontSize: 16, color: "#3D3127", lineHeight: 24, marginBottom: 28, borderWidth: 1, borderColor: "#E9DFC0", ...cardShadow },
+    itemNameInputField: { width: "100%", height: 56, backgroundColor: "#FFFFFF", borderRadius: 18, paddingHorizontal: 20, fontSize: 17, color: "#3D3127", marginBottom: 22, borderWidth: 1, borderColor: "#E9DFC0", ...cardShadow },
+    itemDescriptionInput: { width: "100%", height: 120, backgroundColor: "#FFFFFF", borderRadius: 22, paddingHorizontal: 20, paddingTop: 16, fontSize: 16, color: "#3D3127", lineHeight: 24, marginBottom: 28, borderWidth: 1, borderColor: "#E9DFC0", ...cardShadow },
 
     // Cards common
     economicsInfoCard: { width: "100%", backgroundColor: "#FAF4D6", borderRadius: 28, padding: 24, marginBottom: 22, ...cardShadow },

@@ -1,13 +1,15 @@
 import { View, TextInput, StyleSheet } from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const Search = () => {
+const Search = ({ value, onChangeText, placeholder }) => {
     return (
         <View style={styles.searchWrapper}>
             <Ionicons name="search-outline" color="#8E8E8E" size={20} />
             <TextInput
-                placeholder="Search for artisanal bakes..."
+                placeholder={placeholder || "Search for artisanal bakes..."}
                 placeholderTextColor="#8E8E8E"
+                value={value}
+                onChangeText={onChangeText}
                 style={styles.searchInput}
             />
         </View>

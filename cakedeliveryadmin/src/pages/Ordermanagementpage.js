@@ -1,5 +1,5 @@
 import { SafeAreaView } from "react-native-safe-area-context"
-import { StatusBar, ScrollView, View, StyleSheet, Text, FlatList, TouchableOpacity, Alert } from "react-native"
+import { StatusBar, ScrollView, View, StyleSheet, Text, FlatList, TouchableOpacity, Alert, TextInput, RefreshControl } from "react-native"
 import Adminheader from "../components/Adminheader"
 import OrderCard from "../components/OrderCard"
 import Ionicons from "react-native-vector-icons/Ionicons"
@@ -113,14 +113,26 @@ const orderStatusData = [
 const Ordermanagementpage = () => {
 
     const [activecolorid, setactivecolorid] = useState(1)
+    const [searchText, setSearchText] = useState('')
+    const [refreshing, setRefreshing] = useState(false)
     const [ordersData, setOrdersData] = useState(initialOrdersData)
+
+    const handleRefresh = () => {
+        setRefreshing(true)
+        setTimeout(() => setRefreshing(false), 1200)
+    }
 
     const activeStatus = orderStatusData.find((item) => item.id === activecolorid)?.title
 
+    const searchFiltered = ordersData.filter((order) =>
+        order.customerName.toLowerCase().includes(searchText.toLowerCase()) ||
+        order.orderNumber.toLowerCase().includes(searchText.toLowerCase())
+    )
+
     const filteredOrders =
         activeStatus === "All"
-            ? ordersData
-            : ordersData.filter((order) => order.status === activeStatus)
+            ? searchFiltered
+            : searchFiltered.filter((order) => order.status === activeStatus)
 
     // Admin cancels an order
     const handleCancelOrder = (orderId) => {
@@ -145,7 +157,7 @@ const Ordermanagementpage = () => {
         <SafeAreaView style={Ordermanagementstyle.Ordermanagementcontainer} >
             <StatusBar backgroundColor="#fff9e6cc" barStyle="dark-content" />
             <Adminheader />
-            <ScrollView Vertical showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, paddingVertical: 20 }} >
+            <ScrollView Vertical showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, paddingVertical: 20 }} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} colors={["#75584e"]} tintColor="#75584e" />} >
                 <View style={Ordermanagementstyle.Topsectiontext} >
                     <View style={Ordermanagementstyle.titleRow}>
                         <Text style={Ordermanagementstyle.Boldtext} >Order Management</Text>
@@ -154,6 +166,32 @@ const Ordermanagementpage = () => {
                         </View>
                     </View>
                     <Text style={Ordermanagementstyle.Normalordertext} >Track, manage, and fulfill your artisanal bakery orders in real-time</Text>
+                </View>
+
+                <View style={Ordermanagementstyle.searchRow}>
+                    <View style={Ordermanagementstyle.searchBox}>
+                        <Ionicons name="search-outline" size={18} color="#8B7365" style={{ marginRight: 8 }} />
+                        <TextInput
+                            placeholder="Search orders..."
+                            placeholderTextColor="#B5A89B"
+                            value={searchText}
+                            onChangeText={setSearchText}
+                            style={Ordermanagementstyle.searchInput}
+                        />
+                    </View>
+                </View>
+
+                <View style={Ordermanagementstyle.statsRow}>
+                    {[
+                        { label: 'Pending', count: ordersData.filter(o => o.status === 'Pending').length, color: '#B5651D' },
+                        { label: 'Accepted', count: ordersData.filter(o => o.status === 'Accepted').length, color: '#3E5C76' },
+                        { label: 'Delivered', count: ordersData.filter(o => o.status === 'Delivered').length, color: '#4F772D' },
+                    ].map((s) => (
+                        <View key={s.label} style={[Ordermanagementstyle.statCard, { borderLeftColor: s.color }]}>
+                            <Text style={Ordermanagementstyle.statCount}>{s.count}</Text>
+                            <Text style={Ordermanagementstyle.statLabel}>{s.label}</Text>
+                        </View>
+                    ))}
                 </View>
 
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={Ordermanagementstyle.statusContainer} >
@@ -291,6 +329,59 @@ const Ordermanagementstyle = StyleSheet.create({
     },
     statusTextActive: {
         color: "#FFFFFF",
+    },
+    searchRow: {
+        marginBottom: 16,
+    },
+    searchBox: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#FFFFFF',
+        borderRadius: 28,
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        borderWidth: 1,
+        borderColor: '#EAE3D6',
+        shadowColor: '#4A3320',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.06,
+        shadowRadius: 8,
+        elevation: 2,
+    },
+    searchInput: {
+        flex: 1,
+        fontSize: 14,
+        color: '#5C443A',
+        fontWeight: '500',
+    },
+    statsRow: {
+        flexDirection: 'row',
+        gap: 10,
+        marginBottom: 20,
+    },
+    statCard: {
+        flex: 1,
+        backgroundColor: '#FFFFFF',
+        borderRadius: 16,
+        paddingVertical: 14,
+        paddingHorizontal: 12,
+        borderLeftWidth: 4,
+        shadowColor: '#4A3320',
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.05,
+        shadowRadius: 6,
+        elevation: 2,
+    },
+    statCount: {
+        fontSize: 18,
+        fontWeight: '800',
+        color: '#5C443A',
+    },
+    statLabel: {
+        fontSize: 11,
+        fontWeight: '600',
+        color: '#8B7365',
+        marginTop: 2,
     },
     emptyState: {
         alignItems: "center",
