@@ -1,20 +1,69 @@
+import prisma from "../config/prisma.js";
 
-
-const Addresssaveclick = (req, res) => {
-
+// Save/update address for user (customer profile / admin)
+const saveAddress = async (req, res) => {
     try {
-        const { street, apartment, city, state, zip, isDefault } = req.body
-        console.log(street, apartment, city, state, zip, isDefault)
-        res.json({
-            message: "Address save finction is working"
-        })
+        const { userId, fullName, phone, address, city, state, pincode, isDefault } = req.body;
+        const saved = await prisma.address.create({
+            data: {
+                userId: parseInt(userId),
+                fullName,
+                phone,
+                address,
+                city,
+                state,
+                pincode,
+                isDefault: isDefault === true || isDefault === "true",
+            },
+        });
+        res.status(201).json({ success: true, message: "Address saved", data: saved });
     } catch (error) {
-        console.log(error)
-        res.json({
-            message: "Address save function is not wokring "
-        })
+        console.log(error);
+        res.status(500).json({ success: false, message: "Failed to save address" });
     }
+};
 
-}
+// Get addresses for user
+const getAddresses = async (req, res) => {
+    try {
+        const { userId } = req.query;
+        const addresses = await prisma.address.findMany({
+            where: { userId: parseInt(userId) },
+            orderBy: { isDefault: "desc" },
+        });
+        res.status(200).json({ success: true, data: addresses });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: "Failed to fetch addresses" });
+    }
+};
 
-export { Addresssaveclick }
+// Update address
+const updateAddress = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updates = req.body;
+        const updated = await prisma.address.update({
+            where: { id: parseInt(id) },
+            data: updates,
+        });
+        res.status(200).json({ success: true, message: "Address updated", data: updated });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: "Failed to update address" });
+    }
+};
+
+// Delete address
+const deleteAddress = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await prisma.address.delete({ where: { id: parseInt(id) } });
+        res.status(200).json({ success: true, message: "Address deleted" });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: "Failed to delete address" });
+    }
+};
+
+export { saveAddress, getAddresses, updateAddress, deleteAddress };

@@ -1,5 +1,6 @@
 
 import prisma from "../config/prisma.js";
+import bcrypt from "bcrypt";
 
 
 const UserappSignup = async (req, res) => {
@@ -21,12 +22,13 @@ const UserappSignup = async (req, res) => {
             })
         }
 
+        const hashedPassword = await bcrypt.hash(password, 10);
         const Saveuser = await prisma.user.create({
             data: {
                 Name: fullname,
                 Email: email,
                 Mobile: mobile,
-                Password: password
+                Password: hashedPassword
             }
         })
         console.log("Signup successfully");
@@ -68,12 +70,13 @@ const Adminappsignup = async (req, res) => {
             });
         }
 
+        const hashedPassword = await bcrypt.hash(password, 10);
         const signupdata = await prisma.user.create({
             data: {
                 Name: fullName,
                 Email: email,
                 Mobile: mobile,
-                Password: password
+                Password: hashedPassword
             }
         });
 

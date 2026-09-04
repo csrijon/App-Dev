@@ -1,22 +1,38 @@
-import express from "express"
-import pool from "./config/db.js"
-import main from "./routes/main.js"
+import express from "express";
+import pool from "./config/db.js";
+import main from "./routes/main.js";
+import dotenv from "dotenv";
+import cors from "cors";
 
+dotenv.config();
 
-const app = express()
-const PORT = 3000
+const app = express();
+const PORT = process.env.PORT || 3000;
 
+app.use(express.json());
+app.use(cors({ origin: true, credentials: true }));
+app.use(express.static("uploads"));
 
-app.use(express.json())
-app.use(main)
-app.use(express.static("./uploads"))
+// Mount all application routes
+app.use(main);
 
-app.get("/", async (req, res) => {
-    const result = await pool.query("SELECT * FROM USER_TABLE")
-    console.log(result)
-    res.send("database connection established ")
-})
+// Health check route (uses Prisma-managed table name)
+app.get("/", async (_req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM "Login&signupsystem" LIMIT 1');
+        res.send({ status: "ok", message: "database connection established", count: result.rowCount });
+    } catch (err) {
+        console.log("DB health check error:", err.message);
+        res.status(500).send({ status: "error", message: "database connection failed", error: err.message });
+    }
+});
+
+// Error handling middleware
+app.use((err, _req, res, _next) => {
+    console.error("Server error:", err);
+    res.status(500).json({ success: false, message: "Internal server error", error: err.message || "Unknown error" });
+});
 
 app.listen(PORT, () => {
-    console.log(`app is listen port${PORT}`)
-})
+    console.log(`App is running on port ${PORT}`);
+});

@@ -179,20 +179,18 @@ const CategoryListing = ({ navigation }) => {
     const [showSortDropdown, setShowSortDropdown] = useState(false);
 
     // ── Cart state: tracks WHICH menu-item ids have been added ──
-    // This was the missing piece — without this, isAdded was never passed to MenuCard,
-    // so it stayed undefined/false forever and the + button never changed.
     const [addedIds, setAddedIds] = useState(new Set());
 
     const handleAddToCart = (id) => {
         setAddedIds((prev) => {
-            const next = new Set(prev); // copy — never mutate state directly
+            const next = new Set(prev);
             next.add(id);
             return next;
         });
     };
 
     const handleGoToCart = () => {
-        navigation.navigate("CategoryProducts");
+        navigation.navigate("Cart");
     };
 
     const activeSortLabel = SORT_OPTIONS.find(o => o.key === sortOrder)?.label || "Sort";
@@ -403,7 +401,6 @@ const CategoryListing = ({ navigation }) => {
                                     title={item.title}
                                     description={item.description}
                                     price={item.price}
-                                    // ── The three props that actually make + → Go to Cart work ──
                                     isAdded={addedIds.has(item.id)}
                                     onAddToCart={() => handleAddToCart(item.id)}
                                     onGoToCart={handleGoToCart}

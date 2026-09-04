@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
   View,
@@ -13,6 +13,7 @@ import {
 import Detailsheader from "../components/Detailsheader.js";
 import CartCard from "../components/CartCard.js";
 import OrderSummaryCard from "../components/Ordersummarycard.js";
+import { cart } from "../services/customerApi";
 
 const initialCart = [
   {
@@ -50,8 +51,31 @@ const initialCart = [
 const Checkoutscreen = ({ navigation }) => {
   const { width } = useWindowDimensions();
 
-  const [cartItems, setCartItems] = useState(initialCart);
+  const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const loadCart = async () => {
+      try {
+        const localCart = await cart.getLocalCart();
+        // Convert to checkout format
+        const mapped = localCart.map((item) => ({
+          id: item.id || item.productId || item.id,
+          name: item.title || item.name || "Cake",
+          size: "8 inch",
+          Flavor: "Vanilla Bean",
+          price: item.price || item.price || 0,
+          quantity: item.quantity || 1,
+          note: item.note || "",
+          image: item.image ? { uri: item.image } : require("../images/cakeimage.jpeg"),
+        }));
+        setCartItems(mapped);
+      } catch (e) {
+        console.log("Cart load error:", e);
+      }
+    };
+    loadCart();
+  }, []);
 
   /*
    * Responsive font scale
@@ -75,30 +99,47 @@ const Checkoutscreen = ({ navigation }) => {
     [cartItems]
   );
 
+  const syncToStorage = async (items) => {
+    try {
+      const raw = items.map((item) => ({
+        id: item.id,
+        title: item.name,
+        price: item.price,
+        quantity: item.quantity,
+        image: typeof item.image === "object" && item.image.uri ? item.image.uri : undefined,
+      }));
+      await cart.setLocalCart(raw);
+    } catch (e) {
+      console.log("Sync error:", e);
+    }
+  };
+
   const increaseQty = (id) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === id
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
-      )
-    );
+    setCartItems((prev) => {
+      const updated = prev.map((item) =>
+        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+      );
+      syncToStorage(updated);
+      return updated;
+    });
   };
 
   const decreaseQty = (id) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === id && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
-      )
-    );
+    setCartItems((prev) => {
+      const updated = prev.map((item) =>
+        item.id === id && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
+      );
+      syncToStorage(updated);
+      return updated;
+    });
   };
 
   const removeItem = (id) => {
-    setCartItems((prev) =>
-      prev.filter((item) => item.id !== id)
-    );
+    setCartItems((prev) => {
+      const updated = prev.filter((item) => item.id !== id);
+      syncToStorage(updated);
+      return updated;
+    });
   };
 
   const handleChangeAddress = () => {

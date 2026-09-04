@@ -1,6 +1,7 @@
 import prisma from "../config/prisma.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import bcrypt from "bcrypt";
 
 dotenv.config();
 
@@ -22,7 +23,8 @@ const Loginmainapp = async (req, res) => {
             });
         }
 
-        if (user.Password !== password) {
+        const isMatch = await bcrypt.compare(password, user.Password);
+        if (!isMatch) {
             return res.status(401).json({
                 message: "Invalid Mobile Number or Password"
             });
@@ -80,7 +82,8 @@ const LoginAdminapp = async (req, res) => {
             });
         }
 
-        if (user.Password !== password) {
+        const isMatch = await bcrypt.compare(password, user.Password);
+        if (!isMatch) {
             return res.status(401).json({
                 message: "Invalid Email or Password"
             });

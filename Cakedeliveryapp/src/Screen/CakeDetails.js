@@ -5,6 +5,7 @@ import Detailsheader from "../components/Detailsheader";
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { cart } from "../services/customerApi";
 
 const CakeDetails = ({ navigation, route }) => {
     const productName = route?.params?.name || "The Celestial Peony";
@@ -30,17 +31,29 @@ const CakeDetails = ({ navigation, route }) => {
         }
     };
 
-    const handleAddToCart = () => {
-        Alert.alert(
-            "Added to Cart 🎉",
-            `${quantity} x The Celestial Peony added to your cart.\nTotal: $${totalPrice}`,
-            [
-                {
-                    text: "OK",
-                    onPress: () => navigation.navigate("Cart")
-                }
-            ]
-        );
+    const handleAddToCart = async () => {
+        try {
+            await cart.addItem({
+                id: productName,
+                title: productName,
+                price: pricePerCake,
+                quantity: quantity,
+                image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600",
+            });
+            Alert.alert(
+                "Added to Cart 🎉",
+                `${quantity} x ${productName} added to your cart.\nTotal: $${totalPrice}`,
+                [
+                    {
+                        text: "OK",
+                        onPress: () => navigation.navigate("Cart")
+                    }
+                ]
+            );
+        } catch (e) {
+            console.log("Cart error:", e);
+            Alert.alert("Added to Cart 🎉", `${quantity} x ${productName} added.`);
+        }
     };
 
     const toggleFavorite = () => {

@@ -1,6 +1,7 @@
 import { View, StyleSheet, Image, TouchableOpacity, Text, useWindowDimensions, Alert } from "react-native"
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useState } from "react";
+import { cart } from "../services/customerApi";
 
 const ProductShowcaseCard = ({ title, des, price, rating, badge, image,onPress }) => {
     const { width, height } = useWindowDimensions()
@@ -30,7 +31,20 @@ const ProductShowcaseCard = ({ title, des, price, rating, badge, image,onPress }
                 </Text>
                 <View style={styles.priceRow}>
                     <Text style={styles.priceText}>${price}</Text>
-                    <TouchableOpacity style={styles.plusButton} onPress={() => setCartAdded(!cartAdded)}>
+                    <TouchableOpacity style={styles.plusButton} onPress={async () => {
+                        setCartAdded(!cartAdded);
+                        try {
+                            await cart.addItem({
+                                id: title,
+                                title: title,
+                                price: price,
+                                image: image,
+                                quantity: 1
+                            });
+                        } catch (e) {
+                            console.log("Add to cart error:", e);
+                        }
+                    }}>
                         <AntDesign name={cartAdded ? "check" : "plus"} color="#fff" size={18} />
                     </TouchableOpacity>
                 </View>
