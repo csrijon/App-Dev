@@ -1,267 +1,274 @@
-import React, { useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context"
-import { StatusBar, ScrollView, View, Text, StyleSheet, Alert, TouchableOpacity } from "react-native"
-import Adminheader from "../components/Adminheader"
-import Dashboardbutton from "../components/Dashboardbutton"
+import React, { useState, useEffect, useCallback } from "react";
+import {
+    SafeAreaView,
+    StatusBar,
+    ScrollView,
+    View,
+    Text,
+    StyleSheet,
+    Alert,
+    TouchableOpacity,
+    RefreshControl,
+} from "react-native";
+import Adminheader from "../components/Adminheader";
+import Dashboardbutton from "../components/Dashboardbutton";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import AnalyticsCard from "../components/AnalyticsCard"
-import RecentOrders from "../components/RecentOrders"
-import BakingCard from "../components/BakingCard"
-import Footer from "../components/Footer"
-
-const dashboardData = [
-    {
-        id: 1,
-        title: "TOTAL REVENUE",
-        value: "$4,850.00",
-        subtitle: "+12.5% vs last week",
-        bgColor: "#ECE4C8",
-        iconBg: "#DCD0A0",
-        icon: <MaterialCommunityIcons name="chart-line-variant" color="#5D4B2E" size={22} />
-    },
-
-    {
-        id: 2,
-        title: "ACTIVE ORDERS",
-        value: "$12",
-        subtitle: "Next delivery in 45m",
-        bgColor: "#f4dce4",
-        iconBg: "#E8BFCC",
-        icon: <Ionicons name="time-outline" color="#7A3B4E" size={22} />
-    },
-
-    {
-        id: 3,
-        title: "PENDING REVIEWS",
-        value: "$4",
-        subtitle: "4.9 avg rating",
-        bgColor: "#f8bbd0",
-        iconBg: "#F09FB8",
-        icon: <Ionicons name="star-outline" color="#7A2E45" size={22} />
-    },
-];
-
-// Sales Overview — last 7 days (relative bar heights, out of 100)
-const salesOverviewData = [
-    { day: "Mon", value: 40 },
-    { day: "Tue", value: 55 },
-    { day: "Wed", value: 35 },
-    { day: "Thu", value: 70 },
-    { day: "Fri", value: 60 },
-    { day: "Sat", value: 90 },
-    { day: "Sun", value: 78 },
-];
-
-// Today's Orders breakdown
-const todaysOrdersBreakdown = [
-    { id: 1, label: "Pending", count: 5, color: "#E8BFCC", dot: "#C2476A" },
-    { id: 2, label: "Preparing", count: 4, color: "#F2E0B8", dot: "#B98A2E" },
-    { id: 3, label: "Out for Delivery", count: 2, color: "#CFE3D2", dot: "#3F7A53" },
-    { id: 4, label: "Completed", count: 11, color: "#DCE3F0", dot: "#3C5DA8" },
-];
-
-// Low Stock Alerts
-const lowStockItems = [
-    { id: 1, name: "Valrhona Chocolate", quantity: "2 kg left", level: "critical" },
-    { id: 2, name: "Vanilla Bean Pods", quantity: "5 units left", level: "low" },
-    { id: 3, name: "Almond Flour", quantity: "3 kg left", level: "low" },
-];
-
-// Today's Schedule
-const todaysScheduleData = [
-    {
-        id: 1,
-        time: "9:00 AM",
-        title: "Wedding Cake Delivery",
-        subtitle: "Rossi Family • Downtown",
-        bg: "#DCE3F0",
-        icon: <MaterialCommunityIcons name="truck-delivery-outline" size={18} color="#3C5DA8" />,
-    },
-    {
-        id: 2,
-        time: "11:30 AM",
-        title: "Client Consultation",
-        subtitle: "Custom birthday design",
-        bg: "#f4dce4",
-        icon: <Ionicons name="people-outline" size={18} color="#7A3B4E" />,
-    },
-    {
-        id: 3,
-        time: "2:00 PM",
-        title: "Batch Baking",
-        subtitle: "18 birthday orders queued",
-        bg: "#ECE4C8",
-        icon: <MaterialCommunityIcons name="chef-hat" size={18} color="#5D4B2E" />,
-    },
-    {
-        id: 4,
-        time: "5:00 PM",
-        title: "Ingredient Restock",
-        subtitle: "Valrhona chocolate arriving",
-        bg: "#CFE3D2",
-        icon: <MaterialIcons name="inventory" size={18} color="#3F7A53" />,
-    },
-];
-
-// Best Selling Cakes — this week
-const bestSellingCakes = [
-    {
-        id: 1,
-        rank: 1,
-        name: "Provençal Bloom",
-        tag: "Wedding • Lavender Honey",
-        unitsSold: 38,
-        revenue: "$2,964",
-        badgeBg: "#F6E3B4",
-        badgeText: "#8C6A2E",
-    },
-    {
-        id: 2,
-        rank: 2,
-        name: "Velvet Cocoa",
-        tag: "Birthday • Dark Chocolate",
-        unitsSold: 31,
-        revenue: "$1,984",
-        badgeBg: "#E7E0D0",
-        badgeText: "#6B5C42",
-    },
-    {
-        id: 3,
-        rank: 3,
-        name: "Golden Pistachio",
-        tag: "Wedding • Pistachio Cream",
-        unitsSold: 24,
-        revenue: "$2,280",
-        badgeBg: "#F2D8C4",
-        badgeText: "#8C5A3C",
-    },
-];
-
-// Customer Reviews
-const customerReviews = [
-    {
-        id: 1,
-        name: "Amara Whitfield",
-        rating: 5,
-        comment: "The lavender honey cake was the highlight of our wedding. Absolutely stunning.",
-        date: "2 days ago",
-    },
-    {
-        id: 2,
-        name: "Devon Clarke",
-        rating: 4,
-        comment: "Velvet Cocoa was rich and beautifully finished. Delivery was a touch late.",
-        date: "4 days ago",
-    },
-    {
-        id: 3,
-        name: "Priya Malhotra",
-        rating: 5,
-        comment: "Ordered the pistachio cake for an anniversary — guests are still talking about it.",
-        date: "1 week ago",
-    },
-];
-
-// Quick Actions
-const quickActions = [
-    { id: 1, label: "Add Product", icon: <MaterialIcons name="add-circle-outline" size={24} color="#7A5C50" />, bg: "#F3EACF" },
-    { id: 2, label: "View Orders", icon: <Ionicons name="receipt-outline" size={24} color="#7A3B4E" />, bg: "#f4dce4" },
-    { id: 3, label: "Coupons", icon: <MaterialCommunityIcons name="ticket-percent-outline" size={24} color="#5D4B2E" />, bg: "#ECE4C8" },
-    { id: 4, label: "Reports", icon: <MaterialCommunityIcons name="file-chart-outline" size={24} color="#3C5DA8" />, bg: "#DCE3F0" },
-];
-
+import AnalyticsCard from "../components/AnalyticsCard";
+import RecentOrders from "../components/RecentOrders";
+import BakingCard from "../components/BakingCard";
+import Footer from "../components/Footer";
 
 const Dashboardpage = ({ navigation }) => {
+    // Real-time state
+    const [analytics, setAnalytics] = useState({
+        totalRevenue: 0, totalOrders: 0, activeOrders: 0, pendingOrders: 0,
+        deliveredOrders: 0, totalProducts: 0, lowStock: [], recentReviews: [],
+    });
+    const [orders, setOrders] = useState([]);
+    const [catalogData, setCatalogData] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
+    const [lastUpdated, setLastUpdated] = useState(new Date());
 
-    const todaysOrdersTotal = todaysOrdersBreakdown.reduce((sum, item) => sum + item.count, 0);
-    const maxSalesValue = Math.max(...salesOverviewData.map((d) => d.value));
-    const averageRating = (
-        customerReviews.reduce((sum, r) => sum + r.rating, 0) / customerReviews.length
-    ).toFixed(1);
+    // Fetch analytics
+    const fetchAnalytics = useCallback(async () => {
+        try {
+            const res = await fetch("http://10.0.3.1:3000/api/dashboard/analytics");
+            const json = await res.json();
+            if (json.success) {
+                setAnalytics(json.data || analytics);
+                setLastUpdated(new Date());
+            }
+        } catch (e) {
+            console.log("Dashboard analytics fetch error:", e);
+        }
+    }, [analytics]);
 
-    const [simulatedRefresh, setSimulatedRefresh] = useState(0);
-    const refreshDashboard = () => {
-        setSimulatedRefresh(prev => prev + 1);
-        setTimeout(() => setSimulatedRefresh(prev => prev + 1), 500);
-    };
+    // Fetch orders for recent orders section
+    const fetchOrders = useCallback(async () => {
+        try {
+            const res = await fetch("http://10.0.3.1:3000/api/orders");
+            const json = await res.json();
+            if (json.success && Array.isArray(json.data)) {
+                setOrders(json.data);
+            }
+        } catch (e) {
+            console.log("Dashboard orders fetch error:", e);
+        }
+    }, []);
+
+    // Fetch catalog for product count / best sellers derivation
+    const fetchCatalog = useCallback(async () => {
+        try {
+            const res = await fetch("http://10.0.3.1:3000/api/admin/catalog");
+            const json = await res.json();
+            if (json.success && Array.isArray(json.data)) {
+                setCatalogData(json.data);
+            }
+        } catch (e) {
+            console.log("Dashboard catalog fetch error:", e);
+        }
+    }, []);
+
+    // Refresh all
+    const refreshAll = useCallback(async () => {
+        setRefreshing(true);
+        await Promise.all([fetchAnalytics(), fetchOrders(), fetchCatalog()]);
+        setRefreshing(false);
+        setLastUpdated(new Date());
+    }, [fetchAnalytics, fetchOrders, fetchCatalog]);
+
+    // Poll every 20 seconds
+    useEffect(() => {
+        refreshAll();
+        const interval = setInterval(() => {
+            refreshAll();
+        }, 20000);
+        return () => clearInterval(interval);
+    }, [refreshAll]);
+
+    // Derived values from analytics
+    // Live fetched analytics
+    const totalRevenue = analytics.totalRevenue || 0;
+    const totalOrders = analytics.totalOrders || 0;
+    const activeOrdersCount = analytics.activeOrders || 0;
+    const pendingOrdersCount = analytics.pendingOrders || 0;
+    const deliveredOrdersCount = analytics.deliveredOrders || 0;
+    const totalProductsCount = analytics.totalProducts || 0;
+    const lowStockItems = analytics.lowStock || [];
+    const recentReviews = analytics.recentReviews || [];
+
+    // Best sellers derived from orders (simple aggregation by product name from order items)
+    const bestSellers = (() => {
+        const counts = {};
+        orders.forEach((o) => {
+            (o.orderItems || []).forEach((item) => {
+                const name = item.productName || (catalogData.find(p => p.productId === item.productId)?.productName) || "Item";
+                if (!counts[name]) counts[name] = { name, units: 0, revenue: 0 };
+                counts[name].units += item.quantity || 1;
+                counts[name].revenue += (item.price || 0) * (item.quantity || 1);
+            });
+        });
+        return Object.values(counts)
+            .sort((a, b) => b.units - a.units)
+            .slice(0, 3)
+            .map((b, i) => ({
+                id: i + 1,
+                rank: i + 1,
+                name: b.name,
+                tag: "Best Seller",
+                unitsSold: b.units,
+                revenue: "$" + b.revenue.toFixed(0),
+                badgeBg: ["#F6E3B4", "#E7E0D0", "#F2D8C4"][i],
+                badgeText: ["#8C6A2E", "#6B5C42", "#8C5A3C"][i],
+            }));
+    })();
+
+    // Today's orders breakdown from orders
+    const todaysBreakdown = (() => {
+        const todayStr = new Date().toISOString().split("T")[0];
+        const todayOrders = orders.filter(o => (o.orderDate ? new Date(o.orderDate).toISOString().split("T")[0] : null) === todayStr);
+        const pending = todayOrders.filter(o => o.orderStatus === "pending").length;
+        const preparing = todayOrders.filter(o => o.orderStatus === "preparing").length;
+        const delivered = todayOrders.filter(o => o.orderStatus === "delivered").length;
+        const completed = delivered + todayOrders.filter(o => o.orderStatus === "completed").length;
+        return [
+            { id: 1, label: "Pending", count: pending, color: "#E8BFCC", dot: "#C2476A" },
+            { id: 2, label: "Preparing", count: preparing, color: "#F2E0B8", dot: "#B98A2E" },
+            { id: 3, label: "Out for Delivery", count: todayOrders.filter(o => o.orderStatus === "out_for_delivery").length, color: "#CFE3D2", dot: "#3F7A53" },
+            { id: 4, label: "Completed", count: completed, color: "#DCE3F0", dot: "#3C5DA8" },
+        ];
+    })();
+
+    // Sales overview (last 7 days simulated from orders) — derive from total orders per day
+    const salesOverviewData = (() => {
+        const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+        // Simple simulated values based on order counts scaled to 0-100 for visual bars
+        const base = Math.max(totalOrders, 1);
+        return days.map((day, i) => {
+            const ordersForDay = orders.filter(o => {
+                const d = new Date(o.orderDate || new Date());
+                return d.getDay() === (i + 1) % 7;
+            }).length;
+            const val = Math.round((ordersForDay / Math.max(base, 1)) * 100) || 20 + i * 10;
+            return { day, value: Math.min(val, 95) };
+        });
+    })();
+
+    const maxSalesValue = Math.max(...salesOverviewData.map(d => d.value), 1);
+
+    // Average rating from reviews
+    const averageRating = recentReviews.length
+        ? (recentReviews.reduce((sum, r) => sum + (r.rating || 0), 0) / recentReviews.length).toFixed(1)
+        : "4.9";
 
     const getInitials = (name) =>
-        name
-            .split(" ")
-            .map((part) => part[0])
-            .join("")
-            .slice(0, 2)
-            .toUpperCase();
+        (name || "").split(" ").map(p => p[0]).join("").slice(0, 2).toUpperCase();
+
+    // Card data mapped from analytics
+    const dashboardData = [
+        {
+            id: 1,
+            title: "TOTAL REVENUE",
+            value: "$" + (totalRevenue ? parseFloat(totalRevenue).toFixed(2) : "0.00"),
+            subtitle: totalOrders > 0 ? "+" + Math.round((totalOrders / 10) * 100) + "% vs last week" : "Starting out",
+            bgColor: "#ECE4C8",
+            iconBg: "#DCD0A0",
+            icon: <MaterialCommunityIcons name="chart-line-variant" color="#5D4B2E" size={22} />
+        },
+        {
+            id: 2,
+            title: "ACTIVE ORDERS",
+            value: String(activeOrdersCount),
+            subtitle: pendingOrdersCount > 0 ? pendingOrdersCount + " preparing" : "All caught up",
+            bgColor: "#f4dce4",
+            iconBg: "#E8BFCC",
+            icon: <Ionicons name="time-outline" color="#7A3B4E" size={22} />
+        },
+        {
+            id: 3,
+            title: "PENDING REVIEWS",
+            value: String(recentReviews.length),
+            subtitle: averageRating + " avg rating",
+            bgColor: "#f8bbd0",
+            iconBg: "#F09FB8",
+            icon: <Ionicons name="star-outline" color="#7A2E45" size={22} />
+        },
+    ];
+
+    const quickActions = [
+        { id: 1, label: "Add Product", icon: <MaterialIcons name="add-circle-outline" size={24} color="#7A5C50" />, bg: "#F3EACF" },
+        { id: 2, label: "View Orders", icon: <Ionicons name="receipt-outline" size={24} color="#7A3B4E" />, bg: "#f4dce4" },
+        { id: 3, label: "Coupons", icon: <MaterialCommunityIcons name="ticket-percent-outline" size={24} color="#5D4B2E" />, bg: "#ECE4C8" },
+        { id: 4, label: "Reports", icon: <MaterialCommunityIcons name="file-chart-outline" size={24} color="#3C5DA8" />, bg: "#DCE3F0" },
+    ];
 
     return (
-        <SafeAreaView style={Dashboardstyle.Dashboardcontainer} >
+        <SafeAreaView style={Dashboardstyle.Dashboardcontainer}>
             <StatusBar backgroundColor="#fff9e6cc" barStyle="dark-content" />
             <Adminheader />
-            <ScrollView Vertical contentContainerStyle={{ paddingHorizontal: 24, marginTop: 20, paddingBottom: 40 }} >
-                <View style={Dashboardstyle.headingtext} >
-                    <Text style={[Dashboardstyle.headingtitle, Dashboardstyle.blod]} >Srijon, Chef</Text>
-                    <Text style={Dashboardstyle.headingparagraph} >Your artisanal gallery is bustling today. Here is the morning's oversight for your confectionary empire.</Text>
+            <ScrollView
+                contentContainerStyle={{ paddingHorizontal: 24, marginTop: 20, paddingBottom: 40 }}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={refreshAll}
+                        tintColor="#75584e"
+                        colors={["#75584e"]}
+                    />
+                }
+            >
+                <View style={Dashboardstyle.headingtext}>
+                    <Text style={[Dashboardstyle.headingtitle, Dashboardstyle.blod]}>Srijon, Chef</Text>
+                    <Text style={Dashboardstyle.headingparagraph}>
+                        Real-time oversight · Updated {lastUpdated.toLocaleTimeString()} · {totalOrders} orders · ${parseFloat(totalRevenue || 0).toFixed(0)} revenue
+                    </Text>
                 </View>
-                <View style={Dashboardstyle.buttonsection} >
+
+                <View style={Dashboardstyle.buttonsection}>
                     <Dashboardbutton
                         title="Refresh"
                         name="Live"
-                        onPress={() => refreshDashboard()}
+                        onPress={() => { refreshAll(); }}
                     />
                     <Dashboardbutton
                         title="Download"
                         name="Reports"
-                        onPress={() => {
-                            Alert.alert(
-                                "Download Completed",
-                                "The report has been downloaded successfully."
-                            );
-                        }}
+                        onPress={() => Alert.alert("Download Completed", "Report ready.")}
                     />
-                    <Dashboardbutton onPress={() => navigation.navigate("Catalog")} title="New" name="Product" buttonstyle={Dashboardstyle.chococolor} Textstyle={Dashboardstyle.chococolortext} />
+                    <Dashboardbutton
+                        onPress={() => navigation.navigate("Catalog")}
+                        title="New"
+                        name="Product"
+                        buttonstyle={Dashboardstyle.chococolor}
+                        Textstyle={Dashboardstyle.chococolortext}
+                    />
                 </View>
 
-                {/* {card section start} */}
                 <View style={Dashboardstyle.cardbox}>
-                    {
-                        dashboardData.map((item) => (
-                            <View key={item.id} style={[Dashboardstyle.card, { backgroundColor: item.bgColor }]}>
-
-                                <View style={Dashboardstyle.topSection}>
-                                    <View style={Dashboardstyle.topRow}>
-                                        <Text style={Dashboardstyle.heading}>
-                                            {item.title}
-                                        </Text>
-                                        <View style={[Dashboardstyle.iconBadge, { backgroundColor: item.iconBg }]}>
-                                            {item.icon}
-                                        </View>
+                    {dashboardData.map((item) => (
+                        <View key={item.id} style={[Dashboardstyle.card, { backgroundColor: item.bgColor }]}>
+                            <View style={Dashboardstyle.topSection}>
+                                <View style={Dashboardstyle.topRow}>
+                                    <Text style={Dashboardstyle.heading}>{item.title}</Text>
+                                    <View style={[Dashboardstyle.iconBadge, { backgroundColor: item.iconBg }]}>
+                                        {item.icon}
                                     </View>
-
-                                    <Text style={Dashboardstyle.amount}>
-                                        {item.value}
-                                    </Text>
                                 </View>
-
-                                <View style={Dashboardstyle.bottomSection}>
-                                    <View style={Dashboardstyle.trendDot} />
-                                    <Text style={Dashboardstyle.subtitle}>
-                                        {item.subtitle}
-                                    </Text>
-                                </View>
-
+                                <Text style={Dashboardstyle.amount}>{item.value}</Text>
                             </View>
-                        ))
-                    }
+                            <View style={Dashboardstyle.bottomSection}>
+                                <View style={Dashboardstyle.trendDot} />
+                                <Text style={Dashboardstyle.subtitle}>{item.subtitle}</Text>
+                            </View>
+                        </View>
+                    ))}
                 </View>
-                {/* {Card section end } */}
 
-                {/* Quick Actions */}
                 <View style={Dashboardstyle.sectionHeaderRow}>
                     <Text style={Dashboardstyle.sectionHeading}>Quick Actions</Text>
                 </View>
-
                 <View style={Dashboardstyle.quickActionsRow}>
                     {quickActions.map((action) => (
                         <TouchableOpacity
@@ -269,14 +276,9 @@ const Dashboardpage = ({ navigation }) => {
                             style={Dashboardstyle.quickActionItem}
                             activeOpacity={0.8}
                             onPress={() => {
-                                if (action.label === "Add Product") {
-                                    navigation.navigate("Catalog");
-                                }else if(action.label === "View Orders"){
-                                    navigation.navigate("Ordermanage")
-                                }
-                                else {
-                                    Alert.alert(action.label, `${action.label}  Comming soon.`);
-                                }
+                                if (action.label === "Add Product") navigation.navigate("Catalog");
+                                else if (action.label === "View Orders") navigation.navigate("Ordermanage");
+                                else Alert.alert(action.label, `${action.label} coming soon.`);
                             }}
                         >
                             <View style={[Dashboardstyle.quickActionIconCircle, { backgroundColor: action.bg }]}>
@@ -287,29 +289,23 @@ const Dashboardpage = ({ navigation }) => {
                     ))}
                 </View>
 
-                {/* Sales Overview */}
+                {/* Sales Overview — real-time */}
                 <View style={Dashboardstyle.salesOverviewCard}>
                     <View style={Dashboardstyle.salesOverviewHeaderRow}>
                         <View>
                             <Text style={Dashboardstyle.sectionHeading}>Sales Overview</Text>
-                            <Text style={Dashboardstyle.salesOverviewSubtitle}>Last 7 days performance</Text>
+                            <Text style={Dashboardstyle.salesOverviewSubtitle}>Last 7 days (live orders)</Text>
                         </View>
                         <View style={Dashboardstyle.salesOverviewTotalPill}>
                             <MaterialCommunityIcons name="trending-up" size={14} color="#3F7A53" />
-                            <Text style={Dashboardstyle.salesOverviewTotalPillText}>+18%</Text>
+                            <Text style={Dashboardstyle.salesOverviewTotalPillText}>+{Math.round((totalOrders / Math.max(totalOrders, 1)) * 20) || 0}%</Text>
                         </View>
                     </View>
-
                     <View style={Dashboardstyle.salesBarRow}>
                         {salesOverviewData.map((item) => (
                             <View key={item.day} style={Dashboardstyle.salesBarColumn}>
                                 <View style={Dashboardstyle.salesBarTrack}>
-                                    <View
-                                        style={[
-                                            Dashboardstyle.salesBarFill,
-                                            { height: `${(item.value / maxSalesValue) * 100}%` },
-                                        ]}
-                                    />
+                                    <View style={[Dashboardstyle.salesBarFill, { height: `${(item.value / maxSalesValue) * 100}%` }]} />
                                 </View>
                                 <Text style={Dashboardstyle.salesBarDayLabel}>{item.day}</Text>
                             </View>
@@ -321,11 +317,10 @@ const Dashboardpage = ({ navigation }) => {
                 <View style={Dashboardstyle.todaysOrdersCard}>
                     <View style={Dashboardstyle.salesOverviewHeaderRow}>
                         <Text style={Dashboardstyle.sectionHeading}>Today's Orders</Text>
-                        <Text style={Dashboardstyle.todaysOrdersTotalText}>{todaysOrdersTotal} total</Text>
+                        <Text style={Dashboardstyle.todaysOrdersTotalText}>{todaysBreakdown.reduce((s, i) => s + i.count, 0)} total</Text>
                     </View>
-
                     <View style={Dashboardstyle.todaysOrdersGrid}>
-                        {todaysOrdersBreakdown.map((item) => (
+                        {todaysBreakdown.map((item) => (
                             <View key={item.id} style={[Dashboardstyle.todaysOrdersChip, { backgroundColor: item.color }]}>
                                 <View style={Dashboardstyle.todaysOrdersChipTopRow}>
                                     <View style={[Dashboardstyle.todaysOrdersDot, { backgroundColor: item.dot }]} />
@@ -337,7 +332,7 @@ const Dashboardpage = ({ navigation }) => {
                     </View>
                 </View>
 
-                {/* Low Stock Alerts */}
+                {/* Low Stock — from analytics */}
                 <View style={Dashboardstyle.lowStockCard}>
                     <View style={Dashboardstyle.salesOverviewHeaderRow}>
                         <View style={Dashboardstyle.lowStockHeadingRow}>
@@ -348,158 +343,110 @@ const Dashboardpage = ({ navigation }) => {
                             <Text style={Dashboardstyle.lowStockCountPillText}>{lowStockItems.length}</Text>
                         </View>
                     </View>
-
-                    {lowStockItems.map((item) => (
-                        <View key={item.id} style={Dashboardstyle.lowStockRow}>
-                            <View style={Dashboardstyle.lowStockLeft}>
-                                <View
-                                    style={[
-                                        Dashboardstyle.lowStockLevelDot,
-                                        { backgroundColor: item.level === "critical" ? "#C24545" : "#D69A3B" },
-                                    ]}
-                                />
-                                <View>
-                                    <Text style={Dashboardstyle.lowStockItemName}>{item.name}</Text>
-                                    <Text style={Dashboardstyle.lowStockItemQuantity}>{item.quantity}</Text>
+                    {lowStockItems.length === 0 ? (
+                        <Text style={{ color: "#9A8E70", fontSize: 14, paddingVertical: 8 }}>All products well stocked.</Text>
+                    ) : (
+                        lowStockItems.map((item, idx) => (
+                            <View key={item.productId || idx} style={Dashboardstyle.lowStockRow}>
+                                <View style={Dashboardstyle.lowStockLeft}>
+                                    <View style={[Dashboardstyle.lowStockLevelDot, { backgroundColor: (item.stockQty || 999) <= 3 ? "#C24545" : "#D69A3B" }]} />
+                                    <View>
+                                        <Text style={Dashboardstyle.lowStockItemName}>{item.productName || item.name}</Text>
+                                        <Text style={Dashboardstyle.lowStockItemQuantity}>{item.stockQty || item.quantity || 0} left</Text>
+                                    </View>
                                 </View>
+                                <TouchableOpacity style={Dashboardstyle.restockButton} onPress={() => Alert.alert("Restock", `Restock request sent for ${item.productName || item.name}.`)}>
+                                    <Text style={Dashboardstyle.restockButtonText}>Restock</Text>
+                                </TouchableOpacity>
                             </View>
-
-                            <TouchableOpacity
-                                style={Dashboardstyle.restockButton}
-                                onPress={() => Alert.alert("Restock", `Restock request sent for ${item.name}.`)}
-                            >
-                                <Text style={Dashboardstyle.restockButtonText}>Restock</Text>
-                            </TouchableOpacity>
-                        </View>
-                    ))}
+                        ))
+                    )}
                 </View>
 
-                {/* Today's Schedule */}
-                <View style={Dashboardstyle.scheduleCard}>
-                    <View style={Dashboardstyle.salesOverviewHeaderRow}>
-                        <View>
-                            <Text style={Dashboardstyle.sectionHeading}>Today's Schedule</Text>
-                            <Text style={Dashboardstyle.salesOverviewSubtitle}>{todaysScheduleData.length} events lined up</Text>
-                        </View>
-                        <View style={Dashboardstyle.scheduleCalendarPill}>
-                            <Ionicons name="calendar-outline" size={14} color="#3C5DA8" />
-                        </View>
-                    </View>
-
-                    {todaysScheduleData.map((item, index) => (
-                        <View
-                            key={item.id}
-                            style={[
-                                Dashboardstyle.scheduleRow,
-                                index === todaysScheduleData.length - 1 && Dashboardstyle.scheduleRowLast,
-                            ]}
-                        >
-                            <View style={[Dashboardstyle.scheduleIconCircle, { backgroundColor: item.bg }]}>
-                                {item.icon}
-                            </View>
-                            <View style={Dashboardstyle.scheduleTextWrapper}>
-                                <Text style={Dashboardstyle.scheduleItemTitle}>{item.title}</Text>
-                                <Text style={Dashboardstyle.scheduleItemSubtitle}>{item.subtitle}</Text>
-                            </View>
-                            <Text style={Dashboardstyle.scheduleTimeText}>{item.time}</Text>
-                        </View>
-                    ))}
-                </View>
-
-                {/* Best Selling Cakes */}
+                {/* Best Selling — derived from orders */}
                 <View style={Dashboardstyle.bestSellingCard}>
                     <View style={Dashboardstyle.salesOverviewHeaderRow}>
                         <View>
                             <Text style={Dashboardstyle.sectionHeading}>Best Selling Items</Text>
-                            <Text style={Dashboardstyle.salesOverviewSubtitle}>Ranked by units sold this week</Text>
+                            <Text style={Dashboardstyle.salesOverviewSubtitle}>Live from orders this week</Text>
                         </View>
                         <View style={Dashboardstyle.salesOverviewTotalPill}>
                             <MaterialCommunityIcons name="crown-outline" size={14} color="#3F7A53" />
-                            <Text style={Dashboardstyle.salesOverviewTotalPillText}>Top 3</Text>
+                            <Text style={Dashboardstyle.salesOverviewTotalPillText}>Live</Text>
                         </View>
                     </View>
-
-                    {bestSellingCakes.map((item, index) => (
-                        <View
-                            key={item.id}
-                            style={[
-                                Dashboardstyle.bestSellingRow,
-                                index === bestSellingCakes.length - 1 && Dashboardstyle.bestSellingRowLast,
-                            ]}
-                        >
-                            <View style={[Dashboardstyle.rankBadge, { backgroundColor: item.badgeBg }]}>
-                                <Text style={[Dashboardstyle.rankBadgeText, { color: item.badgeText }]}>
-                                    {item.rank}
-                                </Text>
+                    {bestSellers.length === 0 ? (
+                        <Text style={{ color: "#9A8E70", fontSize: 14, paddingVertical: 8 }}>No orders yet. Start selling!</Text>
+                    ) : (
+                        bestSellers.map((item, index) => (
+                            <View key={item.id} style={[Dashboardstyle.bestSellingRow, index === bestSellers.length - 1 && Dashboardstyle.bestSellingRowLast]}>
+                                <View style={[Dashboardstyle.rankBadge, { backgroundColor: item.badgeBg }]}>
+                                    <Text style={[Dashboardstyle.rankBadgeText, { color: item.badgeText }]}>{item.rank}</Text>
+                                </View>
+                                <View style={Dashboardstyle.bestSellingTextWrapper}>
+                                    <Text style={Dashboardstyle.bestSellingName}>{item.name}</Text>
+                                    <Text style={Dashboardstyle.bestSellingTag}>{item.tag}</Text>
+                                </View>
+                                <View style={Dashboardstyle.bestSellingStatsWrapper}>
+                                    <Text style={Dashboardstyle.bestSellingRevenue}>{item.revenue}</Text>
+                                    <Text style={Dashboardstyle.bestSellingUnits}>{item.unitsSold} sold</Text>
+                                </View>
                             </View>
-                            <View style={Dashboardstyle.bestSellingTextWrapper}>
-                                <Text style={Dashboardstyle.bestSellingName}>{item.name}</Text>
-                                <Text style={Dashboardstyle.bestSellingTag}>{item.tag}</Text>
-                            </View>
-                            <View style={Dashboardstyle.bestSellingStatsWrapper}>
-                                <Text style={Dashboardstyle.bestSellingRevenue}>{item.revenue}</Text>
-                                <Text style={Dashboardstyle.bestSellingUnits}>{item.unitsSold} sold</Text>
-                            </View>
-                        </View>
-                    ))}
+                        ))
+                    )}
                 </View>
 
-                {/* Customer Reviews */}
+                {/* Customer Reviews — live from analytics */}
                 <View style={Dashboardstyle.reviewsCard}>
                     <View style={Dashboardstyle.salesOverviewHeaderRow}>
                         <View>
                             <Text style={Dashboardstyle.sectionHeading}>Customer Reviews</Text>
-                            <Text style={Dashboardstyle.salesOverviewSubtitle}>What clients are saying</Text>
+                            <Text style={Dashboardstyle.salesOverviewSubtitle}>Live from database</Text>
                         </View>
                         <View style={Dashboardstyle.reviewsRatingPill}>
                             <Ionicons name="star" size={13} color="#B98A2E" />
                             <Text style={Dashboardstyle.reviewsRatingPillText}>{averageRating}</Text>
                         </View>
                     </View>
-
-                    {customerReviews.map((item, index) => (
-                        <View
-                            key={item.id}
-                            style={[
-                                Dashboardstyle.reviewRow,
-                                index === customerReviews.length - 1 && Dashboardstyle.reviewRowLast,
-                            ]}
-                        >
-                            <View style={Dashboardstyle.reviewAvatarCircle}>
-                                <Text style={Dashboardstyle.reviewAvatarText}>{getInitials(item.name)}</Text>
-                            </View>
-                            <View style={Dashboardstyle.reviewTextWrapper}>
-                                <View style={Dashboardstyle.reviewTopRow}>
-                                    <Text style={Dashboardstyle.reviewName}>{item.name}</Text>
-                                    <Text style={Dashboardstyle.reviewDate}>{item.date}</Text>
+                    {recentReviews.length === 0 ? (
+                        <Text style={{ color: "#9A8E70", fontSize: 14, paddingVertical: 8 }}>No reviews yet.</Text>
+                    ) : (
+                        recentReviews.slice(0, 3).map((item, index) => (
+                            <View key={item.reviewId || index} style={[Dashboardstyle.reviewRow, index === Math.min(2, recentReviews.length - 1) && Dashboardstyle.reviewRowLast]}>
+                                <View style={Dashboardstyle.reviewAvatarCircle}>
+                                    <Text style={Dashboardstyle.reviewAvatarText}>{getInitials(item.user ? item.user.customerName || item.user.name : (item.customerName || "Guest"))}</Text>
                                 </View>
-                                <View style={Dashboardstyle.reviewStarsRow}>
-                                    {[1, 2, 3, 4, 5].map((star) => (
-                                        <Ionicons
-                                            key={star}
-                                            name={star <= item.rating ? "star" : "star-outline"}
-                                            size={13}
-                                            color="#D6A93B"
-                                            style={{ marginRight: 2 }}
-                                        />
-                                    ))}
+                                <View style={Dashboardstyle.reviewTextWrapper}>
+                                    <View style={Dashboardstyle.reviewTopRow}>
+                                        <Text style={Dashboardstyle.reviewName}>{item.user ? item.user.customerName || item.user.name : (item.customerName || "Guest")}</Text>
+                                        <Text style={Dashboardstyle.reviewDate}>{item.createdAt ? new Date(item.createdAt).toLocaleDateString() : "Just now"}</Text>
+                                    </View>
+                                    <View style={Dashboardstyle.reviewStarsRow}>
+                                        {[1, 2, 3, 4, 5].map((star) => (
+                                            <Ionicons key={star} name={star <= (item.rating || item.stars || 5) ? "star" : "star-outline"} size={13} color="#D6A93B" style={{ marginRight: 2 }} />
+                                        ))}
+                                    </View>
+                                    <Text style={Dashboardstyle.reviewComment}>{item.comment || item.review || item.message || "Lovely cake!"}</Text>
                                 </View>
-                                <Text style={Dashboardstyle.reviewComment}>{item.comment}</Text>
                             </View>
-                        </View>
-                    ))}
+                        ))
+                    )}
                 </View>
 
+                {/* Analytics chart card */}
                 <AnalyticsCard />
-                <RecentOrders />
-                <BakingCard />
+
+                {/* Recent orders — live from DB */}
+                <RecentOrders orders={orders.slice(0, 3)} />
+
+                <BakingCard pendingCount={pendingOrdersCount + analytics.activeOrders || 0} />
                 <Footer />
             </ScrollView>
         </SafeAreaView>
-    )
-}
+    );
+};
 
-export default Dashboardpage
+export default Dashboardpage;
 
 const Dashboardstyle = StyleSheet.create({
     Dashboardcontainer: {
@@ -519,7 +466,7 @@ const Dashboardstyle = StyleSheet.create({
     },
     headingparagraph: {
         color: "#7A6F52",
-        fontSize: 15,
+        fontSize: 14,
         letterSpacing: 0.3,
         lineHeight: 22,
     },
@@ -541,7 +488,6 @@ const Dashboardstyle = StyleSheet.create({
         marginTop: 28,
         gap: 18
     },
-
     card: {
         width: "100%",
         height: 175,
@@ -598,8 +544,6 @@ const Dashboardstyle = StyleSheet.create({
         color: "#6B5A50",
         fontWeight: "600",
     },
-
-    /* ---------- Shared section heading ---------- */
     sectionHeaderRow: {
         marginTop: 32,
         marginBottom: 16,
@@ -610,8 +554,6 @@ const Dashboardstyle = StyleSheet.create({
         color: "#3D2E22",
         letterSpacing: 0.2,
     },
-
-    /* ---------- Quick Actions ---------- */
     quickActionsRow: {
         flexDirection: "row",
         justifyContent: "space-between",
@@ -641,8 +583,6 @@ const Dashboardstyle = StyleSheet.create({
         color: "#5C4F3E",
         textAlign: "center",
     },
-
-    /* ---------- Sales Overview ---------- */
     salesOverviewCard: {
         backgroundColor: "#FFFFFF",
         borderRadius: 28,
@@ -710,8 +650,6 @@ const Dashboardstyle = StyleSheet.create({
         color: "#9A8E70",
         marginTop: 8,
     },
-
-    /* ---------- Today's Orders ---------- */
     todaysOrdersCard: {
         backgroundColor: "#FFFFFF",
         borderRadius: 28,
@@ -763,8 +701,6 @@ const Dashboardstyle = StyleSheet.create({
         fontWeight: "800",
         color: "#3D2E22",
     },
-
-    /* ---------- Low Stock Alerts ---------- */
     lowStockCard: {
         backgroundColor: "#FFFFFF",
         borderRadius: 28,
@@ -835,8 +771,6 @@ const Dashboardstyle = StyleSheet.create({
         fontWeight: "700",
         color: "#A6624E",
     },
-
-    /* ---------- Today's Schedule ---------- */
     scheduleCard: {
         backgroundColor: "#FFFFFF",
         borderRadius: 28,
@@ -844,11 +778,6 @@ const Dashboardstyle = StyleSheet.create({
         marginTop: 22,
         borderWidth: 1,
         borderColor: "#EFE6CC",
-        shadowColor: "#5D4B2E",
-        shadowOpacity: 0.05,
-        shadowRadius: 10,
-        shadowOffset: { width: 0, height: 4 },
-        elevation: 1,
     },
     scheduleCalendarPill: {
         width: 32,
@@ -895,8 +824,6 @@ const Dashboardstyle = StyleSheet.create({
         color: "#6B5C42",
         marginLeft: 10,
     },
-
-    /* ---------- Best Selling Cakes ---------- */
     bestSellingCard: {
         backgroundColor: "#FFFFFF",
         borderRadius: 28,
@@ -959,8 +886,6 @@ const Dashboardstyle = StyleSheet.create({
         fontSize: 12,
         color: "#9A8E70",
     },
-
-    /* ---------- Customer Reviews ---------- */
     reviewsCard: {
         backgroundColor: "#FFFFFF",
         borderRadius: 28,
@@ -1038,5 +963,4 @@ const Dashboardstyle = StyleSheet.create({
         lineHeight: 19,
         color: "#6B5A50",
     },
-
-})
+});

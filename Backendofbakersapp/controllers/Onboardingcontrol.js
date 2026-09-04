@@ -1,5 +1,16 @@
 import prisma from "../config/prisma.js";
 
+export const getStoreProfile = async (req, res) => {
+    try {
+        const profile = await prisma.storeProfile.findFirst({
+            orderBy: { id: "desc" },
+        });
+        res.json({ success: true, store: profile || null });
+    } catch (e) {
+        res.status(500).json({ success: false, message: "Failed to fetch store profile" });
+    }
+};
+
 export const saveOnboarding = async (req, res) => {
     try {
         const data = req.body;

@@ -6,12 +6,12 @@ import { upiidhandeler } from "../controllers/Upiidcontroler.js";
 import Addcakedetalisroute from "./Addcakedetalisroute.js";
 import { getProfile, updateProfile, changePassword } from "../controllers/Profilecontrol.js";
 import { getDashboardAnalytics } from "../controllers/Analyticscontrol.js";
-import { saveOnboarding } from "../controllers/Onboardingcontrol.js";
+import { saveOnboarding, getStoreProfile } from "../controllers/Onboardingcontrol.js";
 import { createNotification, getNotifications, markNotificationRead } from "../controllers/Notificationcontrol.js";
 import { createReview, getReviewsByProduct } from "../controllers/Reviewcontrol.js";
 import { addToCart, getCart, updateCartItem, removeCartItem } from "../controllers/Cartcontrol.js";
 import { createOrder, getAllOrders, getOrdersByCustomer, getOrderById, updateOrderStatus, updateDeliveryTracking, getDeliveryTracking } from "../controllers/Ordercontrol.js";
-import { getAllProducts, getProductById, getProductsByCategory, createProduct, updateProduct, deleteProduct, searchProducts, toggleProductAvailability } from "../controllers/Productcontrol.js";
+import { getAllProducts, getProductById, getProductsByCategory, createProduct, updateProduct, deleteProduct, searchProducts, toggleProductAvailability, getAllProductsAdmin } from "../controllers/Productcontrol.js";
 
 const router = express.Router();
 
@@ -30,6 +30,8 @@ router.post("/api/products", createProduct);
 router.put("/api/products/:id", updateProduct);
 router.delete("/api/products/:id", deleteProduct);
 router.patch("/api/products/:id/availability", toggleProductAvailability);
+
+router.get("/api/admin/catalog", getAllProductsAdmin);
 
 // ============== CART (Customer) ==============
 router.post("/api/cart/add", addToCart);
@@ -71,6 +73,9 @@ router.get("/api/reviews", getReviewsByProduct);
 
 // ============== UPI / PAYMENT STUB ==============
 router.post("/api/upi/save", upiidhandeler);
+
+// ============== STORE PROFILE (Public store info) ==============
+router.get("/api/store", getStoreProfile);
 
 // ============== ONBOARDING (Admin store profile) ==============
 router.post("/api/onboarding/save", saveOnboarding);

@@ -5,7 +5,8 @@ import Cakecard from "../components/Cakecard";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FoodCard from "../components/FoodCard";
 import { useWindowDimensions } from "react-native";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { products, store } from "../services/customerApi";
 const bakeryData = [
     {
         id: 1,
@@ -321,12 +322,46 @@ const Homescreen = ({ navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
     // Category chip select korle sudhu highlight er jonno, existing filter logic touch kora hoyni
     const [selectedCategory, setSelectedCategory] = useState(null);
+    const [liveProducts, setLiveProducts] = useState([]);
+    const [storeInfo, setStoreInfo] = useState(null);
+    const [loadingLive, setLoadingLive] = useState(true);
+
+    useEffect(() => {
+        const fetchLive = async () => {
+            try {
+                const [prodRes, storeRes] = await Promise.all([
+                    products.list(),
+                    store.get(),
+                ]);
+                const prodData = prodRes?.success ? prodRes.data || prodRes.products || prodRes : [];
+                setLiveProducts(Array.isArray(prodData) ? prodData : prodData ? [prodData] : []);
+                setStoreInfo(storeRes?.store || null);
+            } catch (e) {
+                console.log("Live fetch error:", e);
+            } finally {
+                setLoadingLive(false);
+            }
+        };
+        fetchLive();
+        // Realtime polling: refresh live products/store every 20s
+        const interval = setInterval(() => {
+            products.list().then(r => {
+                const prodData = r?.success ? r.data || r.products || r : [];
+                setLiveProducts(Array.isArray(prodData) ? prodData : prodData ? [prodData] : []);
+            }).catch(e => console.log("Poll error:", e));
+            store.get().then(r => setStoreInfo(r?.store || null)).catch(() => {});
+        }, 20000);
+        return () => clearInterval(interval);
+    }, []);
+
     const onRefresh = () => {
         setRefreshing(true);
-
-        setTimeout(() => {
-            setRefreshing(false);
-        }, 1500);
+        products.list().then(r => {
+            const prodData = r?.success ? r.data || r.products || r : [];
+            setLiveProducts(Array.isArray(prodData) ? prodData : prodData ? [prodData] : []);
+        }).catch(e => console.log("Refresh error:", e)).finally(() => {
+            setTimeout(() => setRefreshing(false), 1500);
+        });
     };
 
     const filteredFoodData = useMemo(() => {
@@ -358,6 +393,17 @@ const Homescreen = ({ navigation }) => {
                     <Text style={styles.greetingText}>
                         {getGreeting()}, Srijon👋
                     </Text>
+
+                    {/* Store Info Banner (live from admin DB) */}
+                    {storeInfo && storeInfo.bakersName && (
+                        <View style={{ backgroundColor: '#6b4f4f', borderRadius: 16, padding: 14, marginBottom: 10, flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                            <Ionicons name="storefront-outline" size={22} color="#fff" />
+                            <View>
+                                <Text style={{ color: '#fff', fontWeight: '700', fontSize: 14 }}>{storeInfo.bakersName}</Text>
+                                <Text style={{ color: '#ddd', fontSize: 12 }}>{storeInfo.city ? storeInfo.city + ', ' : ''}{storeInfo.state || ''}</Text>
+                            </View>
+                        </View>
+                    )}
 
                     {/* Search Bar */}
                     <View style={styles.searchBox}>
@@ -457,7 +503,13 @@ const Homescreen = ({ navigation }) => {
 
                     <FlatList
                         horizontal
-                        data={selectedCategory ? bakeryData.filter(i => i.category === categoryChips.find(c => c.id === selectedCategory)?.label || selectedCategory) : bakeryData}
+                        data={liveProducts.length > 0 ? liveProducts.map(p => ({
+                            id: p.productId || p.id || p.productName,
+                            image: p.imageUrl ? (p.imageUrl.startsWith('/') ? 'http://10.0.3.1:3000' + p.imageUrl : p.imageUrl) : 'https://picsum.photos/seed/cake/400/400',
+                            trend: p.bestseller ? 'Best Seller' : (p.featured ? 'Featured' : 'Trending'),
+                            name: p.productName || p.name || 'Cake',
+                            price: '$' + (p.price ? parseFloat(p.price).toFixed(2) : '0.00'),
+                        })) : bakeryData}
                         showsHorizontalScrollIndicator={false}
                         initialNumToRender={8}
                         keyExtractor={(item) =>

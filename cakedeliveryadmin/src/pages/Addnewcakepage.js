@@ -182,7 +182,7 @@ const Addnewitempage = ({ navigation }) => {
             name: imageUri.fileName,
         });
 
-        const API_URL = "http://10.0.3.1:3000"; // matches .env; change if server runs elsewhere
+        const API_URL = "http://10.140.22.208:3000"; // matches .env; change if server runs elsewhere
         const response = await fetch(API_URL + "/api/add/itemdata", {
             method: "POST",
             body: formdata,

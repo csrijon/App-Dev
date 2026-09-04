@@ -173,6 +173,19 @@ const toggleProductAvailability = async (req, res) => {
     }
 };
 
+// Get all products including non-public (for admin catalog)
+const getAllProductsAdmin = async (req, res) => {
+    try {
+        const products = await prisma.product.findMany({
+            orderBy: { createdAt: "desc" },
+        });
+        res.status(200).json({ success: true, data: products });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: "Failed to fetch admin products" });
+    }
+};
+
 export {
     getAllProducts,
     getProductById,
@@ -182,4 +195,5 @@ export {
     deleteProduct,
     searchProducts,
     toggleProductAvailability,
+    getAllProductsAdmin,
 };

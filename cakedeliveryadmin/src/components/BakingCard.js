@@ -8,19 +8,15 @@ import {
 
 import Feather from "react-native-vector-icons/Feather";
 
-const BakingCard = () => {
+const BakingCard = ({ pendingCount = 4 }) => {
   return (
     <View style={styles.card}>
-
-      {/* text section */}
       <View style={styles.leftSection}>
-
         <Text style={styles.heading}>
           Baking Today?
         </Text>
-
         <Text style={styles.description}>
-          You have 4 custom cake orders due for the
+          You have {pendingCount} custom cake order{pendingCount !== 1 ? "s" : ""} due for the
           weekend wedding rush.
         </Text>
 

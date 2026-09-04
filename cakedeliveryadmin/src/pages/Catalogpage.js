@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback, useEffect } from "react";
 import {
     View,
     StyleSheet,
@@ -94,7 +94,37 @@ const parsePrice = (price) => parseFloat(String(price).replace(/[^0-9.]/g, "")) 
 
 const Catalogpage = ({ navigation }) => {
     const [active, setActive] = useState(1); // category filter, 1 = "All"
-    const [catalogData, setCatalogData] = useState(initialCatalogData);
+    const [catalogData, setCatalogData] = useState([]);
+    const [loadingCatalog, setLoadingCatalog] = useState(true);
+
+    useEffect(() => {
+        const fetchAdminCatalog = async () => {
+            try {
+                const res = await fetch("http://10.0.3.1:3000/api/admin/catalog");
+                const json = await res.json();
+                if (json.success && Array.isArray(json.data)) {
+                    const mapped = json.data.map((item) => ({
+                        id: item.productId || item.id,
+                        title: item.productName || "New Item",
+                        price: "$" + (item.price ? parseFloat(item.price).toFixed(2) : "0.00"),
+                        tag: item.category || (item.isEggless ? "EGGLESS" : "CAKE"),
+                        categoryId: item.category === "Birthday" ? 2 : item.category === "Wedding" ? 3 : item.category === "Pastries" ? 4 : item.category === "Anniversary" ? 5 : 1,
+                        active: item.publicCatalog !== false,
+                        image: item.imageUrl ? { uri: (item.imageUrl.startsWith("/") ? "http://10.0.3.1:3000" + item.imageUrl : item.imageUrl) } : require("../images/catalog.png"),
+                    }));
+                    setCatalogData(mapped);
+                } else {
+                    setCatalogData(initialCatalogData);
+                }
+            } catch (e) {
+                console.log("Admin catalog fetch error:", e);
+                setCatalogData(initialCatalogData);
+            } finally {
+                setLoadingCatalog(false);
+            }
+        };
+        fetchAdminCatalog();
+    }, []);
     const [searchQuery, setSearchQuery] = useState("");
     const [sortBy, setSortBy] = useState("default");
     const [refreshing, setRefreshing] = useState(false);
@@ -152,27 +182,49 @@ const Catalogpage = ({ navigation }) => {
         setTimeout(() => setRefreshing(false), 900);
     }, []);
 
-    // Delete product (animated)
-    const handleDelete = (id, title) => {
+    // Delete product (calls backend)
+    const handleDelete = async (id, title) => {
         Alert.alert("Delete Product", `"${title}" Do You Want to Delete?`, [
             { text: "No", style: "cancel" },
             {
                 text: "Yes, Delete It",
                 style: "destructive",
-                onPress: () => {
-                    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-                    setCatalogData((prev) => prev.filter((item) => item.id !== id));
+                onPress: async () => {
+                    try {
+                        const res = await fetch(`http://10.0.3.1:3000/api/products/${id}`, { method: "DELETE" });
+                        const data = await res.json();
+                        if (data.success) {
+                            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+                            setCatalogData((prev) => prev.filter((item) => item.id !== id));
+                        } else {
+                            Alert.alert("Error", "Failed to delete product.");
+                        }
+                    } catch (e) {
+                        console.log("Delete error:", e);
+                        Alert.alert("Error", "Could not delete. Check connection.");
+                    }
                 },
             },
         ]);
     };
 
-    // Toggle availability
-    const handleToggleAvailability = (id) => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        setCatalogData((prev) =>
-            prev.map((item) => (item.id === id ? { ...item, active: !item.active } : item))
-        );
+    // Toggle availability (calls backend PATCH /api/products/:id/availability)
+    const handleToggleAvailability = async (id) => {
+        try {
+            const res = await fetch(`http://10.0.3.1:3000/api/products/${id}/availability`, { method: "PATCH" });
+            const data = await res.json();
+            if (data.success) {
+                LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+                setCatalogData((prev) =>
+                    prev.map((item) => (item.id === id ? { ...item, active: !item.active } : item))
+                );
+            } else {
+                Alert.alert("Error", "Failed to toggle availability.");
+            }
+        } catch (e) {
+            console.log("Toggle error:", e);
+            Alert.alert("Error", "Could not toggle. Check connection.");
+        }
     };
 
     // Edit product

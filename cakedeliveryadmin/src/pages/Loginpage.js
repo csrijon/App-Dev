@@ -35,7 +35,7 @@ const Loginpage = ({navigation}) => {
         setLoading(true);
         try {
             // API call - URL ta nijer backend endpoint diye replace koro
-            const response = await fetch("http://10.0.3.1:3000/api/auth/loginadmin", {
+            const response = await fetch("http://10.140.22.208:3000/api/auth/loginadmin", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
