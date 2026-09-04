@@ -182,15 +182,20 @@ const Addnewitempage = ({ navigation }) => {
             name: imageUri.fileName,
         });
 
-        const response = await fetch("http://10.140.21.192:3000/api/add/itemdata", {
+        const API_URL = "http://10.0.3.1:3000"; // matches .env; change if server runs elsewhere
+        const response = await fetch(API_URL + "/api/add/itemdata", {
             method: "POST",
             body: formdata,
-        }
-        )
+        });
         const resdata = await response.json()
 
-        // console.log(itemData, imageUri);
-        Alert.alert("Success", "Item Added Successfully");
+        if (!resdata || !resdata.success) {
+            Alert.alert("Failed", resdata?.message || "Server did not save the item. Check DB.");
+            return;
+        }
+
+        // console.log(resdata, imageUri);
+        Alert.alert("Success", "Item Added Successfully\nDB saved: " + (resdata.productId ? "productId=" + resdata.productId : "check uploads/"));
         navigation.navigate("CatalogUpdatedScreen");
     };
 

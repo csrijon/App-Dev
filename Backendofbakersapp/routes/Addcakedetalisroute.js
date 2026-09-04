@@ -1,6 +1,7 @@
 import express from "express"
 import multer from "multer"
 import path from "path"
+import prisma from "../config/prisma.js"
 
 const router = express.Router()
 
@@ -15,18 +16,47 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage })
 
-router.post("/", upload.single("image"), (req, res) => {
+router.post("/", upload.single("image"), async (req, res) => {
     if (!req.file) {
         return res.status(400).json({ success: false, message: "No file uploaded" })
     }
-    const fileUrl = "/" + req.file.filename
-    res.json({
-        success: true,
-        message: "Upload successful",
-        fileUrl,
-        originalName: req.file.originalname,
-        filename: req.file.filename
-    })
+    try {
+        const fileUrl = "/" + req.file.filename
+
+        // Save product data to database using the form fields from admin
+        const product = await prisma.product.create({
+            data: {
+                productName: req.body.Itemname || req.body.itemName || "New Item",
+                description: req.body.detalis || req.body.description || "",
+                price: req.body.price ? parseFloat(req.body.price) : 0,
+                imageUrl: fileUrl,
+                weight: req.body.weight ? parseFloat(req.body.weight) : null,
+                weightUnit: req.body.weightUnit || "kg",
+                stockQty: req.body.stockQuantity ? parseInt(req.body.stockQuantity) : 0,
+                prepTimeMinutes: req.body.preprationtime || req.body.prepTime ? parseInt(req.body.preprationtime || req.body.prepTime) : null,
+                availableSizes: req.body.availablesizes || req.body.availableSizes || "",
+                isEggless: req.body.iseggless === "true" || req.body.iseggless === true || req.body.isEggless === "true" || req.body.isEggless === true,
+                flavorProfile: req.body.flavorProfile || "",
+                category: req.body.category || "",
+                publicCatalog: req.body.isAvailable === "true" || req.body.isAvailable === true || req.body.publicCatalog === "true" || req.body.publicCatalog === true,
+                bestseller: req.body.isBestseller === "true" || req.body.isBestseller === true || req.body.bestseller === "true" || req.body.bestseller === true,
+                featured: req.body.isFeatured === "true" || req.body.isFeatured === true || req.body.featured === "true" || req.body.featured === true,
+                allowCustomMessage: req.body.allowCustomMessage === "true" || req.body.allowCustomMessage === true || req.body.allowCustomMessage === "on",
+            }
+        })
+
+        res.json({
+            success: true,
+            message: "Upload successful and item saved to database",
+            fileUrl,
+            productId: product.productId,
+            originalName: req.file.originalname,
+            filename: req.file.filename
+        })
+    } catch (error) {
+        console.error("Save error:", error)
+        res.status(500).json({ success: false, message: "File uploaded but database save failed", error: error.message, fileUrl: "/" + req.file.filename })
+    }
 })
 
 export default router

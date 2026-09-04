@@ -121,7 +121,7 @@ const TabScreens = () => {
           paddingBottom: insets.bottom,
           backgroundColor: 'transparent',
         },
-        tabBarActiveBackgroundColor: '#4A3320',
+        // tabBarActiveBackgroundColor: '#4A3320',
         tabBarInactiveBackgroundColor: 'transparent',
 
         tabBarLabelStyle: {

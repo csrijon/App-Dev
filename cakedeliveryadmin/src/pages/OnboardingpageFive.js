@@ -256,7 +256,7 @@ const OnboardingpageFive = ({
   // Next
   // ------------------------------------------
 
-  const handleNext = () => {
+  const handleNext = async () => {
 
     const newErrors = {};
 
@@ -318,6 +318,28 @@ const OnboardingpageFive = ({
       return;
     }
 
+    // Save onboarding data to database
+    try {
+        const API_URL = "http://10.0.3.1:3000";
+        const payload = {
+            ...formdata.personaldetails,
+            ...formdata.location,
+            productnames: formdata.bakedetalis?.productnames || [],
+            ...formdata.documentdetalis,
+            ...formdata.availability,
+        };
+        const res = await fetch(API_URL + "/api/onboarding/save", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+        });
+        const result = await res.json();
+        if (!result.success) {
+            console.log("DB save failed:", result.message);
+        }
+    } catch (e) {
+        console.log("DB save error:", e);
+    }
 
     // Navigate
 

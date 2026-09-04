@@ -6,6 +6,7 @@ import { upiidhandeler } from "../controllers/Upiidcontroler.js";
 import Addcakedetalisroute from "./Addcakedetalisroute.js";
 import { getProfile, updateProfile, changePassword } from "../controllers/Profilecontrol.js";
 import { getDashboardAnalytics } from "../controllers/Analyticscontrol.js";
+import { saveOnboarding } from "../controllers/Onboardingcontrol.js";
 import { createNotification, getNotifications, markNotificationRead } from "../controllers/Notificationcontrol.js";
 import { createReview, getReviewsByProduct } from "../controllers/Reviewcontrol.js";
 import { addToCart, getCart, updateCartItem, removeCartItem } from "../controllers/Cartcontrol.js";
@@ -70,6 +71,9 @@ router.get("/api/reviews", getReviewsByProduct);
 
 // ============== UPI / PAYMENT STUB ==============
 router.post("/api/upi/save", upiidhandeler);
+
+// ============== ONBOARDING (Admin store profile) ==============
+router.post("/api/onboarding/save", saveOnboarding);
 
 // ============== PRODUCT IMAGE UPLOAD (Admin catalog) ==============
 router.use("/api/add/itemdata", Addcakedetalisroute);

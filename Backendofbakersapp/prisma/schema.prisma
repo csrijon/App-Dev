@@ -27,6 +27,7 @@ model Address {
   state     String? @db.VarChar(100)
   pincode   String? @db.VarChar(10)
   isDefault Boolean @default(false)
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
@@ -158,6 +159,34 @@ model Product {
   carts      Cart[]
   reviews    Review[]
   orderItems OrderItem[]
+}
+
+model StoreProfile {
+  id                Int      @id @default(autoincrement())
+  bakersName        String?  @db.VarChar(150)
+  ownerName         String?  @db.VarChar(150)
+  email             String?  @db.VarChar(150)
+  phone             String?  @db.VarChar(20)
+  businessType      String?  @db.VarChar(50)
+  logoUrl           String?
+  shopAddress       String?
+  landmark          String?
+  city              String?  @db.VarChar(50)
+  pincode           String?  @db.VarChar(10)
+  state             String?  @db.VarChar(50)
+  fssaiNumber       String?  @db.VarChar(50)
+  fssaiImage        String?
+  openingTime       String?
+  closingTime       String?
+  weeklyOffDay      String?
+  acceptOrder247    Boolean  @default(false)
+  deliveryAvailable Boolean  @default(false)
+  deliveryRadius    String?
+  deliveryCharge    String?
+  freeDeliveryAbove String?
+  minimumOrderValue String?
+  productNames      String?
+  createdAt         DateTime @default(now())
 }
 
 model Review {
