@@ -1,5 +1,5 @@
 import { SafeAreaView } from "react-native-safe-area-context"
-import { StatusBar, ScrollView, StyleSheet, View, Text, TouchableOpacity, TextInput, Image, Alert } from "react-native"
+import { StatusBar, ScrollView, StyleSheet, View, Text, TouchableOpacity, TextInput, Image, Alert, Dimensions } from "react-native"
 import Simpleheader from "../components/Simpleheader"
 import { useState } from "react"
 import CategoryCard from "../components/CategoryCard"
@@ -10,9 +10,9 @@ import { Screen } from "react-native-screens"
 const Customorderpage = ({ navigation }) => {
 
     const weightOptions = [
-        { id: 1, weight: "2 lb", serves: "Serves 4-6", price: 30 },
-        { id: 2, weight: "5 lb", serves: "Serves 12-15", price: 65 },
-        { id: 3, weight: "10 lb", serves: "Serves 25+", price: 120 },
+        { id: 1, weight: "Small (2 lb)", serves: "Serves 4-6", price: 30 },
+        { id: 2, weight: "Medium (5 lb)", serves: "Serves 12-15", price: 65 },
+        { id: 3, weight: "Large (10 lb)", serves: "Serves 25+", price: 120 },
     ];
 
     const flavorOptions = [
@@ -20,11 +20,14 @@ const Customorderpage = ({ navigation }) => {
         { id: 2, title: "Belgian Chocolate" },
         { id: 3, title: "Red Velvet" },
         { id: 4, title: "Lemon Zest" },
+        { id: 5, title: "Carrot & Walnut" },
+        { id: 6, title: "Pistachio Cream" },
+        { id: 7, title: "Salted Caramel" },
     ];
 
     const [selectedWeight, setSelectedWeight] = useState(null);
     const [selectedFlavorId, setSelectedFlavorId] = useState(null);
-    const [cakeMessage, setCakeMessage] = useState("");
+    const [customMessage, setCustomMessage] = useState("");
     const [referenceImage, setReferenceImage] = useState(null);
 
     const MAX_MESSAGE_LENGTH = 60;
@@ -64,7 +67,7 @@ const Customorderpage = ({ navigation }) => {
 
     const handleNext = () => {
         if (!selectedWeight) {
-            Alert.alert("Select Weight", "Please select a cake weight &  to continue.");
+            Alert.alert("Select Size", "Please select a size / portion to continue.");
             return;
         }
         if (!selectedFlavorId) {
@@ -81,17 +84,17 @@ const Customorderpage = ({ navigation }) => {
         <SafeAreaView style={styles.maincustomorderpage} >
             <StatusBar backgroundColor="#FFF9E6" barStyle="dark-content" />
             <Simpleheader />
-            <ScrollView contentContainerStyle={{ paddingBottom: 80 }} vartical showsVerticalScrollIndicator={false} style={styles.scrollcustomorderpage} >
+            <ScrollView contentContainerStyle={{ paddingBottom: 80 }} vertical showsVerticalScrollIndicator={false} style={styles.scrollcustomorderpage} >
                 {/* {top page text start} */}
                 <View style={styles.customfirsttext} >
-                    <Text style={styles.textmasterpiece} >Design Your Masterpiece</Text>
-                    <Text style={styles.smalltextmasterpiece} >Every great celebrationc begins with a custom creation from Cake Haven</Text>
+                    <Text style={styles.textmasterpiece} >Design Your Custom Order</Text>
+                    <Text style={styles.smalltextmasterpiece} >Every great celebration begins with a custom creation from Cake Haven</Text>
                 </View>
                 {/* {top page text end} */}
 
                 {/* {start select cake Weight} */}
                 <View style={styles.weightcakesection} >
-                    <Text style={styles.cakeweighttext} >Select Cake Weight</Text>
+                    <Text style={styles.cakeweighttext} >Select Size / Portion</Text>
                     {/* {start cake weight card} */}
                     <View style={styles.weightcardsection} >
                         {weightOptions.map((option) => (
@@ -114,7 +117,7 @@ const Customorderpage = ({ navigation }) => {
 
                 {/* {start Flavor profile} */}
                 <View style={styles.flavorsection} >
-                    <Text style={styles.flavortext}  >Choose Flavor Profile</Text>
+                    <Text style={styles.flavortext}  >Choose Style / Flavor</Text>
                     <View style={styles.flavorcardsection} >
                         {flavorOptions.map((flavor) => (
                             <CategoryCard
@@ -170,22 +173,22 @@ const Customorderpage = ({ navigation }) => {
 
                     {/* Title */}
                     <View style={styles.messageHeadingRow}>
-                        <Text style={styles.rareHeading}>Message on Cake</Text>
+                        <Text style={styles.rareHeading}>Custom Message / Note</Text>
                         <Text style={styles.charCount}>
-                            {cakeMessage.length}/{MAX_MESSAGE_LENGTH}
+                            {customMessage.length}/{MAX_MESSAGE_LENGTH}
                         </Text>
                     </View>
 
                     {/* Input Box */}
                     <TextInput
-                        placeholder="E.g., Happy 25th Birthday, Julia!"
+                        placeholder="E.g., Happy Birthday! Or any custom message..."
                         placeholderTextColor="#9a8f7a"
                         multiline
                         style={styles.ghostInputField}
-                        value={cakeMessage}
+                        value={customMessage}
                         onChangeText={(text) => {
                             if (text.length <= MAX_MESSAGE_LENGTH) {
-                                setCakeMessage(text);
+                                setCustomMessage(text);
                             }
                         }}
                         maxLength={MAX_MESSAGE_LENGTH}
@@ -209,17 +212,17 @@ const Customorderpage = ({ navigation }) => {
 
                         {/* Tag */}
                         <View style={styles.ribbonTag}>
-                            <Text style={styles.ribbonText}>CURATED CHOICE</Text>
+                            <Text style={styles.ribbonText}>CUSTOM ORDER</Text>
                         </View>
 
                         {/* Text Content */}
                         <View style={styles.copyZone}>
                             <Text style={styles.heroTitle}>
-                                Our Signature{"\n"}Belgian{"\n"}Chocolate Base
+                                Our Signature{"\n"}Artisan{"\n"}Creation
                             </Text>
 
                             <Text style={styles.heroSub}>
-                                Rich 70% dark chocolate sponge with silky ganache
+                                Handcrafted with premium ingredients for any celebration
                             </Text>
                         </View>
 
@@ -278,11 +281,13 @@ const styles = StyleSheet.create({
     },
     weightcardsection: {
         gap: 10,
-        flexDirection: "row"
+        flexDirection: "row",
+        flexWrap: "wrap",
+        justifyContent: "center"
     },
     cakeweightcard: {
-        width: 100,
-        height: 100,
+        width: Dimensions.get("window").width / 3.5,
+        minHeight: 100,
         backgroundColor: "white",
         padding: 20,
         borderWidth: 2,
@@ -309,6 +314,7 @@ const styles = StyleSheet.create({
     flavorcardsection: {
         flexDirection: "row",
         flexWrap: "wrap",
+        gap: 8,
     },
     flavortext: {
         color: "#75584e",
@@ -370,7 +376,7 @@ const styles = StyleSheet.create({
 
     previewImage: {
         width: "100%",
-        height: 200,
+        height: Dimensions.get("window").width * 0.55,
         borderRadius: 20,
     },
 
@@ -475,7 +481,8 @@ const styles = StyleSheet.create({
     },
 
     copyZone: {
-        width: "65%",
+        width: "70%",
+        maxWidth: 320,
     },
 
     heroTitle: {
@@ -492,24 +499,21 @@ const styles = StyleSheet.create({
 
     floatingCake: {
         position: "absolute",
-        right: -20,
-        bottom: -20,
-        width: 180,
-        height: 180,
+        right: -10,
+        bottom: -10,
+        width: Dimensions.get("window").width * 0.35,
+        height: Dimensions.get("window").width * 0.35,
         borderRadius: 100,
         zIndex: 9999
     },
 
     ctaBar: {
         backgroundColor: "#6b4f4f",
-        marginTop: -22,
-        position: "absolute",
-        bottom: -45,
-        left: 0,
-        right: 0,
+        marginTop: 20,
         padding: 18,
         borderRadius: 30,
         alignItems: "center",
+        width: "100%",
     },
 
     ctaText: {

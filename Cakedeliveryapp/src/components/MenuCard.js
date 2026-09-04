@@ -19,9 +19,6 @@ const MenuCard = ({
     image,
     price,
     bakingTime,
-    isAdded,
-    onAddToCart,
-    onGoToCart,
 }) => {
     return (
         <TouchableOpacity
@@ -63,17 +60,12 @@ const MenuCard = ({
                 )}
             </View>
 
+            {/* Action buttons removed per request */}
+            {/*
             <View style={styles.actionRow}>
-                {isAdded ? (
-                    <TouchableOpacity onPress={onGoToCart} style={styles.addedBtn}>
-                        <Text style={styles.addedBtnText}>Go to Cart</Text>
-                    </TouchableOpacity>
-                ) : (
-                    <TouchableOpacity onPress={onAddToCart} style={styles.addBtn}>
-                        <Text style={styles.addBtnText}>+ Add</Text>
-                    </TouchableOpacity>
-                )}
+                ...
             </View>
+            */}
         </TouchableOpacity>
     );
 };
@@ -138,36 +130,4 @@ const styles = StyleSheet.create({
         marginTop: 4,
     },
 
-    actionRow: {
-        flexDirection: "row",
-        marginTop: 12,
-    },
-
-    addBtn: {
-        backgroundColor: "#6b4f4f",
-        paddingVertical: 8,
-        paddingHorizontal: 20,
-        borderRadius: 20,
-        alignItems: "center",
-    },
-
-    addBtnText: {
-        color: "#fff",
-        fontWeight: "600",
-        fontSize: 14,
-    },
-
-    addedBtn: {
-        backgroundColor: "#ddd",
-        paddingVertical: 8,
-        paddingHorizontal: 20,
-        borderRadius: 20,
-        alignItems: "center",
-    },
-
-    addedBtnText: {
-        color: "#555",
-        fontWeight: "600",
-        fontSize: 14,
-    },
 });

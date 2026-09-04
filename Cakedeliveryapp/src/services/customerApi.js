@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const API_BASE_URL = 'http://10.140.22.208:3000';
+const API_BASE_URL = 'http://10.0.3.1:3000';
 
 // Helper for JSON requests
 async function request(url, options = {}) {
