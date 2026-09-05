@@ -51,7 +51,7 @@ const Profilescreen = ({ navigation }) => {
         setTimeout(() => {
             setLoading(false);
             Alert.alert("Saved", "Your Password has been updated.");
-            // navigation.navigate("Adressscreen");
+            // navigation.navigate("AddressUI");
         }, 1200);
     };
 
@@ -74,7 +74,7 @@ const Profilescreen = ({ navigation }) => {
     // Jara password change korte chai na, sudhu address update korte chai,
     // tader jonno alada button - direct address screen e niye jabe
     const handleAddressOnly = () => {
-        navigation.navigate("Adressscreen");
+        navigation.navigate("AddressUI");
     };
 
     const getBorderColor = (fieldName) =>
@@ -147,7 +147,7 @@ const Profilescreen = ({ navigation }) => {
                         </Text>
                     </View>
                     <TouchableOpacity
-                        onPress={() => navigation.navigate("Adressscreen")}
+                        onPress={() => navigation.navigate("AddressUI")}
                         style={styles.addressEditBtn}
                     >
                         <Ionicons name="pencil-outline" size={15} color="#7B5E57" />

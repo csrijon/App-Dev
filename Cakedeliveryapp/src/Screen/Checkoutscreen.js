@@ -13,7 +13,8 @@ import {
 import Detailsheader from "../components/Detailsheader.js";
 import CartCard from "../components/CartCard.js";
 import OrderSummaryCard from "../components/Ordersummarycard.js";
-import { cart } from "../services/customerApi";
+import { cart, orders } from "../services/customerApi";
+import { useFocusEffect } from "@react-navigation/native";
 
 const initialCart = [
   {
@@ -76,6 +77,30 @@ const Checkoutscreen = ({ navigation }) => {
     };
     loadCart();
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const loadCart = async () => {
+        try {
+          const localCart = await cart.getLocalCart();
+          const mapped = localCart.map((item) => ({
+            id: item.id || item.productId || item.id,
+            name: item.title || item.name || "Cake",
+            size: "8 inch",
+            Flavor: "Vanilla Bean",
+            price: item.price || item.price || 0,
+            quantity: item.quantity || 1,
+            note: item.note || "",
+            image: item.image ? { uri: item.image } : require("../images/cakeimage.jpeg"),
+          }));
+          setCartItems(mapped);
+        } catch (e) {
+          console.log("Cart load error:", e);
+        }
+      };
+      loadCart();
+    }, [])
+  );
 
   /*
    * Responsive font scale
@@ -143,9 +168,7 @@ const Checkoutscreen = ({ navigation }) => {
   };
 
   const handleChangeAddress = () => {
-    navigation.navigate("Blog", {
-      screen: "Adressscreen",
-    });
+    navigation.navigate("ProfileTab", { screen: "Profilescreen" });
   };
 
   const handleCheckout = async (summary) => {
@@ -160,16 +183,24 @@ const Checkoutscreen = ({ navigation }) => {
     try {
       setLoading(true);
 
-      await new Promise((resolve) =>
-        setTimeout(resolve, 2000)
-      );
+      const orderData = await orders.create({
+        items: cartItems.map((item) => ({
+          productId: item.id,
+          quantity: item.quantity,
+          price: item.price,
+          note: item.note || "",
+        })),
+        total: summary.total,
+      });
+
+      await cart.setLocalCart([]);
 
       Alert.alert(
         "Order placed",
-        `Grand total: $${summary.total.toFixed(2)}`
+        `Grand total: $${summary.total.toFixed(2)}\nOrder ID: ${orderData.id || "#" + Date.now()}`
       );
 
-      navigation.navigate("Ordesuccess");
+      navigation.navigate("Ordesuccess", { orderId: orderData.id || Date.now() });
     } catch (error) {
       Alert.alert(
         "Error",
@@ -276,8 +307,8 @@ const Checkoutscreen = ({ navigation }) => {
           style={styles.dateButton}
           activeOpacity={0.8}
           onPress={() =>
-            navigation.navigate("Categorys", {
-              screen: "Delivery",
+            navigation.navigate("Categories", {
+              screen: "Category",
             })
           }
         >

@@ -8,17 +8,20 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { cart } from "../services/customerApi";
 
 const CakeDetails = ({ navigation, route }) => {
-    const productName = route?.params?.name || "The Celestial Peony";
+    const product = route?.params?.product || {};
+    const productName = product.title || route?.params?.name || "The Celestial Peony";
+    const description = product.description || "A masterpiece of confectionary art, this three-tier wedding cake features layers of Tahitian vanilla bean sponge infused with a delicate rosewater syrup. Hand-sculpted sugar peonies cascade down a smooth Swiss meringue buttercream canvas, accented by 24k gold leaf details.";
 
     const [isFavorite, setIsFavorite] = useState(false);
     const [quantity, setQuantity] = useState(1);
     const [showFullDescription, setShowFullDescription] = useState(false);
+    const [cartAdded, setCartAdded] = useState(false);
 
-    const description = "A masterpiece of confectionary art, this three-tier wedding cake features layers of Tahitian vanilla bean sponge infused with a delicate rosewater syrup. Hand-sculpted sugar peonies cascade down a smooth Swiss meringue buttercream canvas, accented by 24k gold leaf details.";
+    // const description = "A masterpiece of confectionary art, this three-tier wedding cake features layers of Tahitian vanilla bean sponge infused with a delicate rosewater syrup. Hand-sculpted sugar peonies cascade down a smooth Swiss meringue buttercream canvas, accented by 24k gold leaf details.";
 
     const shortDescription = description.slice(0, 100) + "...";
 
-    const pricePerCake = 850;
+    const pricePerCake = product.price || 850;
     const totalPrice = pricePerCake * quantity;
 
     const increaseQuantity = () => {
@@ -34,12 +37,13 @@ const CakeDetails = ({ navigation, route }) => {
     const handleAddToCart = async () => {
         try {
             await cart.addItem({
-                id: productName,
+                id: product.id || productName,
                 title: productName,
                 price: pricePerCake,
                 quantity: quantity,
-                image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600",
+                image: product.image || "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600",
             });
+            setCartAdded(true);
             Alert.alert(
                 "Added to Cart 🎉",
                 `${quantity} x ${productName} added to your cart.\nTotal: $${totalPrice}`,
@@ -67,7 +71,7 @@ const CakeDetails = ({ navigation, route }) => {
             <ScrollView contentContainerStyle={{paddingBottom:40}} style={styles.scrollViewcakedetails} >
                 <View>
                     <View style={styles.cakemaindetails} >
-                        <Image source={require("../images/cakeimage.jpeg")} style={styles.cakeImage} />
+                        <Image source={product.image ? { uri: product.image } : require("../images/cakeimage.jpeg")} style={styles.cakeImage} />
 
                         {/* Favorite Button */}
                         <TouchableOpacity
@@ -169,9 +173,15 @@ const CakeDetails = ({ navigation, route }) => {
 
                         {/* Buttons */}
                         <View style={styles.buttonContainer}>
-                            <TouchableOpacity onPress={handleAddToCart} style={styles.primaryBtn}>
-                                <Text style={styles.primaryText}>Add to Cart</Text>
-                            </TouchableOpacity>
+                            {!cartAdded ? (
+                                <TouchableOpacity onPress={handleAddToCart} style={styles.primaryBtn}>
+                                    <Text style={styles.primaryText}>Add to Cart</Text>
+                                </TouchableOpacity>
+                            ) : (
+                                <TouchableOpacity onPress={() => navigation.navigate("Cart")} style={styles.primaryBtn}>
+                                    <Text style={styles.primaryText}>Go to Cart →</Text>
+                                </TouchableOpacity>
+                            )}
 
                             <TouchableOpacity onPress={() => navigation.navigate("Customorder")} style={styles.secondaryBtn}>
                                 <Text style={styles.secondaryText}>Custom Order</Text>

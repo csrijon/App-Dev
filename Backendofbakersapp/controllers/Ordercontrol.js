@@ -27,7 +27,7 @@ const createOrder = async (req, res) => {
                 orderDate: new Date(),
                 orderItems: {
                     create: Array.isArray(items) ? items.map((item) => ({
-                        productId: item.productId || item.id,
+                        productId: parseInt(item.productId || item.id),
                         quantity: item.quantity || 1,
                         price: item.price ? parseFloat(item.price) : 0,
                     })) : [],

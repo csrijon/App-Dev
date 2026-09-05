@@ -178,21 +178,6 @@ const CategoryListing = ({ navigation }) => {
     const [sortOrder, setSortOrder] = useState("default");
     const [showSortDropdown, setShowSortDropdown] = useState(false);
 
-    // ── Cart state: tracks WHICH menu-item ids have been added ──
-    const [addedIds, setAddedIds] = useState(new Set());
-
-    const handleAddToCart = (id) => {
-        setAddedIds((prev) => {
-            const next = new Set(prev);
-            next.add(id);
-            return next;
-        });
-    };
-
-    const handleGoToCart = () => {
-        navigation.navigate("Cart");
-    };
-
     const activeSortLabel = SORT_OPTIONS.find(o => o.key === sortOrder)?.label || "Sort";
 
     const onRefresh = () => {
@@ -401,9 +386,6 @@ const CategoryListing = ({ navigation }) => {
                                     title={item.title}
                                     description={item.description}
                                     price={item.price}
-                                    isAdded={addedIds.has(item.id)}
-                                    onAddToCart={() => handleAddToCart(item.id)}
-                                    onGoToCart={handleGoToCart}
                                 />
                             )}
                         />

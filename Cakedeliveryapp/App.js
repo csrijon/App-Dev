@@ -98,7 +98,7 @@ const Profilestack = () => {
   return (
     <Stack.Navigator initialRouteName="Profilescreen" screenOptions={{ headerShown: false }} >
       <Stack.Screen name="Profilescreen" component={Profilescreen} />
-      <Stack.Screen name="Adressscreen" component={AddressUI} />
+      <Stack.Screen name="AddressUI" component={AddressUI} />
     </Stack.Navigator>
   )
 }

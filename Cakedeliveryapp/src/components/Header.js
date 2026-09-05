@@ -4,7 +4,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import Geolocation from '@react-native-community/geolocation';
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native"; 
-// Notificaton import removed — file misspelled, not used
+import Notification from "./Notification"
 
 const Header = ({onPress}) => {
     const navigation = useNavigation()
@@ -105,17 +105,7 @@ const Header = ({onPress}) => {
             {/* Right Section */}
             <View style={styles.rightContainer}>
 
-                <TouchableOpacity onPress={onPress} style={styles.notificationcontainer} >
-                           <View style={styles.bellContainer}>
-                               <Ionicons
-                                   name="notifications-outline"
-                                   size={22}
-                                   color="#6B5B53"
-                               />
-                           </View>
-                           <View style={styles.notificationbadge} />
-                       </TouchableOpacity>
-                {/* <Notificaton onPress={() => navigation.navigate("NotificationsScreen")} /> */}
+                <Notification onPress={() => navigation.navigate("NotificationsScreen")} />
 
                 <TouchableOpacity onPress={()=>navigation.navigate("Tabs", { screen: "Profile" })} >
                     <Image

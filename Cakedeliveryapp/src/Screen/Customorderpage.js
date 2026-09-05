@@ -75,7 +75,7 @@ const Customorderpage = ({ navigation }) => {
             return;
         }
 
-        navigation.navigate("Categorys", {
+        navigation.navigate("Orderstack", {
             screen: "Delivery"
         })
     };

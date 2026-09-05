@@ -3,6 +3,7 @@ import Simpleheader from "../components/Simpleheader"
 import { StatusBar, ScrollView, StyleSheet, View, Text, Image, TouchableOpacity, TextInput, Modal, Alert, ActivityIndicator } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { orders } from "../services/customerApi";
 import Button from "../components/Button";
 
 const Ordersummarypage = ({ navigation }) => {
@@ -84,12 +85,21 @@ const Ordersummarypage = ({ navigation }) => {
 
     const [isProcessingPayment, setIsProcessingPayment] = useState(false);
 
-    const handleProceedToPayment = () => {
+    const handleProceedToPayment = async () => {
         setIsProcessingPayment(true);
-        setTimeout(() => {
+        try {
+            const orderData = await orders.create({
+                items: [{ productId: "velvet-chocolate", quantity: 1, price: cakePrice, note: personalMessage }],
+                total: parseFloat(finalTotal),
+                address: selectedAddress,
+                deliverySlot,
+            });
+            navigation.navigate("Ordesuccess", { orderId: orderData.id || Date.now() });
             setIsProcessingPayment(false);
-            navigation.navigate("Ordesuccess");
-        }, 1500);
+        } catch (error) {
+            Alert.alert("Order Error", error.message || "Failed to place order.");
+            setIsProcessingPayment(false);
+        }
     };
 
     return (

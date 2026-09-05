@@ -7,7 +7,7 @@ import Socialmediabutton from "../components/Socialmediabutton"
 import { useState, useEffect } from "react";
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-// import AsyncStorage from "react-native-async-storage/async-storage"
+import { auth } from "../services/customerApi";
 
 const Loginscreen = ({ navigation }) => {
 
@@ -67,28 +67,12 @@ const Loginscreen = ({ navigation }) => {
         try {
             setLoading(true);
 
-            const response = await fetch("http://10.140.21.221:3000/api/auth/loginmain", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    mobile: loginemail,
-                    password: loginpassword,
-                }),
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                return Alert.alert("Login Failed", data.message)
-            }
-
+            const data = await auth.login({ mobile: loginemail, password: loginpassword });
             console.log(data);
-
             navigation.replace("Tabs");
 
         } catch (error) {
+            Alert.alert("Login Failed", error.message || "Something went wrong.");
             console.log(error.message);
         } finally {
             setLoading(false);

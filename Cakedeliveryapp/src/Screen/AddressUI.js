@@ -13,6 +13,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Detailsheader from "../components/Detailsheader";
+import { address } from "../services/customerApi";
 
 const STATES = [
     "Andhra Pradesh", "Assam", "Bihar", "Delhi", "Gujarat",
@@ -49,33 +50,17 @@ const AddressUI = ({ navigation }) => {
         setLoading(true);
 
         try {
-            const response = await fetch(
-                "http://10.140.21.221:3000/api/address/save",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        name,
-                        phone,
-                        street,
-                        apartment,
-                        city,
-                        state: selectedState,
-                        zip,
-                        isDefault,
-                    }),
-                }
-            );
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.message || "Failed to save address");
-            }
-
-            Alert.alert("Success", data.message);
+            const data = await address.save({
+                name,
+                phone,
+                street,
+                apartment,
+                city,
+                state: selectedState,
+                zip,
+                isDefault,
+            });
+            Alert.alert("Success", data.message || "Address saved.");
 
             navigation.navigate("Profilescreen");
 

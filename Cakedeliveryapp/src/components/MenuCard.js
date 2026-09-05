@@ -60,6 +60,8 @@ const MenuCard = ({
                 )}
             </View>
 
+            {/* No add-to-cart / go-to-cart buttons */}
+
             {/* Action buttons removed per request */}
             {/*
             <View style={styles.actionRow}>
@@ -129,5 +131,4 @@ const styles = StyleSheet.create({
         color: "#8b7d6b",
         marginTop: 4,
     },
-
 });

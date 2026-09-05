@@ -2,6 +2,7 @@ import { SafeAreaView } from "react-native-safe-area-context"
 import { useState } from "react";
 import { View, StyleSheet, ScrollView, Text, StatusBar, Image, TextInput, TouchableOpacity, ActivityIndicator, Alert } from "react-native"
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { auth } from "../services/customerApi";
 import Button from "../components/Button";
 import Socialmediabutton from "../components/Socialmediabutton"
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -17,32 +18,18 @@ const Signupscreen = ({ navigation }) => {
         try {
             setLoading(true);
 
-            const response = await fetch("http://10.140.21.221:3000/api/auth/signupmain", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    fullname: fullname,
-                    mobile: fullmobile,
-                    email: fullemail,
-                    password: password
-                }),
+            const data = await auth.signup({
+                fullname,
+                mobile: fullmobile,
+                email: fullemail,
+                password
             });
 
-            const data = await response.json();
-
-            if (!response.ok) {
-                return Alert.alert("Signup Faild",
-                    data.mess
-                )
-            }
-
             console.log(data);
-
             navigation.navigate("Login");
 
         } catch (error) {
+            Alert.alert("Signup Failed", error.message || "Something went wrong.");
             console.log(error.message);
         } finally {
             setLoading(false);

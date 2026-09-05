@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const API_BASE_URL = 'http://10.0.3.1:3000';
+// Read API base from environment (set in .env)
+const API_BASE_URL = process.env.API_BASE_URL || 'http://10.0.3.1:3000';
 
 // Helper for JSON requests
 async function request(url, options = {}) {
@@ -18,8 +19,8 @@ async function request(url, options = {}) {
 
 // Auth
 export const auth = {
-  signup: (body) => request('/api/auth/signup', { method: 'POST', body: JSON.stringify(body) }),
-  login: (body) => request('/api/auth/login', { method: 'POST', body: JSON.stringify(body) }),
+  signup: (body) => request('/api/auth/signupmain', { method: 'POST', body: JSON.stringify(body) }),
+  login: (body) => request('/api/auth/loginmain', { method: 'POST', body: JSON.stringify(body) }),
   forgotPassword: (email) => request('/api/auth/forgot-password', { method: 'POST', body: JSON.stringify({ email }) }),
   resetPassword: (token, body) => request(`/api/auth/reset-password/${token}`, { method: 'POST', body: JSON.stringify(body) }),
 };
@@ -33,9 +34,9 @@ export const profile = {
 
 // Address
 export const address = {
-  list: () => request('/api/addresses'),
-  save: (body) => request('/api/addresses', { method: 'POST', body: JSON.stringify(body) }),
-  delete: (id) => request(`/api/addresses/${id}`, { method: 'DELETE' }),
+  list: () => request('/api/address'),
+  save: (body) => request('/api/address/save', { method: 'POST', body: JSON.stringify(body) }),
+  delete: (id) => request(`/api/address/${id}`, { method: 'DELETE' }),
 };
 
 // Products / Catalogue

@@ -1,10 +1,10 @@
 import { View, TouchableOpacity, StyleSheet } from "react-native"
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-const Notificaton = () => {
+const Notification = ({ onPress }) => {
     return (
         <View style={styles.notificationcontainer} >
-            <TouchableOpacity style={styles.bellContainer}>
+            <TouchableOpacity style={styles.bellContainer} onPress={onPress}>
                 <Ionicons
                     name="notifications-outline"
                     size={22}
@@ -16,7 +16,7 @@ const Notificaton = () => {
     )
 }
 
-export default Notificaton
+export default Notification
 
 const styles = StyleSheet.create({
     bellContainer: {

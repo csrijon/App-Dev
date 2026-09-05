@@ -381,7 +381,7 @@ const CategoryProducts = ({navigation}) => {
                     contentContainerStyle={{
                         paddingBottom: inset.bottom
                     }}
-                    renderItem={({ item }) => (<ProductShowcaseCard title={item.title} des={item.description} price={item.price} rating={item.rating} badge={item.badge} image={item.image} onPress={()=>navigation.navigate("Cakedetails")} />)}
+                    renderItem={({ item }) => (<ProductShowcaseCard title={item.title} des={item.description} price={item.price} rating={item.rating} badge={item.badge} image={item.image} onPress={()=>navigation.navigate("Cakedetails", { product: item })} />)}
                     keyExtractor={item => item.id}
                 />
             </View>
