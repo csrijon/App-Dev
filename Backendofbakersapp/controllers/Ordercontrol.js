@@ -26,11 +26,19 @@ const createOrder = async (req, res) => {
                 orderNumber: `BK-${Math.floor(Math.random() * 9000) + 1000}`,
                 orderDate: new Date(),
                 orderItems: {
-                    create: Array.isArray(items) ? items.map((item) => ({
-                        productId: parseInt(item.productId || item.id),
-                        quantity: item.quantity || 1,
-                        price: item.price ? parseFloat(item.price) : 0,
-                    })) : [],
+                    create: (() => {
+                        const mapped = Array.isArray(items) ? items.map((item) => {
+                            const raw = item.productId || item.id;
+                            const pid = parseInt(raw, 10);
+                            if (isNaN(pid)) return null;
+                            return {
+                                productId: pid,
+                                quantity: item.quantity || 1,
+                                price: item.price ? parseFloat(item.price) : 0,
+                            };
+                        }) : [];
+                        return mapped.filter(i => i !== null);
+                    })(),
                 },
                 payments: {
                     create: {

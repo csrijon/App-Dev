@@ -38,6 +38,16 @@ const Signupscreen = ({ navigation }) => {
     const [checkbox, setcheckbox] = useState(false)
     const [fullname, setfullname] = useState("")
     const [fullmobile, setfullmobile] = useState("")
+    const [countryCode, setCountryCode] = useState("+91")
+    const [showCountryDropdown, setShowCountryDropdown] = useState(false)
+    const countries = [
+        { code: "+91", name: "India", flag: "🇮🇳" },
+        { code: "+1", name: "USA / Canada", flag: "🇺🇸" },
+        { code: "+44", name: "UK", flag: "🇬🇧" },
+        { code: "+61", name: "Australia", flag: "🇦🇺" },
+        { code: "+49", name: "Germany", flag: "🇩🇪" },
+        { code: "+33", name: "France", flag: "🇫🇷" },
+    ];
     const [fullemail, setfullemail] = useState("")
     const [password, setpassword] = useState("")
     const [confirmpassword, setconfirmpassword] = useState("")
@@ -48,7 +58,7 @@ const Signupscreen = ({ navigation }) => {
     const [loading, setLoading] = useState(false)
 
     const isNameValid = fullname.trim().length >= 3
-    const isMobileValid = /^[6-9]\d{9}$/.test(fullmobile)
+    const isMobileValid = fullmobile.trim().length >= 7 && /^[0-9]+$/.test(fullmobile)
     const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fullemail)
     const hasMinLength = password.length >= 8
     const hasNumber = /\d/.test(password)
@@ -129,19 +139,33 @@ const Signupscreen = ({ navigation }) => {
                         {/* {Mobile input start} */}
                         <View style={styles.signupforminput} >
                             <Text style={styles.labelText}>MOBILE NUMBER</Text>
-                            <View style={[styles.inputcontainer, focusedField === "mobile" && styles.inputFocused]} >
-                                <FontAwesome style={styles.iconcolor} name="mobile-phone" color="#A67C52" size={22} />
-                                <TextInput
-                                    onChangeText={(text) => setfullmobile(text.replace(/[^0-9]/g, ""))}
-                                    value={fullmobile}
-                                    onFocus={() => setFocusedField("mobile")}
-                                    onBlur={() => setFocusedField(null)}
-                                    maxLength={10}
-                                    keyboardType="numeric"
-                                    placeholderTextColor="#b8a888"
-                                    style={styles.textinput}
-                                    placeholder="Enter Your Mobile Number"
-                                />
+                            <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
+                                <TouchableOpacity onPress={() => setShowCountryDropdown(prev => !prev)} style={{ paddingVertical: 10, paddingHorizontal: 10, backgroundColor: "#fdfaf2", borderRadius: 10, borderWidth: 1, borderColor: "#E9E2D8" }}>
+                                    <Text style={{ fontWeight: "600", color: "#5A3E2B" }}>{countryCode}</Text>
+                                </TouchableOpacity>
+                                {showCountryDropdown && (
+                                    <View style={{ position: "absolute", top: 70, left: 0, backgroundColor: "#fff", borderRadius: 12, borderWidth: 1, borderColor: "#E9E2D8", padding: 8, shadowColor: "#000", shadowOpacity: 0.1, shadowRadius: 8, elevation: 5, zIndex: 10, minWidth: 160 }}>
+                                        {countries.map((c) => (
+                                            <TouchableOpacity key={c.code} onPress={() => { setCountryCode(c.code); setShowCountryDropdown(false); }} style={{ paddingVertical: 6, paddingHorizontal: 8, borderRadius: 6 }}>
+                                                <Text style={{ fontSize: 13, color: "#5A3E2B" }}>{c.flag} {c.name} ({c.code})</Text>
+                                            </TouchableOpacity>
+                                        ))}
+                                    </View>
+                                )}
+                                <View style={[styles.inputcontainer, focusedField === "mobile" && styles.inputFocused, { flex: 1, marginLeft: 0 }]} >
+                                    <FontAwesome style={styles.iconcolor} name="mobile-phone" color="#A67C52" size={22} />
+                                    <TextInput
+                                        onChangeText={(text) => setfullmobile(text.replace(/[^0-9]/g, ""))}
+                                        value={fullmobile}
+                                        onFocus={() => setFocusedField("mobile")}
+                                        onBlur={() => setFocusedField(null)}
+                                        maxLength={countryCode === "+1" ? 10 : 10}
+                                        keyboardType="numeric"
+                                        placeholderTextColor="#b8a888"
+                                        style={styles.textinput}
+                                        placeholder="Mobile (no code)"
+                                    />
+                                </View>
                             </View>
                         </View>
                         {/* {Mobile input end} */}

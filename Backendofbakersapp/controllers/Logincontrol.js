@@ -19,14 +19,14 @@ const Loginmainapp = async (req, res) => {
 
         if (!user) {
             return res.status(401).json({
-                message: "Invalid Mobile Number or Password"
+                message: "No account found for this mobile number. Please sign up first."
             });
         }
 
         const isMatch = await bcrypt.compare(password, user.Password);
         if (!isMatch) {
             return res.status(401).json({
-                message: "Invalid Mobile Number or Password"
+                message: "Incorrect password. Please try again."
             });
         }
 

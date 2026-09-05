@@ -89,6 +89,7 @@ export const orders = {
   create: (body) => request('/api/orders', { method: 'POST', body: JSON.stringify(body) }),
   list: () => request('/api/orders'),
   get: (id) => request(`/api/orders/${id}`),
+  tracking: (orderId) => request(`/api/orders/${orderId}/tracking`),
   cancel: (id) => request(`/api/orders/${id}/cancel`, { method: 'PUT' }),
 };
 

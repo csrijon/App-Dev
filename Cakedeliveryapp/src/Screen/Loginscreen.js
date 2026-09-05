@@ -14,17 +14,27 @@ const Loginscreen = ({ navigation }) => {
     const [loginemail, setloginemail] = useState("")
     const [loginpassword, setloginpassword] = useState("")
     const [showPassword, setShowPassword] = useState(false)
-    const [focusedField, setFocusedField] = useState(null) // "mobile" | "password" | null
+    const [focusedField, setFocusedField] = useState(null)
     const [touched, setTouched] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [countryCode, setCountryCode] = useState("+91")
+    const [showCountryDropdown, setShowCountryDropdown] = useState(false)
+    const countries = [
+        { code: "+91", name: "India", flag: "🇮🇳" },
+        { code: "+1", name: "USA / Canada", flag: "🇺🇸" },
+        { code: "+44", name: "UK", flag: "🇬🇧" },
+        { code: "+61", name: "Australia", flag: "🇦🇺" },
+        { code: "+49", name: "Germany", flag: "🇩🇪" },
+        { code: "+33", name: "France", flag: "🇫🇷" },
+    ];
 
-    const isMobileValid = /^[6-9]\d{9}$/.test(loginemail)
+    const isMobileValid = loginemail.trim().length >= 7 && /^[0-9]+$/.test(loginemail)
     const isPasswordValid = loginpassword.length >= 6
 
     const errorMessage = (() => {
         if (!touched) return ""
         if (!loginemail || !loginpassword) return "Please fill in all fields."
-        if (!isMobileValid) return "Please enter a valid 10-digit mobile number."
+        if (!isMobileValid) return "Please enter a valid mobile number (7-15 digits)."
         if (!isPasswordValid) return "Password must be at least 6 characters."
         return ""
     })()
@@ -67,7 +77,7 @@ const Loginscreen = ({ navigation }) => {
         try {
             setLoading(true);
 
-            const data = await auth.login({ mobile: loginemail, password: loginpassword });
+            const data = await auth.login({ mobile: countryCode + loginemail, password: loginpassword });
             console.log(data);
             navigation.replace("Tabs");
 
@@ -103,24 +113,35 @@ const Loginscreen = ({ navigation }) => {
                     {/* {mailinput start} */}
                     <View style={styles.mailinput} >
                         <Text style={styles.mailinputtext} >MOBILE NUMBER</Text>
-                        <View style={[
-                            styles.mailtextinput,
-                            focusedField === "mobile" && styles.inputFocused,
-                        ]} >
-                            <View style={styles.iconWell}>
-                                <FontAwesome name="mobile-phone" color="#8a7350" size={20} />
+                        <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
+                            <TouchableOpacity onPress={() => setShowCountryDropdown(prev => !prev)} style={{ paddingVertical: 8, paddingHorizontal: 8, backgroundColor: "#fdfaf2", borderRadius: 8, borderWidth: 1, borderColor: "#E9E2D8" }}>
+                                <Text style={{ fontWeight: "600", color: "#5A3E2B", fontSize: 12 }}>{countryCode}</Text>
+                            </TouchableOpacity>
+                            {showCountryDropdown && (
+                                <View style={{ position: "absolute", top: 55, left: 0, backgroundColor: "#fff", borderRadius: 10, borderWidth: 1, borderColor: "#E9E2D8", padding: 6, shadowColor: "#000", shadowOpacity: 0.1, shadowRadius: 8, elevation: 5, zIndex: 10, minWidth: 140 }}>
+                                    {countries.map((c) => (
+                                        <TouchableOpacity key={c.code} onPress={() => { setCountryCode(c.code); setShowCountryDropdown(false); }} style={{ paddingVertical: 5, paddingHorizontal: 6, borderRadius: 6 }}>
+                                            <Text style={{ fontSize: 12, color: "#5A3E2B" }}>{c.flag} {c.name}</Text>
+                                        </TouchableOpacity>
+                                    ))}
+                                </View>
+                            )}
+                            <View style={[styles.mailtextinput, focusedField === "mobile" && styles.inputFocused, { flex: 1, marginLeft: 0 }]} >
+                                <View style={styles.iconWell}>
+                                    <FontAwesome name="mobile-phone" color="#8a7350" size={20} />
+                                </View>
+                                <TextInput
+                                    keyboardType="numeric"
+                                    value={loginemail}
+                                    onChangeText={(text) => setloginemail(text.replace(/[^0-9]/g, ""))}
+                                    onFocus={() => setFocusedField("mobile")}
+                                    onBlur={() => setFocusedField(null)}
+                                    placeholder="Mobile number"
+                                    placeholderTextColor="#b8a888"
+                                    maxLength={15}
+                                    style={styles.inputField}
+                                />
                             </View>
-                            <TextInput
-                                keyboardType="numeric"
-                                value={loginemail}
-                                onChangeText={(text) => setloginemail(text.replace(/[^0-9]/g, ""))}
-                                onFocus={() => setFocusedField("mobile")}
-                                onBlur={() => setFocusedField(null)}
-                                placeholder="7029046473"
-                                placeholderTextColor="#b8a888"
-                                maxLength={10}
-                                style={styles.inputField}
-                            />
                         </View>
                     </View>
                     {/* {mail input end} */}

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
     View,
     Text,
@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { orders } from "../services/customerApi";
 
 const steps = [
     { key: "baking", label: "BAKING", icon: "flame-outline" },
@@ -20,37 +21,38 @@ const steps = [
     { key: "arrived", label: "ARRIVED", icon: "home-outline" },
 ];
 
-const currentStepIndex = 2;
-const GUIDELINE_WIDTH = 390;
-
-const OrderTrackingScreen = ({ navigation }) => {
+const OrderTrackingScreen = ({ navigation, route }) => {
     const pulseAnim = useRef(new Animated.Value(1)).current;
-
     const { width } = useWindowDimensions();
+    const orderId = route?.params?.orderId;
 
-    const scale = width / GUIDELINE_WIDTH;
+    const [tracking, setTracking] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    /*
-     * Responsive font size.
-     *
-     * 390px = reference phone width.
-     * Smaller phones  -> slightly smaller text.
-     * Larger phones   -> slightly larger text.
-     *
-     * The factor prevents extreme scaling.
-     */
+    const scale = width / 390;
     const ms = (size, factor = 0.5) => {
         const scaledSize = size + (scale * size - size) * factor;
-
         return Math.round(
-            Math.min(
-                Math.max(scaledSize, size * 0.88),
-                size * 1.08
-            )
+            Math.min(Math.max(scaledSize, size * 0.88), size * 1.08)
         );
     };
 
-    const styles = getStyles(ms, width);
+    const fetchTracking = async () => {
+        if (!orderId) return;
+        try {
+            setLoading(true);
+            const res = await orders.tracking(orderId);
+            if (res && res.data) setTracking(res.data);
+        } catch (e) {
+            console.log("Tracking fetch error:", e);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchTracking();
+    }, [orderId]);
 
     useEffect(() => {
         const loop = Animated.loop(
@@ -67,37 +69,37 @@ const OrderTrackingScreen = ({ navigation }) => {
                 }),
             ])
         );
-
         loop.start();
-
         return () => loop.stop();
     }, [pulseAnim]);
 
+    const statusToStep = (status) => {
+        if (!status) return 2;
+        const s = String(status).toLowerCase();
+        if (s.includes("baking")) return 0;
+        if (s.includes("quality")) return 1;
+        if (s.includes("shipping") || s.includes("out") || s.includes("delivery")) return 2;
+        if (s.includes("arrived") || s.includes("delivered")) return 3;
+        return 2;
+    };
+
+    const currentStepIndex = statusToStep(tracking?.status);
+
+    const styles = getStyles(ms, width);
+
     return (
         <SafeAreaView style={styles.container}>
-            <StatusBar
-                backgroundColor="#FDF8EC"
-                barStyle="dark-content"
-            />
+            <StatusBar backgroundColor="#FDF8EC" barStyle="dark-content" />
 
-            {/* Header */}
             <View style={styles.header}>
                 <TouchableOpacity
                     onPress={() => navigation.goBack()}
                     style={styles.backBtn}
                     activeOpacity={0.7}
                 >
-                    <Ionicons
-                        name="arrow-back-outline"
-                        size={22}
-                        color="#5D4037"
-                    />
+                    <Ionicons name="arrow-back-outline" size={22} color="#5D4037" />
                 </TouchableOpacity>
-
-                <Text style={styles.headerTitle}>
-                    Track Order
-                </Text>
-
+                <Text style={styles.headerTitle}>Track Order</Text>
                 <View style={{ width: 44 }} />
             </View>
 
@@ -105,131 +107,74 @@ const OrderTrackingScreen = ({ navigation }) => {
                 contentContainerStyle={styles.scrollContent}
                 showsVerticalScrollIndicator={false}
             >
-                {/* Title */}
                 <View style={styles.titleContainer}>
                     <Text style={styles.title}>
-                        Out for Delivery
+                        {tracking ? "Out for Delivery" : "Order Tracking"}
                     </Text>
-
                     <Text style={styles.subtitle}>
-                        Your lavender honey cake is en route.
+                        {tracking ? "Your order is en route." : "Fetching tracking info..."}
                     </Text>
                 </View>
 
-                {/* ETA HERO CARD */}
                 <View style={styles.etaCard}>
-                    <View style={styles.etaCircleLarge} />
-                    <View style={styles.etaCircleSmall} />
-
                     <View style={styles.etaTopRow}>
                         <View style={styles.liveBadge}>
                             <View style={styles.liveDot} />
-
-                            <Text style={styles.liveBadgeText}>
-                                LIVE
-                            </Text>
+                            <Text style={styles.liveBadgeText}>LIVE</Text>
                         </View>
-
-                        <Ionicons
-                            name="bicycle"
-                            size={ms(22)}
-                            color="#F2E4CE"
-                        />
+                        <Ionicons name="bicycle" size={ms(22)} color="#F2E4CE" />
                     </View>
-
-                    <Text style={styles.etaLabel}>
-                        ARRIVING IN
-                    </Text>
-
-                    <Text style={styles.etaValue}>
-                        15–20 min
-                    </Text>
-
+                    <Text style={styles.etaLabel}>ARRIVING IN</Text>
+                    <Text style={styles.etaValue}>15–20 min</Text>
                     <View style={styles.etaProgressTrack}>
                         <View style={styles.etaProgressFill} />
                     </View>
                 </View>
 
-                {/* Progress Steps */}
                 <View style={styles.stepsRow}>
                     <View style={styles.trackLine} />
-
                     <View
                         style={[
                             styles.trackLineActive,
                             {
-                                width: `${(
-                                    currentStepIndex /
-                                    (steps.length - 1)
-                                ) * 100}%`,
+                                width: `${(currentStepIndex / (steps.length - 1)) * 100}%`,
                             },
                         ]}
                     />
-
                     {steps.map((step, index) => {
-                        const isDone =
-                            index < currentStepIndex;
-
-                        const isActive =
-                            index === currentStepIndex;
-
-                        const isCompletedOrActive =
-                            isDone || isActive;
-
+                        const isDone = index < currentStepIndex;
+                        const isActive = index === currentStepIndex;
+                        const isCompletedOrActive = isDone || isActive;
                         return (
-                            <View
-                                style={styles.stepItem}
-                                key={step.key}
-                            >
-                                <View
-                                    style={styles.stepCircleWrapper}
-                                >
+                            <View style={styles.stepItem} key={step.key}>
+                                <View style={styles.stepCircleWrapper}>
                                     {isActive && (
                                         <Animated.View
                                             style={[
                                                 styles.pulseRing,
-                                                {
-                                                    transform: [
-                                                        {
-                                                            scale: pulseAnim,
-                                                        },
-                                                    ],
-                                                },
+                                                { transform: [{ scale: pulseAnim }] },
                                             ]}
                                         />
                                     )}
-
                                     <View
                                         style={[
                                             styles.stepCircle,
-                                            isCompletedOrActive &&
-                                                styles.stepCircleActive,
-                                            isActive &&
-                                                styles.stepCircleCurrent,
+                                            isCompletedOrActive && styles.stepCircleActive,
+                                            isActive && styles.stepCircleCurrent,
                                         ]}
                                     >
                                         <Ionicons
-                                            name={
-                                                isDone
-                                                    ? "checkmark"
-                                                    : step.icon
-                                            }
+                                            name={isDone ? "checkmark" : step.icon}
                                             size={ms(18)}
-                                            color={
-                                                isCompletedOrActive
-                                                    ? "#fff"
-                                                    : "#C4B598"
-                                            }
+                                            color={isCompletedOrActive ? "#fff" : "#C4B598"}
                                         />
                                     </View>
                                 </View>
-
                                 <Text
                                     numberOfLines={1}
                                     style={[
                                         styles.stepLabel,
-                                        isCompletedOrActive &&
-                                            styles.stepLabelActive,
+                                        isCompletedOrActive && styles.stepLabelActive,
                                     ]}
                                 >
                                     {step.label}
@@ -239,189 +184,22 @@ const OrderTrackingScreen = ({ navigation }) => {
                     })}
                 </View>
 
-                {/* Courier Card */}
-                <View style={styles.courierCard}>
-                    <View style={styles.courierAccentBar} />
-
-                    <View style={styles.courierTopRow}>
-                        <View style={styles.avatarWrapper}>
-                            <Image
-                                source={{
-                                    uri: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=200",
-                                }}
-                                style={styles.courierAvatar}
-                            />
-
-                            <View style={styles.onlineDot} />
-
-                            <View style={styles.ratingBadge}>
-                                <Ionicons
-                                    name="star"
-                                    size={ms(9)}
-                                    color="#fff"
-                                />
-
-                                <Text style={styles.ratingBadgeText}>
-                                    4.9
-                                </Text>
-                            </View>
-                        </View>
-
-                        <View style={styles.courierInfo}>
-                            <View style={styles.courierNameRow}>
-                                <Text
-                                    style={styles.courierName}
-                                    numberOfLines={1}
-                                    ellipsizeMode="tail"
-                                >
-                                    Bastien Rousseau
-                                </Text>
-
-                                <Ionicons
-                                    name="shield-checkmark"
-                                    size={ms(14)}
-                                    color="#7B5A4E"
-                                />
-                            </View>
-
-                            <View style={styles.courierMetaRow}>
-                                <Text
-                                    style={styles.courierMetaText}
-                                    numberOfLines={1}
-                                >
-                                    1,240 deliveries
-                                </Text>
-
-                                <Text style={styles.courierMetaDot}>
-                                    ·
-                                </Text>
-
-                                <Text
-                                    style={styles.courierMetaText}
-                                    numberOfLines={1}
-                                    ellipsizeMode="tail"
-                                >
-                                    Top rated
-                                </Text>
-                            </View>
-                        </View>
-                    </View>
-
-                    <View style={styles.courierDivider} />
-
-                    <View style={styles.courierActions}>
-                        <TouchableOpacity
-                            style={styles.courierActionBtn}
-                            activeOpacity={0.7}
-                        >
-                            <Ionicons
-                                name="call"
-                                size={ms(16)}
-                                color="#7B5A4E"
-                            />
-
-                            <Text style={styles.courierActionText}>
-                                Call
-                            </Text>
-                        </TouchableOpacity>
-
-                        <View style={styles.courierActionDivider} />
-
-                        <TouchableOpacity
-                            style={styles.courierActionBtn}
-                            activeOpacity={0.7}
-                        >
-                            <Ionicons
-                                name="chatbubble"
-                                size={ms(16)}
-                                color="#7B5A4E"
-                            />
-
-                            <Text style={styles.courierActionText}>
-                                Message
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
-                {/* Order Number */}
-                <View style={styles.orderNoRow}>
-                    <View>
-                        <Text style={styles.orderNoLabel}>
-                            ORDER NO.
-                        </Text>
-
-                        <Text style={styles.orderNoValue}>
-                            #GQ-95231-FR
-                        </Text>
-                    </View>
-
-                    <TouchableOpacity
-                        style={styles.detailsBtn}
-                        activeOpacity={0.6}
-                    >
-                        <Text style={styles.detailsBtnText}>
-                            DETAILS
-                        </Text>
-
-                        <Ionicons
-                            name="chevron-forward-outline"
-                            size={ms(14)}
-                            color="#8A7466"
-                        />
-                    </TouchableOpacity>
-                </View>
-
-                {/* Order Item */}
                 <View style={styles.itemCard}>
                     <Image
-                        source={{
-                            uri: "https://images.unsplash.com/photo-1519869325930-281384150729?w=200",
-                        }}
+                        source={{ uri: "https://images.unsplash.com/photo-1519869325930-281384150729?w=200" }}
                         style={styles.itemImage}
                     />
-
                     <View style={styles.itemInfo}>
-                        <Text
-                            style={styles.itemTitle}
-                            numberOfLines={1}
-                        >
-                            1x Lavender Honey Cake
+                        <Text style={styles.itemTitle} numberOfLines={1}>
+                            Order #{orderId || "N/A"}
                         </Text>
-
-                        <Text
-                            style={styles.itemSubtitle}
-                            numberOfLines={1}
-                        >
-                            Gluten-free base, seasonal honey
+                        <Text style={styles.itemSubtitle} numberOfLines={1}>
+                            {tracking ? `Status: ${tracking.status || "pending"}` : "Loading..."}
                         </Text>
                     </View>
-
                     <Text style={styles.itemPrice}>
-                        €42.00
+                        {tracking ? "Updated" : "—"}
                     </Text>
-                </View>
-
-                {/* Delivery Address Card */}
-                <View style={styles.addressCard}>
-                    <View style={styles.addressIconWrapper}>
-                        <Ionicons
-                            name="location"
-                            size={20}
-                            color="#7B5A4E"
-                        />
-                    </View>
-
-                    <View style={styles.addressInfo}>
-                        <Text style={styles.addressLabel}>
-                            DELIVER TO
-                        </Text>
-
-                        <Text style={styles.addressValue}>
-                            Apartment 4B, 24 Rue de Rivoli{"\n"}
-                            75001 Paris, France
-                        </Text>
-                    </View>
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -432,11 +210,7 @@ export default OrderTrackingScreen;
 
 const getStyles = (ms, width) =>
     StyleSheet.create({
-        container: {
-            flex: 1,
-            backgroundColor: "#FDF8EC",
-        },
-
+        container: { flex: 1, backgroundColor: "#FDF8EC" },
         header: {
             flexDirection: "row",
             alignItems: "center",
@@ -445,14 +219,12 @@ const getStyles = (ms, width) =>
             paddingTop: 10,
             paddingBottom: 4,
         },
-
         headerTitle: {
             fontSize: ms(15),
             fontWeight: "700",
             color: "#5D4037",
             letterSpacing: 0.3,
         },
-
         backBtn: {
             width: 44,
             height: 44,
@@ -461,32 +233,23 @@ const getStyles = (ms, width) =>
             justifyContent: "center",
             shadowOpacity: 0.05,
         },
-
         scrollContent: {
             paddingHorizontal: ms(20),
             paddingBottom: 50,
         },
-
-        titleContainer: {
-            marginTop: 8,
-            marginBottom: 20,
-        },
-
+        titleContainer: { marginTop: 8, marginBottom: 20 },
         title: {
             fontSize: ms(28),
             fontWeight: "800",
             color: "#3D2B1F",
             letterSpacing: -0.5,
         },
-
         subtitle: {
             fontSize: ms(14),
             color: "#8A7466",
             marginTop: 6,
             fontWeight: "500",
         },
-
-        /* ETA Hero Card */
         etaCard: {
             backgroundColor: "#4A342A",
             borderRadius: ms(28),
@@ -494,42 +257,17 @@ const getStyles = (ms, width) =>
             marginBottom: 28,
             overflow: "hidden",
             shadowColor: "#3D2B1F",
-            shadowOffset: {
-                width: 0,
-                height: 10,
-            },
+            shadowOffset: { width: 0, height: 10 },
             shadowOpacity: 0.25,
             shadowRadius: 16,
             elevation: 6,
         },
-
-        etaCircleLarge: {
-            position: "absolute",
-            width: 160,
-            height: 160,
-            borderRadius: 80,
-            backgroundColor: "rgba(255,255,255,0.05)",
-            top: -60,
-            right: -40,
-        },
-
-        etaCircleSmall: {
-            position: "absolute",
-            width: 90,
-            height: 90,
-            borderRadius: 45,
-            backgroundColor: "rgba(255,255,255,0.04)",
-            bottom: -30,
-            right: 40,
-        },
-
         etaTopRow: {
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
             marginBottom: 18,
         },
-
         liveBadge: {
             flexDirection: "row",
             alignItems: "center",
@@ -539,21 +277,13 @@ const getStyles = (ms, width) =>
             borderRadius: 20,
             gap: 6,
         },
-
-        liveDot: {
-            width: 6,
-            height: 6,
-            borderRadius: 3,
-            backgroundColor: "#8BC97A",
-        },
-
+        liveDot: { width: 6, height: 6, borderRadius: 3, backgroundColor: "#8BC97A" },
         liveBadgeText: {
             fontSize: ms(10),
             fontWeight: "800",
             color: "#F2E4CE",
             letterSpacing: 0.8,
         },
-
         etaLabel: {
             fontSize: ms(11),
             fontWeight: "800",
@@ -561,7 +291,6 @@ const getStyles = (ms, width) =>
             letterSpacing: 1,
             marginBottom: 4,
         },
-
         etaValue: {
             fontSize: ms(34),
             fontWeight: "800",
@@ -569,22 +298,13 @@ const getStyles = (ms, width) =>
             letterSpacing: -0.5,
             marginBottom: 18,
         },
-
         etaProgressTrack: {
             height: 6,
             borderRadius: 3,
             backgroundColor: "rgba(255,255,255,0.12)",
             overflow: "hidden",
         },
-
-        etaProgressFill: {
-            width: "65%",
-            height: "100%",
-            borderRadius: 3,
-            backgroundColor: "#E8B75D",
-        },
-
-        /* Steps */
+        etaProgressFill: { width: "65%", height: "100%", borderRadius: 3, backgroundColor: "#E8B75D" },
         stepsRow: {
             flexDirection: "row",
             alignItems: "flex-start",
@@ -592,7 +312,6 @@ const getStyles = (ms, width) =>
             marginBottom: 32,
             position: "relative",
         },
-
         trackLine: {
             position: "absolute",
             top: ms(20),
@@ -602,7 +321,6 @@ const getStyles = (ms, width) =>
             backgroundColor: "#EAE0C8",
             borderRadius: 2,
         },
-
         trackLineActive: {
             position: "absolute",
             top: ms(20),
@@ -611,18 +329,8 @@ const getStyles = (ms, width) =>
             backgroundColor: "#7B5A4E",
             borderRadius: 2,
         },
-
-        stepItem: {
-            alignItems: "center",
-            gap: 8,
-            width: 60,
-        },
-
-        stepCircleWrapper: {
-            alignItems: "center",
-            justifyContent: "center",
-        },
-
+        stepItem: { alignItems: "center", gap: 8, width: 60 },
+        stepCircleWrapper: { alignItems: "center", justifyContent: "center" },
         pulseRing: {
             position: "absolute",
             width: ms(40),
@@ -630,7 +338,6 @@ const getStyles = (ms, width) =>
             borderRadius: ms(20),
             backgroundColor: "rgba(123,90,78,0.35)",
         },
-
         stepCircle: {
             width: ms(40),
             height: ms(40),
@@ -641,35 +348,21 @@ const getStyles = (ms, width) =>
             borderWidth: 1.5,
             borderColor: "#EAE0C8",
         },
-
-        stepCircleActive: {
-            backgroundColor: "#7B5A4E",
-            borderColor: "#7B5A4E",
-        },
-
+        stepCircleActive: { backgroundColor: "#7B5A4E", borderColor: "#7B5A4E" },
         stepCircleCurrent: {
             shadowColor: "#7B5A4E",
-            shadowOffset: {
-                width: 0,
-                height: 4,
-            },
+            shadowOffset: { width: 0, height: 4 },
             shadowOpacity: 0.3,
             shadowRadius: 6,
             elevation: 4,
         },
-
         stepLabel: {
             fontSize: ms(9),
             fontWeight: "800",
             color: "#B8AF8F",
             letterSpacing: 0.5,
         },
-
-        stepLabelActive: {
-            color: "#3D2B1F",
-        },
-
-        /* Courier Card */
+        stepLabelActive: { color: "#3D2B1F" },
         courierCard: {
             backgroundColor: "#FFFFFF",
             borderRadius: ms(24),
@@ -679,15 +372,11 @@ const getStyles = (ms, width) =>
             borderColor: "#F4EBE1",
             overflow: "hidden",
             shadowColor: "#3D2B1F",
-            shadowOffset: {
-                width: 0,
-                height: 8,
-            },
+            shadowOffset: { width: 0, height: 8 },
             shadowOpacity: 0.04,
             shadowRadius: 12,
             elevation: 3,
         },
-
         courierAccentBar: {
             position: "absolute",
             top: 0,
@@ -696,18 +385,13 @@ const getStyles = (ms, width) =>
             height: "100%",
             backgroundColor: "#E8B75D",
         },
-
         courierTopRow: {
             flexDirection: "row",
             alignItems: "center",
             gap: ms(14),
             minWidth: 0,
         },
-
-        avatarWrapper: {
-            position: "relative",
-        },
-
+        avatarWrapper: { position: "relative" },
         courierAvatar: {
             width: ms(56),
             height: ms(56),
@@ -715,7 +399,6 @@ const getStyles = (ms, width) =>
             borderWidth: 2,
             borderColor: "#FDF8EC",
         },
-
         onlineDot: {
             position: "absolute",
             top: 0,
@@ -727,7 +410,6 @@ const getStyles = (ms, width) =>
             borderWidth: 2,
             borderColor: "#FFFFFF",
         },
-
         ratingBadge: {
             position: "absolute",
             bottom: -4,
@@ -742,25 +424,9 @@ const getStyles = (ms, width) =>
             borderWidth: 2,
             borderColor: "#FFFFFF",
         },
-
-        ratingBadgeText: {
-            fontSize: ms(10),
-            fontWeight: "800",
-            color: "#fff",
-        },
-
-        courierInfo: {
-            flex: 1,
-            minWidth: 0,
-            gap: 4,
-        },
-
-        courierNameRow: {
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 5,
-        },
-
+        ratingBadgeText: { fontSize: ms(10), fontWeight: "800", color: "#fff" },
+        courierInfo: { flex: 1, minWidth: 0, gap: 4 },
+        courierNameRow: { flexDirection: "row", alignItems: "center", gap: 5 },
         courierName: {
             fontSize: ms(16),
             fontWeight: "700",
@@ -768,38 +434,29 @@ const getStyles = (ms, width) =>
             letterSpacing: -0.2,
             flexShrink: 1,
         },
-
         courierMetaRow: {
             flexDirection: "row",
             alignItems: "center",
             gap: 4,
             flexWrap: "wrap",
         },
-
         courierMetaText: {
             fontSize: ms(12.5),
             color: "#8A7466",
             fontWeight: "500",
             flexShrink: 1,
         },
-
         courierMetaDot: {
             fontSize: ms(13),
             color: "#D0C4AF",
             marginHorizontal: 2,
         },
-
         courierDivider: {
             height: 1,
             backgroundColor: "#F4EBE1",
             marginVertical: ms(14),
         },
-
-        courierActions: {
-            flexDirection: "row",
-            alignItems: "center",
-        },
-
+        courierActions: { flexDirection: "row", alignItems: "center" },
         courierActionBtn: {
             flex: 1,
             flexDirection: "row",
@@ -808,20 +465,16 @@ const getStyles = (ms, width) =>
             gap: 6,
             paddingVertical: ms(10),
         },
-
         courierActionText: {
             fontSize: ms(13),
             fontWeight: "700",
             color: "#7B5A4E",
         },
-
         courierActionDivider: {
             width: 1,
             height: "70%",
             backgroundColor: "#F0E4D4",
         },
-
-        /* Order Number */
         orderNoRow: {
             flexDirection: "row",
             alignItems: "flex-end",
@@ -829,7 +482,6 @@ const getStyles = (ms, width) =>
             marginBottom: 16,
             paddingHorizontal: 4,
         },
-
         orderNoLabel: {
             fontSize: ms(11),
             fontWeight: "800",
@@ -837,14 +489,12 @@ const getStyles = (ms, width) =>
             letterSpacing: 0.8,
             marginBottom: 4,
         },
-
         orderNoValue: {
             fontSize: ms(16),
             fontWeight: "800",
             color: "#3D2B1F",
             letterSpacing: -0.2,
         },
-
         detailsBtn: {
             flexDirection: "row",
             alignItems: "center",
@@ -856,15 +506,12 @@ const getStyles = (ms, width) =>
             borderWidth: 1,
             borderColor: "#EAE0C8",
         },
-
         detailsBtnText: {
             fontSize: ms(11),
             fontWeight: "700",
             color: "#8A7466",
             letterSpacing: 0.5,
         },
-
-        /* Item Card */
         itemCard: {
             flexDirection: "row",
             alignItems: "center",
@@ -876,47 +523,29 @@ const getStyles = (ms, width) =>
             borderWidth: 1,
             borderColor: "#F4EBE1",
             shadowColor: "#3D2B1F",
-            shadowOffset: {
-                width: 0,
-                height: 4,
-            },
+            shadowOffset: { width: 0, height: 4 },
             shadowOpacity: 0.03,
             shadowRadius: 8,
             elevation: 2,
         },
-
-        itemImage: {
-            width: 60,
-            height: 60,
-            borderRadius: 16,
-        },
-
-        itemInfo: {
-            flex: 1,
-            gap: 4,
-            minWidth: 0,
-        },
-
+        itemImage: { width: 60, height: 60, borderRadius: 16 },
+        itemInfo: { flex: 1, gap: 4, minWidth: 0 },
         itemTitle: {
             fontSize: ms(15),
             fontWeight: "700",
             color: "#3D2B1F",
             letterSpacing: -0.2,
         },
-
         itemSubtitle: {
             fontSize: ms(12.5),
             color: "#9B8070",
             lineHeight: ms(18),
         },
-
         itemPrice: {
             fontSize: ms(16),
             fontWeight: "800",
             color: "#3D2B1F",
         },
-
-        /* Delivery Address Card */
         addressCard: {
             flexDirection: "row",
             backgroundColor: "#FFFFFF",
@@ -926,15 +555,11 @@ const getStyles = (ms, width) =>
             borderWidth: 1,
             borderColor: "#F4EBE1",
             shadowColor: "#3D2B1F",
-            shadowOffset: {
-                width: 0,
-                height: 4,
-            },
+            shadowOffset: { width: 0, height: 4 },
             shadowOpacity: 0.03,
             shadowRadius: 8,
             elevation: 2,
         },
-
         addressIconWrapper: {
             width: 44,
             height: 44,
@@ -943,12 +568,7 @@ const getStyles = (ms, width) =>
             alignItems: "center",
             justifyContent: "center",
         },
-
-        addressInfo: {
-            flex: 1,
-            justifyContent: "center",
-        },
-
+        addressInfo: { flex: 1, justifyContent: "center" },
         addressLabel: {
             fontSize: ms(11),
             fontWeight: "800",
@@ -956,7 +576,6 @@ const getStyles = (ms, width) =>
             letterSpacing: 0.8,
             marginBottom: 6,
         },
-
         addressValue: {
             fontSize: ms(14),
             color: "#5D4037",

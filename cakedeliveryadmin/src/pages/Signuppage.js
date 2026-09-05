@@ -107,6 +107,16 @@ const Signuppage = ({ navigation }) => {
     const [fullName, setFullName] = useState("");
     const [mobile, setMobile] = useState("");
     const [email, setEmail] = useState("");
+    const [countryCode, setCountryCode] = useState("+91")
+    const [showCountryDropdown, setShowCountryDropdown] = useState(false)
+    const countries = [
+        { code: "+91", name: "India", flag: "🇮🇳" },
+        { code: "+1", name: "USA / Canada", flag: "🇺🇸" },
+        { code: "+44", name: "UK", flag: "🇬🇧" },
+        { code: "+61", name: "Australia", flag: "🇦🇺" },
+        { code: "+49", name: "Germany", flag: "🇩🇪" },
+        { code: "+33", name: "France", flag: "🇫🇷" },
+    ];
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
 
@@ -116,8 +126,8 @@ const Signuppage = ({ navigation }) => {
             Alert.alert("Missing Info", "Please fill in all fields.");
             return;
         }
-        if (mobile.trim().length !== 10) {
-            Alert.alert("Invalid Mobile", "Please enter a valid 10-digit mobile number.");
+        if (mobile.trim().length < 7 || !/^[0-9]+$/.test(mobile.trim())) {
+            Alert.alert("Invalid Mobile", "Please enter a valid mobile number (at least 7 digits).");
             return;
         }
         if (!check) {
@@ -192,15 +202,35 @@ const Signuppage = ({ navigation }) => {
                         autoCapitalize="words"
                     />
                     {/* {Mobile number input start} */}
-                    <InputField
-                        label="MOBILE NUMBER"
-                        placeholder="Enter your mobile number"
-                        icon="call-outline"
-                        value={mobile}
-                        onChangeText={(text) => setMobile(text.replace(/[^0-9]/g, ""))}
-                        keyboardType="phone-pad"
-                        maxLength={10}
-                    />
+                    <View style={{ marginTop: 13 }}>
+                        <Text style={styles.fieldLabel}>MOBILE NUMBER</Text>
+                        <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
+                            <TouchableOpacity onPress={() => setShowCountryDropdown(prev => !prev)} style={{ paddingVertical: 10, paddingHorizontal: 10, backgroundColor: "#EFE7D2", borderRadius: 10, borderWidth: 1, borderColor: "#D4C9A8" }}>
+                                <Text style={{ fontWeight: "700", color: "#6D5248", fontSize: 13 }}>{countryCode}</Text>
+                            </TouchableOpacity>
+                            {showCountryDropdown && (
+                                <View style={{ position: "absolute", top: 70, left: 0, backgroundColor: "#fff", borderRadius: 12, borderWidth: 1, borderColor: "#D4C9A8", padding: 8, shadowColor: "#000", shadowOpacity: 0.1, shadowRadius: 8, elevation: 5, zIndex: 10, minWidth: 160 }}>
+                                    {countries.map((c) => (
+                                        <TouchableOpacity key={c.code} onPress={() => { setCountryCode(c.code); setShowCountryDropdown(false); }} style={{ paddingVertical: 6, paddingHorizontal: 8, borderRadius: 6 }}>
+                                            <Text style={{ fontSize: 13, color: "#5A3E2B" }}>{c.flag} {c.name} ({c.code})</Text>
+                                        </TouchableOpacity>
+                                    ))}
+                                </View>
+                            )}
+                            <View style={{ flex: 1, height: 54, backgroundColor: "#EFE7D2", borderRadius: 14, paddingHorizontal: 18, flexDirection: "row", alignItems: "center", gap: 10 }}>
+                                <Ionicons name="call-outline" size={18} color="#B8AF8F" />
+                                <TextInput
+                                    placeholder="Enter mobile number"
+                                    placeholderTextColor="#B8AF8F"
+                                    style={{ flex: 1, fontSize: 15, color: "#6E564B" }}
+                                    value={mobile}
+                                    onChangeText={(text) => setMobile(text.replace(/[^0-9]/g, ""))}
+                                    keyboardType="phone-pad"
+                                    maxLength={15}
+                                />
+                            </View>
+                        </View>
+                    </View>
                     {/* {Mobile number input end} */}
                     <InputField
                         label="EMAIL ADDRESS"
