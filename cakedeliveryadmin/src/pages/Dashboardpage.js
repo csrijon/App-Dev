@@ -19,6 +19,7 @@ import AnalyticsCard from "../components/AnalyticsCard";
 import RecentOrders from "../components/RecentOrders";
 import BakingCard from "../components/BakingCard";
 import Footer from "../components/Footer";
+import { ADMIN_API_CONFIG } from '../config/api';
 
 const Dashboardpage = ({ navigation }) => {
     // Real-time state
@@ -34,7 +35,7 @@ const Dashboardpage = ({ navigation }) => {
     // Fetch analytics
     const fetchAnalytics = useCallback(async () => {
         try {
-            const res = await fetch("http://10.0.3.1:3000/api/dashboard/analytics");
+            const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/dashboard/analytics");
             const json = await res.json();
             if (json.success) {
                 setAnalytics(json.data || analytics);
@@ -48,7 +49,7 @@ const Dashboardpage = ({ navigation }) => {
     // Fetch orders for recent orders section
     const fetchOrders = useCallback(async () => {
         try {
-            const res = await fetch("http://10.0.3.1:3000/api/orders");
+            const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/orders");
             const json = await res.json();
             if (json.success && Array.isArray(json.data)) {
                 setOrders(json.data);
@@ -61,7 +62,7 @@ const Dashboardpage = ({ navigation }) => {
     // Fetch catalog for product count / best sellers derivation
     const fetchCatalog = useCallback(async () => {
         try {
-            const res = await fetch("http://10.0.3.1:3000/api/admin/catalog");
+            const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/admin/catalog");
             const json = await res.json();
             if (json.success && Array.isArray(json.data)) {
                 setCatalogData(json.data);
@@ -151,8 +152,8 @@ const Dashboardpage = ({ navigation }) => {
                 const d = new Date(o.orderDate || new Date());
                 return d.getDay() === (i + 1) % 7;
             }).length;
-            const val = Math.round((ordersForDay / Math.max(base, 1)) * 100) || 20 + i * 10;
-            return { day, value: Math.min(val, 95) };
+            const val = ordersForDay > 0 ? Math.round((ordersForDay / Math.max(base, 1)) * 100) : 5;
+            return { day, value: Math.min(Math.max(val, 0), 95) };
         });
     })();
 
@@ -161,7 +162,7 @@ const Dashboardpage = ({ navigation }) => {
     // Average rating from reviews
     const averageRating = recentReviews.length
         ? (recentReviews.reduce((sum, r) => sum + (r.rating || 0), 0) / recentReviews.length).toFixed(1)
-        : "4.9";
+        : "0.0";
 
     const getInitials = (name) =>
         (name || "").split(" ").map(p => p[0]).join("").slice(0, 2).toUpperCase();

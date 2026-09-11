@@ -60,12 +60,16 @@ const Calenderpage = ({ navigation }) => {
                 </View>
 
                 <View style={styles.confirmbutton} >
-                    <Button onPress={() => navigation.navigate("MyOrder",{
-                        screen:"Delivery",
-                        params:{
-                            date:datetime
+                    <Button onPress={() => {
+                        if (!datetime) {
+                            alert("Please select a date first");
+                            return;
                         }
-                    })} title={"Confirm Date"} />
+                        navigation.navigate("Tabs", {
+                            screen: "Cart",
+                            params: { selectedDate: datetime }
+                        });
+                    }} title={"Confirm Date"} />
                 </View>
 
             </ScrollView>

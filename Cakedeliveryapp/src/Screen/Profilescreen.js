@@ -14,7 +14,9 @@ import {
     Animated,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { useState, useRef } from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { profile } from '../services/customerApi';
+import { useState, useRef, useEffect } from "react";
 
 const Profilescreen = ({ navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
@@ -37,22 +39,70 @@ const Profilescreen = ({ navigation }) => {
         "123 Baker Street, Kolkata, West Bengal 700001"
     );
 
+    useEffect(() => {
+        AsyncStorage.getItem('user_details').then(raw => {
+            if (raw) {
+                const userDetails = JSON.parse(raw);
+                setFullName(userDetails.name || "Artisan Baker");
+                setEmail(userDetails.email || "artisan.baker@glazegrain.com");
+                setPhone(userDetails.mobile || "9831234567");
+            }
+        });
+        profile.get().then(res => {
+            if (res && res.success && res.data) {
+                const d = res.data;
+                setFullName(d.Name || fullName);
+                setEmail(d.Email || email);
+                setPhone(d.Mobile || phone);
+                if (d.addresses && d.addresses.length > 0) {
+                    const addr = d.addresses[0];
+                    setSavedAddress([addr.address, addr.city, addr.state, addr.pincode ? addr.pincode : ""].filter(Boolean).join(", "));
+                }
+            }
+        }).catch(e => console.log("Profile fetch error:", e));
+        AsyncStorage.getItem('user_address').then(raw => {
+            if (raw) {
+                const addr = JSON.parse(raw);
+                const parts = [
+                    addr.address,
+                    addr.city,
+                    addr.state,
+                    addr.pincode ? addr.pincode : ""
+                ].filter(Boolean);
+                setSavedAddress(parts.join(", ") || "No address added yet");
+            }
+        });
+    }, []);
     const onRefresh = () => {
         setRefreshing(true);
         setTimeout(() => setRefreshing(false), 1500);
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (!fullName.trim() || !email.trim() || !phone.trim()) {
             Alert.alert("Required", "Please fill in all fields before saving.");
             return;
         }
         setLoading(true);
-        setTimeout(() => {
+        try {
+            const rawUser = await AsyncStorage.getItem('user_details');
+            const userDetails = rawUser ? JSON.parse(rawUser) : null;
+            let userId = userDetails ? userDetails.id : null;
+            if (!userId) {
+                try {
+                    const res = await profile.get();
+                    userId = res && res.data ? res.data.id : null;
+                } catch (_) { userId = null; }
+            }
+            if (userId) {
+                await profile.update({ id: userId, Name: fullName, Email: email, Mobile: phone });
+            }
+            Alert.alert("Saved", "Profile updated successfully.");
+        } catch (e) {
+            Alert.alert("Error", e.message || "Failed to save profile.");
+        } finally {
             setLoading(false);
-            Alert.alert("Saved", "Your Password has been updated.");
-            // navigation.navigate("AddressUI");
-        }, 1200);
+        }
     };
 
     // Original values - "Discard edits" e click korle egulote ferot jabe

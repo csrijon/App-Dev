@@ -111,7 +111,7 @@ const Myorderscreen = ({navigation}) => {
                   <Text style={styles.orderRef}>Order #{order.id}</Text>
                   <Text style={styles.timeStamp}>{order.date}</Text>
 
-                  <TouchableOpacity onPress={()=>navigation.navigate("Ordertrackingscreen", { orderId: order.id })} style={styles.actionTrigger}>
+                  <TouchableOpacity onPress={()=>navigation.navigate("Trackingscreen", { orderId: order.id })} style={styles.actionTrigger}>
                     <Text style={styles.triggerText}>{order.action}</Text>
                   </TouchableOpacity>
                 </View>

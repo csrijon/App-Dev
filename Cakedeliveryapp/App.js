@@ -21,12 +21,15 @@ import PasswordChanged from "./src/Screen/PasswordChanged"
 import Ordertrackingscreen from "./src/Screen/Ordertrackingscreen.js"
 import Checkoutscreen from "./src/Screen/Checkoutscreen.js"
 import NotificationsScreen from "./src/components/NotificationsScreen"
+import Calenderpage from "./src/Screen/Calenderpage.js"
 import CategoryProducts from "./src/Screen/CategoryProducts.js"
 import RefineScreen from "./src/Screen/RefineScreen"
 import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import CartTabicon from "./src/components/CartTabicon.js"
+import { cart } from "./src/services/customerApi"
+import { useState, useEffect } from "react"
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { View, TouchableOpacity } from "react-native"
@@ -58,6 +61,7 @@ const Stackscreen = () => {
       <Stack.Screen name="Tabs" component={TabScreen} />
       <Stack.Screen name="Trackingscreen" component={Ordertrackingscreen} />
       <Stack.Screen name="NotificationsScreen" component={NotificationsScreen} />
+      <Stack.Screen name="Calenderpage" component={Calenderpage} />
     </Stack.Navigator>
   )
 }
@@ -104,6 +108,21 @@ const Profilestack = () => {
 }
 
 const TabScreen = () => {
+  const [cartItemCount, setCartItemCount] = useState(0);
+  useEffect(() => {
+    const loadCartCount = async () => {
+      try {
+        const res = await cart.get();
+        const items = (res && res.success && res.data) ? res.data : [];
+        setCartItemCount(items.reduce((sum, item) => sum + (item.quantity || 1), 0));
+      } catch (e) {
+        setCartItemCount(0);
+      }
+    };
+    loadCartCount();
+    const interval = setInterval(loadCartCount, 800);
+    return () => clearInterval(interval);
+  }, []);
   return (
     <Tab.Navigator
       screenOptions={{
@@ -219,7 +238,7 @@ const TabScreen = () => {
               alignItems:"center",
               justifyContent:"center"
             }} >
-              <CartTabicon count={2} color={color} size={size} />
+              <CartTabicon count={cartItemCount} color={color} size={size} />
             </View>
 
           ),

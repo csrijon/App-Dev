@@ -1,12 +1,13 @@
 
 import prisma from "../config/prisma.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 
 const UserappSignup = async (req, res) => {
     try {
         const { fullname, mobile, password, email } = req.body
-        console.log(mobile, fullname, password, email)
+        console.log("Signup for mobile:", mobile);
         // 
         let checkaccount = await prisma.user.findFirst({
             where: {
@@ -30,13 +31,18 @@ const UserappSignup = async (req, res) => {
                 Mobile: mobile,
                 Password: hashedPassword
             }
-        })
-        console.log("Signup successfully");
-
+        });
+        const token = jwt.sign(
+            { userId: Saveuser.id, email: Saveuser.Email, mobile: Saveuser.Mobile, role: "customer" },
+            process.env.JWT_SECRET || process.env.jwt_secret || "default_secret_change_in_env",
+            { expiresIn: "7d" }
+        );
+        const { Password, ...safeUser } = Saveuser;
         res.status(201).json({
             success: true,
             message: "Signup successfully",
-            user: Saveuser
+            user: safeUser,
+            token
         });
 
     } catch (error) {
@@ -52,7 +58,7 @@ const Adminappsignup = async (req, res) => {
     try {
         const { fullName, email, password, mobile } = req.body;
 
-        console.log(fullName, email, password, mobile);
+        console.log("Admin signup for email:", email);
 
         const checkaccount = await prisma.user.findFirst({
             where: {
@@ -82,10 +88,17 @@ const Adminappsignup = async (req, res) => {
 
         console.log("Admin signup successfully");
 
+        const token = jwt.sign(
+            { userId: signupdata.id, email: signupdata.Email, mobile: signupdata.Mobile, role: "admin" },
+            process.env.JWT_SECRET || process.env.jwt_secret || "default_secret_change_in_env",
+            { expiresIn: "7d" }
+        );
+        const { Password, ...safeAdmin } = signupdata;
         return res.status(201).json({
             success: true,
             message: "Sign Up Done",
-            user: signupdata
+            user: safeAdmin,
+            token
         });
 
     } catch (error) {

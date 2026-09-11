@@ -21,9 +21,10 @@ import Oderplacecakecard from "../components/Oderplacecakecard";
 import { useState, useEffect } from "react";
 import Clipboard from "@react-native-clipboard/clipboard";
 
-const OrderSuccessScreen = ({ navigation }) => {
+const OrderSuccessScreen = ({ navigation, route }) => {
 
     const { width } = useWindowDimensions();
+    const selectedDeliveryDate = route?.params?.selectedDate || "";
 
     // Responsive font scaling
     // 375px = base mobile width
@@ -38,7 +39,7 @@ const OrderSuccessScreen = ({ navigation }) => {
         Math.round(size * fontScale);
 
     const orderNumber = "8294";
-    const deliveryDate = "Tomorrow, Oct 24";
+    const deliveryDate = selectedDeliveryDate ? selectedDeliveryDate : "Tomorrow, Oct 24";
     const deliveryTimeStart = "10:00 AM";
     const deliveryTimeEnd = "12:00 PM";
 
@@ -404,7 +405,7 @@ const OrderSuccessScreen = ({ navigation }) => {
 
                     <Button
                         onPress={() =>
-                            navigation.navigate("Trackingscreen")
+                            navigation.navigate("Trackingscreen", { orderId: route?.params?.orderId || "8294", selectedDate: selectedDeliveryDate })
                         }
                         title="Track Order"
                     />

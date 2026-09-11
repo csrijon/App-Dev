@@ -14,7 +14,9 @@ import {
 } from "react-native";
 import Button from "../components/Button";
 
-const Paymentgatwaypage = async () => {
+import { ADMIN_API_CONFIG } from '../config/api';
+
+const Paymentgatwaypage = () => {
   const [upiId, setUpiId] = useState("");
   const [isFocused, setIsFocused] = useState(false);
 
@@ -28,7 +30,7 @@ const Paymentgatwaypage = async () => {
       return;
     }
 
-    const upiidsendresponse = await fetch("http://10.140.23.125:3000/api/upi/save", {
+    const upiidsendresponse = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/upi/save`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

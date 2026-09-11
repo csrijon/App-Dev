@@ -3,7 +3,10 @@ import prisma from "../config/prisma.js";
 // Create review
 const createReview = async (req, res) => {
     try {
-        const { userId, productId, rating, comment } = req.body;
+        const userId = req.user ? req.user.userId : (req.body.userId ? parseInt(req.body.userId) : null);
+        const { productId, rating, comment } = req.body;
+        if (!userId) return res.status(401).json({ success: false, message: "Authentication required" });
+        if (!rating || rating < 1 || rating > 5) return res.status(400).json({ success: false, message: "Invalid rating" });
         const review = await prisma.review.create({
             data: {
                 userId: parseInt(userId),
@@ -25,7 +28,7 @@ const getReviewsByProduct = async (req, res) => {
         const { productId } = req.query;
         const reviews = await prisma.review.findMany({
             where: { productId: parseInt(productId) },
-            include: { user: true },
+            include: { user: { select: { id: true, Name: true, Email: true, Mobile: true } } },
             orderBy: { createdAt: "desc" },
         });
         res.status(200).json({ success: true, data: reviews });

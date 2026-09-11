@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_CONFIG } from '../config/api';
 
-// Read API base from environment (set in .env)
-const API_BASE_URL = process.env.API_BASE_URL || 'http://10.0.3.1:3000';
+const API_BASE_URL = process.env.API_BASE_URL || API_CONFIG.baseURL;
 
 // Helper for JSON requests
 async function request(url, options = {}) {
@@ -28,7 +28,7 @@ export const auth = {
 // Profile
 export const profile = {
   get: () => request('/api/user/profile'),
-  update: (body) => request('/api/user/profile', { method: 'PUT', body: JSON.stringify(body) }),
+  update: (body) => request(`/api/user/profile/${body.id || body.userId || ''}`, { method: 'PUT', body: JSON.stringify(body) }),
   changePassword: (body) => request('/api/user/change-password', { method: 'PUT', body: JSON.stringify(body) }),
 };
 
@@ -49,48 +49,32 @@ export const products = {
   search: (q) => request(`/api/products/search?q=${encodeURIComponent(q)}`),
 };
 
-// Cart (simulated locally when backend unavailable; real integration preserved)
+// Cart uses real backend endpoints
 export const cart = {
-  // Client-side simulation for reliable customer journey
   getLocalCart: async () => {
-    const raw = await AsyncStorage.getItem('cart');
-    return raw ? JSON.parse(raw) : [];
+    return []; // deprecated
   },
-  setLocalCart: async (items) => {
-    await AsyncStorage.setItem('cart', JSON.stringify(items));
-  },
-  addItem: async (item) => {
-    const current = await cart.getLocalCart();
-    const existing = current.find(i => i.id === item.id);
-    if (existing) {
-      existing.quantity = (existing.quantity || 1) + (item.quantity || 1);
-    } else {
-      current.push({ ...item, quantity: item.quantity || 1 });
-    }
-    await cart.setLocalCart(current);
-    return current;
-  },
-  removeItem: async (id) => {
-    const current = await cart.getLocalCart();
-    const filtered = current.filter(i => i.id !== id);
-    await cart.setLocalCart(filtered);
-    return filtered;
-  },
-  updateQuantity: async (id, qty) => {
-    const current = await cart.getLocalCart();
-    const updated = current.map(i => (i.id === id ? { ...i, quantity: qty } : i));
-    await cart.setLocalCart(updated);
-    return updated;
-  },
+  setLocalCart: async () => {},
+  // Real backend integration
+  get: () => request('/api/cart'),
+  addItem: (body) => request('/api/cart/add', { method: 'POST', body: JSON.stringify(body) }),
+  updateQuantity: (id, qty) => request(`/api/cart/${id}`, { method: 'PUT', body: JSON.stringify({ quantity: qty }) }),
+  removeItem: (id) => request(`/api/cart/${id}`, { method: 'DELETE' }),
 };
 
 // Orders
 export const orders = {
   create: (body) => request('/api/orders', { method: 'POST', body: JSON.stringify(body) }),
-  list: () => request('/api/orders'),
+  list: () => request('/api/orders/customer'),
   get: (id) => request(`/api/orders/${id}`),
   tracking: (orderId) => request(`/api/orders/${orderId}/tracking`),
   cancel: (id) => request(`/api/orders/${id}/cancel`, { method: 'PUT' }),
+};
+
+export const notifications = {
+  list: () => request('/api/notifications'),
+  add: (body) => request('/api/notifications', { method: 'POST', body: JSON.stringify(body) }),
+  markRead: (id) => request(`/api/notifications/${id}/read`, { method: 'PATCH' }),
 };
 
 export const store = {
@@ -103,19 +87,3 @@ export const reviews = {
   list: (productId) => request(`/api/reviews?productId=${productId}`),
 };
 
-// Notifications (simulated events stored locally when backend unavailable)
-export const notifications = {
-  list: async () => {
-    const raw = await AsyncStorage.getItem('notifications');
-    return raw ? JSON.parse(raw) : [];
-  },
-  add: async (n) => {
-    const current = await notifications.list();
-    current.unshift({ ...n, time: n.time || new Date().toISOString(), isUnread: true });
-    await AsyncStorage.setItem('notifications', JSON.stringify(current));
-  },
-  markAllRead: async () => {
-    const current = await notifications.list();
-    await AsyncStorage.setItem('notifications', JSON.stringify(current.map(n => ({ ...n, isUnread: false }))));
-  },
-};

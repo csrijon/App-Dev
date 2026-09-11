@@ -18,6 +18,8 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { OnbordingContext } from "../context/Context";
 
+import { ADMIN_API_CONFIG } from '../config/api';
+
 const Loginpage = ({navigation}) => {
     const onboardingCtx = useContext(OnbordingContext);
     const [email, setEmail] = useState("");
@@ -35,7 +37,7 @@ const Loginpage = ({navigation}) => {
         setLoading(true);
         try {
             // API call - URL ta nijer backend endpoint diye replace koro
-            const response = await fetch("http://10.0.3.1:3000/api/auth/loginadmin", {
+            const response = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/auth/loginadmin`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -49,9 +51,7 @@ const Loginpage = ({navigation}) => {
             const data = await response.json();
 
             if (!response.ok) {
-            return Alert.alert("Login Faild",
-                data.mess
-            )
+                return Alert.alert("Login Failed", data.message || data.mess || "Invalid credentials.");
             }
 
             // Check onboarding status from context

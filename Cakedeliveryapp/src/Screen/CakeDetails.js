@@ -37,10 +37,9 @@ const CakeDetails = ({ navigation, route }) => {
     const handleAddToCart = async () => {
         try {
             await cart.addItem({
-                id: product.id || productName,
-                title: productName,
-                price: pricePerCake,
+                productId: product.id || product.productId || productName,
                 quantity: quantity,
+                price: pricePerCake,
                 image: product.image || "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600",
             });
             setCartAdded(true);

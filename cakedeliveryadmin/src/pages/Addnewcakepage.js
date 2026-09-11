@@ -17,6 +17,7 @@ import BakeryHeader from "../components/BakeryHeader"; // Make sure path is corr
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { launchImageLibrary } from "react-native-image-picker";
+import { ADMIN_API_CONFIG } from '../config/api';
 
 const MAX_DESCRIPTION_LENGTH = 220;
 
@@ -182,8 +183,7 @@ const Addnewitempage = ({ navigation }) => {
             name: imageUri.fileName,
         });
 
-        const API_URL = "http://10.140.22.208:3000"; // matches .env; change if server runs elsewhere
-        const response = await fetch(API_URL + "/api/add/itemdata", {
+        const response = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/add/itemdata`, {
             method: "POST",
             body: formdata,
         });

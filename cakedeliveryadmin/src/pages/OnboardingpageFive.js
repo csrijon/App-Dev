@@ -19,6 +19,7 @@ import BakeryHeader from '../components/BakeryHeader';
 import Floatingfixedbutton from '../components/Floatingfixedbutton';
 
 import { OnbordingContext } from '../context/Context.js';
+import { ADMIN_API_CONFIG } from '../config/api';
 
 
 // ------------------------------------------
@@ -320,7 +321,6 @@ const OnboardingpageFive = ({
 
     // Save onboarding data to database
     try {
-        const API_URL = "http://10.0.3.1:3000";
         const payload = {
             ...formdata.personaldetails,
             ...formdata.location,
@@ -328,7 +328,7 @@ const OnboardingpageFive = ({
             ...formdata.documentdetalis,
             ...formdata.availability,
         };
-        const res = await fetch(API_URL + "/api/onboarding/save", {
+        const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/onboarding/save`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),

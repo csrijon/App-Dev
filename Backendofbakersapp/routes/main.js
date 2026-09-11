@@ -12,6 +12,7 @@ import { createReview, getReviewsByProduct } from "../controllers/Reviewcontrol.
 import { addToCart, getCart, updateCartItem, removeCartItem } from "../controllers/Cartcontrol.js";
 import { createOrder, getAllOrders, getOrdersByCustomer, getOrderById, updateOrderStatus, updateDeliveryTracking, getDeliveryTracking } from "../controllers/Ordercontrol.js";
 import { getAllProducts, getProductById, getProductsByCategory, createProduct, updateProduct, deleteProduct, searchProducts, toggleProductAvailability, getAllProductsAdmin } from "../controllers/Productcontrol.js";
+import { authenticate, requireAdmin } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
@@ -26,49 +27,49 @@ router.get("/api/products", getAllProducts);
 router.get("/api/products/search", searchProducts);
 router.get("/api/products/category", getProductsByCategory);
 router.get("/api/products/:id", getProductById);
-router.post("/api/products", createProduct);
-router.put("/api/products/:id", updateProduct);
-router.delete("/api/products/:id", deleteProduct);
-router.patch("/api/products/:id/availability", toggleProductAvailability);
+router.post("/api/products", requireAdmin, createProduct);
+router.put("/api/products/:id", requireAdmin, updateProduct);
+router.delete("/api/products/:id", requireAdmin, deleteProduct);
+router.patch("/api/products/:id/availability", requireAdmin, toggleProductAvailability);
 
-router.get("/api/admin/catalog", getAllProductsAdmin);
+router.get("/api/admin/catalog", requireAdmin, getAllProductsAdmin);
 
 // ============== CART (Customer) ==============
-router.post("/api/cart/add", addToCart);
-router.get("/api/cart", getCart);
-router.put("/api/cart/:id", updateCartItem);
-router.delete("/api/cart/:id", removeCartItem);
+router.post("/api/cart/add", authenticate, addToCart);
+router.get("/api/cart", authenticate, getCart);
+router.put("/api/cart/:id", authenticate, updateCartItem);
+router.delete("/api/cart/:id", authenticate, removeCartItem);
 
 // ============== ORDERS (Admin + Customer) ==============
-router.post("/api/orders", createOrder);
-router.get("/api/orders", getAllOrders);
-router.get("/api/orders/customer", getOrdersByCustomer);
-router.get("/api/orders/:id", getOrderById);
-router.put("/api/orders/:id/status", updateOrderStatus);
-router.get("/api/orders/:orderId/tracking", getDeliveryTracking);
-router.put("/api/orders/:orderId/tracking", updateDeliveryTracking);
+router.post("/api/orders", authenticate, createOrder);
+router.get("/api/orders", requireAdmin, getAllOrders);
+router.get("/api/orders/customer", authenticate, getOrdersByCustomer);
+router.get("/api/orders/:id", authenticate, getOrderById);
+router.put("/api/orders/:id/status", requireAdmin, updateOrderStatus);
+router.get("/api/orders/:orderId/tracking", authenticate, getDeliveryTracking);
+router.put("/api/orders/:orderId/tracking", requireAdmin, updateDeliveryTracking);
 
 // ============== ADDRESSES (Both apps) ==============
-router.post("/api/address/save", saveAddress);
-router.get("/api/address", getAddresses);
-router.put("/api/address/:id", updateAddress);
-router.delete("/api/address/:id", deleteAddress);
+router.post("/api/address/save", authenticate, saveAddress);
+router.get("/api/address", authenticate, getAddresses);
+router.put("/api/address/:id", authenticate, updateAddress);
+router.delete("/api/address/:id", authenticate, deleteAddress);
 
 // ============== PROFILE (Both apps) ==============
-router.get("/api/user/profile", getProfile);
-router.put("/api/user/profile/:id", updateProfile);
-router.put("/api/user/change-password", changePassword);
+router.get("/api/user/profile", authenticate, getProfile);
+router.put("/api/user/profile/:id", authenticate, updateProfile);
+router.put("/api/user/change-password", authenticate, changePassword);
 
 // ============== ANALYTICS (Admin Dashboard) ==============
-router.get("/api/dashboard/analytics", getDashboardAnalytics);
+router.get("/api/dashboard/analytics", requireAdmin, getDashboardAnalytics);
 
 // ============== NOTIFICATIONS ==============
-router.post("/api/notifications", createNotification);
-router.get("/api/notifications", getNotifications);
-router.patch("/api/notifications/:id/read", markNotificationRead);
+router.post("/api/notifications", authenticate, createNotification);
+router.get("/api/notifications", authenticate, getNotifications);
+router.patch("/api/notifications/:id/read", authenticate, markNotificationRead);
 
 // ============== REVIEWS ==============
-router.post("/api/reviews", createReview);
+router.post("/api/reviews", authenticate, createReview);
 router.get("/api/reviews", getReviewsByProduct);
 
 // ============== UPI / PAYMENT STUB ==============
@@ -78,7 +79,7 @@ router.post("/api/upi/save", upiidhandeler);
 router.get("/api/store", getStoreProfile);
 
 // ============== ONBOARDING (Admin store profile) ==============
-router.post("/api/onboarding/save", saveOnboarding);
+router.post("/api/onboarding/save", requireAdmin, saveOnboarding);
 
 // ============== PRODUCT IMAGE UPLOAD (Admin catalog) ==============
 router.use("/api/add/itemdata", Addcakedetalisroute);

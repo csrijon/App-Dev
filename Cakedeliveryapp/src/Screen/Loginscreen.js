@@ -7,7 +7,9 @@ import Socialmediabutton from "../components/Socialmediabutton"
 import { useState, useEffect } from "react";
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { auth } from "../services/customerApi";
+import { API_CONFIG } from '../config/api';
 
 const Loginscreen = ({ navigation }) => {
 
@@ -28,7 +30,7 @@ const Loginscreen = ({ navigation }) => {
         { code: "+33", name: "France", flag: "🇫🇷" },
     ];
 
-    const isMobileValid = loginemail.trim().length >= 7 && /^[0-9]+$/.test(loginemail)
+    const isMobileValid = loginemail.trim().length === 10 && /^[0-9]+$/.test(loginemail)
     const isPasswordValid = loginpassword.length >= 6
 
     const errorMessage = (() => {
@@ -52,7 +54,8 @@ const Loginscreen = ({ navigation }) => {
 
             const idToken = userinfo.data.idToken
             console.log(idToken)
-            let response = await fetch("http://10.0.2.2:5000/googleAuth", {
+            const API_BASE_URL = process.env.API_BASE_URL || API_CONFIG.baseURL;
+            let response = await fetch(API_BASE_URL + "/api/auth/googleAuth", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -77,8 +80,14 @@ const Loginscreen = ({ navigation }) => {
         try {
             setLoading(true);
 
-            const data = await auth.login({ mobile: countryCode + loginemail, password: loginpassword });
+            const data = await auth.login({ mobile: loginemail, password: loginpassword });
             console.log(data);
+            if (data.user) {
+                await AsyncStorage.setItem('user_details', JSON.stringify(data.user));
+            }
+            if (data.token) {
+                await AsyncStorage.setItem('auth_token', data.token);
+            }
             navigation.replace("Tabs");
 
         } catch (error) {
@@ -114,22 +123,21 @@ const Loginscreen = ({ navigation }) => {
                     <View style={styles.mailinput} >
                         <Text style={styles.mailinputtext} >MOBILE NUMBER</Text>
                         <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
-                            <TouchableOpacity onPress={() => setShowCountryDropdown(prev => !prev)} style={{ paddingVertical: 8, paddingHorizontal: 8, backgroundColor: "#fdfaf2", borderRadius: 8, borderWidth: 1, borderColor: "#E9E2D8" }}>
-                                <Text style={{ fontWeight: "600", color: "#5A3E2B", fontSize: 12 }}>{countryCode}</Text>
-                            </TouchableOpacity>
-                            {showCountryDropdown && (
-                                <View style={{ position: "absolute", top: 55, left: 0, backgroundColor: "#fff", borderRadius: 10, borderWidth: 1, borderColor: "#E9E2D8", padding: 6, shadowColor: "#000", shadowOpacity: 0.1, shadowRadius: 8, elevation: 5, zIndex: 10, minWidth: 140 }}>
-                                    {countries.map((c) => (
-                                        <TouchableOpacity key={c.code} onPress={() => { setCountryCode(c.code); setShowCountryDropdown(false); }} style={{ paddingVertical: 5, paddingHorizontal: 6, borderRadius: 6 }}>
-                                            <Text style={{ fontSize: 12, color: "#5A3E2B" }}>{c.flag} {c.name}</Text>
-                                        </TouchableOpacity>
-                                    ))}
-                                </View>
-                            )}
-                            <View style={[styles.mailtextinput, focusedField === "mobile" && styles.inputFocused, { flex: 1, marginLeft: 0 }]} >
-                                <View style={styles.iconWell}>
-                                    <FontAwesome name="mobile-phone" color="#8a7350" size={20} />
-                                </View>
+                            <View style={[styles.mailtextinput, focusedField === "mobile" && styles.inputFocused, { flex: 1, marginLeft: 0, flexDirection: "row", alignItems: "center", gap: 8, paddingHorizontal: 12 }]} >
+                                <TouchableOpacity onPress={() => setShowCountryDropdown(prev => !prev)} style={{ paddingHorizontal: 2 }}>
+                                    <Text style={{ fontWeight: "700", color: "#5A3E2B", fontSize: 13 }}>{countryCode} ▼</Text>
+                                </TouchableOpacity>
+                                {showCountryDropdown && (
+                                    <View style={{ position: "absolute", top: 42, left: 10, backgroundColor: "#fff", borderRadius: 10, borderWidth: 1, borderColor: "#E9E2D8", padding: 6, shadowColor: "#000", shadowOpacity: 0.1, shadowRadius: 8, elevation: 5, zIndex: 10, minWidth: 140 }}>
+                                        {countries.map((c) => (
+                                            <TouchableOpacity key={c.code} onPress={() => { setCountryCode(c.code); setShowCountryDropdown(false); }} style={{ paddingVertical: 5, paddingHorizontal: 6, borderRadius: 6 }}>
+                                                <Text style={{ fontSize: 12, color: "#5A3E2B" }}>{c.flag} {c.name}</Text>
+                                            </TouchableOpacity>
+                                        ))}
+                                    </View>
+                                )}
+                                <View style={{ width: 1, height: 18, backgroundColor: "#EAE0C8" }} />
+                                <FontAwesome name="mobile-phone" color="#8a7350" size={18} />
                                 <TextInput
                                     keyboardType="numeric"
                                     value={loginemail}
@@ -138,7 +146,7 @@ const Loginscreen = ({ navigation }) => {
                                     onBlur={() => setFocusedField(null)}
                                     placeholder="Mobile number"
                                     placeholderTextColor="#b8a888"
-                                    maxLength={15}
+                                    maxLength={10}
                                     style={styles.inputField}
                                 />
                             </View>

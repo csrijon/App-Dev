@@ -7,6 +7,7 @@ import FoodCard from "../components/FoodCard";
 import { useWindowDimensions } from "react-native";
 import { useState, useMemo, useEffect } from "react";
 import { products, store } from "../services/customerApi";
+import { API_CONFIG } from '../config/api';
 const bakeryData = [
     {
         id: 1,
@@ -505,7 +506,7 @@ const Homescreen = ({ navigation }) => {
                         horizontal
                         data={liveProducts.length > 0 ? liveProducts.map(p => ({
                             id: p.productId || p.id || p.productName,
-                            image: p.imageUrl ? (p.imageUrl.startsWith('/') ? 'http://10.0.3.1:3000' + p.imageUrl : p.imageUrl) : 'https://picsum.photos/seed/cake/400/400',
+                            image: p.imageUrl ? (p.imageUrl.startsWith('/') ? (API_CONFIG.baseURL) + p.imageUrl : p.imageUrl) : 'https://picsum.photos/seed/cake/400/400',
                             trend: p.bestseller ? 'Best Seller' : (p.featured ? 'Featured' : 'Trending'),
                             name: p.productName || p.name || 'Cake',
                             price: '$' + (p.price ? parseFloat(p.price).toFixed(2) : '0.00'),

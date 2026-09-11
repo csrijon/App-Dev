@@ -7,7 +7,8 @@ const getProfile = async (req, res) => {
         const { userId } = req.query;
         const user = await prisma.user.findUnique({ where: { id: parseInt(userId) }, include: { addresses: true } });
         if (!user) return res.status(404).json({ success: false, message: "User not found" });
-        res.status(200).json({ success: true, data: user });
+        const { Password, ...safeUser } = user;
+        res.status(200).json({ success: true, data: safeUser });
     } catch (error) {
         console.log(error);
         res.status(500).json({ success: false, message: "Failed to fetch profile" });
@@ -23,7 +24,8 @@ const updateProfile = async (req, res) => {
             where: { id: parseInt(id) },
             data: { Name, Email, Mobile },
         });
-        res.status(200).json({ success: true, message: "Profile updated", data: updated });
+        const { Password, ...safeUpdated } = updated;
+        res.status(200).json({ success: true, message: "Profile updated", data: safeUpdated });
     } catch (error) {
         console.log(error);
         res.status(500).json({ success: false, message: "Failed to update profile" });

@@ -25,6 +25,7 @@ const OrderTrackingScreen = ({ navigation, route }) => {
     const pulseAnim = useRef(new Animated.Value(1)).current;
     const { width } = useWindowDimensions();
     const orderId = route?.params?.orderId;
+    const selectedDeliveryDate = route?.params?.selectedDate || "";
 
     const [tracking, setTracking] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -125,7 +126,7 @@ const OrderTrackingScreen = ({ navigation, route }) => {
                         <Ionicons name="bicycle" size={ms(22)} color="#F2E4CE" />
                     </View>
                     <Text style={styles.etaLabel}>ARRIVING IN</Text>
-                    <Text style={styles.etaValue}>15–20 min</Text>
+                    <Text style={styles.etaValue}>{selectedDeliveryDate ? selectedDeliveryDate : "15–20 min"}</Text>
                     <View style={styles.etaProgressTrack}>
                         <View style={styles.etaProgressFill} />
                     </View>

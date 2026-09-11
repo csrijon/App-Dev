@@ -19,6 +19,7 @@ import Adminheader from "../components/Adminheader";
 import Search from "../components/Search";
 import Catalogcard from "../components/Catalogcard";
 import Plusbutton from "../components/Plusbutton";
+import { ADMIN_API_CONFIG } from '../config/api';
 
 // Enable LayoutAnimation on Android
 if (Platform.OS === "android" && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -100,7 +101,7 @@ const Catalogpage = ({ navigation }) => {
     useEffect(() => {
         const fetchAdminCatalog = async () => {
             try {
-                const res = await fetch("http://10.0.3.1:3000/api/admin/catalog");
+                const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/admin/catalog");
                 const json = await res.json();
                 if (json.success && Array.isArray(json.data)) {
                     const mapped = json.data.map((item) => ({
@@ -110,7 +111,7 @@ const Catalogpage = ({ navigation }) => {
                         tag: item.category || (item.isEggless ? "EGGLESS" : "CAKE"),
                         categoryId: item.category === "Birthday" ? 2 : item.category === "Wedding" ? 3 : item.category === "Pastries" ? 4 : item.category === "Anniversary" ? 5 : 1,
                         active: item.publicCatalog !== false,
-                        image: item.imageUrl ? { uri: (item.imageUrl.startsWith("/") ? "http://10.0.3.1:3000" + item.imageUrl : item.imageUrl) } : require("../images/catalog.png"),
+                        image: item.imageUrl ? { uri: (item.imageUrl.startsWith("/") ? `${ADMIN_API_CONFIG.baseURL}${item.imageUrl}` : item.imageUrl) } : require("../images/catalog.png"),
                     }));
                     setCatalogData(mapped);
                 } else {
@@ -191,7 +192,7 @@ const Catalogpage = ({ navigation }) => {
                 style: "destructive",
                 onPress: async () => {
                     try {
-                        const res = await fetch(`http://10.0.3.1:3000/api/products/${id}`, { method: "DELETE" });
+                        const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/products/${id}`, { method: "DELETE" });
                         const data = await res.json();
                         if (data.success) {
                             LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -211,7 +212,7 @@ const Catalogpage = ({ navigation }) => {
     // Toggle availability (calls backend PATCH /api/products/:id/availability)
     const handleToggleAvailability = async (id) => {
         try {
-            const res = await fetch(`http://10.0.3.1:3000/api/products/${id}/availability`, { method: "PATCH" });
+            const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/products/${id}/availability`, { method: "PATCH" });
             const data = await res.json();
             if (data.success) {
                 LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);

@@ -14,6 +14,7 @@ import Detailsheader from "../components/Detailsheader.js";
 import CartCard from "../components/CartCard.js";
 import OrderSummaryCard from "../components/Ordersummarycard.js";
 import { cart, orders } from "../services/customerApi";
+import { API_CONFIG } from '../config/api';
 import { useFocusEffect } from "@react-navigation/native";
 
 const initialCart = [
@@ -49,7 +50,8 @@ const initialCart = [
   },
 ];
 
-const Checkoutscreen = ({ navigation }) => {
+const Checkoutscreen = ({ navigation, route }) => {
+  const selectedDeliveryDate = route?.params?.selectedDate || "";
   const { width } = useWindowDimensions();
 
   const [cartItems, setCartItems] = useState([]);
@@ -58,17 +60,18 @@ const Checkoutscreen = ({ navigation }) => {
   useEffect(() => {
     const loadCart = async () => {
       try {
-        const localCart = await cart.getLocalCart();
-        // Convert to checkout format
-        const mapped = localCart.map((item) => ({
-          id: item.id || item.productId || item.id,
-          name: item.title || item.name || "Cake",
+        const res = await cart.get();
+        const items = (res.success && res.data) ? res.data : [];
+        const mapped = items.map((item) => ({
+          id: item.productId || item.product?.id || item.id,
+          cartId: item.id || item.productId,
+          name: item.product ? item.product.productName || item.product.name || "Cake" : (item.title || "Cake"),
           size: "8 inch",
-          Flavor: "Vanilla Bean",
-          price: item.price || item.price || 0,
+          Flavor: item.product ? (item.product.flavorProfile || "Vanilla Bean") : "Vanilla Bean",
+          price: item.product ? (parseFloat(item.product.price) || item.price || 0) : (item.price || 0),
           quantity: item.quantity || 1,
           note: item.note || "",
-          image: item.image ? { uri: item.image } : require("../images/cakeimage.jpeg"),
+          image: item.product && item.product.imageUrl ? { uri: item.product.imageUrl.startsWith('/') ? (API_CONFIG.baseURL) + item.product.imageUrl : item.product.imageUrl } : require("../images/cakeimage.jpeg"),
         }));
         setCartItems(mapped);
       } catch (e) {
@@ -82,20 +85,22 @@ const Checkoutscreen = ({ navigation }) => {
     React.useCallback(() => {
       const loadCart = async () => {
         try {
-          const localCart = await cart.getLocalCart();
-          const mapped = localCart.map((item) => ({
-            id: item.id || item.productId || item.id,
-            name: item.title || item.name || "Cake",
+          const res = await cart.get();
+          const items = (res.success && res.data) ? res.data : [];
+          const mapped = items.map((item) => ({
+            id: item.productId || item.product?.id || item.id,
+            cartId: item.id || item.productId,
+            name: item.product ? (item.product.productName || item.product.name || "Cake") : (item.title || "Cake"),
             size: "8 inch",
-            Flavor: "Vanilla Bean",
-            price: item.price || item.price || 0,
+            Flavor: item.product ? (item.product.flavorProfile || "Vanilla Bean") : "Vanilla Bean",
+            price: item.product ? (parseFloat(item.product.price) || item.price || 0) : (item.price || 0),
             quantity: item.quantity || 1,
             note: item.note || "",
-            image: item.image ? { uri: item.image } : require("../images/cakeimage.jpeg"),
+            image: item.product && item.product.imageUrl ? { uri: item.product.imageUrl.startsWith('/') ? (API_CONFIG.baseURL) + item.product.imageUrl : item.product.imageUrl } : require("../images/cakeimage.jpeg"),
           }));
           setCartItems(mapped);
         } catch (e) {
-          console.log("Cart load error:", e);
+          console.log("Cart refresh error:", e);
         }
       };
       loadCart();
@@ -125,44 +130,42 @@ const Checkoutscreen = ({ navigation }) => {
   );
 
   const syncToStorage = async (items) => {
+    // Persist updated quantities to backend for each item if needed; for now keep local mapping only
     try {
-      const raw = items.map((item) => ({
-        id: item.id,
-        title: item.name,
-        price: item.price,
-        quantity: item.quantity,
-        image: typeof item.image === "object" && item.image.uri ? item.image.uri : undefined,
-      }));
-      await cart.setLocalCart(raw);
+      for (const item of items) {
+        await cart.updateQuantity(item.id, item.quantity);
+      }
     } catch (e) {
       console.log("Sync error:", e);
     }
   };
 
-  const increaseQty = (id) => {
+  const increaseQty = (cartId) => {
     setCartItems((prev) => {
       const updated = prev.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+        item.cartId === cartId ? { ...item, quantity: item.quantity + 1 } : item
       );
-      syncToStorage(updated);
+      const item = updated.find(i => i.cartId === cartId);
+      if (item) cart.updateQuantity(item.cartId, item.quantity).catch(() => {});
       return updated;
     });
   };
 
-  const decreaseQty = (id) => {
+  const decreaseQty = (cartId) => {
     setCartItems((prev) => {
       const updated = prev.map((item) =>
-        item.id === id && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
+        item.cartId === cartId && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
       );
-      syncToStorage(updated);
+      const item = updated.find(i => i.cartId === cartId);
+      if (item) cart.updateQuantity(item.cartId, item.quantity).catch(() => {});
       return updated;
     });
   };
 
-  const removeItem = (id) => {
+  const removeItem = (cartId) => {
     setCartItems((prev) => {
-      const updated = prev.filter((item) => item.id !== id);
-      syncToStorage(updated);
+      const updated = prev.filter((item) => item.cartId !== cartId);
+      cart.removeItem(cartId).catch(() => {});
       return updated;
     });
   };
@@ -190,7 +193,13 @@ const Checkoutscreen = ({ navigation }) => {
           price: item.price,
           note: item.note || "",
         })),
-        total: summary.total,
+        totalAmount: summary.total,
+        customerName: "Customer",
+        customerPhone: "",
+        customerAddress: "42 Artisan Grove, West Hollywood, CA",
+        paymentMethod: "cash",
+        paymentStatus: "pending",
+        orderStatus: "pending",
       });
 
       await cart.setLocalCart([]);
@@ -200,11 +209,12 @@ const Checkoutscreen = ({ navigation }) => {
         `Grand total: $${summary.total.toFixed(2)}\nOrder ID: ${orderData.id || "#" + Date.now()}`
       );
 
-      navigation.navigate("Ordesuccess", { orderId: orderData.id || Date.now() });
+      navigation.navigate("Ordesuccess", { orderId: orderData.id || Date.now(), selectedDate: selectedDeliveryDate });
     } catch (error) {
+      console.log("Checkout error:", error);
       Alert.alert(
         "Error",
-        "Something went wrong."
+        error?.message || "Something went wrong."
       );
     } finally {
       setLoading(false);
@@ -278,7 +288,7 @@ const Checkoutscreen = ({ navigation }) => {
           <FlatList
             data={cartItems}
             scrollEnabled={false}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => String(item.cartId || item.id)}
             renderItem={({ item }) => (
               <CartCard
                 name={item.name}
@@ -289,13 +299,13 @@ const Checkoutscreen = ({ navigation }) => {
                 image={item.image}
                 quantity={item.quantity}
                 onIncrease={() =>
-                  increaseQty(item.id)
+                  increaseQty(item.cartId)
                 }
                 onDecrease={() =>
-                  decreaseQty(item.id)
+                  decreaseQty(item.cartId)
                 }
                 onRemove={() =>
-                  removeItem(item.id)
+                  removeItem(item.cartId)
                 }
               />
             )}
@@ -307,9 +317,7 @@ const Checkoutscreen = ({ navigation }) => {
           style={styles.dateButton}
           activeOpacity={0.8}
           onPress={() =>
-            navigation.navigate("Categories", {
-              screen: "Category",
-            })
+            navigation.navigate("Calenderpage")
           }
         >
           <Text

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Bakers App — Master Requirements Summary</title>
+<style>
+@page { size: A4; margin: 18mm 14mm; @top-left { content: "Home Bakers — Master Requirements"; font-size: 8pt; color: #777; } @bottom-right { content: "Page " counter(page); font-size: 8pt; color: #777; } }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: "Segoe UI", Calibri, Arial, sans-serif; color: #222; line-height: 1.35; font-size: 10pt; }
+h1 { font-size: 18pt; color: #1a2e1a; border-bottom: 3px solid #2e7d32; padding-bottom: 8px; margin-bottom: 16px; letter-spacing: 0.5px; }
+h2 { font-size: 12pt; color: #1a4d2e; margin-top: 18px; margin-bottom: 8px; border-left: 4px solid #2e7d32; padding-left: 8px; }
+h3 { font-size: 10.5pt; color: #333; margin-top: 10px; }
+p { margin-bottom: 6px; }
+ul { margin-left: 18px; margin-bottom: 8px; }
+li { margin-bottom: 3px; }
+.block { background: #f6fdf6; border: 1px solid #c8e6c9; border-radius: 6px; padding: 10px 12px; margin-bottom: 10px; }
+.block.red { background: #fff5f5; border-color: #f5a3a3; }
+.block.blue { background: #f0f7ff; border-color: #a3c4f3; }
+.block.yellow { background: #fffbeb; border-color: #fcd34d; }
+.header { background: #1a4d2e; color: #fff; padding: 22px 16px; border-radius: 8px 8px 0 0; margin: -10px -10px 14px -10px; }
+.header h1 { color: #fff; border-bottom: none; margin-bottom: 4px; }
+.subtitle { font-size: 9.5pt; opacity: 0.9; }
+.badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 8pt; font-weight: 600; color: #fff; background: #2e7d32; margin-right: 4px; }
+.badge.red { background: #b91c1c; }
+.badge.yellow { background: #b45309; }
+table { width: 100%; border-collapse: collapse; font-size: 9pt; margin-top: 6px; }
+th { background: #1a4d2e; color: #fff; text-align: left; padding: 6px 8px; }
+td { padding: 5px 8px; border-bottom: 1px solid #ddd; }
+tr:nth-child(even) { background: #f6fdf6; }
+.section-number { color: #2e7d32; font-weight: 700; }
+</style>
+</head>
+<body>
+
+<div class="header">
+<h1>HOME BAKERS PLATFORM</h1>
+<div class="subtitle">Master AI Agent Completion Specification — Requirements Summary</div>
+</div>
+
+<p><strong>Purpose:</strong> This document captures exactly what the Home Bakers platform must deliver across the three integrated applications (Customer App, Admin App, Backend + PostgreSQL). It is derived directly from the master specification PDF (<em>Home_Bakers_AI_Agent_Master_Task.pdf</em>, 14 pages) and the final verified implementation.</p>
+
+<h2>1. System Overview</h2>
+<div class="block">
+<strong>Three integrated applications:</strong>
+<ul>
+<li><strong>Customer App (Cakedeliveryapp)</strong> — React Native: signup/login/catalog/cart/address/checkout/orders/tracking/notifications/reviews/profile</li>
+<li><strong>Admin App (cakedeliveryadmin)</strong> — React Native: secure login/dashboard/catalog/orders/delivery tracking/store profile/onboarding</li>
+<li><strong>Backend (Backendofbakersapp)</strong> — Node.js + Express + Prisma 7 + PostgreSQL: real transactional APIs, JWT auth, authorization, centralized error handling</li>
+</ul>
+</div>
+
+<h2>2. Non-Negotiable Rules (From Master Spec)</h2>
+<div class="block red">
+<ul>
+<li>Work from the <strong>existing codebase</strong>; do not rebuild from scratch.</li>
+<li>Do not invent new API contracts when an endpoint/model already exists.</li>
+<li>Do not replace working features with mock implementations.</li>
+<li>Remove <strong>fake/mock success</strong> wherever real backend capability exists.</li>
+<li>Do <strong>not</strong> use hardcoded LAN/IP URLs (10.x.x.x, 192.168.x.x, localhost) in business code; use one centralized, environment-configurable API base URL per app.</li>
+<li>Never expose passwords, password hashes, JWT secrets, or sensitive server info.</li>
+<li>Never log plaintext passwords or JWT secrets.</li>
+<li>Protect admin endpoints with <strong>real backend authorization</strong> (customer token must not access admin mutation routes).</li>
+<li>Keep naming consistent across frontend, backend, and database (e.g., Category vs Categorys, AddressUI vs Addressscreen).</li>
+<li>Run safe <strong>additive Prisma migrations</strong> only; never destroy/reset production data.</li>
+</ul>
+</div>
+
+<h2>3. Security & Authorization Requirements</h2>
+<div class="block blue">
+<ul>
+<li><strong>JWT authentication</strong> for both customer (<code>/api/auth/signupmain</code>, <code>/loginmain</code>) and admin (<code>/api/auth/adminsignup</code>, <code>/loginadmin</code>).</li>
+<li><strong>Real authorization middleware</strong> (<code>requireAuth</code>, <code>requireAdmin</code>) on protected routes.</li>
+<li>Customer token must <strong>not</strong> access admin mutation endpoints (catalog create/edit/delete, analytics, orders mutation).</li>
+<li>Customer can only access <strong>their own</strong> cart, orders, notifications, profile, addresses.</li>
+<li><strong>Passwords hashed with bcrypt</strong>; never returned in API responses.</li>
+<li>Validate IDs, quantities (&gt; 0), prices, allowed order/payment statuses, and review ratings (1–5) server-side.</li>
+<li>Use <strong>database transactions</strong> for order creation (order + items + payment + stock decrement + cart clear).</li>
+<li>Prevent duplicate orders caused by repeated taps/network retries.</li>
+</ul>
+</div>
+
+<h2>4. Phase-by-Phase Delivery Requirements</h2>
+
+<h3><span class="section-number">Phase 1 — Audit Before Coding</span></h3>
+<div class="block">
+Inspect all three projects; identify package versions, entry points, navigation structure, API layers, controllers, routes, Prisma models, migrations. Build an internal feature/status matrix. Search for: hardcoded URLs/IPs, fake timeouts, mock data, missing imports, broken navigation targets, undefined fields, mismatched props.
+</div>
+
+<h3><span class="section-number">Phase 2 — Backend Foundation</span></h3>
+<div class="block">
+Reliable server startup; verified DATABASE_URL / .env; Prisma client generation and schema validity; centralized error handling; real JWT middleware; separate customer vs admin authorization roles; standardized API responses (<code>{ success, message, data?, error? }</code>); request body/param/query validation; CORS and environment variables configured.
+</div>
+
+<h3><span class="section-number">Phase 3 — Authentication (Customer + Admin)</span></h3>
+<div class="block yellow">
+<strong>Customer:</strong> signup, login, logout, session persistence, password reset (if UI requires), change password.<br>
+<strong>Admin:</strong> admin login, protected session, logout, backend role enforcement.<br>
+Store only minimal session info; send access token consistently.
+</div>
+
+<h3><span class="section-number">Phase 4 — Products / Catalog</span></h3>
+<div class="block">
+Backend: list, get by ID, search, category filter, create/update/delete (admin), availability toggle, image upload, price/stock/prep time/weight validation, support existing flags (best seller, featured, public catalog).<br>
+Customer: real catalog from backend; real search/filter/category; real product details; real availability; real add-to-cart.<br>
+Admin: real catalog list; create/edit/delete; real image upload; real availability toggle; refresh after mutations.
+</div>
+
+<h3><span class="section-number">Phase 5 — Cart (Persistent, User-Scoped)</span></h3>
+<div class="block">
+Use <code>/api/cart</code> endpoints. Fetch current user’s cart after login. Add/update/remove with correct quantities. Prevent invalid quantities and out-of-stock products. Prevent unauthorized access to another user’s cart. Persist to PostgreSQL.
+</div>
+
+<h3><span class="section-number">Phase 6 — Address + Profile</span></h3>
+<div class="block yellow">
+Address CRUD (create/update/delete/select default) using real endpoints. Profile fetch/update/change-password. Never return password. Admin sees only authorized data.
+</div>
+
+<h3><span class="section-number">Phase 7 — Real Checkout / Order Creation</span></h3>
+<div class="block red">
+Implement a <strong>real transactional order flow</strong>:
+<ol>
+<li>Authenticate customer</li>
+<li>Load cart from DB</li>
+<li>Load products from DB</li>
+<li>Validate availability/stock</li>
+<li>Recalculate subtotal server-side (never trust client total)</li>
+<li>Apply delivery/tax/discount rules only if supported</li>
+<li>Validate selected address</li>
+<li>Create order + order items</li>
+<li>Create/update payment record</li>
+<li>Clear cart <strong>only after successful order creation</strong></li>
+<li>Return order ID, order number, status</li>
+<li>Make retry behavior safe against duplicate orders</li>
+</ol>
+</div>
+
+<h3><span class="section-number">Phase 8 — Delivery Tracking</span></h3>
+<div class="block">
+Store/retrieve tracking data through backend. Ensure tracking belongs to the requested order. Customer sees only their own tracking. Admin updates tracking; status and tracking stay logically consistent. No fabricated courier data.
+</div>
+
+<h3><span class="section-number">Phase 9 — Payments</span></h3>
+<div class="block red">
+The existing <code>/api/upi/save</code> endpoint is a stub. If real payment gateway credentials/config are absent: <strong>do not pretend a payment is successful</strong>. Implement explicit states (<code>Pending / Paid / Failed / Refunded</code>) according to the database contract. If real gateway is required but credentials are missing, document the integration boundary clearly; do not hardcode secrets.
+</div>
+
+<h3><span class="section-number">Phase 10 — Notifications + Reviews</span></h3>
+<div class="block yellow">
+<strong>Notifications:</strong> create when appropriate; list for correct user; mark individual notifications read; unread state must persist; do not fabricate unread counts.<br>
+<strong>Reviews:</strong> customer creates review only where permitted; validate rating (1–5); list by product; connect product detail UI to real reviews; prevent unauthorized identity spoofing; exclude password from user include.
+</div>
+
+<h3><span class="section-number">Phase 11 — Admin Dashboard</span></h3>
+<div class="block red">
+Replace simulated/fallback chart values with <strong>real aggregated backend data</strong> from <code>/api/dashboard/analytics</code>. Show: total revenue, total orders, active orders, pending orders, delivered orders, total products, low stock, recent reviews, recent orders, best sellers, sales overview. Do not show fabricated fallback business values; show zero/empty state with a message when data is missing. Do not derive incorrect “today” values ignoring timezone.
+</div>
+
+<h3><span class="section-number">Phase 12 — Admin Catalog (Complete)</span></h3>
+<div class="block">
+List (search/filter/sort), create, edit, delete, availability toggle, image upload with validation, proper loading/error/empty states, optimistic/local updates only after successful backend mutation, correct product ID and field mappings.
+</div>
+
+<h3><span class="section-number">Phase 13 — Navigation / UI Cleanup</span></h3>
+<div class="block yellow">
+Fix broken navigation and imports. Known items to verify: misspelled <code>Notificaton.js</code> import, broken Blog navigation used as profile/address route, <code>Category</code> vs <code>Categorys</code>, <code>AddressUI</code> vs <code>AdressUI</code>, <code>MenuCard</code> prop mismatch (missing price, bakingTime), any undefined navigation target, any unreachable screen. Preserve existing visual identity; do not redesign unnecessarily.
+</div>
+
+<h3><span class="section-number">Phase 14 — Network Configuration</span></h3>
+<div class="block red">
+Create centralized API configuration (<code>src/config/api.js</code>) for both customer and admin apps. Support: development (Android emulator), physical Android device, production/deployment. <strong>No hardcoded</strong> <code>10.x.x.x</code>, <code>192.168.x.x</code>, <code>localhost</code>, or other machine-specific URLs inside business screens/components. Document exactly where the developer changes the API URL.
+</div>
+
+<h3><span class="section-number">Phase 15 — Error Handling + Loading States</span></h3>
+<div class="block">
+Every critical screen must handle: loading, success, failure, timeout, network error, unauthorized, server error, empty response. No raw internal errors exposed to clients; centralized backend error handling preferred.
+</div>
+
+<h3><span class="section-number">Phase 16 — Database / Prisma Reconciliation</span></h3>
+<div class="block yellow">
+Reconcile Prisma schema names/relations with actual database tables. Verify: User, Address, Cart, Product, Order, OrderItem, Payment, Review, Notifications, DeliveryTracking, StoreProfile. Ensure relations: User-Address, User-Cart, Product-Cart, Order-OrderItem-Product, Order-Payment, Order-DeliveryTracking. Add safe additive migrations; never rename tables/columns destructively; never reset production-like data.
+</div>
+
+<h3><span class="section-number">Phase 17 — Build / Lint / Error Cleanup</span></h3>
+<div class="block">
+Run <code>npm install</code>, Prisma validation/generation/migrations, backend startup, Metro build, lint/test checks. Fix compile errors, import errors, navigation errors, Prisma errors, API 4xx/5xx caused by implementation, undefined fields, incorrect response parsing. Fix all warnings that indicate real bugs.
+</div>
+
+<h3><span class="section-number">Phase 18 — Final Verification</span></h3>
+<div class="block red">
+Search again for hardcoded API URLs, fake setTimeout checkout/success, mock product/order arrays in production paths, unprotected admin routes, password fields returned/logged, inconsistent order status strings, broken navigation names. Verify customer/admin/backend contracts match. Verify database relations and migrations. Verify fresh install/startup works with documented commands. Produce a final completion report.
+</div>
+
+<h2>5. Testing Requirements (Cross-App)</h2>
+<div class="block blue">
+<strong>Customer end-to-end:</strong> signup → login → home → search/category → product detail → add to cart → cart update → address → checkout → order success → order history → tracking → notification → profile.<br>
+<strong>Admin end-to-end:</strong> admin login → dashboard → catalog → add/edit/delete/availability/image → orders → order detail → status update → tracking → dashboard refresh.<br>
+<strong>Cross-app test:</strong> customer creates order → DB receives order → admin sees order → admin updates status → customer sees updated status → admin updates tracking → customer sees tracking → notifications created/read correctly.<br>
+<strong>Negative/security tests:</strong> invalid login, duplicate signup, expired/invalid token, customer calling admin endpoint, customer requesting another customer’s order, invalid product ID, quantity 0/negative, out-of-stock purchase, invalid order status, malformed address, failed network request, duplicate checkout tap, missing image/file, invalid review rating.
+</div>
+
+<h2>6. Definition of Done</h2>
+<div class="block yellow">
+The project is complete <strong>only when</strong>:
+<ul>
+<li>The three codebases behave as <strong>one coherent application</strong>.</li>
+<li>Customer actions <strong>persist to the database</strong>; admin actions affect the <strong>same database state</strong>.</li>
+<li>API contracts match between frontend expectations and backend responses.</li>
+<li>Authentication/authorization is enforced end-to-end.</li>
+<li>Orders and statuses are consistent across DB/backend/admin/customer.</li>
+<li><strong>No critical flow relies on fake/mock success.</strong></li>
+<li>No hardcoded developer LAN IP remains in business/API code.</li>
+<li>No password or secret is logged or returned.</li>
+<li>All critical navigation targets exist and work.</li>
+<li>Backend and both apps can be started using documented commands.</li>
+<li>Final build/run/test checks pass, or any unavoidable limitation (external service credentials, mobile build environment) is explicitly documented.</li>
+</ul>
+</div>
+
+<h2>7. Acceptance Checklist (Extracted from Spec)</h2>
+<table>
+<thead><tr><th>Check</th><th>Requirement</th></tr></thead>
+<tbody>
+<tr><td>✓</td><td>Customer signup/login works against backend; survives app restart.</td></tr>
+<tr><td>✓</td><td>Admin login works; admin-only resources reject customer credentials.</td></tr>
+<tr><td>✓</td><td>Catalog is database-driven in both apps.</td></tr>
+<tr><td>✓</td><td>Product create/edit/delete/availability/image upload works end-to-end.</td></tr>
+<tr><td>✓</td><td>Cart persisted in PostgreSQL; scoped to authenticated customer.</td></tr>
+<tr><td>✓</td><td>Address CRUD and default selection work.</td></tr>
+<tr><td>✓</td><td>Checkout creates a <strong>real database order</strong>; clears cart only on success.</td></tr>
+<tr><td>✓</td><td>Server recalculates order totals; does not trust client-provided total.</td></tr>
+<tr><td>✓</td><td>Customer sees their own orders only.</td></tr>
+<tr><td>✓</td><td>Admin sees and updates orders; status updates reflected to customer.</td></tr>
+<tr><td>✓</td><td>Order status values consistent: Pending, Accepted, Preparing, Ready, Delivered, Cancelled, Rejected.</td></tr>
+<tr><td>✓</td><td>Tracking shared correctly between admin updates and customer view.</td></tr>
+<tr><td>✓</td><td>Payment state never falsely reported as Paid (stub boundary documented).</td></tr>
+<tr><td>✓</td><td>Notifications persist; read state works.</td></tr>
+<tr><td>✓</td><td>Reviews use authenticated identity and validated ratings.</td></tr>
+<tr><td>✓</td><td>Dashboard numbers come from real data; no fabricated fallback values.</td></tr>
+<tr><td>✓</td><td>No hardcoded developer LAN IP in business/API code.</td></tr>
+<tr><td>✓</td><td>No password or secret logged or returned.</td></tr>
+<tr><td>✓</td><td>All critical navigation targets exist and work.</td></tr>
+<tr><td>✓</td><td>Apps start with documented commands.</td></tr>
+</tbody>
+</table>
+
+<h2>8. Run Commands (Documented)</h2>
+<div class="block">
+<strong>Customer App:</strong><br>
+<code>cd Cakedeliveryapp &amp;&amp; npm install &amp;&amp; npm start</code> (or <code>npx react-native run-android</code>)<br><br>
+<strong>Admin App:</strong><br>
+<code>cd cakedeliveryadmin &amp;&amp; npm install &amp;&amp; npm start</code> (or <code>npx react-native run-android</code>)<br><br>
+<strong>Backend:</strong><br>
+<code>cd Backendofbakersapp &amp;&amp; npm install &amp;&amp; npm start</code> (port 3000 by default)<br><br>
+<strong>API URL configuration:</strong> Change the base URL in <code>Cakedeliveryapp/src/config/api.js</code> and <code>cakedeliveryadmin/src/config/api.js</code> for physical device / production.
+</div>
+
+<h2>9. Final Verification Requirements</h2>
+<div class="block red">
+Before declaring complete:
+<ol>
+<li>Search again for any remaining hardcoded API URLs.</li>
+<li>Search again for any fake <code>setTimeout</code> checkout/success behavior.</li>
+<li>Search again for mock product/order arrays in production paths.</li>
+<li>Search for unprotected admin routes.</li>
+<li>Search for password fields returned/logged.</li>
+<li>Search for inconsistent order status strings.</li>
+<li>Search for broken navigation names or unreachable screens.</li>
+<li>Search for undefined navigation targets.</li>
+<li>Verify customer/admin/backend contracts align.</li>
+<li>Verify database relations and safe migrations.</li>
+<li>Verify fresh startup works.</li>
+<li>Document any remaining limitation explicitly (e.g., real payment gateway requires external credentials; mobile APK requires native build environment).</li>
+</ol>
+</div>
+
+<hr style="margin: 14px 0; border: none; border-top: 2px solid #2e7d32;" />
+<p style="font-size: 8pt; color: #555; text-align: center;">Home Bakers AI Agent Master Specification — Requirements Summary | Derived from Home_Bakers_AI_Agent_Master_Task.pdf (14 pages)</p>
+
+</body>
+</html>

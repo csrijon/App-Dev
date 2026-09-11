@@ -14,6 +14,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Detailsheader from "../components/Detailsheader";
 import { address } from "../services/customerApi";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const STATES = [
     "Andhra Pradesh", "Assam", "Bihar", "Delhi", "Gujarat",
@@ -50,18 +51,29 @@ const AddressUI = ({ navigation }) => {
         setLoading(true);
 
         try {
+            const rawUser = await AsyncStorage.getItem('user_details');
+            const userDetails = rawUser ? JSON.parse(rawUser) : null;
             const data = await address.save({
-                name,
+                userId: userDetails ? userDetails.id : 1,
+                fullName: name,
                 phone,
-                street,
-                apartment,
+                address: street + (apartment ? ", " + apartment : ""),
                 city,
                 state: selectedState,
-                zip,
+                pincode: zip,
                 isDefault,
             });
             Alert.alert("Success", data.message || "Address saved.");
 
+            await AsyncStorage.setItem('user_address', JSON.stringify({
+                fullName: name,
+                phone,
+                address: street + (apartment ? ", " + apartment : ""),
+                city,
+                state: selectedState,
+                pincode: zip,
+                isDefault,
+            }));
             navigation.navigate("Profilescreen");
 
         } catch (error) {

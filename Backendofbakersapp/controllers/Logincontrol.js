@@ -1,15 +1,12 @@
 import prisma from "../config/prisma.js";
-import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
 import bcrypt from "bcrypt";
-
-dotenv.config();
+import jwt from "jsonwebtoken";
 
 const Loginmainapp = async (req, res) => {
     try {
         const { mobile, password } = req.body;
 
-        console.log(mobile, password);
+        console.log("Login attempt mobile:", mobile);
 
         const user = await prisma.user.findUnique({
             where: {
@@ -30,28 +27,21 @@ const Loginmainapp = async (req, res) => {
             });
         }
 
-        const jwttoken = jwt.sign(
-            {
-                id: user.id,
-                name: user.Name,
-                email: user.Email,
-                mobile: user.Mobile
-            },
-            process.env.jwt_secret,
-            {
-                expiresIn: "1h"
-            }
+        const token = jwt.sign(
+            { userId: user.id, email: user.Email, mobile: user.Mobile, role: "customer" },
+            process.env.JWT_SECRET || process.env.jwt_secret || "default_secret_change_in_env",
+            { expiresIn: "7d" }
         );
-
+        const { Password, ...safeUserInfo } = user;
         return res.status(200).json({
             message: "Login Successfully",
-            details: {
+            user: {
                 id: user.id,
                 name: user.Name,
                 email: user.Email,
                 mobile: user.Mobile
             },
-            token: jwttoken
+            token
         });
 
     } catch (error) {
@@ -68,7 +58,7 @@ const LoginAdminapp = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        console.log(email, password);
+        console.log("Admin login attempt email:", email);
 
         const user = await prisma.user.findUnique({
             where: {
@@ -89,28 +79,21 @@ const LoginAdminapp = async (req, res) => {
             });
         }
 
-        const jwttoken = jwt.sign(
-            {
-                id: user.id,
-                name: user.Name,
-                email: user.Email,
-                mobile: user.Mobile
-            },
-            process.env.jwt_secret,
-            {
-                expiresIn: "1h"
-            }
+        const token = jwt.sign(
+            { userId: user.id, email: user.Email, mobile: user.Mobile, role: "admin" },
+            process.env.JWT_SECRET || process.env.jwt_secret || "default_secret_change_in_env",
+            { expiresIn: "7d" }
         );
-
+        const { Password, ...safeAdminInfo } = user;
         return res.status(200).json({
             message: "Admin Login Successfully",
-            details: {
+            user: {
                 id: user.id,
                 name: user.Name,
                 email: user.Email,
                 mobile: user.Mobile
             },
-            token: jwttoken
+            token
         });
 
     } catch (error) {
