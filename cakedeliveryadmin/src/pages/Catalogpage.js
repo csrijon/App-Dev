@@ -101,7 +101,7 @@ const Catalogpage = ({ navigation }) => {
     useEffect(() => {
         const fetchAdminCatalog = async () => {
             try {
-                const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/admin/catalog");
+                const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/admin/catalog`);
                 const json = await res.json();
                 if (json.success && Array.isArray(json.data)) {
                     const mapped = json.data.map((item) => ({
@@ -111,7 +111,7 @@ const Catalogpage = ({ navigation }) => {
                         tag: item.category || (item.isEggless ? "EGGLESS" : "CAKE"),
                         categoryId: item.category === "Birthday" ? 2 : item.category === "Wedding" ? 3 : item.category === "Pastries" ? 4 : item.category === "Anniversary" ? 5 : 1,
                         active: item.publicCatalog !== false,
-                        image: item.imageUrl ? { uri: (item.imageUrl.startsWith("/") ? `${ADMIN_API_CONFIG.baseURL}${item.imageUrl}` : item.imageUrl) } : require("../images/catalog.png"),
+                        image: item.imageUrl ? { uri: (item.imageUrl.startsWith("/") ? ADMIN_API_CONFIG.baseURL + item.imageUrl : item.imageUrl) } : require("../images/catalog.png"),
                     }));
                     setCatalogData(mapped);
                 } else {
@@ -177,10 +177,32 @@ const Catalogpage = ({ navigation }) => {
         }
     }, [searchFiltered, sortBy]);
 
-    // Pull to refresh (simulated re-sync)
-    const onRefresh = useCallback(() => {
+    // Pull to refresh (re-fetch from backend)
+    const onRefresh = useCallback(async () => {
         setRefreshing(true);
-        setTimeout(() => setRefreshing(false), 900);
+        try {
+            const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/admin/catalog`);
+            const json = await res.json();
+            if (json.success && Array.isArray(json.data)) {
+                const mapped = json.data.map((item) => ({
+                    id: item.productId || item.id,
+                    title: item.productName || "New Item",
+                    price: "$" + (item.price ? parseFloat(item.price).toFixed(2) : "0.00"),
+                    tag: item.category || (item.isEggless ? "EGGLESS" : "CAKE"),
+                    categoryId: item.category === "Birthday" ? 2 : item.category === "Wedding" ? 3 : item.category === "Pastries" ? 4 : item.category === "Anniversary" ? 5 : 1,
+                    active: item.publicCatalog !== false,
+                    image: item.imageUrl ? { uri: (item.imageUrl.startsWith("/") ? ADMIN_API_CONFIG.baseURL + item.imageUrl : item.imageUrl) } : require("../images/catalog.png"),
+                }));
+                setCatalogData(mapped);
+            } else {
+                setCatalogData(initialCatalogData);
+            }
+        } catch (e) {
+            console.log("Refresh error:", e);
+            setCatalogData(initialCatalogData);
+        } finally {
+            setRefreshing(false);
+        }
     }, []);
 
     // Delete product (calls backend)

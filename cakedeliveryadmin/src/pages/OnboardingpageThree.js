@@ -43,13 +43,13 @@ export default function OnboardingpageThree({ navigation }) {
 
   // Get selected categories from context
   const selectedCategories =
-    formdata?.bakedetails?.productnames || [];
+    formdata?.bakedetalis?.productnames || [];
 
   // Handle category selection
   const toggleCategory = (category) => {
     setformdata((prev) => {
       const currentCategories =
-        prev.bakedetails?.productnames || [];
+        prev.bakedetalis?.productnames || [];
 
       let updatedCategories;
 
@@ -68,8 +68,8 @@ export default function OnboardingpageThree({ navigation }) {
 
       return {
         ...prev,
-        bakedetails: {
-          ...prev.bakedetails,
+        bakedetalis: {
+          ...prev.bakedetalis,
           productnames: updatedCategories,
         },
       };

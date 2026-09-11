@@ -231,7 +231,15 @@ const Onbordingpageone = ({ navigation }) => {
             (response) => {
                 if (response.didCancel || response.errorCode) return;
                 if (response.assets?.length) {
-                    setLogoUri(response.assets[0].uri);
+                    const uri = response.assets[0].uri;
+                    setLogoUri(uri);
+                    setformdata((prev) => ({
+                        ...prev,
+                        personaldetails: {
+                            ...prev.personaldetails,
+                            logo: uri,
+                        },
+                    }));
                 }
             }
         );
@@ -248,7 +256,15 @@ const Onbordingpageone = ({ navigation }) => {
             (response) => {
                 if (response.didCancel || response.errorCode) return;
                 if (response.assets?.length) {
-                    setLogoUri(response.assets[0].uri);
+                    const uri = response.assets[0].uri;
+                    setLogoUri(uri);
+                    setformdata((prev) => ({
+                        ...prev,
+                        personaldetails: {
+                            ...prev.personaldetails,
+                            logo: uri,
+                        },
+                    }));
                 }
             }
         );
@@ -265,7 +281,16 @@ const Onbordingpageone = ({ navigation }) => {
                 (buttonIndex) => {
                     if (buttonIndex === 1) pickFromCamera();
                     else if (buttonIndex === 2) pickFromLibrary();
-                    else if (buttonIndex === 3) setLogoUri(null);
+                    else if (buttonIndex === 3) {
+                        setLogoUri(null);
+                        setformdata((prev) => ({
+                            ...prev,
+                            personaldetails: {
+                                ...prev.personaldetails,
+                                logo: '',
+                            },
+                        }));
+                    }
                 }
             );
         } else {
@@ -276,7 +301,7 @@ const Onbordingpageone = ({ navigation }) => {
             Alert.alert('Upload Logo', 'Choose an option', [
                 { text: 'Take Photo', onPress: pickFromCamera },
                 { text: 'Choose from Library', onPress: pickFromLibrary },
-                ...(logoUri ? [{ text: 'Remove Logo', onPress: () => setLogoUri(null), style: 'destructive' }] : []),
+                ...(logoUri ? [{ text: 'Remove Logo', onPress: () => { setLogoUri(null); setformdata((prev) => ({ ...prev, personaldetails: { ...prev.personaldetails, logo: '' } })); }, style: 'destructive' }] : []),
                 { text: 'Cancel', style: 'cancel' },
             ]);
         }

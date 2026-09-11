@@ -8,9 +8,9 @@ import { getProfile, updateProfile, changePassword } from "../controllers/Profil
 import { getDashboardAnalytics } from "../controllers/Analyticscontrol.js";
 import { saveOnboarding, getStoreProfile } from "../controllers/Onboardingcontrol.js";
 import { createNotification, getNotifications, markNotificationRead } from "../controllers/Notificationcontrol.js";
-import { createReview, getReviewsByProduct } from "../controllers/Reviewcontrol.js";
+import { createRefundRequest, updateRefundStatus, getRefunds } from "../controllers/Refundcontrol.js";
 import { addToCart, getCart, updateCartItem, removeCartItem } from "../controllers/Cartcontrol.js";
-import { createOrder, getAllOrders, getOrdersByCustomer, getOrderById, updateOrderStatus, updateDeliveryTracking, getDeliveryTracking } from "../controllers/Ordercontrol.js";
+import { createOrder, getAllOrders, getOrdersByCustomer, getOrderById, updateOrderStatus, updateDeliveryTracking, getDeliveryTracking, cancelOrder } from "../controllers/Ordercontrol.js";
 import { getAllProducts, getProductById, getProductsByCategory, createProduct, updateProduct, deleteProduct, searchProducts, toggleProductAvailability, getAllProductsAdmin } from "../controllers/Productcontrol.js";
 import { authenticate, requireAdmin } from "../middleware/authMiddleware.js";
 
@@ -46,6 +46,7 @@ router.get("/api/orders", requireAdmin, getAllOrders);
 router.get("/api/orders/customer", authenticate, getOrdersByCustomer);
 router.get("/api/orders/:id", authenticate, getOrderById);
 router.put("/api/orders/:id/status", requireAdmin, updateOrderStatus);
+router.patch("/api/orders/:id/cancel", requireAdmin, cancelOrder);
 router.get("/api/orders/:orderId/tracking", authenticate, getDeliveryTracking);
 router.put("/api/orders/:orderId/tracking", requireAdmin, updateDeliveryTracking);
 
@@ -57,7 +58,7 @@ router.delete("/api/address/:id", authenticate, deleteAddress);
 
 // ============== PROFILE (Both apps) ==============
 router.get("/api/user/profile", authenticate, getProfile);
-router.put("/api/user/profile/:id", authenticate, updateProfile);
+router.put("/api/user/profile", authenticate, updateProfile);
 router.put("/api/user/change-password", authenticate, changePassword);
 
 // ============== ANALYTICS (Admin Dashboard) ==============
@@ -67,6 +68,11 @@ router.get("/api/dashboard/analytics", requireAdmin, getDashboardAnalytics);
 router.post("/api/notifications", authenticate, createNotification);
 router.get("/api/notifications", authenticate, getNotifications);
 router.patch("/api/notifications/:id/read", authenticate, markNotificationRead);
+
+// ============== REFUND (7-day window, admin approves/rejects with reason) ==============
+router.post("/api/refunds", authenticate, createRefundRequest);
+router.get("/api/refunds", authenticate, getRefunds);
+router.patch("/api/refunds/:id/status", requireAdmin, updateRefundStatus);
 
 // ============== REVIEWS ==============
 router.post("/api/reviews", authenticate, createReview);
@@ -79,7 +85,7 @@ router.post("/api/upi/save", upiidhandeler);
 router.get("/api/store", getStoreProfile);
 
 // ============== ONBOARDING (Admin store profile) ==============
-router.post("/api/onboarding/save", requireAdmin, saveOnboarding);
+router.post("/api/onboarding/save", saveOnboarding);
 
 // ============== PRODUCT IMAGE UPLOAD (Admin catalog) ==============
 router.use("/api/add/itemdata", Addcakedetalisroute);

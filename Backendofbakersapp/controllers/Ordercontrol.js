@@ -31,6 +31,15 @@ const createOrder = async (req, res) => {
             return res.status(400).json({ success: false, message: "Cart is empty" });
         }
 
+        // Verify submitted items correspond to the user's current cart
+        const submittedIds = new Set(items.map(i => parseInt(i.productId || i.id)).filter(id => !isNaN(id)));
+        const cartProductIds = new Set(cartItems.map(c => c.productId));
+        for (const sid of submittedIds) {
+            if (!cartProductIds.has(sid)) {
+                return res.status(400).json({ success: false, message: `Item ${sid} does not match your current cart` });
+            }
+        }
+
         // Map order items and validate products/stock
         const orderItemsData = [];
         const productIds = [];
@@ -53,7 +62,7 @@ const createOrder = async (req, res) => {
         for (const di of orderItemsData) {
             const prod = productMap[di.pid];
             if (!prod) return res.status(400).json({ success: false, message: `Product ${di.pid} not found` });
-            if (!prod.publicCatalog && prod.stockQty !== null && prod.stockQty < di.qty) {
+            if (prod.stockQty !== null && prod.stockQty < di.qty) {
                 return res.status(400).json({ success: false, message: `Insufficient stock for product ${prod.productName || di.pid}` });
             }
             const price = prod.price ? parseFloat(prod.price.toString()) : di.price;
@@ -64,6 +73,7 @@ const createOrder = async (req, res) => {
             // Create order with items
             const newOrder = await tx.order.create({
                 data: {
+                    userId: userId ? parseInt(userId) : null,
                     customerName: customerName || req.user ? (req.user.name || "Customer") : "Customer",
                     customerPhone: customerPhone || (req.user ? req.user.mobile : ""),
                     customerAddress: customerAddress || "",
@@ -89,7 +99,7 @@ const createOrder = async (req, res) => {
                             amount: serverTotal,
                             paymentMethod: paymentMethod || "cash",
                             paymentStatus: paymentStatus || "pending",
-                            paidAt: new Date(),
+                            paidAt: (paymentStatus === "paid" || paymentStatus === "completed") ? new Date() : null,
                         },
                     },
                 },
@@ -137,7 +147,7 @@ const getOrdersByCustomer = async (req, res) => {
         const userId = req.user ? req.user.userId : null;
         const phone = req.query.phone;
         let whereClause = {};
-        if (userId) whereClause = { customerPhone: req.user ? req.user.mobile : null };
+        if (userId) whereClause = { userId: parseInt(userId) };
         else if (phone) whereClause = { customerPhone: phone };
         else return res.status(401).json({ success: false, message: "Authentication required" });
         const orders = await prisma.order.findMany({
@@ -160,15 +170,15 @@ const getOrderById = async (req, res) => {
             where: { orderId: parseInt(id) },
             include: { orderItems: true, payments: true, deliveryTracking: true },
         });
-        if (!order) return res.status(404).json({ success: false, message: "Order not found" });
-        // Ensure user can access their own order
+        // Enforce ownership: admin can see any; non-admin must have userId match or customerPhone match user's mobile
         const userId = req.user ? req.user.userId : null;
         const userRole = req.user ? req.user.role : null;
+        const userMobile = req.user ? req.user.mobile : null;
+        if (!order) return res.status(404).json({ success: false, message: "Order not found" });
         if (userRole !== "admin" && userId) {
-            // Check if this order belongs to user via customer info (simplified: if customerPhone matches user's mobile)
-            // For simplicity, allow access if the user is the customer; if not matched, still allow because we don't have direct userId on order
-            // But let's restrict if a phone is associated and doesn't match
-            // For this existing architecture, we'll allow if user is admin or if no user info conflicts
+            const matches = (order.userId !== null && order.userId === parseInt(userId)) ||
+                             (order.customerPhone && userMobile && order.customerPhone === userMobile);
+            if (!matches) return res.status(403).json({ success: false, message: "Not authorized to view this order" });
         }
         res.status(200).json({ success: true, data: order });
     } catch (error) {
@@ -205,12 +215,26 @@ const updateDeliveryTracking = async (req, res) => {
         await prisma.deliveryTracking.upsert({
             where: { orderId: parseInt(orderId) },
             update: { status, latitude: latitude ? parseFloat(latitude) : null, longitude: longitude ? parseFloat(longitude) : null, deliveryBoyId: deliveryBoyId ? parseInt(deliveryBoyId) : null, updatedAt: new Date() },
-            create: { orderId: parseInt(orderId), deliveryBoyId: deliveryBoyId ? parseInt(deliveryBoyId) : 1, status, latitude: latitude ? parseFloat(latitude) : null, longitude: longitude ? parseFloat(longitude) : null },
+            create: { orderId: parseInt(orderId), deliveryBoyId: deliveryBoyId ? parseInt(deliveryBoyId) : null, status, latitude: latitude ? parseFloat(latitude) : null, longitude: longitude ? parseFloat(longitude) : null },
         });
         res.status(200).json({ success: true, message: "Tracking updated" });
     } catch (error) {
         console.log(error);
         res.status(500).json({ success: false, message: "Failed to update tracking" });
+    }
+};
+
+const cancelOrder = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updated = await prisma.order.update({
+            where: { orderId: parseInt(id) },
+            data: { orderStatus: "cancelled", updatedAt: new Date() },
+        });
+        res.status(200).json({ success: true, message: "Order cancelled", data: updated });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: "Failed to cancel order" });
     }
 };
 
@@ -234,6 +258,7 @@ export {
     getOrdersByCustomer,
     getOrderById,
     updateOrderStatus,
+    cancelOrder,
     updateDeliveryTracking,
     getDeliveryTracking,
 };

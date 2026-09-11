@@ -4,7 +4,8 @@ import bcrypt from "bcrypt";
 // Get user profile
 const getProfile = async (req, res) => {
     try {
-        const { userId } = req.query;
+        const userId = req.user ? req.user.userId : null;
+        if (!userId) return res.status(401).json({ success: false, message: "Authentication required" });
         const user = await prisma.user.findUnique({ where: { id: parseInt(userId) }, include: { addresses: true } });
         if (!user) return res.status(404).json({ success: false, message: "User not found" });
         const { Password, ...safeUser } = user;
@@ -18,10 +19,11 @@ const getProfile = async (req, res) => {
 // Update profile
 const updateProfile = async (req, res) => {
     try {
-        const { id } = req.params;
+        const userId = req.user ? req.user.userId : null;
+        if (!userId) return res.status(401).json({ success: false, message: "Authentication required" });
         const { Name, Email, Mobile } = req.body;
         const updated = await prisma.user.update({
-            where: { id: parseInt(id) },
+            where: { id: parseInt(userId) },
             data: { Name, Email, Mobile },
         });
         const { Password, ...safeUpdated } = updated;
@@ -35,7 +37,9 @@ const updateProfile = async (req, res) => {
 // Change password
 const changePassword = async (req, res) => {
     try {
-        const { userId, currentPassword, newPassword } = req.body;
+        const userId = req.user ? req.user.userId : null;
+        if (!userId) return res.status(401).json({ success: false, message: "Authentication required" });
+        const { currentPassword, newPassword } = req.body;
         const user = await prisma.user.findUnique({ where: { id: parseInt(userId) } });
         if (!user) return res.status(404).json({ success: false, message: "User not found" });
         const isMatch = await bcrypt.compare(currentPassword, user.Password);

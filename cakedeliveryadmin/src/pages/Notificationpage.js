@@ -12,6 +12,9 @@ import {
 import Securityheader from "../components/Securityheader";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
+import { ADMIN_API_CONFIG } from '../config/api';
+import { useEffect } from "react";
+
 // --- CATEGORY DATA ---
 const categories = [
     { id: 1, title: "All" },
@@ -70,11 +73,45 @@ const notificationsData = [
 ];
 
 const Notificationpage = () => {
-    const [simulatedEvent, setSimulatedEvent] = useState(0);
-    const addSimulatedEvent = () => {
-        Alert.alert("Simulated Event", "A new simulated notification has been added to the list.");
-        setSimulatedEvent(prev => prev + 1);
+    const [notificationsData, setNotificationsData] = useState([]);
+    const [loading, setLoading] = useState(false);
+
+    const fetchNotifications = async () => {
+        setLoading(true);
+        try {
+            const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/notifications`);
+            const json = await res.json();
+            if (json.success && Array.isArray(json.data)) {
+                setNotificationsData(json.data.map((n, idx) => ({
+                    id: String(n.id || idx + 1),
+                    title: n.title || "Notification",
+                    time: n.time || n.createdAt || "Just now",
+                    description: n.description || n.message || "",
+                    categoryId: n.categoryId || 2,
+                    icon: n.icon || "bell-outline",
+                    iconBg: n.iconBg || "#F4CAD7",
+                    iconColor: n.iconColor || "#9A496A",
+                    unread: n.unread !== false,
+                })));
+            } else {
+                // Fallback to original dummy data if no backend data
+                setNotificationsData([
+                    { id: "1", title: "New Order #8821", time: "Just now", description: "Classic Almond Croissants (x6) ready for prep.", categoryId: 2, icon: "clipboard-text-outline", iconBg: "#F4CAD7", iconColor: "#9A496A", unread: true },
+                    { id: "2", title: "Low Inventory Alert", time: "2 hours ago", description: "Madagascar Vanilla Beans are running low (2 units left). Please restock soon.", categoryId: 3, icon: "package-variant", iconBg: "#F7ECE7", iconColor: "#8B6B57", unread: true },
+                    { id: "3", title: "Payment Received", time: "Yesterday", description: "Payment of $145.00 for Order #8810 was successful.", categoryId: 4, icon: "credit-card-outline", iconBg: "#E8F0E5", iconColor: "#587C56", unread: false },
+                    { id: "4", title: "New Customer Review", time: "Yesterday", description: "5 stars: 'Absolutely the best macarons I have ever had!'", categoryId: 5, icon: "star-outline", iconBg: "#FDF3D5", iconColor: "#B58A24", unread: false },
+                ]);
+            }
+        } catch (e) {
+            console.log("Notification fetch error:", e);
+            setNotificationsData([]);
+        } finally {
+            setLoading(false);
+        }
     };
+
+    useEffect(() => { fetchNotifications(); }, []);
+
     // State to track which tab is selected
     const [activeTab, setActiveTab] = useState(1);
 
@@ -136,10 +173,7 @@ const Notificationpage = () => {
                     </ScrollView>
                 </View>
 
-                {/* Simulated Event Trigger */}
-                <TouchableOpacity activeOpacity={0.8} style={styles.simulateBtn} onPress={addSimulatedEvent}>
-                    <Text style={styles.simulateBtnText}>+ Simulate New Event</Text>
-                </TouchableOpacity>
+                {/* Real backend notifications are loaded via fetchNotifications; no simulated triggers */}
 
                 {/* NOTIFICATIONS LIST */}
                 <FlatList

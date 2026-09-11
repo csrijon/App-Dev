@@ -3,7 +3,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useState } from "react";
 import { cart } from "../services/customerApi";
 
-const ProductShowcaseCard = ({ title, des, price, rating, badge, image,onPress }) => {
+const ProductShowcaseCard = ({ title, des, price, rating, badge, image, id, onPress }) => {
     const { width, height } = useWindowDimensions()
     const cardwidth = (width - 48) / 2
     const [isFavorite, setIsFavorite] = useState(false)
@@ -35,14 +35,13 @@ const ProductShowcaseCard = ({ title, des, price, rating, badge, image,onPress }
                         setCartAdded(!cartAdded);
                         try {
                             await cart.addItem({
-                                id: title,
-                                title: title,
-                                price: price,
-                                image: image,
+                                productId: id || title,
                                 quantity: 1
                             });
+                            Alert.alert("Added to Cart", `Added ${title} to your cart.`);
                         } catch (e) {
                             console.log("Add to cart error:", e);
+                            Alert.alert("Cart Error", e.message || "Failed to add item.");
                         }
                     }}>
                         <AntDesign name={cartAdded ? "check" : "plus"} color="#fff" size={18} />

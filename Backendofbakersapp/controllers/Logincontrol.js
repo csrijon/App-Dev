@@ -27,9 +27,11 @@ const Loginmainapp = async (req, res) => {
             });
         }
 
+        const secret = process.env.JWT_SECRET || process.env.jwt_secret;
+        if (!secret) throw new Error("JWT secret not configured");
         const token = jwt.sign(
             { userId: user.id, email: user.Email, mobile: user.Mobile, role: "customer" },
-            process.env.JWT_SECRET || process.env.jwt_secret || "default_secret_change_in_env",
+            secret,
             { expiresIn: "7d" }
         );
         const { Password, ...safeUserInfo } = user;
@@ -79,9 +81,11 @@ const LoginAdminapp = async (req, res) => {
             });
         }
 
+        const secret = process.env.JWT_SECRET || process.env.jwt_secret;
+        if (!secret) throw new Error("JWT secret not configured");
         const token = jwt.sign(
             { userId: user.id, email: user.Email, mobile: user.Mobile, role: "admin" },
-            process.env.JWT_SECRET || process.env.jwt_secret || "default_secret_change_in_env",
+            secret,
             { expiresIn: "7d" }
         );
         const { Password, ...safeAdminInfo } = user;

@@ -16,18 +16,37 @@ import Securityheader from "../components/Securityheader";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
+import { ADMIN_API_CONFIG } from '../config/api';
+
 const Securitypage = ({ navigation }) => {
     const [permission, setPermission] = useState(true);
     const [twoFactor, setTwoFactor] = useState(false);
     const [locationAccess, setLocationAccess] = useState(false);
 
-    const delacc = () => {
+    const delacc = async () => {
         Alert.alert(
-            "Delete Account", 
-            "Are you sure you want to permanently delete your Artisanal Pâtisserie account? This action cannot be undone.", 
+            "Delete Account",
+            "Are you sure you want to permanently delete your account?",
             [
                 { text: "Cancel", style: "cancel" },
-                { text: "Delete", onPress: () => Alert.alert("Account Deleted", "Your account deletion request has been submitted for review."), style: "destructive" }
+                {
+                    text: "Delete",
+                    style: "destructive",
+                    onPress: async () => {
+                        try {
+                            const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/auth/delete`, { method: "DELETE" });
+                            const data = await res.json();
+                            if (res.ok) {
+                                Alert.alert("Account Deleted", data.message || "Your account deletion request has been submitted.");
+                                navigation.navigate("Welcome");
+                            } else {
+                                Alert.alert("Error", data.message || "Failed to delete account.");
+                            }
+                        } catch (e) {
+                            Alert.alert("Error", "Could not connect. Check connection.");
+                        }
+                    },
+                },
             ]
         );
     };
@@ -75,7 +94,20 @@ const Securitypage = ({ navigation }) => {
                             </View>
                             <Switch
                                 value={twoFactor}
-                                onValueChange={(val) => { setTwoFactor(val); Alert.alert("Two-Factor Auth", val ? "Two-factor authentication enabled." : "Two-factor authentication disabled."); }}
+                                onValueChange={async (val) => {
+                                    setTwoFactor(val);
+                                    try {
+                                        const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/auth/twofactor`, {
+                                            method: "PATCH",
+                                            headers: { "Content-Type": "application/json" },
+                                            body: JSON.stringify({ enabled: val }),
+                                        });
+                                        const data = await res.json();
+                                        Alert.alert("Two-Factor Auth", data.message || (val ? "Enabled." : "Disabled."));
+                                    } catch (e) {
+                                        Alert.alert("Two-Factor Auth", val ? "Enabled locally." : "Disabled locally.");
+                                    }
+                                }}
                                 trackColor={{ false: "#EFE8E2", true: "#8B6A5B" }}
                                 thumbColor={Platform.OS === 'ios' ? "#FFFFFF" : (twoFactor ? "#FFFFFF" : "#F4F4F4")}
                             />
@@ -131,7 +163,15 @@ const Securitypage = ({ navigation }) => {
                             <Text style={styles.itemSubtitle}>
                                 Get a copy of your order history, preferences, and gallery favorites.
                             </Text>
-                            <TouchableOpacity activeOpacity={0.8} style={styles.primaryButton}>
+                            <TouchableOpacity activeOpacity={0.8} style={styles.primaryButton} onPress={async () => {
+                                try {
+                                    const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/auth/download-data`, { method: "GET" });
+                                    const data = await res.json();
+                                    Alert.alert("Download My Data", data.message || "Download started.");
+                                } catch (e) {
+                                    Alert.alert("Download My Data", "Request submitted locally.");
+                                }
+                            }}>
                                 <MaterialCommunityIcons name="download-outline" size={18} color="#FFFFFF" />
                                 <Text style={styles.primaryButtonText}>Request Download</Text>
                             </TouchableOpacity>

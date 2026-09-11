@@ -168,7 +168,7 @@ const Profilepage = ({ navigation }) => {
                         <Ionicons name="chevron-forward" size={18} color="#A89572" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate("Securityscreen")} style={styles.settingsPanel}>
+                    <TouchableOpacity activeOpacity={0.7} onPress={() => navigation.navigate("Securitypage")} style={styles.settingsPanel}>
                         <View style={styles.settingsRow}>
                             <View style={[styles.iconNest, { backgroundColor: "#F7ECE7" }]}>
                                 <Ionicons name="shield-outline" size={20} color="#8B6B57" />

@@ -32,9 +32,11 @@ const UserappSignup = async (req, res) => {
                 Password: hashedPassword
             }
         });
+        const secret = process.env.JWT_SECRET || process.env.jwt_secret;
+        if (!secret) throw new Error("JWT secret not configured");
         const token = jwt.sign(
             { userId: Saveuser.id, email: Saveuser.Email, mobile: Saveuser.Mobile, role: "customer" },
-            process.env.JWT_SECRET || process.env.jwt_secret || "default_secret_change_in_env",
+            secret,
             { expiresIn: "7d" }
         );
         const { Password, ...safeUser } = Saveuser;
@@ -88,9 +90,11 @@ const Adminappsignup = async (req, res) => {
 
         console.log("Admin signup successfully");
 
+        const secret = process.env.JWT_SECRET || process.env.jwt_secret;
+        if (!secret) throw new Error("JWT secret not configured");
         const token = jwt.sign(
             { userId: signupdata.id, email: signupdata.Email, mobile: signupdata.Mobile, role: "admin" },
-            process.env.JWT_SECRET || process.env.jwt_secret || "default_secret_change_in_env",
+            secret,
             { expiresIn: "7d" }
         );
         const { Password, ...safeAdmin } = signupdata;

@@ -21,14 +21,14 @@ async function request(url, options = {}) {
 export const auth = {
   signup: (body) => request('/api/auth/signupmain', { method: 'POST', body: JSON.stringify(body) }),
   login: (body) => request('/api/auth/loginmain', { method: 'POST', body: JSON.stringify(body) }),
-  forgotPassword: (email) => request('/api/auth/forgot-password', { method: 'POST', body: JSON.stringify({ email }) }),
-  resetPassword: (token, body) => request(`/api/auth/reset-password/${token}`, { method: 'POST', body: JSON.stringify(body) }),
+  forgotPassword: () => Promise.reject(new Error("Password reset not supported in this backend. Contact support.")),
+  resetPassword: () => Promise.reject(new Error("Password reset not supported in this backend. Contact support.")),
 };
 
 // Profile
 export const profile = {
   get: () => request('/api/user/profile'),
-  update: (body) => request(`/api/user/profile/${body.id || body.userId || ''}`, { method: 'PUT', body: JSON.stringify(body) }),
+  update: (body) => request('/api/user/profile', { method: 'PUT', body: JSON.stringify(body) }),
   changePassword: (body) => request('/api/user/change-password', { method: 'PUT', body: JSON.stringify(body) }),
 };
 
@@ -75,6 +75,11 @@ export const notifications = {
   list: () => request('/api/notifications'),
   add: (body) => request('/api/notifications', { method: 'POST', body: JSON.stringify(body) }),
   markRead: (id) => request(`/api/notifications/${id}/read`, { method: 'PATCH' }),
+};
+
+export const refunds = {
+  request: (body) => request('/api/refunds', { method: 'POST', body: JSON.stringify(body) }),
+  list: () => request('/api/refunds'),
 };
 
 export const store = {

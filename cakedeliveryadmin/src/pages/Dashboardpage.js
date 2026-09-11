@@ -35,21 +35,21 @@ const Dashboardpage = ({ navigation }) => {
     // Fetch analytics
     const fetchAnalytics = useCallback(async () => {
         try {
-            const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/dashboard/analytics");
+            const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/dashboard/analytics`);
             const json = await res.json();
             if (json.success) {
-                setAnalytics(json.data || analytics);
+                setAnalytics((prev) => ({ ...prev, ...(json.data || {}) }));
                 setLastUpdated(new Date());
             }
         } catch (e) {
             console.log("Dashboard analytics fetch error:", e);
         }
-    }, [analytics]);
+    }, []);
 
     // Fetch orders for recent orders section
     const fetchOrders = useCallback(async () => {
         try {
-            const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/orders");
+          const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/orders`);
             const json = await res.json();
             if (json.success && Array.isArray(json.data)) {
                 setOrders(json.data);
@@ -62,7 +62,7 @@ const Dashboardpage = ({ navigation }) => {
     // Fetch catalog for product count / best sellers derivation
     const fetchCatalog = useCallback(async () => {
         try {
-            const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/admin/catalog");
+            const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/admin/catalog`);
             const json = await res.json();
             if (json.success && Array.isArray(json.data)) {
                 setCatalogData(json.data);

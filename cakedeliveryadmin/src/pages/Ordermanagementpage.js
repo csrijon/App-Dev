@@ -3,7 +3,9 @@ import { StatusBar, ScrollView, View, StyleSheet, Text, FlatList, TouchableOpaci
 import Adminheader from "../components/Adminheader"
 import OrderCard from "../components/OrderCard"
 import Ionicons from "react-native-vector-icons/Ionicons"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+
+import { ADMIN_API_CONFIG } from '../config/api';
 
 const initialOrdersData = [
     {
@@ -117,9 +119,41 @@ const Ordermanagementpage = () => {
     const [refreshing, setRefreshing] = useState(false)
     const [ordersData, setOrdersData] = useState(initialOrdersData)
 
-    const handleRefresh = () => {
-        setRefreshing(true)
-        setTimeout(() => setRefreshing(false), 1200)
+    useEffect(() => {
+        fetchOrders();
+    }, []);
+
+    const fetchOrders = async () => {
+        try {
+            const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/orders`);
+            const json = await res.json();
+            if (json.success && Array.isArray(json.data)) {
+                setOrdersData(json.data.map((o) => ({
+                    id: o.id || o.orderId || Math.random(),
+                    orderNumber: o.orderNumber || "ORDER #BK-" + (o.id || 0),
+                    customerName: o.customerName || o.customer?.name || "Guest",
+                    deliveryTime: o.deliveryTime || o.estimatedDelivery || "Scheduled",
+                    price: "$" + (o.totalAmount || o.price || 0).toFixed(2),
+                    tag: o.tag || "CUSTOM",
+                    status: o.orderStatus || o.status || "Pending",
+                    buttonText: o.status === "Pending" ? "Accept Order" : (o.status === "Accepted" ? "Start Delivery" : (o.status === "Preparing" ? "Track Order" : (o.status === "Cancelled" ? "View Details" : "View Details"))),
+                    buttonColor: o.status === "Pending" ? "#7B5A4E" : (o.status === "Accepted" ? "#3E5C76" : (o.status === "Preparing" ? "#4F772D" : (o.status === "Cancelled" ? "#A4161A" : "#4F772D"))),
+                    image: require("../images/catalog.png"),
+                })));
+            }
+        } catch (e) {
+            console.log("Fetch orders error:", e);
+        }
+    };
+
+    useEffect(() => {
+        fetchOrders();
+    }, []);
+
+    const handleRefresh = async () => {
+        setRefreshing(true);
+        await fetchOrders();
+        setRefreshing(false);
     }
 
     const activeStatus = orderStatusData.find((item) => item.id === activecolorid)?.title
@@ -134,23 +168,74 @@ const Ordermanagementpage = () => {
             ? searchFiltered
             : searchFiltered.filter((order) => order.status === activeStatus)
 
+    // Real backend: accept order (update status to accepted)
+    const handleAcceptOrder = async (orderId) => {
+        try {
+            const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/orders/${orderId}/status`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ orderStatus: "accepted" }),
+            });
+            const data = await res.json();
+            if (res.ok || data.success) {
+                setOrdersData((prev) =>
+                    prev.map((o) =>
+                        o.id === orderId ? { ...o, status: "Accepted", tag: "PRIORITY", buttonText: "Start Delivery", buttonColor: "#3E5C76" } : o
+                    )
+                );
+            }
+        } catch (e) {
+            console.log("Accept error:", e);
+        }
+    };
+
+    // Real backend: update order status
+    const handleStatusUpdate = async (orderId, newStatus) => {
+        try {
+            const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/orders/${orderId}/status`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ orderStatus: newStatus.toLowerCase() }),
+            });
+            const data = await res.json();
+            if (res.ok || data.success) {
+                setOrdersData((prev) =>
+                    prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o))
+                );
+            }
+        } catch (e) {
+            console.log("Status update error:", e);
+        }
+    };
+
     // Admin cancels an order
-    const handleCancelOrder = (orderId) => {
-        setOrdersData((prevOrders) =>
-            prevOrders.map((order) =>
-                order.id === orderId
-                    ? {
-                        ...order,
-                        status: "Cancelled",
-                        tag: "CANCELLED",
-                        deliveryTime: "Cancelled by Baker",
-                        buttonText: "View Details",
-                        buttonColor: "#A4161A",
-                    }
-                    : order
-            )
-        );
-        Alert.alert("Order Cancelled", "The order status has been updated to Cancelled. Customer will be notified.");
+    const handleCancelOrder = async (orderId) => {
+        try {
+            const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/orders/${orderId}/cancel`, { method: "PATCH" });
+            const data = await res.json();
+            if (res.ok || data.success) {
+                setOrdersData((prevOrders) =>
+                    prevOrders.map((order) =>
+                        order.id === orderId
+                            ? {
+                                ...order,
+                                status: "Cancelled",
+                                tag: "CANCELLED",
+                                deliveryTime: "Cancelled by Baker",
+                                buttonText: "View Details",
+                                buttonColor: "#A4161A",
+                            }
+                            : order
+                    )
+                );
+                Alert.alert("Order Cancelled", "The order status has been updated to Cancelled. Customer will be notified.");
+            } else {
+                Alert.alert("Error", "Failed to cancel order.");
+            }
+        } catch (e) {
+            console.log("Cancel error:", e);
+            Alert.alert("Error", "Could not cancel. Check connection.");
+        }
     };
 
     return (
@@ -238,10 +323,14 @@ const Ordermanagementpage = () => {
                                 deliveryTime={item.deliveryTime}
                                 price={item.price}
                                 tag={item.tag}
+                                status={item.status}
                                 buttonText={item.buttonText}
                                 image={item.image}
                                 buttonColor={item.buttonColor}
+                                onAccept={() => handleAcceptOrder(item.id)}
+                                onStatusUpdate={(newStatus) => handleStatusUpdate(item.id, newStatus)}
                                 onCancel={() => handleCancelOrder(item.id)}
+                                onPress={() => Alert.alert("Order Details", `Order: ${item.orderNumber}\nCustomer: ${item.customerName}\nDelivery: ${item.deliveryTime}\nPrice: ${item.price}\nStatus: ${item.status}\nTag: ${item.tag}`)}
                             />
                         )}
                         keyExtractor={(item) => item.id.toString()}

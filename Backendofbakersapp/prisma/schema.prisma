@@ -13,6 +13,8 @@ model User {
   Mobile   String @unique
   Password String
   addresses Address[]
+  orders   Order[]
+  reviews  Review[]
   @@map("Login&signupsystem")
 }
 
@@ -57,6 +59,7 @@ model DeliveryTracking {
   order       Order       @relation(fields: [orderId], references: [orderId], onDelete: Cascade)
   deliveryBoy DeliveryBoy @relation(fields: [deliveryBoyId], references: [id], onDelete: Cascade)
 
+  @@unique([orderId])
   @@index([orderId])
   @@index([deliveryBoyId])
 }
@@ -105,6 +108,7 @@ model OrderItem {
 
 model Order {
   orderId         Int       @id @default(autoincrement())
+  userId          Int?
   orderNumber     String?   @db.VarChar(50)
   customerName    String?   @db.VarChar(150)
   customerPhone   String?   @db.VarChar(20)
@@ -116,6 +120,7 @@ model Order {
   orderDate       DateTime?
   updatedAt       DateTime?
 
+  user        User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
   orderItems       OrderItem[]
   payments         Payment[]
   deliveryTracking DeliveryTracking[]
@@ -161,6 +166,34 @@ model Product {
   orderItems OrderItem[]
 }
 
+model Onboarding {
+  id                Int      @id @default(autoincrement())
+  bakersName        String?  @db.VarChar(150)
+  ownerName         String?  @db.VarChar(150)
+  email             String?  @db.VarChar(150)
+  phone             String?  @db.VarChar(20)
+  businessType      String?  @db.VarChar(50)
+  logoUrl           String?
+  shopAddress       String?
+  landmark          String?
+  city              String?  @db.VarChar(50)
+  pincode           String?  @db.VarChar(10)
+  state             String?  @db.VarChar(50)
+  fssaiNumber       String?  @db.VarChar(50)
+  fssaiImage        String?
+  openingTime       String?
+  closingTime       String?
+  weeklyOffDay      String?
+  acceptOrder247    Boolean  @default(false)
+  deliveryAvailable Boolean  @default(false)
+  deliveryRadius    String?
+  deliveryCharge    String?
+  freeDeliveryAbove String?
+  minimumOrderValue String?
+  productNames      String?
+  createdAt         DateTime @default(now())
+}
+
 model StoreProfile {
   id                Int      @id @default(autoincrement())
   bakersName        String?  @db.VarChar(150)
@@ -198,7 +231,26 @@ model Review {
   createdAt DateTime?
 
   product Product @relation(fields: [productId], references: [productId], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([productId])
+}
+
+model Refund {
+  id           Int       @id @default(autoincrement())
+  orderId      Int
+  userId       Int
+  reason       String?
+  status       String    @default("pending") @db.VarChar(20)
+  adminReason  String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  order Order @relation(fields: [orderId], references: [orderId], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([userId])
+  @@index([status])
 }

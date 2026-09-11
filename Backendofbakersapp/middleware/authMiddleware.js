@@ -7,7 +7,11 @@ export const authenticate = (req, res, next) => {
             return res.status(401).json({ success: false, message: "Unauthorized: Missing token" });
         }
         const token = authHeader.split(" ")[1];
-        const decoded = jwt.verify(token, process.env.JWT_SECRET || process.env.jwt_secret || "default_secret_change_in_env");
+        const secret = process.env.JWT_SECRET || process.env.jwt_secret;
+        if (!secret) {
+            throw new Error("JWT secret not configured");
+        }
+        const decoded = jwt.verify(token, secret);
         req.user = decoded;
         next();
     } catch (error) {
