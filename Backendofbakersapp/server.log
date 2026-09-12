@@ -1,0 +1,37 @@
+◇ injected env (7) from .env // tip: ⌘ override existing { override: true }
+◇ injected env (0) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+App is running on port 3000
+[RESET BOUNDARY] Secure reset token created for email: admin@test.com Token expires: 2026-09-12T11:56:23.517Z
+Login attempt mobile: 7894561230
+Admin login attempt email: csrijon000@gmail.com
+Admin login attempt email: csrijon000@gmail.com
+PrismaClientKnownRequestError: 
+Invalid `prisma.deliveryTracking.findFirst()` invocation:
+
+
+Value out of range for the type: value "1789211198980" is out of range for type integer
+    at Jr.handleRequestError (/home/srijon/Desktop/APP-DEV/Backendofbakersapp/node_modules/@prisma/client/runtime/client.js:65:8286)
+    at Jr.handleAndLogRequestError (/home/srijon/Desktop/APP-DEV/Backendofbakersapp/node_modules/@prisma/client/runtime/client.js:65:7581)
+    at Jr.request (/home/srijon/Desktop/APP-DEV/Backendofbakersapp/node_modules/@prisma/client/runtime/client.js:65:7288)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async a (/home/srijon/Desktop/APP-DEV/Backendofbakersapp/node_modules/@prisma/client/runtime/client.js:99:6862)
+    at async getDeliveryTracking (file:///home/srijon/Desktop/APP-DEV/Backendofbakersapp/controllers/Ordercontrol.js:342:26) {
+  code: 'P2020',
+  meta: {
+    modelName: 'DeliveryTracking',
+    driverAdapterError: DriverAdapterError: ValueOutOfRange
+        at PrismaPgAdapter.onError (file:///home/srijon/Desktop/APP-DEV/Backendofbakersapp/node_modules/@prisma/adapter-pg/dist/index.mjs:639:11)
+        at PrismaPgAdapter.performIO (file:///home/srijon/Desktop/APP-DEV/Backendofbakersapp/node_modules/@prisma/adapter-pg/dist/index.mjs:634:12)
+        at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+        at async PrismaPgAdapter.queryRaw (file:///home/srijon/Desktop/APP-DEV/Backendofbakersapp/node_modules/@prisma/adapter-pg/dist/index.mjs:568:30)
+        at async e.interpretNode (/home/srijon/Desktop/APP-DEV/Backendofbakersapp/node_modules/@prisma/client/runtime/client.js:11:44895)
+        at async e.interpretNode (/home/srijon/Desktop/APP-DEV/Backendofbakersapp/node_modules/@prisma/client/runtime/client.js:11:44018)
+        at async e.interpretNode (/home/srijon/Desktop/APP-DEV/Backendofbakersapp/node_modules/@prisma/client/runtime/client.js:11:45339)
+        at async e.interpretNode (/home/srijon/Desktop/APP-DEV/Backendofbakersapp/node_modules/@prisma/client/runtime/client.js:11:46559)
+        at async e.run (/home/srijon/Desktop/APP-DEV/Backendofbakersapp/node_modules/@prisma/client/runtime/client.js:11:43609)
+        at async e.execute (/home/srijon/Desktop/APP-DEV/Backendofbakersapp/node_modules/@prisma/client/runtime/client.js:57:815) {
+      cause: [Object]
+    }
+  },
+  clientVersion: '7.9.1'
+}

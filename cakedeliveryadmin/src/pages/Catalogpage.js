@@ -36,54 +36,6 @@ const bardata = [
     { id: 6, title: "Custom" },
 ];
 
-const initialCatalogData = [
-    {
-        id: 1,
-        title: "Provençal Bloom",
-        price: "$78.00",
-        tag: "LAVENDER HONEY",
-        categoryId: 3, // Wedding
-        active: true,
-        image: require("../images/catalog.png"),
-    },
-    {
-        id: 2,
-        title: "Velvet Cocoa",
-        price: "$64.00",
-        tag: "DARK CHOCOLATE",
-        categoryId: 2, // Birthday
-        active: false,
-        image: require("../images/catalog.png"),
-    },
-    {
-        id: 3,
-        title: "Berry Chantilly",
-        price: "$82.00",
-        tag: "FRESH BERRIES",
-        categoryId: 4, // Pastries
-        active: true,
-        image: require("../images/catalog.png"),
-    },
-    {
-        id: 4,
-        title: "Golden Pistachio",
-        price: "$95.00",
-        tag: "PISTACHIO CREAM",
-        categoryId: 3, // Wedding
-        active: true,
-        image: require("../images/catalog.png"),
-    },
-    {
-        id: 5,
-        title: "Caramel Bliss",
-        price: "$70.00",
-        tag: "SALTED CARAMEL",
-        categoryId: 2, // Birthday
-        active: false,
-        image: require("../images/catalog.png"),
-    },
-];
-
 const SORT_OPTIONS = [
     { id: "default", label: "Newest" },
     { id: "price_asc", label: "Price ↑" },
@@ -115,11 +67,11 @@ const Catalogpage = ({ navigation }) => {
                     }));
                     setCatalogData(mapped);
                 } else {
-                    setCatalogData(initialCatalogData);
+                    setCatalogData([]);
                 }
             } catch (e) {
                 console.log("Admin catalog fetch error:", e);
-                setCatalogData(initialCatalogData);
+                setCatalogData([]);
             } finally {
                 setLoadingCatalog(false);
             }
@@ -195,11 +147,11 @@ const Catalogpage = ({ navigation }) => {
                 }));
                 setCatalogData(mapped);
             } else {
-                setCatalogData(initialCatalogData);
+                setCatalogData([]);
             }
         } catch (e) {
             console.log("Refresh error:", e);
-            setCatalogData(initialCatalogData);
+            setCatalogData([]);
         } finally {
             setRefreshing(false);
         }

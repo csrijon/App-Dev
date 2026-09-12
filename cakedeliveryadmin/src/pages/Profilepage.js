@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
     ScrollView,
@@ -22,6 +22,53 @@ const Profilepage = ({ navigation }) => {
     // State for the profile image so it updates when picked
     const [profilePic, setProfilePic] = useState("https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400");
 
+    // Profile state (loaded from backend; no mock data)
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
+    const [address, setAddress] = useState("");
+
+    useEffect(() => {
+        // Load profile from real endpoint
+        const loadProfile = async () => {
+            try {
+                const res = await fetch("http://localhost:3000/api/user/profile", {
+                    method: "GET",
+                    headers: { "Content-Type": "application/json", Authorization: `Bearer ${global.authToken || ""}` },
+                });
+                const json = await res.json();
+                if (json.success && json.data) {
+                    const d = json.data;
+                    setName(d.Name || d.name || "");
+                    setEmail(d.Email || d.email || "");
+                    setPhone(d.Mobile || d.phone || d.phone || "");
+                    setAddress(d.address || d.defaultAddress || "");
+                }
+            } catch (e) {
+                console.log("Profile load error:", e);
+            }
+        };
+        loadProfile();
+    }, []);
+
+    const saveProfile = async () => {
+        try {
+            const res = await fetch("http://localhost:3000/api/user/profile", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json", Authorization: `Bearer ${global.authToken || ""}` },
+                body: JSON.stringify({ name, email, phone, address }),
+            });
+            const json = await res.json();
+            if (json.success) {
+                Alert.alert("Saved", "Profile saved to server.");
+            } else {
+                Alert.alert("Error", json.message || "Save failed");
+            }
+        } catch (e) {
+            Alert.alert("Error", "Failed to save profile.");
+        }
+        setIsEditable(false);
+    };
     const pickImage = async () => {
         try {
             const result = await launchImageLibrary({
@@ -62,7 +109,7 @@ const Profilepage = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
 
-                    <Text style={styles.userName}>Eloise Beaumont</Text>
+                    <Text style={styles.userName}>{name || "Profile"}</Text>
 
                     <View style={styles.goldBadge}>
                         <Ionicons name="star" size={12} color="#6B4F3B" />
@@ -74,7 +121,7 @@ const Profilepage = ({ navigation }) => {
                 <View style={styles.sectionContainer}>
                     <View style={styles.sectionHeader}>
                         <Text style={styles.sectionTitle}>Personal Details</Text>
-                        <TouchableOpacity onPress={() => { setIsEditable(!isEditable); if (isEditable) Alert.alert("Saved", "Profile changes saved locally."); }}>
+                        <TouchableOpacity onPress={() => { if (isEditable) { saveProfile(); } else { setIsEditable(true); } }} style={{}}>
                             <Text style={[styles.editActionText, isEditable && styles.saveActionText]}>
                                 {isEditable ? "Save Changes" : "Edit"}
                             </Text>
@@ -88,7 +135,8 @@ const Profilepage = ({ navigation }) => {
                             <Ionicons name="person-outline" size={18} color="#8B8467" />
                             <TextInput
                                 style={styles.textInput}
-                                defaultValue="Eloise Beaumont"
+                                value={name}
+                                onChangeText={setName}
                                 placeholder="Enter Name"
                                 placeholderTextColor="#A8A085"
                                 editable={isEditable}
@@ -101,7 +149,8 @@ const Profilepage = ({ navigation }) => {
                             <Ionicons name="mail-outline" size={18} color="#8B8467" />
                             <TextInput
                                 style={styles.textInput}
-                                defaultValue="eloise.beaumont@luxury.com"
+                                value={email}
+                                onChangeText={setEmail}
                                 placeholder="Enter Email"
                                 placeholderTextColor="#A8A085"
                                 keyboardType="email-address"
@@ -115,7 +164,8 @@ const Profilepage = ({ navigation }) => {
                             <Ionicons name="call-outline" size={18} color="#8B8467" />
                             <TextInput
                                 style={styles.textInput}
-                                defaultValue="+33 6 12 34 56 78"
+                                value={phone}
+                                onChangeText={setPhone}
                                 placeholder="Enter Phone Number"
                                 placeholderTextColor="#A8A085"
                                 keyboardType="phone-pad"
@@ -129,7 +179,8 @@ const Profilepage = ({ navigation }) => {
                             <Ionicons name="location-outline" size={18} color="#8B8467" />
                             <TextInput
                                 style={[styles.textInput, { marginTop: -4 }]}
-                                defaultValue="12 Rue de la Paix, 75002 Paris, France"
+                                value={address}
+                                onChangeText={setAddress}
                                 placeholder="Enter Address"
                                 placeholderTextColor="#A8A085"
                                 multiline

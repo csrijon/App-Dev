@@ -1,9 +1,11 @@
 import prisma from "../config/prisma.js";
 
-// Save/update address for user (customer profile / admin)
+// Save/update address for user
 const saveAddress = async (req, res) => {
     try {
-        const { userId, fullName, phone, address, city, state, pincode, isDefault } = req.body;
+        const userId = req.user ? req.user.userId : null;
+        if (!userId) return res.status(401).json({ success: false, message: "Authentication required" });
+        const { fullName, phone, address, city, state, pincode, isDefault } = req.body;
         const saved = await prisma.address.create({
             data: {
                 userId: parseInt(userId),
@@ -26,7 +28,8 @@ const saveAddress = async (req, res) => {
 // Get addresses for user
 const getAddresses = async (req, res) => {
     try {
-        const { userId } = req.query;
+        const userId = req.user ? req.user.userId : null;
+        if (!userId) return res.status(401).json({ success: false, message: "Authentication required" });
         const addresses = await prisma.address.findMany({
             where: { userId: parseInt(userId) },
             orderBy: { isDefault: "desc" },
@@ -38,10 +41,15 @@ const getAddresses = async (req, res) => {
     }
 };
 
-// Update address
+// Update address (only if owned by user)
 const updateAddress = async (req, res) => {
     try {
+        const userId = req.user ? req.user.userId : null;
+        if (!userId) return res.status(401).json({ success: false, message: "Authentication required" });
         const { id } = req.params;
+        const item = await prisma.address.findUnique({ where: { id: parseInt(id) } });
+        if (!item) return res.status(404).json({ success: false, message: "Address not found" });
+        if (item.userId !== parseInt(userId)) return res.status(403).json({ success: false, message: "Forbidden" });
         const updates = req.body;
         const updated = await prisma.address.update({
             where: { id: parseInt(id) },
@@ -54,10 +62,15 @@ const updateAddress = async (req, res) => {
     }
 };
 
-// Delete address
+// Delete address (only if owned by user)
 const deleteAddress = async (req, res) => {
     try {
+        const userId = req.user ? req.user.userId : null;
+        if (!userId) return res.status(401).json({ success: false, message: "Authentication required" });
         const { id } = req.params;
+        const item = await prisma.address.findUnique({ where: { id: parseInt(id) } });
+        if (!item) return res.status(404).json({ success: false, message: "Address not found" });
+        if (item.userId !== parseInt(userId)) return res.status(403).json({ success: false, message: "Forbidden" });
         await prisma.address.delete({ where: { id: parseInt(id) } });
         res.status(200).json({ success: true, message: "Address deleted" });
     } catch (error) {

@@ -3,7 +3,7 @@ import prisma from "../config/prisma.js";
 // Add item to cart (customer app)
 const addToCart = async (req, res) => {
     try {
-        const userId = req.user ? req.user.userId : (req.body.userId ? parseInt(req.body.userId) : null);
+        const userId = req.user ? req.user.userId : null;
         const { productId, quantity } = req.body;
         if (!userId) return res.status(401).json({ success: false, message: "Authentication required" });
         const existing = await prisma.cart.findFirst({
@@ -33,7 +33,7 @@ const addToCart = async (req, res) => {
 // Get cart for user
 const getCart = async (req, res) => {
     try {
-        const userId = req.user ? req.user.userId : (req.query.userId ? parseInt(req.query.userId) : null);
+        const userId = req.user ? req.user.userId : null;
         if (!userId) return res.status(401).json({ success: false, message: "Authentication required" });
         const cartItems = await prisma.cart.findMany({
             where: { userId: parseInt(userId) },
@@ -54,7 +54,8 @@ const updateCartItem = async (req, res) => {
         const { quantity } = req.body;
         const item = await prisma.cart.findUnique({ where: { id: parseInt(id) }, include: { product: true } });
         if (!item) return res.status(404).json({ success: false, message: "Cart item not found" });
-        if (userId && item.userId !== parseInt(userId)) return res.status(403).json({ success: false, message: "Forbidden" });
+        if (!userId) return res.status(401).json({ success: false, message: "Authentication required" });
+        if (item.userId !== parseInt(userId)) return res.status(403).json({ success: false, message: "Forbidden" });
         const updated = await prisma.cart.update({
             where: { id: parseInt(id) },
             data: { quantity: parseInt(quantity) },
@@ -73,7 +74,8 @@ const removeCartItem = async (req, res) => {
         const { id } = req.params;
         const item = await prisma.cart.findUnique({ where: { id: parseInt(id) } });
         if (!item) return res.status(404).json({ success: false, message: "Cart item not found" });
-        if (userId && item.userId !== parseInt(userId)) return res.status(403).json({ success: false, message: "Forbidden" });
+        if (!userId) return res.status(401).json({ success: false, message: "Authentication required" });
+        if (item.userId !== parseInt(userId)) return res.status(403).json({ success: false, message: "Forbidden" });
         await prisma.cart.delete({ where: { id: parseInt(id) } });
         res.status(200).json({ success: true, message: "Item removed from cart" });
     } catch (error) {

@@ -3,7 +3,7 @@ import prisma from "../config/prisma.js";
 // Create notification
 const createNotification = async (req, res) => {
     try {
-        const userId = req.user ? req.user.userId : (req.body.userId ? parseInt(req.body.userId) : null);
+        const userId = req.user ? req.user.userId : null;
         const { title, message } = req.body;
         if (!userId) return res.status(401).json({ success: false, message: "Authentication required" });
         const notif = await prisma.notifications.create({

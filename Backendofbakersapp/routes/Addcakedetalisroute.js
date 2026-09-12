@@ -14,9 +14,28 @@ const storage = multer.diskStorage({
         cb(null, uniqueName)
     }
 })
-const upload = multer({ storage })
+const allowedMime = ["image/jpeg", "image/png", "image/webp", "image/jpg"]
+const maxSize = 5 * 1024 * 1024 // 5MB
+
+const upload = multer({
+  storage,
+  limits: { fileSize: maxSize },
+  fileFilter: (req, file, cb) => {
+    if (allowedMime.includes(file.mimetype)) {
+      cb(null, true)
+    } else {
+      cb(new Error("Only JPEG, PNG, WEBP images allowed"), false)
+    }
+  }
+})
 
 router.post("/", upload.single("image"), async (req, res) => {
+    // Derive store from admin identity; do not trust client-provided storeProfileId
+    let storeProfileId = null;
+    if (req.user && req.user.email) {
+        const storeProfile = await prisma.storeProfile.findFirst({ where: { email: req.user.email } });
+        if (storeProfile) storeProfileId = storeProfile.id;
+    }
     if (!req.file) {
         return res.status(400).json({ success: false, message: "No file uploaded" })
     }
@@ -42,6 +61,7 @@ router.post("/", upload.single("image"), async (req, res) => {
                 bestseller: req.body.isBestseller === "true" || req.body.isBestseller === true || req.body.bestseller === "true" || req.body.bestseller === true,
                 featured: req.body.isFeatured === "true" || req.body.isFeatured === true || req.body.featured === "true" || req.body.featured === true,
                 allowCustomMessage: req.body.allowCustomMessage === "true" || req.body.allowCustomMessage === true || req.body.allowCustomMessage === "on",
+                storeProfileId: storeProfileId ? parseInt(storeProfileId) : null,
             }
         })
 

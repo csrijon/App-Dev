@@ -69,11 +69,42 @@ const createOrder = async (req, res) => {
             serverTotal += price * di.qty;
         }
 
+        // Multi-store isolation: all items must belong to the same store
+        let firstStoreId = null;
+        for (const di of orderItemsData) {
+            const prod = productMap[di.pid];
+            if (!prod) return res.status(400).json({ success: false, message: `Product ${di.pid} not found` });
+            if (firstStoreId === null) {
+                firstStoreId = prod.storeProfileId ? parseInt(prod.storeProfileId) : null;
+            } else if (firstStoreId !== (prod.storeProfileId ? parseInt(prod.storeProfileId) : null)) {
+                return res.status(400).json({ success: false, message: "Items from different stores are not allowed in one order" });
+            }
+        }
+        const storeProfileId = firstStoreId;
+
+        const idempotencyKey = req.body.idempotencyKey || null;
+        // Duplicate protection via idempotency key only (no false positive on null)
+        if (idempotencyKey) {
+            const recentDup = await prisma.order.findFirst({
+                where: {
+                    userId: userId ? parseInt(userId) : null,
+                    idempotencyKey: idempotencyKey,
+                    orderDate: { gte: new Date(Date.now() - 300 * 1000) },
+                },
+                include: { orderItems: true },
+                orderBy: { orderDate: "desc" },
+            });
+            if (recentDup) {
+                return res.status(409).json({ success: false, message: "Duplicate order detected (idempotency key)", data: recentDup });
+            }
+        }
+
         const result = await prisma.$transaction(async (tx) => {
             // Create order with items
             const newOrder = await tx.order.create({
                 data: {
                     userId: userId ? parseInt(userId) : null,
+                    storeProfileId: storeProfileId,
                     customerName: customerName || req.user ? (req.user.name || "Customer") : "Customer",
                     customerPhone: customerPhone || (req.user ? req.user.mobile : ""),
                     customerAddress: customerAddress || "",
@@ -81,6 +112,7 @@ const createOrder = async (req, res) => {
                     paymentMethod: paymentMethod || "cash",
                     paymentStatus: paymentStatus || "pending",
                     orderStatus: orderStatus || "pending",
+                    idempotencyKey: idempotencyKey || undefined,
                     orderNumber: `BK-${Math.floor(Math.random() * 9000) + 1000}`,
                     orderDate: new Date(),
                     orderItems: {
@@ -121,16 +153,44 @@ const createOrder = async (req, res) => {
         });
 
         res.status(201).json({ success: true, message: "Order created", data: result });
+        // Notify customer that order was placed
+        if (result && result.userId) {
+            try {
+                await prisma.notifications.create({
+                    data: {
+                        userId: parseInt(result.userId),
+                        title: "Order Placed",
+                        message: `Your order #${result.orderNumber || result.orderId} has been placed successfully.`,
+                    },
+                });
+            } catch (e) {
+                console.log("Notification creation error for order:", e);
+            }
+        }
     } catch (error) {
         console.log("Order creation error:", error);
         res.status(500).json({ success: false, message: "Failed to create order", error: error.message });
     }
 };
 
-// Get all orders (admin order management)
+// Get all orders (admin order management) - filtered by admin's bakery/store
 const getAllOrders = async (req, res) => {
     try {
+        const userRole = req.user ? req.user.role : null;
+        const adminEmail = req.user ? req.user.email : null;
+        let whereClause = {};
+        if (userRole === "admin" && adminEmail) {
+            // Find store profile linked to this admin by email
+            const storeProfile = await prisma.storeProfile.findFirst({ where: { email: adminEmail } });
+            if (storeProfile) {
+                whereClause = { storeProfileId: storeProfile.id };
+            } else {
+                // If admin has no store profile, return empty (they shouldn't see others' orders)
+                whereClause = { storeProfileId: -1 };
+            }
+        }
         const orders = await prisma.order.findMany({
+            where: whereClause,
             include: { orderItems: true, payments: true, deliveryTracking: true },
             orderBy: { orderDate: "desc" },
         });
@@ -187,19 +247,54 @@ const getOrderById = async (req, res) => {
     }
 };
 
-// Update order status (admin management)
+// Update order status (admin management with store isolation)
 const updateOrderStatus = async (req, res) => {
     try {
         const { id } = req.params;
         const { orderStatus } = req.body;
-        const allowedStatuses = ["pending", "accepted", "preparing", "ready", "delivered", "cancelled", "rejected"];
+        const allowedStatuses = ["pending", "accepted", "preparing", "ready", "out_for_delivery", "delivered", "cancelled", "rejected"];
         if (!allowedStatuses.includes(orderStatus)) {
             return res.status(400).json({ success: false, message: "Invalid order status" });
         }
+
+        // Verify order belongs to admin's store
+        const order = await prisma.order.findUnique({ where: { orderId: parseInt(id) } });
+        if (!order) return res.status(404).json({ success: false, message: "Order not found" });
+        if (req.user && req.user.email) {
+            const profile = await prisma.storeProfile.findFirst({ where: { email: req.user.email } });
+            if (profile && order.storeProfileId !== profile.id) {
+                return res.status(403).json({ success: false, message: "Not authorized to update this order" });
+            }
+        }
+
+        const updateData = { orderStatus, updatedAt: new Date() };
+        if (orderStatus === "delivered") {
+            updateData.completedAt = new Date();
+        }
         const updated = await prisma.order.update({
             where: { orderId: parseInt(id) },
-            data: { orderStatus, updatedAt: new Date() },
+            data: updateData,
         });
+        // Create customer notification for status change (avoid duplicate for same transition)
+        if (updated.userId && updated.orderStatus !== order.orderStatus) {
+            const statusLabels = {
+                pending: "Order Received",
+                accepted: "Order Accepted",
+                preparing: "Preparing Your Order",
+                ready: "Ready for Pickup",
+                out_for_delivery: "Out for Delivery",
+                delivered: "Delivered",
+                cancelled: "Order Cancelled",
+                rejected: "Order Rejected",
+            };
+            await prisma.notifications.create({
+                data: {
+                    userId: parseInt(updated.userId),
+                    title: statusLabels[updated.orderStatus] || "Order Update",
+                    message: `Your order #${updated.orderNumber || id} is now ${updated.orderStatus}.`,
+                },
+            });
+        }
         res.status(200).json({ success: true, message: "Order status updated", data: updated });
     } catch (error) {
         console.log(error);
@@ -242,9 +337,26 @@ const cancelOrder = async (req, res) => {
 const getDeliveryTracking = async (req, res) => {
     try {
         const { orderId } = req.params;
+        const userId = req.user ? req.user.userId : null;
+        const userRole = req.user ? req.user.role : null;
         const tracking = await prisma.deliveryTracking.findFirst({
             where: { orderId: parseInt(orderId) },
+            include: { order: true },
         });
+        if (!tracking) return res.status(404).json({ success: false, message: "Tracking not found" });
+        // Authorization: admin can view any; customer must own the order
+        if (userRole !== "admin" && userId) {
+            const order = tracking.order;
+            if (!order || (order.userId !== parseInt(userId) && !(req.user && req.user.mobile && order.customerPhone === req.user.mobile))) {
+                return res.status(403).json({ success: false, message: "Not authorized" });
+            }
+        } else if (!userRole && userId) {
+            // Non-admin, must match
+            const order = tracking.order;
+            if (!order || (order.userId !== parseInt(userId) && !(req.user && req.user.mobile && order.customerPhone === req.user.mobile))) {
+                return res.status(403).json({ success: false, message: "Not authorized" });
+            }
+        }
         res.status(200).json({ success: true, data: tracking });
     } catch (error) {
         console.log(error);

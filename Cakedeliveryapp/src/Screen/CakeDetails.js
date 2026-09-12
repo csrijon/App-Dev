@@ -9,8 +9,8 @@ import { cart } from "../services/customerApi";
 
 const CakeDetails = ({ navigation, route }) => {
     const product = route?.params?.product || {};
-    const productName = product.title || route?.params?.name || "The Celestial Peony";
-    const description = product.description || "A masterpiece of confectionary art, this three-tier wedding cake features layers of Tahitian vanilla bean sponge infused with a delicate rosewater syrup. Hand-sculpted sugar peonies cascade down a smooth Swiss meringue buttercream canvas, accented by 24k gold leaf details.";
+    const productName = product.title || route?.params?.name || "Product";
+    const description = product.description || "";
 
     const [isFavorite, setIsFavorite] = useState(false);
     const [quantity, setQuantity] = useState(1);
@@ -21,7 +21,7 @@ const CakeDetails = ({ navigation, route }) => {
 
     const shortDescription = description.slice(0, 100) + "...";
 
-    const pricePerCake = product.price || 850;
+    const pricePerCake = product.price || (product.price === 0 ? 0 : null);
     const totalPrice = pricePerCake * quantity;
 
     const increaseQuantity = () => {

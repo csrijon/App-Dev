@@ -504,13 +504,13 @@ const Homescreen = ({ navigation }) => {
 
                     <FlatList
                         horizontal
-                        data={liveProducts.length > 0 ? liveProducts.map(p => ({
+                        data={liveProducts.map(p => ({
                             id: p.productId || p.id || p.productName,
                             image: p.imageUrl ? (p.imageUrl.startsWith('/') ? (API_CONFIG.baseURL) + p.imageUrl : p.imageUrl) : 'https://picsum.photos/seed/cake/400/400',
                             trend: p.bestseller ? 'Best Seller' : (p.featured ? 'Featured' : 'Trending'),
                             name: p.productName || p.name || 'Cake',
                             price: '$' + (p.price ? parseFloat(p.price).toFixed(2) : '0.00'),
-                        })) : bakeryData}
+                        }))}
                         showsHorizontalScrollIndicator={false}
                         initialNumToRender={8}
                         keyExtractor={(item) =>

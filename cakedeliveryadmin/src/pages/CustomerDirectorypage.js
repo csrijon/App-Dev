@@ -1,87 +1,30 @@
+import React, { useState, useEffect } from "react";
 import Adminheader from "../components/Adminheader"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { StatusBar, ScrollView, View, StyleSheet, Text, TouchableOpacity, Image } from "react-native"
 import Search from "../components/Search"
 
-const dashboardCardData = [
-    {
-        id: 1,
-        title: "TOTAL PATRONS",
-        count: "1,284",
-    },
-
-    {
-        id: 2,
-        title: "ACTIVE NOW",
-        count: "412",
-    },
-];
-
-const filterCategoryData = [
-    {
-        id: 1,
-        title: "All",
-    },
-
-    {
-        id: 2,
-        title: "Gold Tier",
-    },
-
-    {
-        id: 3,
-        title: "Recent Activity",
-    },
-    {
-        id: 4,
-        title: "VIP Members",
-    },
-    {
-        id: 5,
-        title: "Top Customers",
-    },
-];
-
-const customerCardData = [
-    {
-        id: 1,
-        customerName: "Eloise Beaumont",
-        totalOrders: "24 Total Orders",
-        membership: "GOLD TIER",
-        status: "Active",
-        image: require("../images/catalog.png"),
-    },
-
-    {
-        id: 2,
-        customerName: "Julian Lefebvre",
-        totalOrders: "12 Total Orders",
-        membership: "SILVER TIER",
-        status: "Inactive",
-        image: require("../images/catalog.png"),
-    },
-
-    {
-        id: 3,
-        customerName: "Clara Hollister",
-        totalOrders: "31 Total Orders",
-        membership: "GOLD TIER",
-        status: "Active",
-        image: require("../images/catalog.png"),
-    },
-
-    {
-        id: 4,
-        customerName: "Marcus Vance",
-        totalOrders: "5 Total Orders",
-        membership: "BRONZE TIER",
-        status: "Active",
-        image: require("../images/catalog.png"),
-    },
-];
 
 
 const CustomerDirectorypage = () => {
+    const [orders, setOrders] = useState([]);
+    useEffect(() => {
+        fetch("http://localhost:3000/api/orders", { headers: { Authorization: `Bearer ${global.authToken || ""}` } })
+            .then(r => r.json())
+            .then(j => { if (j.success && j.data) setOrders(j.data); })
+            .catch(e => console.log("Directory fetch error", e));
+    }, []);
+
+    // Derive simple customer stats from real orders
+    const derivedCustomers = orders.map((o, i) => ({
+        id: o.orderId || i,
+        customerName: o.customerName || o.user ? o.user.Name || "Customer" : "Customer",
+        totalOrders: "1 Order",
+        membership: "MEMBER",
+        status: o.orderStatus || "pending",
+        image: require("../images/catalog.png"),
+    }));
+
     return (
         <SafeAreaView style={CustomerDirectorystyle.CustomerDirectorycontainer} >
             <StatusBar backgroundColor="#fff9e6" barStyle="dark-content" />
@@ -95,14 +38,10 @@ const CustomerDirectorypage = () => {
                     </Text>
                 </Text>
                 <View style={CustomerDirectorystyle.customercountcardcontainer} >
-                    {
-                        dashboardCardData.map((item) => (
-                            <View key={item.id} style={CustomerDirectorystyle.customercountcard} >
-                                <Text style={CustomerDirectorystyle.analyticsTitle} >{item.title}</Text>
-                                <Text style={CustomerDirectorystyle.analyticsCount} >{item.count}</Text>
-                            </View>
-                        ))
-                    }
+                    <View style={{ flex: 1 }}>
+                        <Text style={CustomerDirectorystyle.analyticsTitle}>Total Orders</Text>
+                        <Text style={CustomerDirectorystyle.analyticsCount}>{orders.length}</Text>
+                    </View>
                 </View>
                 <Search placeholder="Find a customer..." />
 
@@ -122,7 +61,7 @@ const CustomerDirectorypage = () => {
 
                 <View style={CustomerDirectorystyle.bestcustomersection} >
                     {
-                        customerCardData.map((item) => (
+                        derivedCustomers.map((item) => (
                             <View key={item.id} style={CustomerDirectorystyle.profileCardContainer}>
 
                                 <View style={CustomerDirectorystyle.profileLeftArea}>

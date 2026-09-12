@@ -1,7 +1,8 @@
 import Simpleheader from "../components/Simpleheader"
 import { SafeAreaView } from "react-native-safe-area-context"
-import { StatusBar, ScrollView, View, Text, TouchableOpacity, StyleSheet, useWindowDimensions, Image } from "react-native"
-import { useState } from "react"
+import { StatusBar, ScrollView, View, Text, TouchableOpacity, StyleSheet, useWindowDimensions, Image, ActivityIndicator } from "react-native"
+import { useState, useEffect } from "react"
+import { orders } from "../services/customerApi"
 
 const ORDERS = [
   {
@@ -41,9 +42,37 @@ const PILL_STYLES = {
 
 const Myorderscreen = ({navigation}) => {
   const { width } = useWindowDimensions()
-  const [activeTab, setActiveTab] = useState("active") // "active" | "past"
+  const [activeTab, setActiveTab] = useState("active")
+  const [orderData, setOrderData] = useState([])
+  const [loading, setLoading] = useState(true)
 
-  const filteredOrders = ORDERS.filter((order) =>
+  useEffect(() => {
+    const loadOrders = async () => {
+      try {
+        setLoading(true)
+        const res = await orders.list()
+        const items = (res && res.success && Array.isArray(res.data)) ? res.data : []
+        const mapped = items.map((o) => ({
+          id: o.orderNumber || ("BK-" + o.orderId),
+          status: (o.orderStatus || "PENDING").toUpperCase(),
+          title: (o.customerName || "Customer Order"),
+          price: "$" + (parseFloat(o.totalAmount || 0)).toFixed(2),
+          date: o.orderDate ? new Date(o.orderDate).toLocaleString() : "",
+          action: o.orderStatus === "delivered" ? "REORDER" : (o.orderStatus === "pending" ? "TRACK ORDER" : (o.orderStatus === "accepted" ? "VIEW DETAILS" : "TRACK ORDER")),
+          isActive: !["delivered", "cancelled", "rejected"].includes(o.orderStatus || ""),
+        }))
+        setOrderData(mapped)
+      } catch (e) {
+        console.log("Load orders error:", e)
+        setOrderData([])
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadOrders()
+  }, [])
+
+  const filteredOrders = orderData.filter((order) =>
     activeTab === "active" ? order.isActive : !order.isActive
   )
 
@@ -87,7 +116,9 @@ const Myorderscreen = ({navigation}) => {
         </View>
 
         <View>
-          {filteredOrders.length === 0 ? (
+          {loading ? (
+            <View style={styles.emptyState}><ActivityIndicator size="large" color="#75584e" /></View>
+          ) : filteredOrders.length === 0 ? (
             <View style={styles.emptyState}>
               <Text style={styles.emptyText}>No {activeTab} orders found</Text>
             </View>

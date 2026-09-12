@@ -5,9 +5,11 @@ import { saveAddress, getAddresses, updateAddress, deleteAddress } from "../cont
 import { upiidhandeler } from "../controllers/Upiidcontroler.js";
 import Addcakedetalisroute from "./Addcakedetalisroute.js";
 import { getProfile, updateProfile, changePassword } from "../controllers/Profilecontrol.js";
+import { forgotPassword, resetPassword } from "../controllers/ResetPasswordcontrol.js";
 import { getDashboardAnalytics } from "../controllers/Analyticscontrol.js";
 import { saveOnboarding, getStoreProfile } from "../controllers/Onboardingcontrol.js";
 import { createNotification, getNotifications, markNotificationRead } from "../controllers/Notificationcontrol.js";
+import { createReview, getReviewsByProduct } from "../controllers/Reviewcontrol.js";
 import { createRefundRequest, updateRefundStatus, getRefunds } from "../controllers/Refundcontrol.js";
 import { addToCart, getCart, updateCartItem, removeCartItem } from "../controllers/Cartcontrol.js";
 import { createOrder, getAllOrders, getOrdersByCustomer, getOrderById, updateOrderStatus, updateDeliveryTracking, getDeliveryTracking, cancelOrder } from "../controllers/Ordercontrol.js";
@@ -87,7 +89,10 @@ router.get("/api/store", getStoreProfile);
 // ============== ONBOARDING (Admin store profile) ==============
 router.post("/api/onboarding/save", saveOnboarding);
 
+router.post("/api/auth/forgotPassword", forgotPassword);
+router.post("/api/auth/resetPassword", resetPassword);
+
 // ============== PRODUCT IMAGE UPLOAD (Admin catalog) ==============
-router.use("/api/add/itemdata", Addcakedetalisroute);
+router.use("/api/add/itemdata", requireAdmin, Addcakedetalisroute);
 
 export default router;

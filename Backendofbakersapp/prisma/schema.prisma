@@ -12,9 +12,13 @@ model User {
   Email    String @unique
   Mobile   String @unique
   Password String
-  addresses Address[]
-  orders   Order[]
-  reviews  Review[]
+  addresses      Address[]
+  orders         Order[]
+  reviews        Review[]
+  refunds        Refund[]
+  notifications  Notifications[]
+  resetTokens   ResetToken[]
+  carts          Cart[]
   @@map("Login&signupsystem")
 }
 
@@ -41,6 +45,7 @@ model Cart {
   quantity  Int      @default(1)
   createdAt DateTime @default(now())
 
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   product Product @relation(fields: [productId], references: [productId], onDelete: Cascade)
 
   @@index([userId])
@@ -89,6 +94,7 @@ model Notifications {
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   @@index([userId])
 }
 
@@ -119,11 +125,16 @@ model Order {
   orderStatus     String?   @db.VarChar(20)
   orderDate       DateTime?
   updatedAt       DateTime?
+  completedAt     DateTime?
+  storeProfileId Int?
+  idempotencyKey String? @db.VarChar(255)
 
   user        User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
+  storeProfile StoreProfile? @relation(fields: [storeProfileId], references: [id], onDelete: SetNull)
   orderItems       OrderItem[]
   payments         Payment[]
   deliveryTracking DeliveryTracking[]
+  refunds         Refund[]
 }
 
 model Payment {
@@ -155,12 +166,14 @@ model Product {
   flavorProfile      String?   @db.VarChar(100)
   category           String?   @db.VarChar(100)
   publicCatalog      Boolean   @default(false)
+  storeProfileId     Int?
   bestseller         Boolean   @default(false)
   featured           Boolean   @default(false)
   allowCustomMessage Boolean   @default(false)
   createdAt          DateTime?
   updatedAt          DateTime?
 
+  storeProfile StoreProfile? @relation(fields: [storeProfileId], references: [id], onDelete: SetNull)
   carts      Cart[]
   reviews    Review[]
   orderItems OrderItem[]
@@ -220,6 +233,8 @@ model StoreProfile {
   minimumOrderValue String?
   productNames      String?
   createdAt         DateTime @default(now())
+  products         Product[]
+  orders           Order[]
 }
 
 model Review {
@@ -235,6 +250,16 @@ model Review {
 
   @@index([userId])
   @@index([productId])
+}
+
+model ResetToken {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  token     String   @db.VarChar(255)
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [email], references: [Email], onDelete: Cascade)
 }
 
 model Refund {

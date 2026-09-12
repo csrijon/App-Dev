@@ -24,54 +24,6 @@ const categories = [
     { id: 5, title: "Customers" },
 ];
 
-// --- DUMMY NOTIFICATIONS DATA ---
-const notificationsData = [
-    {
-        id: "1",
-        title: "New Order #8821",
-        time: "Just now",
-        description: "Classic Almond Croissants (x6) ready for prep.",
-        categoryId: 2, // Orders
-        icon: "clipboard-text-outline",
-        iconBg: "#F4CAD7", // Soft pink
-        iconColor: "#9A496A",
-        unread: true,
-    },
-    {
-        id: "2",
-        title: "Low Inventory Alert",
-        time: "2 hours ago",
-        description: "Madagascar Vanilla Beans are running low (2 units left). Please restock soon.",
-        categoryId: 3, // Inventory
-        icon: "package-variant",
-        iconBg: "#F7ECE7", // Soft peach
-        iconColor: "#8B6B57",
-        unread: true,
-    },
-    {
-        id: "3",
-        title: "Payment Received",
-        time: "Yesterday",
-        description: "Payment of $145.00 for Order #8810 was successful.",
-        categoryId: 4, // Accounts
-        icon: "credit-card-outline",
-        iconBg: "#E8F0E5", // Soft mint/sage
-        iconColor: "#587C56",
-        unread: false,
-    },
-    {
-        id: "4",
-        title: "New Customer Review",
-        time: "Yesterday",
-        description: "5 stars: 'Absolutely the best macarons I have ever had!'",
-        categoryId: 5, // Customers
-        icon: "star-outline",
-        iconBg: "#FDF3D5", // Soft yellow
-        iconColor: "#B58A24",
-        unread: false,
-    },
-];
-
 const Notificationpage = () => {
     const [notificationsData, setNotificationsData] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -94,13 +46,7 @@ const Notificationpage = () => {
                     unread: n.unread !== false,
                 })));
             } else {
-                // Fallback to original dummy data if no backend data
-                setNotificationsData([
-                    { id: "1", title: "New Order #8821", time: "Just now", description: "Classic Almond Croissants (x6) ready for prep.", categoryId: 2, icon: "clipboard-text-outline", iconBg: "#F4CAD7", iconColor: "#9A496A", unread: true },
-                    { id: "2", title: "Low Inventory Alert", time: "2 hours ago", description: "Madagascar Vanilla Beans are running low (2 units left). Please restock soon.", categoryId: 3, icon: "package-variant", iconBg: "#F7ECE7", iconColor: "#8B6B57", unread: true },
-                    { id: "3", title: "Payment Received", time: "Yesterday", description: "Payment of $145.00 for Order #8810 was successful.", categoryId: 4, icon: "credit-card-outline", iconBg: "#E8F0E5", iconColor: "#587C56", unread: false },
-                    { id: "4", title: "New Customer Review", time: "Yesterday", description: "5 stars: 'Absolutely the best macarons I have ever had!'", categoryId: 5, icon: "star-outline", iconBg: "#FDF3D5", iconColor: "#B58A24", unread: false },
-                ]);
+                setNotificationsData([]);
             }
         } catch (e) {
             console.log("Notification fetch error:", e);

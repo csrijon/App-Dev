@@ -38,7 +38,7 @@ const OrderSuccessScreen = ({ navigation, route }) => {
     const responsiveFont = (size) =>
         Math.round(size * fontScale);
 
-    const orderNumber = "8294";
+    const orderNumber = route?.params?.orderId ? String(route.params.orderId) : "8294";
     const deliveryDate = selectedDeliveryDate ? selectedDeliveryDate : "Tomorrow, Oct 24";
     const deliveryTimeStart = "10:00 AM";
     const deliveryTimeEnd = "12:00 PM";

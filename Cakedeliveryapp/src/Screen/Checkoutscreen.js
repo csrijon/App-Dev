@@ -15,40 +15,8 @@ import CartCard from "../components/CartCard.js";
 import OrderSummaryCard from "../components/Ordersummarycard.js";
 import { cart, orders } from "../services/customerApi";
 import { API_CONFIG } from '../config/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from "@react-navigation/native";
-
-const initialCart = [
-  {
-    id: "1",
-    name: "Lavender Honey Cake",
-    size: "8 inch",
-    Flavor: "Vanilla Bean",
-    price: 2000.0,
-    quantity: 1,
-    note: "Happy Birthday!",
-    image: require("../images/cakeimage.jpeg"),
-  },
-  {
-    id: "2",
-    name: "Lavender Mango Cake",
-    size: "8 inch",
-    Flavor: "Vanilla Bean",
-    price: 8.0,
-    quantity: 1,
-    note: "Congratulations!",
-    image: require("../images/cakeimage.jpeg"),
-  },
-  {
-    id: "3",
-    name: "Lavender Mango Cake",
-    size: "8 inch",
-    Flavor: "Vanilla Bean",
-    price: 14.0,
-    quantity: 1,
-    note: "Thank you!",
-    image: require("../images/cakeimage.jpeg"),
-  },
-];
 
 const Checkoutscreen = ({ navigation, route }) => {
   const selectedDeliveryDate = route?.params?.selectedDate || "";
@@ -186,6 +154,45 @@ const Checkoutscreen = ({ navigation, route }) => {
     try {
       setLoading(true);
 
+      // Fetch user profile for name/phone/address
+      let userName = "Customer";
+      let userPhone = "";
+      let userAddress = "";
+      try {
+        const token = await AsyncStorage.getItem('auth_token');
+        if (token) {
+          const profileRes = await fetch(`${API_CONFIG.baseURL}/api/user/profile`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const profileData = await profileRes.json().catch(() => ({}));
+          if (profileData.success && profileData.data) {
+            userName = profileData.data.name || profileData.data.fullName || "Customer";
+            userPhone = profileData.data.phone || profileData.data.mobile || profileData.data.phoneNumber || "";
+          }
+        }
+      } catch (e) {
+        // ignore profile fetch errors
+      }
+
+      // Fetch saved address
+      try {
+        const token = await AsyncStorage.getItem('auth_token');
+        if (token) {
+          const addrRes = await fetch(`${API_CONFIG.baseURL}/api/address`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          const addrData = await addrRes.json().catch(() => ({}));
+          if (addrData.success && Array.isArray(addrData.data) && addrData.data.length > 0) {
+            const addr = addrData.data[0];
+            userAddress = addr.address || addr.street || addr.fullAddress || "";
+          }
+        }
+      } catch (e) {
+        // ignore
+      }
+
+      const idempotencyKey = `checkout-${Date.now()}-${Math.floor(Math.random() * 100000)}`;
+
       const orderData = await orders.create({
         items: cartItems.map((item) => ({
           productId: item.id,
@@ -194,15 +201,17 @@ const Checkoutscreen = ({ navigation, route }) => {
           note: item.note || "",
         })),
         totalAmount: summary.total,
-        customerName: "Customer",
-        customerPhone: "",
-        customerAddress: "42 Artisan Grove, West Hollywood, CA",
+        customerName: userName,
+        customerPhone: userPhone,
+        customerAddress: userAddress,
         paymentMethod: "cash",
         paymentStatus: "pending",
         orderStatus: "pending",
+        idempotencyKey,
       });
 
-      await cart.setLocalCart([]);
+      await cart.get(); // refresh cart state from server after clear
+      // Server clears cart on order creation; no setLocalCart needed
 
       Alert.alert(
         "Order placed",

@@ -7,99 +7,6 @@ import { useState, useEffect } from "react"
 
 import { ADMIN_API_CONFIG } from '../config/api';
 
-const initialOrdersData = [
-    {
-        id: 1,
-        orderNumber: "ORDER #BK-8291",
-        customerName: "Eleanor Rigby",
-        deliveryTime: "Delivery by 2:30PM Today",
-        price: "$145.00",
-        tag: "CUSTOM",
-        status: "Pending",
-        buttonText: "Accept Order",
-        buttonColor: "#7B5A4E",
-        image: require("../images/catalog.png"),
-    },
-
-    {
-        id: 2,
-        orderNumber: "ORDER #BK-1942",
-        customerName: "Sophia Carter",
-        deliveryTime: "Delivery by 4:00PM Today",
-        price: "$210.00",
-        tag: "PRIORITY",
-        status: "Accepted",
-        buttonText: "Start Delivery",
-        buttonColor: "#3E5C76",
-        image: require("../images/catalog.png"),
-    },
-
-    {
-        id: 3,
-        orderNumber: "ORDER #BK-5521",
-        customerName: "Noah Williams",
-        deliveryTime: "Delivery by 6:15PM Today",
-        price: "$89.00",
-        tag: "CUSTOM",
-        status: "Preparing",
-        buttonText: "Track Order",
-        buttonColor: "#4F772D",
-        image: require("../images/catalog.png"),
-    },
-
-    {
-        id: 4,
-        orderNumber: "ORDER #BK-7712",
-        customerName: "Olivia Brown",
-        deliveryTime: "Delivery by 1:00PM Tomorrow",
-        price: "$175.00",
-        tag: "NEW",
-        status: "Out for Delivery",
-        buttonText: "View Details",
-        buttonColor: "#9C6644",
-        image: require("../images/catalog.png"),
-    },
-
-    {
-        id: 5,
-        orderNumber: "ORDER #BK-3309",
-        customerName: "James Anderson",
-        deliveryTime: "Delivered Yesterday, 5:40PM",
-        price: "$132.00",
-        tag: "DONE",
-        status: "Delivered",
-        buttonText: "View Details",
-        buttonColor: "#4F772D",
-        image: require("../images/catalog.png"),
-    },
-
-    {
-        id: 6,
-        orderNumber: "ORDER #BK-4467",
-        customerName: "Mia Thompson",
-        deliveryTime: "Cancelled by Customer",
-        price: "$60.00",
-        tag: "CANCELLED",
-        status: "Cancelled",
-        buttonText: "View Details",
-        buttonColor: "#A4161A",
-        image: require("../images/catalog.png"),
-    },
-
-    {
-        id: 7,
-        orderNumber: "ORDER #BK-2204",
-        customerName: "Liam Patel",
-        deliveryTime: "Refund Requested Today",
-        price: "$95.00",
-        tag: "REFUND",
-        status: "Refund Requested",
-        buttonText: "Review Refund",
-        buttonColor: "#B5651D",
-        image: require("../images/catalog.png"),
-    },
-];
-
 const orderStatusData = [
     { id: 1, title: "All", icon: "apps-outline" },
     { id: 2, title: "Pending", icon: "time-outline" },
@@ -117,7 +24,7 @@ const Ordermanagementpage = () => {
     const [activecolorid, setactivecolorid] = useState(1)
     const [searchText, setSearchText] = useState('')
     const [refreshing, setRefreshing] = useState(false)
-    const [ordersData, setOrdersData] = useState(initialOrdersData)
+    const [ordersData, setOrdersData] = useState([])
 
     useEffect(() => {
         fetchOrders();

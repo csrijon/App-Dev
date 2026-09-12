@@ -10,4 +10,3 @@ ALTER TABLE "Order" ADD CONSTRAINT "Order_userId_fkey" FOREIGN KEY ("userId") RE
 
 -- Create index for Order userId
 CREATE INDEX IF NOT EXISTS "Order_userId_idx" ON "Order"("userId");
-npm ryn an

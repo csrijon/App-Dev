@@ -67,6 +67,11 @@ const createProduct = async (req, res) => {
             allowCustomMessage,
         } = req.body;
 
+        let storeProfileId = req.body.storeProfileId ? parseInt(req.body.storeProfileId) : null;
+        if (req.user && req.user.email) {
+            const profile = await prisma.storeProfile.findFirst({ where: { email: req.user.email } });
+            if (profile) storeProfileId = profile.id;
+        }
         const newProduct = await prisma.product.create({
             data: {
                 productName,
@@ -85,6 +90,7 @@ const createProduct = async (req, res) => {
                 bestseller: bestseller === "true" || bestseller === true,
                 featured: featured === "true" || featured === true,
                 allowCustomMessage: allowCustomMessage === "true" || allowCustomMessage === true,
+                storeProfileId,
             },
         });
         res.status(201).json({ success: true, message: "Product created", data: newProduct });
@@ -98,6 +104,17 @@ const createProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
     try {
         const { id } = req.params;
+        // Verify product belongs to admin's store
+        const existing = await prisma.product.findUnique({ where: { productId: parseInt(id) } });
+        if (!existing) return res.status(404).json({ success: false, message: "Product not found" });
+        let adminStoreId = null;
+        if (req.user && req.user.email) {
+            const profile = await prisma.storeProfile.findFirst({ where: { email: req.user.email } });
+            if (profile) adminStoreId = profile.id;
+        }
+        if (adminStoreId !== null && existing.storeProfileId !== adminStoreId) {
+            return res.status(403).json({ success: false, message: "Not authorized" });
+        }
         const updates = req.body;
         if (updates.price) updates.price = parseFloat(updates.price);
         if (updates.weight) updates.weight = parseFloat(updates.weight);
@@ -124,6 +141,16 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
     try {
         const { id } = req.params;
+        const existing = await prisma.product.findUnique({ where: { productId: parseInt(id) } });
+        if (!existing) return res.status(404).json({ success: false, message: "Product not found" });
+        let adminStoreId = null;
+        if (req.user && req.user.email) {
+            const profile = await prisma.storeProfile.findFirst({ where: { email: req.user.email } });
+            if (profile) adminStoreId = profile.id;
+        }
+        if (adminStoreId !== null && existing.storeProfileId !== adminStoreId) {
+            return res.status(403).json({ success: false, message: "Not authorized" });
+        }
         await prisma.product.delete({ where: { productId: parseInt(id) } });
         res.status(200).json({ success: true, message: "Product deleted" });
     } catch (error) {
@@ -162,6 +189,14 @@ const toggleProductAvailability = async (req, res) => {
         const { id } = req.params;
         const product = await prisma.product.findUnique({ where: { productId: parseInt(id) } });
         if (!product) return res.status(404).json({ success: false, message: "Product not found" });
+        let adminStoreId = null;
+        if (req.user && req.user.email) {
+            const profile = await prisma.storeProfile.findFirst({ where: { email: req.user.email } });
+            if (profile) adminStoreId = profile.id;
+        }
+        if (adminStoreId !== null && product.storeProfileId !== adminStoreId) {
+            return res.status(403).json({ success: false, message: "Not authorized" });
+        }
         const updated = await prisma.product.update({
             where: { productId: parseInt(id) },
             data: { publicCatalog: !product.publicCatalog },
@@ -176,7 +211,19 @@ const toggleProductAvailability = async (req, res) => {
 // Get all products including non-public (for admin catalog)
 const getAllProductsAdmin = async (req, res) => {
     try {
+        let whereClause = {};
+        if (req.user && req.user.email) {
+            const profile = await prisma.storeProfile.findFirst({ where: { email: req.user.email } });
+            if (profile) {
+                whereClause = { storeProfileId: profile.id };
+            } else {
+                whereClause = { storeProfileId: -1 };
+            }
+        } else {
+            whereClause = { storeProfileId: -1 };
+        }
         const products = await prisma.product.findMany({
+            where: whereClause,
             orderBy: { createdAt: "desc" },
         });
         res.status(200).json({ success: true, data: products });

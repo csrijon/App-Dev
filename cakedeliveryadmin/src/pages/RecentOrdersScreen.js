@@ -9,85 +9,66 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Securityheader from "../components/Securityheader";
+import { ADMIN_API_CONFIG } from '../config/api';
+import { useEffect } from "react";
 
-const orders = [
-    {
-        id: "#GZ-7721",
-        name: "Eleanor Shellstrop",
-        status: "Delivered",
-        amount: "$124.50",
-        image: require("../images/catalog.png"),
-        details: "2x Vanilla Bean Cake, 1x Croisant Box",
-        date: "Oct 24, 2023 · 14:30 PM",
-    },
-    {
-        id: "#GZ-7698",
-        name: "Chidi Anagonye",
-        status: "Cancelled",
-        amount: "$48.00",
-        image: require("../images/catalog.png"),
-        details: "1x Specialty Cupcake Dozen",
-        date: "Oct 22, 2023 · 09:15 AM",
-    },
-    {
-        id: "#GZ-7650",
-        name: "Tahani Al-Jamil",
-        status: "Delivered",
-        amount: "$32.20",
-        image: require("../images/catalog.png"),
-        details: "4x Pain au Chocolat, 2x Almond Croissants",
-        date: "Oct 20, 2023 · 11:45 AM",
-    },
-    {
-        id: "#GZ-7651",
-        name: "Tahani Al-Jamil",
-        status: "Delivered",
-        amount: "$32.20",
-        image: require("../images/catalog.png"),
-        details: "4x Pain au Chocolat, 2x Almond Croissants",
-        date: "Oct 20, 2023 · 11:45 AM",
-    },
-];
+const FILTERS = ["All Time", "Last 7 Days", "Last Month", "Last 6 Months", "This Year"];
 
-// Parse "Oct 24, 2023 · 14:30 PM" -> JS Date
 const parseOrderDate = (dateString) => {
-    const datePart = dateString.split("·")[0].trim(); // "Oct 24, 2023"
-    return new Date(datePart);
+    const datePart = dateString ? dateString.split("·")[0].trim() : "";
+    return datePart ? new Date(datePart) : new Date();
 };
 
-// Filter logic based on selected filter
 const getFilteredOrders = (data, filter) => {
     if (filter === "All Time") return data;
-
     const now = new Date();
-
     return data.filter((item) => {
         const itemDate = parseOrderDate(item.date);
         const diffInDays = (now - itemDate) / (1000 * 60 * 60 * 24);
-
         switch (filter) {
-            case "Last 7 Days":
-                return diffInDays <= 7;
-            case "Last Month":
-                return diffInDays <= 30;
-            case "Last 6 Months":
-                return diffInDays <= 180;
-            case "This Year":
-                return itemDate.getFullYear() === now.getFullYear();
-            default:
-                return true;
+            case "Last 7 Days": return diffInDays <= 7;
+            case "Last Month": return diffInDays <= 30;
+            case "Last 6 Months": return diffInDays <= 180;
+            case "This Year": return itemDate.getFullYear() === now.getFullYear();
+            default: return true;
         }
     });
 };
 
-const FILTERS = ["All Time", "Last 7 Days", "Last Month", "Last 6 Months", "This Year"];
-
 const RecentOrdersScreen = () => {
     const [selectedFilter, setSelectedFilter] = useState("All Time");
+    const [orders, setOrders] = useState([]);
+
+    useEffect(() => {
+        const fetchOrders = async () => {
+            try {
+                const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/orders`);
+                const json = await res.json();
+                if (json.success && Array.isArray(json.data)) {
+                    const mapped = json.data.map((o) => ({
+                        id: o.orderNumber || ("#BK-" + (o.orderId || o.id)),
+                        name: o.customerName || "Guest",
+                        status: (o.orderStatus || "pending").toLowerCase() === "cancelled" ? "Cancelled" : (o.orderStatus || "pending").charAt(0).toUpperCase() + (o.orderStatus || "pending").slice(1),
+                        amount: "$" + (parseFloat(o.totalAmount || 0)).toFixed(2),
+                        image: require("../images/catalog.png"),
+                        details: (o.orderItems || []).map(i => (i.quantity || 1) + "x " + (i.productName || "Item")).join(", ") || "Custom Order",
+                        date: o.orderDate ? new Date(o.orderDate).toLocaleString() : "",
+                    }));
+                    setOrders(mapped);
+                }
+            } catch (e) {
+                console.log("Fetch orders error:", e);
+                setOrders([]);
+            } finally {
+                // done
+            }
+        };
+        fetchOrders();
+    }, []);
 
     const filteredOrders = useMemo(
         () => getFilteredOrders(orders, selectedFilter),
-        [selectedFilter]
+        [orders, selectedFilter]
     );
 
     return (

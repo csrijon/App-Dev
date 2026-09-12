@@ -28,7 +28,7 @@ const Onboradingcompletepage = ({navigation}) => {
                 <TouchableOpacity
                     style={styles.homeButton}
                     activeOpacity={0.85}
-                    onPress={() => navigation.navigate("TabScreens")}
+                    onPress={() => navigation.navigate("TabScreens", { screen: "Dashboard" })}
                 >
                     <Text style={styles.homeButtonText}>Go to Home</Text>
                     <MaterialIcons name="arrow-forward" color="#ffffff" size={20} />
