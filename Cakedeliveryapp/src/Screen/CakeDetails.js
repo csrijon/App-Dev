@@ -7,10 +7,11 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { cart } from "../services/customerApi";
 
+import { API_CONFIG } from '../config/api';
 const CakeDetails = ({ navigation, route }) => {
     const product = route?.params?.product || {};
-    const productName = product.title || route?.params?.name || "Product";
-    const description = product.description || "";
+    const productName = product.productName || product.title || route?.params?.name || "Product";
+    const description = product.description || product.des || "";
 
     const [isFavorite, setIsFavorite] = useState(false);
     const [quantity, setQuantity] = useState(1);
@@ -21,7 +22,16 @@ const CakeDetails = ({ navigation, route }) => {
 
     const shortDescription = description.slice(0, 100) + "...";
 
-    const pricePerCake = product.price || (product.price === 0 ? 0 : null);
+    const resolveImageUrl = (url) => {
+        if (!url) return null;
+        if (url.startsWith('http')) return url;
+        if (url.startsWith('/')) return API_CONFIG.baseURL + url;
+        return url;
+    };
+    const imageUrl = resolveImageUrl(product.image || product.imageUrl);
+    const rawPrice = product.price;
+    const parsedPrice = typeof rawPrice === 'string' ? parseFloat(rawPrice.replace('$', '')) : (rawPrice || 0);
+    const pricePerCake = parsedPrice || (parsedPrice === 0 ? 0 : null);
     const totalPrice = pricePerCake * quantity;
 
     const increaseQuantity = () => {
@@ -40,7 +50,7 @@ const CakeDetails = ({ navigation, route }) => {
                 productId: product.id || product.productId || productName,
                 quantity: quantity,
                 price: pricePerCake,
-                image: product.image || "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600",
+                image: imageUrl || "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600",
             });
             setCartAdded(true);
             Alert.alert(
@@ -70,7 +80,7 @@ const CakeDetails = ({ navigation, route }) => {
             <ScrollView contentContainerStyle={{paddingBottom:40}} style={styles.scrollViewcakedetails} >
                 <View>
                     <View style={styles.cakemaindetails} >
-                        <Image source={product.image ? { uri: product.image } : require("../images/cakeimage.jpeg")} style={styles.cakeImage} />
+                        <Image source={imageUrl ? { uri: imageUrl } : require("../images/cakeimage.jpeg")} style={styles.cakeImage} />
 
                         {/* Favorite Button */}
                         <TouchableOpacity

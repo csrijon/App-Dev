@@ -407,7 +407,7 @@ const Homescreen = ({ navigation }) => {
                     )}
 
                     {/* Search Bar */}
-                    <View style={styles.searchBox}>
+                    {/* <View style={styles.searchBox}>
                         <Ionicons
                             name="search-outline"
                             size={22}
@@ -421,7 +421,7 @@ const Homescreen = ({ navigation }) => {
                             onChangeText={setSearchText}
                             style={styles.searchInput}
                         />
-                    </View>
+                    </View> */}
 
                     {/* Promo Banner */}
                     <FlatList
@@ -516,15 +516,19 @@ const Homescreen = ({ navigation }) => {
                         keyExtractor={(item) =>
                             item.id.toString()
                         }
-                        renderItem={({ item }) => (
-                            <Cakecard
-                                image={item.image}
-                                trend={item.trend}
-                                name={item.name}
-                                price={item.price}
-                                onPress={() => navigation.navigate("Cakedetails", { name: item.name })}
-                            />
-                        )}
+                        renderItem={({ item }) => {
+                            // Find original product data from liveProducts to pass full details
+                            const originalProduct = liveProducts.find(p => (p.productId || p.id || p.productName) === item.id);
+                            return (
+                                <Cakecard
+                                    image={item.image}
+                                    trend={item.trend}
+                                    name={item.name}
+                                    price={item.price}
+                                    onPress={() => navigation.navigate("Cakedetails", { product: originalProduct || item, name: item.name })}
+                                />
+                            );
+                        }}
                     />
 
                     {/* Order Again */}

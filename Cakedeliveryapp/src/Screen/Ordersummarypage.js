@@ -3,7 +3,7 @@ import Simpleheader from "../components/Simpleheader"
 import { StatusBar, ScrollView, StyleSheet, View, Text, Image, TouchableOpacity, TextInput, Modal, Alert, ActivityIndicator } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { orders } from "../services/customerApi";
+import { orders, notifications } from "../services/customerApi";
 import Button from "../components/Button";
 
 const Ordersummarypage = ({ navigation }) => {
@@ -95,6 +95,15 @@ const Ordersummarypage = ({ navigation }) => {
                 deliverySlot,
             });
             navigation.navigate("Ordesuccess", { orderId: orderData.id || Date.now() });
+            // Send success notification
+            try {
+                await notifications.add({
+                    title: "Order Successful",
+                    message: `Your order #${orderData.id || Date.now()} has been placed successfully!`
+                });
+            } catch (e) {
+                console.log("Notification error:", e);
+            }
             setIsProcessingPayment(false);
         } catch (error) {
             Alert.alert("Order Error", error.message || "Failed to place order.");

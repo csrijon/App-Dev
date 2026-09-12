@@ -121,15 +121,6 @@ const BusinessTypeCard = ({ title, iconName, isSelected, onPress }) => {
 // --- Main Screen Component ---
 const Onbordingpageone = ({ navigation }) => {
 
-    // useEffect(() => {
-    //     const onbording1stpage = async () => {
-             
-
-    //     }
-    // })
-
-
-
 
     const { formdata, setformdata } = useContext(OnbordingContext)
 
