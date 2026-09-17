@@ -39,7 +39,7 @@ const Ordermanagementpage = () => {
                     id: o.id || o.orderId || Math.random(),
                     orderNumber: o.orderNumber || "ORDER #BK-" + (o.id || 0),
                     customerName: o.customerName || o.customer?.name || "Guest",
-                    deliveryTime: o.deliveryTime || o.estimatedDelivery || "Scheduled",
+                    deliveryTime: o.deliveryDate ? new Date(o.deliveryDate).toLocaleDateString() : (o.deliveryTime || o.estimatedDelivery || "Scheduled"),
                     price: "$" + (o.totalAmount || o.price || 0).toFixed(2),
                     tag: o.tag || "CUSTOM",
                     status: o.orderStatus || o.status || "Pending",

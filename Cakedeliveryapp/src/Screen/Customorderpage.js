@@ -6,6 +6,8 @@ import CategoryCard from "../components/CategoryCard"
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { launchImageLibrary } from 'react-native-image-picker';
 import { Screen } from "react-native-screens"
+import { API_CONFIG } from '../config/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Customorderpage = ({ navigation }) => {
 
@@ -65,7 +67,7 @@ const Customorderpage = ({ navigation }) => {
 
     const selectedFlavorTitle = flavorOptions.find(f => f.id === selectedFlavorId)?.title || null;
 
-    const handleNext = () => {
+    const handleSubmitCustomOrder = async () => {
         if (!selectedWeight) {
             Alert.alert("Select Size", "Please select a size / portion to continue.");
             return;
@@ -74,10 +76,42 @@ const Customorderpage = ({ navigation }) => {
             Alert.alert("Select Flavor", "Please choose a flavor profile to continue.");
             return;
         }
+        try {
+            const token = await AsyncStorage.getItem('auth_token');
+            const res = await fetch(`${API_CONFIG.baseURL}/api/custom-orders`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+                },
+                body: JSON.stringify({
+                    cakeType: selectedWeight ? selectedWeight.weight.split(" ")[0] : null,
+                    flavor: selectedFlavorTitle,
+                    size: selectedWeight ? selectedWeight.weight : null,
+                    message: customMessage,
+                    preferredDeliveryDate: null,
+                    description: customMessage || null,
+                    referenceImageUrl: referenceImage || null,
+                }),
+            });
+            const data = await res.json().catch(() => ({}));
+            if (res.ok || data.success) {
+                Alert.alert("Custom Order Submitted", "Your custom order request has been submitted. We'll contact you soon!");
+                setSelectedWeight(null);
+                setSelectedFlavorId(null);
+                setCustomMessage("");
+                setReferenceImage(null);
+            } else {
+                Alert.alert("Error", data.message || "Failed to submit custom order.");
+            }
+        } catch (e) {
+            console.log("Custom order submit error:", e);
+            Alert.alert("Error", "Could not submit custom order. Check connection.");
+        }
+    };
 
-        navigation.navigate("Orderstack", {
-            screen: "Delivery"
-        })
+    const handleNext = () => {
+        handleSubmitCustomOrder();
     };
 
     return (

@@ -12,6 +12,7 @@ model User {
   Email    String @unique
   Mobile   String @unique
   Password String
+  role     String @default("customer") // "customer" or "admin"
   addresses      Address[]
   orders         Order[]
   reviews        Review[]
@@ -19,6 +20,8 @@ model User {
   notifications  Notifications[]
   resetTokens   ResetToken[]
   carts          Cart[]
+  profileImageUrl String?
+  customOrders    CustomOrder[]
   @@map("Login&signupsystem")
 }
 
@@ -123,6 +126,7 @@ model Order {
   paymentMethod   String?   @db.VarChar(50)
   paymentStatus   String?   @db.VarChar(20)
   orderStatus     String?   @db.VarChar(20)
+  deliveryDate    DateTime?
   orderDate       DateTime?
   updatedAt       DateTime?
   completedAt     DateTime?
@@ -260,6 +264,23 @@ model ResetToken {
   used      Boolean  @default(false)
   createdAt DateTime @default(now())
   user      User     @relation(fields: [email], references: [Email], onDelete: Cascade)
+}
+
+model CustomOrder {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  cakeType        String?
+  flavor          String?
+  size            String?
+  message         String?
+  preferredDeliveryDate DateTime?
+  description     String?
+  referenceImageUrl String?
+  status          String   @default("pending") @db.VarChar(20)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Refund {

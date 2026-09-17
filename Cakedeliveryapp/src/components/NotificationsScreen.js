@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,48 +6,24 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  RefreshControl,
+  ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { notifications } from '../services/customerApi';
 
-// --- Reusable Notification Card Component ---
-const NotificationCard = ({
-  title,
-  description,
-  time,
-  isUnread,
-  type, // 'image' or 'icon'
-  imageUri,
-  badgeIcon,
-  centerIcon,
-}) => {
+const NotificationCard = ({ title, description, time, isUnread }) => {
   return (
-    <TouchableOpacity style={styles.card} activeOpacity={0.8}>
-      {/* Left side: Avatar/Icon */}
-      <View style={styles.avatarContainer}>
-        {type === "image" ? (
-          <>
-            <Image source={{ uri: imageUri }} style={styles.avatarImage} />
-            {badgeIcon && (
-              <View style={styles.badgeContainer}>
-                <Ionicons name={badgeIcon} size={10} color="#FFFFFF" />
-              </View>
-            )}
-          </>
-        ) : (
-          <View style={styles.iconAvatar}>
-            <Ionicons name={centerIcon} size={20} color="#5D4037" />
-          </View>
-        )}
+    <TouchableOpacity style={[styles.card, isUnread && styles.unreadCard]} activeOpacity={0.8}>
+      <View style={styles.iconAvatar}>
+        <Ionicons name="notifications-outline" size={20} color="#5D4037" />
       </View>
-
-      {/* Right side: Content */}
       <View style={styles.contentContainer}>
         <View style={styles.titleRow}>
           <Text style={styles.cardTitle}>{title}</Text>
           {isUnread && <View style={styles.unreadDot} />}
         </View>
-
         <Text style={styles.cardDescription}>{description}</Text>
         <Text style={styles.timeText}>{time}</Text>
       </View>
@@ -55,50 +31,79 @@ const NotificationCard = ({
   );
 };
 
-
-// --- Main Screen Component ---
 const NotificationsScreen = () => {
+  const [notificationData, setNotificationData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const fetchNotifications = async () => {
+    setLoading(true);
+    try {
+      const res = await notifications.list();
+      if (res && res.success && Array.isArray(res.data)) {
+        const mapped = res.data.map((n) => ({
+          id: String(n.id),
+          title: n.title || "Notification",
+          description: n.message || "",
+          time: n.createdAt ? new Date(n.createdAt).toLocaleString() : "Just now",
+          isUnread: !n.isRead,
+        }));
+        setNotificationData(mapped);
+      } else {
+        setNotificationData([]);
+      }
+    } catch (e) {
+      console.log("Notification fetch error:", e);
+      setNotificationData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchNotifications();
+    setRefreshing(false);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
-        {/* Header Section */}
         <View style={styles.headerBlock}>
           <Text style={styles.eyebrowText}>STAY UPDATED</Text>
           <View style={styles.titleRowLayout}>
             <Text style={styles.pageTitle}>Notifications</Text>
-            <TouchableOpacity activeOpacity={0.6}>
-              <Text style={styles.markReadText}>Mark all as read</Text>
-            </TouchableOpacity>
           </View>
         </View>
 
-        {/* Orders Section */}
         <Text style={styles.sectionTitle}>ORDERS</Text>
 
-        {/* First Notification - Delivery (Image with badge) */}
-        <NotificationCard
-          title="Order Out for Delivery"
-          description="Your Lavender Honey Cake is on its way to you! Our courier is approximately 10 minutes away."
-          time="2 mins ago"
-          isUnread={true}
-          type="image"
-          imageUri="https://images.unsplash.com/photo-1519869325930-281384150729?w=200"
-          badgeIcon="car" // Using 'car' or 'bus' as a fallback for truck in standard Ionicons
-        />
-
-        {/* Second Notification - Payment (Icon) */}
-        <NotificationCard
-          title="Payment Successful"
-          description="Transaction for order #GK-8829 has been processed. We're preparing your treats now."
-          time="1 hour ago"
-          isUnread={false}
-          type="icon"
-          centerIcon="checkmark-circle-outline"
-        />
-        
+        {loading && notificationData.length === 0 ? (
+          <ActivityIndicator size="large" color="#75584e" style={{ marginTop: 40 }} />
+        ) : notificationData.length === 0 ? (
+          <View style={styles.emptyState}>
+            <Ionicons name="notifications-outline" size={48} color="#D8C9C4" />
+            <Text style={styles.emptyText}>No notifications yet.</Text>
+          </View>
+        ) : (
+          notificationData.map((item) => (
+            <NotificationCard
+              key={item.id}
+              title={item.title}
+              description={item.description}
+              time={item.time}
+              isUnread={item.isUnread}
+            />
+          ))
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -109,15 +114,13 @@ export default NotificationsScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff9e8", // Warm, creamy background matching the image
+    backgroundColor: "#fff9e8",
   },
   scrollContent: {
     paddingHorizontal: 20,
     paddingTop: 24,
     paddingBottom: 40,
   },
-  
-  // Header Styles
   headerBlock: {
     marginBottom: 32,
   },
@@ -132,21 +135,13 @@ const styles = StyleSheet.create({
   titleRowLayout: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "baseline", // Aligns the bottoms of the texts
+    alignItems: "baseline",
   },
   pageTitle: {
     fontSize: 32,
     fontWeight: "700",
-    color: "#4A362B", // Deep brown
+    color: "#4A362B",
   },
-  markReadText: {
-    fontSize: 13,
-    fontWeight: "600",
-    color: "#5D4037",
-    textDecorationLine: "underline",
-  },
-
-  // Section Styles
   sectionTitle: {
     fontSize: 10,
     fontWeight: "700",
@@ -155,40 +150,15 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     marginBottom: 16,
   },
-
-  // Card Styles
   card: {
     flexDirection: "row",
-    backgroundColor: "#F7F1E1", // Slightly darker/warmer tint than the background for contrast
+    backgroundColor: "#F7F1E1",
     borderRadius: 24,
     padding: 18,
     marginBottom: 16,
   },
-  
-  // Avatar & Icon Styles
-  avatarContainer: {
-    marginRight: 16,
-    position: "relative", // For positioning the badge
-  },
-  avatarImage: {
-    width: 46,
-    height: 46,
-    borderRadius: 23,
-    borderWidth: 1,
-    borderColor: "#EAE0C8",
-  },
-  badgeContainer: {
-    position: "absolute",
-    bottom: -2,
-    right: -4,
-    backgroundColor: "#7B5A4E",
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 2,
-    borderColor: "#F7F1E1", // Match card background to create a cutout effect
+  unreadCard: {
+    backgroundColor: "#FCFAEF",
   },
   iconAvatar: {
     width: 46,
@@ -199,9 +169,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderWidth: 1,
     borderColor: "#EAE0C8",
+    marginRight: 16,
   },
-
-  // Text Content Styles
   contentContainer: {
     flex: 1,
   },
@@ -210,12 +179,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 6,
+    paddingRight: 10,
   },
   cardTitle: {
     fontSize: 15,
     fontWeight: "700",
     color: "#5D4037",
-    paddingRight: 10, // Prevent overlapping with dot
   },
   unreadDot: {
     width: 8,
@@ -232,6 +201,17 @@ const styles = StyleSheet.create({
   timeText: {
     fontSize: 11,
     color: "#A89B8C",
+    fontWeight: "500",
+  },
+  emptyState: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 60,
+  },
+  emptyText: {
+    marginTop: 12,
+    fontSize: 15,
+    color: "#A8A085",
     fontWeight: "500",
   },
 });

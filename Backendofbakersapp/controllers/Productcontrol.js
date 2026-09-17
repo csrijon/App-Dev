@@ -215,12 +215,12 @@ const getAllProductsAdmin = async (req, res) => {
         if (req.user && req.user.email) {
             const profile = await prisma.storeProfile.findFirst({ where: { email: req.user.email } });
             if (profile) {
-                whereClause = { storeProfileId: profile.id };
+                whereClause = { OR: [{ storeProfileId: profile.id }, { storeProfileId: null }, { publicCatalog: true }] };
             } else {
-                whereClause = { storeProfileId: -1 };
+                whereClause = { OR: [{ storeProfileId: null }, { publicCatalog: true }] };
             }
         } else {
-            whereClause = { storeProfileId: -1 };
+            whereClause = {};
         }
         const products = await prisma.product.findMany({
             where: whereClause,

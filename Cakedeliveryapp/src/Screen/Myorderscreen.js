@@ -4,36 +4,6 @@ import { StatusBar, ScrollView, View, Text, TouchableOpacity, StyleSheet, useWin
 import { useState, useEffect } from "react"
 import { orders } from "../services/customerApi"
 
-const ORDERS = [
-  {
-    id: "CH-92831",
-    status: "PENDING",
-    title: "Midnight Truffle Gâteau",
-    price: "$48.00",
-    date: "Oct 24, 2023 • 2:30 PM",
-    action: "TRACK ORDER",
-    isActive: true,
-  },
-  {
-    id: "CH-92810",
-    status: "ACCEPTED",
-    title: "Wild Berry Chantilly",
-    price: "$35.50",
-    date: "Oct 23, 2023 • 11:15 AM",
-    action: "VIEW DETAILS",
-    isActive: true,
-  },
-  {
-    id: "CH-92755",
-    status: "DELIVERED",
-    title: "Citron Meringue Bloom",
-    price: "$29.00",
-    date: "Oct 20, 2023 • 4:45 PM",
-    action: "REORDER",
-    isActive: false,
-  },
-]
-
 const PILL_STYLES = {
   PENDING: { backgroundColor: "#F4B6C2" },
   ACCEPTED: { backgroundColor: "#FAD4C0" },

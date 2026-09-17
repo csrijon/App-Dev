@@ -8,7 +8,7 @@ const UserappSignup = async (req, res) => {
     try {
         const { fullname, mobile, password, email } = req.body
         console.log("Signup for mobile:", mobile);
-        // 
+        //
         let checkaccount = await prisma.user.findFirst({
             where: {
                 OR: [
@@ -29,13 +29,14 @@ const UserappSignup = async (req, res) => {
                 Name: fullname,
                 Email: email,
                 Mobile: mobile,
-                Password: hashedPassword
+                Password: hashedPassword,
+                role: req.body.role || "customer"
             }
         });
         const secret = process.env.JWT_SECRET || process.env.jwt_secret;
         if (!secret) throw new Error("JWT secret not configured");
         const token = jwt.sign(
-            { userId: Saveuser.id, email: Saveuser.Email, mobile: Saveuser.Mobile, role: "customer" },
+            { userId: Saveuser.id, email: Saveuser.Email, mobile: Saveuser.Mobile, role: Saveuser.role },
             secret,
             { expiresIn: "7d" }
         );
@@ -84,7 +85,8 @@ const Adminappsignup = async (req, res) => {
                 Name: fullName,
                 Email: email,
                 Mobile: mobile,
-                Password: hashedPassword
+                Password: hashedPassword,
+                role: req.body.role || "admin"
             }
         });
 
@@ -93,7 +95,7 @@ const Adminappsignup = async (req, res) => {
         const secret = process.env.JWT_SECRET || process.env.jwt_secret;
         if (!secret) throw new Error("JWT secret not configured");
         const token = jwt.sign(
-            { userId: signupdata.id, email: signupdata.Email, mobile: signupdata.Mobile, role: "admin" },
+            { userId: signupdata.id, email: signupdata.Email, mobile: signupdata.Mobile, role: signupdata.role },
             secret,
             { expiresIn: "7d" }
         );

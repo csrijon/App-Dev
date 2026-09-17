@@ -4,6 +4,7 @@ import Simpleheader from "../components/Simpleheader"
 import { Calendar } from "react-native-calendars"
 import { useState } from "react"
 import Button from "../components/Button"
+import { setCheckoutDate } from "../tempCheckoutDate"
 
 const Calenderpage = ({ navigation }) => {
 
@@ -61,13 +62,14 @@ const Calenderpage = ({ navigation }) => {
 
                 <View style={styles.confirmbutton} >
                     <Button onPress={() => {
-                        if (!datetime) {
+                        if (!datetime && !selecteddate) {
                             alert("Please select a date first");
                             return;
                         }
+                        setCheckoutDate(datetime || selecteddate);
                         navigation.navigate("Tabs", {
                             screen: "Cart",
-                            params: { selectedDate: datetime }
+                            params: { selectedDate: datetime || selecteddate }
                         });
                     }} title={"Confirm Date"} />
                 </View>

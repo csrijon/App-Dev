@@ -185,6 +185,9 @@ const Addnewitempage = ({ navigation }) => {
 
         const response = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/add/itemdata`, {
             method: "POST",
+            headers: {
+                Authorization: `Bearer ${global.authToken || ""}`,
+            },
             body: formdata,
         });
         const resdata = await response.json()

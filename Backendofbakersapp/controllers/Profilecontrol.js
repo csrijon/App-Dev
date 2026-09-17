@@ -21,10 +21,10 @@ const updateProfile = async (req, res) => {
     try {
         const userId = req.user ? req.user.userId : null;
         if (!userId) return res.status(401).json({ success: false, message: "Authentication required" });
-        const { Name, Email, Mobile } = req.body;
+        const { Name, Email, Mobile, profileImageUrl } = req.body;
         const updated = await prisma.user.update({
             where: { id: parseInt(userId) },
-            data: { Name, Email, Mobile },
+            data: { Name, Email, Mobile, profileImageUrl },
         });
         const { Password, ...safeUpdated } = updated;
         res.status(200).json({ success: true, message: "Profile updated", data: safeUpdated });

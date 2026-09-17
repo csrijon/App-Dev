@@ -54,6 +54,10 @@ const Loginpage = ({navigation}) => {
                 return Alert.alert("Login Failed", data.message || data.mess || "Invalid credentials.");
             }
 
+            if (data.token) {
+                global.authToken = data.token;
+            }
+
             // Check onboarding status from context
             const isOnboarded = onboardingCtx?.formdata?.personaldetails?.bakersname?.trim();
             if (isOnboarded) {

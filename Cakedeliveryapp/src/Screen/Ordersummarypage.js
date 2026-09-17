@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Simpleheader from "../components/Simpleheader"
 import { StatusBar, ScrollView, StyleSheet, View, Text, Image, TouchableOpacity, TextInput, Modal, Alert, ActivityIndicator } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { orders, notifications } from "../services/customerApi";
+import { orders, products } from "../services/customerApi";
 import Button from "../components/Button";
 
 const Ordersummarypage = ({ navigation }) => {
@@ -60,11 +60,20 @@ const Ordersummarypage = ({ navigation }) => {
     const [appliedDiscount, setAppliedDiscount] = useState(0);
     const [promoError, setPromoError] = useState("");
 
-    const cakePrice = 50;
-    const shippingPrice = 80;
-    const vatPercent = 0.20;
+    const [productPrice, setProductPrice] = useState(50);
+    const [shippingPrice, setShippingPrice] = useState(80);
+    const [vatPercent, setVatPercent] = useState(0.20);
 
-    const subtotal = cakePrice + shippingPrice;
+    useEffect(() => {
+        // Fetch product price from backend - get first available product
+        products.get("1").then((productData) => {
+            if (productData.success && productData.data) {
+                setProductPrice(productData.data.price || 50);
+            }
+        }).catch(() => setProductPrice(50));
+    }, []);
+
+    const subtotal = productPrice + shippingPrice;
     const vatAmount = subtotal * vatPercent;
     const totalBeforeDiscount = subtotal + vatAmount;
     const discountAmount = (totalBeforeDiscount * appliedDiscount) / 100;
@@ -89,7 +98,7 @@ const Ordersummarypage = ({ navigation }) => {
         setIsProcessingPayment(true);
         try {
             const orderData = await orders.create({
-                items: [{ productId: "velvet-chocolate", quantity: 1, price: cakePrice, note: personalMessage }],
+                items: [{ productId: "1", quantity: 1, price: productPrice, note: personalMessage }],
                 total: parseFloat(finalTotal),
                 address: selectedAddress,
                 deliverySlot,
@@ -235,7 +244,7 @@ const Ordersummarypage = ({ navigation }) => {
 
                     <View style={styles.billingRow}>
                         <Text style={styles.normaltext}>Velvet Chocolate (1.5kg)</Text>
-                        <Text style={styles.normaltext}>${cakePrice}</Text>
+                        <Text style={styles.normaltext}>${productPrice}</Text>
                     </View>
 
                     <View style={styles.billingRow}>
@@ -271,7 +280,7 @@ const Ordersummarypage = ({ navigation }) => {
                     <View style={styles.promoRow}>
                         <TextInput
                             style={styles.promoInput}
-                            
+
                             placeholder="Enter promo code"
                             value={promoCode}
                             onChangeText={(text) => {

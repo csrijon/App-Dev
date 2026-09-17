@@ -53,7 +53,9 @@ const Catalogpage = ({ navigation }) => {
     useEffect(() => {
         const fetchAdminCatalog = async () => {
             try {
-                const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/admin/catalog`);
+                const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/admin/catalog`, {
+                    headers: { Authorization: `Bearer ${global.authToken || ""}` },
+                });
                 const json = await res.json();
                 if (json.success && Array.isArray(json.data)) {
                     const mapped = json.data.map((item) => ({

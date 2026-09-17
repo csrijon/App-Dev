@@ -15,6 +15,7 @@ const createOrder = async (req, res) => {
             paymentStatus,
             orderStatus,
             items,
+            deliveryDate,
         } = req.body;
 
         if (!items || !Array.isArray(items) || items.length === 0) {
@@ -112,6 +113,7 @@ const createOrder = async (req, res) => {
                     paymentMethod: paymentMethod || "cash",
                     paymentStatus: paymentStatus || "pending",
                     orderStatus: orderStatus || "pending",
+                    deliveryDate: deliveryDate ? new Date(deliveryDate) : null,
                     idempotencyKey: idempotencyKey || undefined,
                     orderNumber: `BK-${Math.floor(Math.random() * 9000) + 1000}`,
                     orderDate: new Date(),
@@ -322,6 +324,19 @@ const updateDeliveryTracking = async (req, res) => {
 const cancelOrder = async (req, res) => {
     try {
         const { id } = req.params;
+        const userId = req.user ? req.user.userId : null;
+        const userRole = req.user ? req.user.role : null;
+        const order = await prisma.order.findUnique({ where: { orderId: parseInt(id) } });
+        if (!order) return res.status(404).json({ success: false, message: "Order not found" });
+        // Customer can only cancel their own orders; admin can cancel any
+        if (userRole !== "admin" && userId) {
+            const matches = (order.userId !== null && order.userId === parseInt(userId)) || (order.customerPhone && req.user && req.user.mobile && order.customerPhone === req.user.mobile);
+            if (!matches) return res.status(403).json({ success: false, message: "Not authorized" });
+        }
+        // Prevent cancel after delivered/rejected
+        if (["delivered", "rejected", "cancelled"].includes((order.orderStatus || "").toLowerCase())) {
+            return res.status(400).json({ success: false, message: "Cannot cancel this order" });
+        }
         const updated = await prisma.order.update({
             where: { orderId: parseInt(id) },
             data: { orderStatus: "cancelled", updatedAt: new Date() },

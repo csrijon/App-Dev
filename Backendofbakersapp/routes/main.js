@@ -2,6 +2,7 @@ import express from "express";
 import { UserappSignup, Adminappsignup } from "../controllers/Signupcontrol.js";
 import { Loginmainapp, LoginAdminapp } from "../controllers/Logincontrol.js";
 import { saveAddress, getAddresses, updateAddress, deleteAddress } from "../controllers/Addresscontrol.js";
+import { createRazorpayOrder, razorpayWebhook } from "../controllers/Razorpaycontrol.js";
 import { upiidhandeler } from "../controllers/Upiidcontroler.js";
 import Addcakedetalisroute from "./Addcakedetalisroute.js";
 import { getProfile, updateProfile, changePassword } from "../controllers/Profilecontrol.js";
@@ -10,7 +11,9 @@ import { getDashboardAnalytics } from "../controllers/Analyticscontrol.js";
 import { saveOnboarding, getStoreProfile } from "../controllers/Onboardingcontrol.js";
 import { createNotification, getNotifications, markNotificationRead } from "../controllers/Notificationcontrol.js";
 import { createReview, getReviewsByProduct } from "../controllers/Reviewcontrol.js";
+import { createCustomOrder, getCustomOrdersByCustomer, getAllCustomOrders, updateCustomOrderStatus } from "../controllers/Customordercontrol.js";
 import { createRefundRequest, updateRefundStatus, getRefunds } from "../controllers/Refundcontrol.js";
+import { createCoupon, getCoupons, validateCoupon, updateCoupon, deleteCoupon } from "../controllers/Couponcontrol.js";
 import { addToCart, getCart, updateCartItem, removeCartItem } from "../controllers/Cartcontrol.js";
 import { createOrder, getAllOrders, getOrdersByCustomer, getOrderById, updateOrderStatus, updateDeliveryTracking, getDeliveryTracking, cancelOrder } from "../controllers/Ordercontrol.js";
 import { getAllProducts, getProductById, getProductsByCategory, createProduct, updateProduct, deleteProduct, searchProducts, toggleProductAvailability, getAllProductsAdmin } from "../controllers/Productcontrol.js";
@@ -48,7 +51,8 @@ router.get("/api/orders", requireAdmin, getAllOrders);
 router.get("/api/orders/customer", authenticate, getOrdersByCustomer);
 router.get("/api/orders/:id", authenticate, getOrderById);
 router.put("/api/orders/:id/status", requireAdmin, updateOrderStatus);
-router.patch("/api/orders/:id/cancel", requireAdmin, cancelOrder);
+router.put("/api/orders/:id/cancel", authenticate, cancelOrder); // customer self-cancel
+router.patch("/api/orders/:id/cancel", requireAdmin, cancelOrder); // admin cancel
 router.get("/api/orders/:orderId/tracking", authenticate, getDeliveryTracking);
 router.put("/api/orders/:orderId/tracking", requireAdmin, updateDeliveryTracking);
 
@@ -80,8 +84,19 @@ router.patch("/api/refunds/:id/status", requireAdmin, updateRefundStatus);
 router.post("/api/reviews", authenticate, createReview);
 router.get("/api/reviews", getReviewsByProduct);
 
+// ============== COUPON / DISCOUNT ==============
+router.post("/api/coupons", requireAdmin, createCoupon);
+router.get("/api/coupons", requireAdmin, getCoupons);
+router.get("/api/coupons/validate", authenticate, validateCoupon);
+router.put("/api/coupons/:id", requireAdmin, updateCoupon);
+router.delete("/api/coupons/:id", requireAdmin, deleteCoupon);
+
 // ============== UPI / PAYMENT STUB ==============
 router.post("/api/upi/save", upiidhandeler);
+
+// ============== RAZORPAY PAYMENT GATEWAY ==============
+router.post("/api/payments/razorpay/order", authenticate, createRazorpayOrder);
+router.post("/api/payments/razorpay/webhook", razorpayWebhook);
 
 // ============== STORE PROFILE (Public store info) ==============
 router.get("/api/store", getStoreProfile);
@@ -92,7 +107,17 @@ router.post("/api/onboarding/save", saveOnboarding);
 router.post("/api/auth/forgotPassword", forgotPassword);
 router.post("/api/auth/resetPassword", resetPassword);
 
+// ============== CUSTOM ORDERS ==============
+router.post("/api/custom-orders", authenticate, createCustomOrder);
+router.get("/api/custom-orders", authenticate, getCustomOrdersByCustomer);
+router.get("/api/custom-orders/admin", requireAdmin, getAllCustomOrders);
+router.put("/api/custom-orders/:id/status", requireAdmin, updateCustomOrderStatus);
+
 // ============== PRODUCT IMAGE UPLOAD (Admin catalog) ==============
 router.use("/api/add/itemdata", requireAdmin, Addcakedetalisroute);
+
+// ============== PROFILE IMAGE UPLOAD (Authenticated user) ==============
+import ProfileImageRoute from "./Profileimageroute.js";
+router.use("/api/user/profile-image", authenticate, ProfileImageRoute);
 
 export default router;

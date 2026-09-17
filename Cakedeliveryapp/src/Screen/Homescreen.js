@@ -326,6 +326,8 @@ const Homescreen = ({ navigation }) => {
     const [liveProducts, setLiveProducts] = useState([]);
     const [storeInfo, setStoreInfo] = useState(null);
     const [loadingLive, setLoadingLive] = useState(true);
+    const [searchResults, setSearchResults] = useState([]);
+    const [searchLoading, setSearchLoading] = useState(false);
 
     useEffect(() => {
         const fetchLive = async () => {
@@ -339,6 +341,8 @@ const Homescreen = ({ navigation }) => {
                 setStoreInfo(storeRes?.store || null);
             } catch (e) {
                 console.log("Live fetch error:", e);
+                // Fall back to initial mock data if backend fetch fails
+                setLiveProducts(bakeryData);
             } finally {
                 setLoadingLive(false);
             }
@@ -354,6 +358,17 @@ const Homescreen = ({ navigation }) => {
         }, 20000);
         return () => clearInterval(interval);
     }, []);
+
+    const handleSearchSubmit = async () => {
+        const q = searchText.trim();
+        if (!q) return;
+        setSearchLoading(true);
+        try {
+            const res = await products.search(q);
+            const data = res?.success ? res.data || res.products || res : [];
+            setSearchResults(Array.isArray(data) ? data : []);
+        } catch (e) { setSearchResults([]); } finally { setSearchLoading(false); }
+    };
 
     const onRefresh = () => {
         setRefreshing(true);
@@ -407,21 +422,42 @@ const Homescreen = ({ navigation }) => {
                     )}
 
                     {/* Search Bar */}
-                    {/* <View style={styles.searchBox}>
+                    <View style={styles.searchBox}>
                         <Ionicons
                             name="search-outline"
                             size={22}
                             color="#75584e"
                         />
-
                         <TextInput
                             placeholder="Search bakery..."
                             placeholderTextColor="#999"
                             value={searchText}
                             onChangeText={setSearchText}
                             style={styles.searchInput}
+                            returnKeyType="search"
+                            onSubmitEditing={handleSearchSubmit}
                         />
-                    </View> */}
+                        {searchText.length > 0 && (
+                            <TouchableOpacity onPress={() => setSearchText("")}>
+                                <Ionicons name="close-circle" size={18} color="#999" />
+                            </TouchableOpacity>
+                        )}
+                        {searchResults.length > 0 && (
+                            <View style={{ marginTop: 10, backgroundColor: '#fff', borderRadius: 16, padding: 12 }}>
+                                <Text style={{ fontWeight: '700', fontSize: 14, color: '#75584e', marginBottom: 8 }}>Search Results</Text>
+                                {searchResults.slice(0, 3).map((item) => (
+                                    <TouchableOpacity key={item.productId || item.id} onPress={() => navigation.navigate("Cakedetails", { product: item, name: item.productName || item.name })}>
+                                        <Text style={{ fontSize: 13, color: '#5C443A', paddingVertical: 4 }}>{item.productName || item.name}</Text>
+                                    </TouchableOpacity>
+                                ))}
+                                {searchResults.length > 3 && <Text style={{ fontSize: 12, color: '#999' }}>{searchResults.length - 3} more</Text>}
+                            </View>
+                        )}
+                        {searchLoading && <Text style={{ color: '#999', fontSize: 12, marginTop: 6 }}>Searching...</Text>}
+                        {searchText.trim() && searchResults.length === 0 && !searchLoading && (
+                            <Text style={{ color: '#999', fontSize: 12, marginTop: 6, textAlign: 'center' }}>No results found</Text>
+                        )}
+                    </View>
 
                     {/* Promo Banner */}
                     <FlatList

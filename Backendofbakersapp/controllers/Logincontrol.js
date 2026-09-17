@@ -30,7 +30,7 @@ const Loginmainapp = async (req, res) => {
         const secret = process.env.JWT_SECRET || process.env.jwt_secret;
         if (!secret) throw new Error("JWT secret not configured");
         const token = jwt.sign(
-            { userId: user.id, email: user.Email, mobile: user.Mobile, role: "customer" },
+            { userId: user.id, email: user.Email, mobile: user.Mobile, role: user.role },
             secret,
             { expiresIn: "7d" }
         );
@@ -84,7 +84,7 @@ const LoginAdminapp = async (req, res) => {
         const secret = process.env.JWT_SECRET || process.env.jwt_secret;
         if (!secret) throw new Error("JWT secret not configured");
         const token = jwt.sign(
-            { userId: user.id, email: user.Email, mobile: user.Mobile, role: "admin" },
+            { userId: user.id, email: user.Email, mobile: user.Mobile, role: user.role },
             secret,
             { expiresIn: "7d" }
         );

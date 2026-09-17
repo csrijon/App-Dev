@@ -21,8 +21,8 @@ async function request(url, options = {}) {
 export const auth = {
   signup: (body) => request('/api/auth/signupmain', { method: 'POST', body: JSON.stringify(body) }),
   login: (body) => request('/api/auth/loginmain', { method: 'POST', body: JSON.stringify(body) }),
-  forgotPassword: () => Promise.reject(new Error("Password reset not supported in this backend. Contact support.")),
-  resetPassword: () => Promise.reject(new Error("Password reset not supported in this backend. Contact support.")),
+  forgotPassword: (body) => request('/api/auth/forgotPassword', { method: 'POST', body }),
+  resetPassword: (body) => request('/api/auth/resetPassword', { method: 'POST', body }),
 };
 
 // Profile

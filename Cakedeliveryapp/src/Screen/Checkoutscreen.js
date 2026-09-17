@@ -17,9 +17,12 @@ import { cart, orders } from "../services/customerApi";
 import { API_CONFIG } from '../config/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from "@react-navigation/native";
+import RazorpayCheckout from 'react-native-razorpay';
+import { checkoutDate } from "../tempCheckoutDate";
 
 const Checkoutscreen = ({ navigation, route }) => {
-  const selectedDeliveryDate = route?.params?.selectedDate || "";
+  const selectedDeliveryDate = route?.params?.selectedDate || checkoutDate || "";
+  const [deliveryDateValid, setDeliveryDateValid] = useState(true);
   const { width } = useWindowDimensions();
 
   const [cartItems, setCartItems] = useState([]);
@@ -144,12 +147,15 @@ const Checkoutscreen = ({ navigation, route }) => {
 
   const handleCheckout = async (summary) => {
     if (cartItems.length === 0) {
-      Alert.alert(
-        "Your basket is empty",
-        "Add something delicious first."
-      );
+      Alert.alert("Your basket is empty", "Add something delicious first.");
       return;
     }
+    if (!selectedDeliveryDate) {
+      Alert.alert("Delivery Date Required", "Please select a delivery date before checkout.");
+      setDeliveryDateValid(false);
+      return;
+    }
+    setDeliveryDateValid(true);
 
     try {
       setLoading(true);
@@ -191,8 +197,72 @@ const Checkoutscreen = ({ navigation, route }) => {
         // ignore
       }
 
-      const idempotencyKey = `checkout-${Date.now()}-${Math.floor(Math.random() * 100000)}`;
+      // 1. Create Razorpay order via backend
+      let razorpayOrderId = null;
+      try {
+        const razorpayRes = await fetch(`${API_CONFIG.baseURL}/api/payments/razorpay/order`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${await AsyncStorage.getItem('auth_token') || ''}` },
+          body: JSON.stringify({ amount: summary.total, currency: 'INR', receipt: `bk-${Date.now()}` }),
+        });
+        const razorpayData = await razorpayRes.json();
+        if (razorpayData.success && razorpayData.data?.orderId) {
+          razorpayOrderId = razorpayData.data.orderId;
+        }
+      } catch (e) {
+        console.log("Razorpay order creation error:", e);
+      }
 
+      // 2. Open Razorpay Checkout if order created
+      if (razorpayOrderId) {
+        try {
+          const paymentData = await RazorpayCheckout.open({
+            description: 'Bakery Delivery Order',
+            image: 'https://picsum.photos/seed/bakery/200/200',
+            currency: 'INR',
+            key: 'rzp_test_Td8Hvn9ZSyLBEi', // Test key from .env — in production use env var
+            amount: Math.round(summary.total * 100),
+            name: 'Home Bakers',
+            order_id: razorpayOrderId,
+            prefill: { email: '', contact: userPhone },
+            theme: { color: '#75584e' },
+          });
+
+          // Payment successful — create order with transaction info
+          const idempotencyKey = `checkout-${Date.now()}-${Math.floor(Math.random() * 100000)}`;
+          const orderData = await orders.create({
+            items: cartItems.map((item) => ({
+              productId: item.id,
+              quantity: item.quantity,
+              price: item.price,
+              note: item.note || "",
+            })),
+            totalAmount: summary.total,
+            customerName: userName,
+            customerPhone: userPhone,
+            customerAddress: userAddress,
+            paymentMethod: "razorpay",
+            paymentStatus: "paid",
+            orderStatus: "pending",
+            deliveryDate: selectedDeliveryDate ? new Date(selectedDeliveryDate).toISOString() : undefined,
+            idempotencyKey,
+          });
+
+          await cart.get();
+          Alert.alert("Order placed", `Grand total: $${summary.total.toFixed(2)}\nOrder ID: ${orderData.id || "#" + Date.now()}\nTransaction: ${paymentData.razorpay_payment_id || "N/A"}`);
+          navigation.navigate("Ordesuccess", { orderId: orderData.id || Date.now(), selectedDate: selectedDeliveryDate });
+          setLoading(false);
+          return;
+        } catch (paymentError) {
+          console.log("Razorpay payment error:", paymentError);
+          Alert.alert("Payment Failed", paymentError.error?.description || "Payment was not completed.");
+          setLoading(false);
+          return;
+        }
+      }
+
+      // Fallback to cash if Razorpay fails
+      const idempotencyKey = `checkout-${Date.now()}-${Math.floor(Math.random() * 100000)}`;
       const orderData = await orders.create({
         items: cartItems.map((item) => ({
           productId: item.id,
@@ -207,24 +277,17 @@ const Checkoutscreen = ({ navigation, route }) => {
         paymentMethod: "cash",
         paymentStatus: "pending",
         orderStatus: "pending",
+        deliveryDate: selectedDeliveryDate ? new Date(selectedDeliveryDate).toISOString() : undefined,
         idempotencyKey,
       });
 
-      await cart.get(); // refresh cart state from server after clear
-      // Server clears cart on order creation; no setLocalCart needed
-
-      Alert.alert(
-        "Order placed",
-        `Grand total: $${summary.total.toFixed(2)}\nOrder ID: ${orderData.id || "#" + Date.now()}`
-      );
-
+      await cart.get();
+      Alert.alert("Order placed", `Grand total: $${summary.total.toFixed(2)}\nOrder ID: ${orderData.id || "#" + Date.now()}`);
       navigation.navigate("Ordesuccess", { orderId: orderData.id || Date.now(), selectedDate: selectedDeliveryDate });
     } catch (error) {
       console.log("Checkout error:", error);
-      Alert.alert(
-        "Error",
-        error?.message || "Something went wrong."
-      );
+      const msg = error?.message || (error?.response?.status === 401 ? "Session expired. Please log in again." : error?.response?.status === 403 ? "Not authorized." : error?.response?.status === 409 ? "Duplicate order detected." : error?.response?.status === 400 ? "Invalid request: " + (error?.response?.data?.message || "") : "Something went wrong.");
+      Alert.alert("Error", msg);
     } finally {
       setLoading(false);
     }

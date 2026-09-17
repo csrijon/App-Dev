@@ -17,14 +17,17 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { profile } from '../services/customerApi';
 import { useState, useRef, useEffect } from "react";
+import { launchImageLibrary } from 'react-native-image-picker';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_CONFIG } from '../config/api';
 
 const Profilescreen = ({ navigation }) => {
     const [refreshing, setRefreshing] = useState(false);
     const [loading, setLoading] = useState(false);
-
+const [fullName, setFullName] = useState("Artisan Baker");
     // User er already thaka info diye prefill kora - khali thakbe na
     // real app e eta API/AsyncStorage theke fetch kore boshabe
-    const [fullName, setFullName] = useState("Artisan Baker");
+    const [profileImage, setProfileImage] = useState(null);
     const [email, setEmail] = useState("artisan.baker@glazegrain.com");
     const [phone, setPhone] = useState("9831234567");
     const [currentPassword, setCurrentPassword] = useState("");
@@ -54,6 +57,7 @@ const Profilescreen = ({ navigation }) => {
                 setFullName(d.Name || fullName);
                 setEmail(d.Email || email);
                 setPhone(d.Mobile || phone);
+                if (d.profileImageUrl) setProfileImage(d.profileImageUrl);
                 if (d.addresses && d.addresses.length > 0) {
                     const addr = d.addresses[0];
                     setSavedAddress([addr.address, addr.city, addr.state, addr.pincode ? addr.pincode : ""].filter(Boolean).join(", "));
@@ -164,14 +168,41 @@ const Profilescreen = ({ navigation }) => {
                 <View style={styles.heroCard}>
                     <View style={styles.avatarWrap}>
                         <Image
-                            source={{ uri: "https://images.unsplash.com/photo-1556740738-b6a63e27c4df?w=300" }}
+                            source={{ uri: profileImage ? (profileImage.startsWith('/') ? (API_CONFIG.baseURL + profileImage) : profileImage) : "https://images.unsplash.com/photo-1556740738-b6a63e27c4df?w=300" }}
                             style={styles.avatarImg}
                         />
                         <TouchableOpacity
                             style={styles.camBtn}
-                            onPress={() =>
-                                Alert.alert("Profile Photo", "Upload image feature coming soon.")
-                            }
+                            onPress={async () => {
+                                launchImageLibrary({ mediaType: 'photo', quality: 0.7, selectionLimit: 1 }, async (response) => {
+                                    if (response.didCancel || response.errorCode) return;
+                                    if (response.assets && response.assets[0].uri) {
+                                        const token = await AsyncStorage.getItem('auth_token');
+                                        const formData = new FormData();
+                                        formData.append('image', {
+                                            uri: response.assets[0].uri,
+                                            type: 'image/jpeg',
+                                            name: 'profile.jpg',
+                                        });
+                                        try {
+                                            const res = await fetch(`${API_CONFIG.baseURL}/api/user/profile-image`, {
+                                                method: 'POST',
+                                                headers: { Authorization: `Bearer ${token}` },
+                                                body: formData,
+                                            });
+                                            const data = await res.json().catch(() => ({}));
+                                            if (data.success) {
+                                                Alert.alert("Profile Photo Updated", "Your profile image has been updated.");
+                                            } else {
+                                                Alert.alert("Upload Failed", data.message || "Could not upload image.");
+                                            }
+                                        } catch (e) {
+                                            console.log("Profile image upload error:", e);
+                                            Alert.alert("Upload Error", "Something went wrong.");
+                                        }
+                                    }
+                                });
+                            }}
                         >
                             <Ionicons name="camera-outline" size={14} color="#fff" />
                         </TouchableOpacity>
