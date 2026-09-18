@@ -109,9 +109,7 @@ const Header = ({onPress}) => {
 
                 <TouchableOpacity onPress={()=>navigation.navigate("Tabs", { screen: "Profile" })} >
                     <Image
-                        source={{
-                            uri: "https://i.pravatar.cc/150?img=12",
-                        }}
+                        source={require("../images/cakeimage.jpeg")}
                         style={styles.profileImage}
                     />
                 </TouchableOpacity>

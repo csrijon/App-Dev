@@ -13,9 +13,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { notifications } from '../services/customerApi';
 
-const NotificationCard = ({ title, description, time, isUnread }) => {
+const NotificationCard = ({ title, description, time, isUnread, onPress }) => {
   return (
-    <TouchableOpacity style={[styles.card, isUnread && styles.unreadCard]} activeOpacity={0.8}>
+    <TouchableOpacity style={[styles.card, isUnread && styles.unreadCard]} activeOpacity={0.8} onPress={onPress}>
       <View style={styles.iconAvatar}>
         <Ionicons name="notifications-outline" size={20} color="#5D4037" />
       </View>
@@ -101,6 +101,12 @@ const NotificationsScreen = () => {
               description={item.description}
               time={item.time}
               isUnread={item.isUnread}
+              onPress={async () => {
+                if (item.isUnread) {
+                  try { await notifications.markRead(item.id); } catch (e) {}
+                  await fetchNotifications();
+                }
+              }}
             />
           ))
         )}

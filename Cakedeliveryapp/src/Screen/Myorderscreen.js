@@ -1,7 +1,9 @@
 import Simpleheader from "../components/Simpleheader"
+import EmptyOrderScreen from "./EmptyOrderScreen"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { StatusBar, ScrollView, View, Text, TouchableOpacity, StyleSheet, useWindowDimensions, Image, ActivityIndicator } from "react-native"
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
+import { useFocusEffect } from "@react-navigation/native"
 import { orders } from "../services/customerApi"
 
 const PILL_STYLES = {
@@ -42,6 +44,33 @@ const Myorderscreen = ({navigation}) => {
     loadOrders()
   }, [])
 
+  useFocusEffect(
+    React.useCallback(() => {
+      const reload = async () => {
+        try {
+          setLoading(true)
+          const res = await orders.list()
+          const items = (res && res.success && Array.isArray(res.data)) ? res.data : []
+          const mapped = items.map((o) => ({
+            id: o.orderNumber || ("BK-" + o.orderId),
+            status: (o.orderStatus || "PENDING").toUpperCase(),
+            title: (o.customerName || "Customer Order"),
+            price: "$" + (parseFloat(o.totalAmount || 0)).toFixed(2),
+            date: o.orderDate ? new Date(o.orderDate).toLocaleString() : "",
+            action: o.orderStatus === "delivered" ? "REORDER" : (o.orderStatus === "pending" ? "TRACK ORDER" : (o.orderStatus === "accepted" ? "VIEW DETAILS" : "TRACK ORDER")),
+            isActive: !["delivered", "cancelled", "rejected"].includes(o.orderStatus || ""),
+          }))
+          setOrderData(mapped)
+        } catch (e) {
+          console.log("Refresh orders error:", e)
+        } finally {
+          setLoading(false)
+        }
+      }
+      reload()
+    }, [])
+  )
+
   const filteredOrders = orderData.filter((order) =>
     activeTab === "active" ? order.isActive : !order.isActive
   )
@@ -58,42 +87,13 @@ const Myorderscreen = ({navigation}) => {
         <View style={styles.ordertextsection}>
           <Text style={[styles.myordertext, { fontSize: width * 0.08 }]}>My Orders</Text>
 
-          <View style={styles.togglebuttonsection}>
-            <TouchableOpacity
-              onPress={() => setActiveTab("active")}
-              style={[
-                styles.togglebutton,
-                { backgroundColor: activeTab === "active" ? "#75584e" : "#faf4d6" },
-              ]}
-            >
-              <Text style={{ color: activeTab === "active" ? "#fff" : "#363317", fontWeight: "600" }}>
-                Active
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => setActiveTab("past")}
-              style={[
-                styles.togglebutton,
-                { backgroundColor: activeTab === "past" ? "#75584e" : "#faf4d6" },
-              ]}
-            >
-              <Text style={{ color: activeTab === "past" ? "#fff" : "#363317", fontWeight: "600" }}>
-                Past
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
         <View>
           {loading ? (
             <View style={styles.emptyState}><ActivityIndicator size="large" color="#75584e" /></View>
-          ) : filteredOrders.length === 0 ? (
-            <View style={styles.emptyState}>
-              <Text style={styles.emptyText}>No {activeTab} orders found</Text>
-            </View>
+          ) : orderData.length === 0 && !loading ? (
+            <EmptyOrderScreen />
           ) : (
-            filteredOrders.map((order) => (
+            orderData.map((order) => (
               <View style={styles.shellWrapper} key={order.id}>
                 <Image source={require("../images/cakeimage.jpeg")} style={styles.visualThumb} />
 
@@ -120,6 +120,7 @@ const Myorderscreen = ({navigation}) => {
             ))
           )}
         </View>
+      </View>
       </ScrollView>
     </SafeAreaView>
   )

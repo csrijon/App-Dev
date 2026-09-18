@@ -207,7 +207,7 @@ const TabScreen = () => {
 
       <Tab.Screen
         name="Orders"
-        component={EmptyOrderScreen}
+        component={Myorderscreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <View style={{

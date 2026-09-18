@@ -53,6 +53,8 @@ const OrderTrackingScreen = ({ navigation, route }) => {
 
     useEffect(() => {
         fetchTracking();
+        const interval = setInterval(fetchTracking, 8000); // real-time refresh every 8s
+        return () => clearInterval(interval);
     }, [orderId]);
 
     useEffect(() => {

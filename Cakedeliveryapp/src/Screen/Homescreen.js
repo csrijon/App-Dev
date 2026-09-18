@@ -7,6 +7,8 @@ import FoodCard from "../components/FoodCard";
 import { useWindowDimensions } from "react-native";
 import { useState, useMemo, useEffect } from "react";
 import { products, store } from "../services/customerApi";
+import Geolocation from "@react-native-community/geolocation";
+import { PermissionsAndroid, Platform } from "react-native";
 import { API_CONFIG } from '../config/api';
 const bakeryData = [
     {
@@ -329,6 +331,12 @@ const Homescreen = ({ navigation }) => {
     const [searchResults, setSearchResults] = useState([]);
     const [searchLoading, setSearchLoading] = useState(false);
 
+    // Nearby Artists feature states
+    const [nearbyArtists, setNearbyArtists] = useState([]);
+    const [nearbyLoading, setNearbyLoading] = useState(false);
+    const [nearbyError, setNearbyError] = useState(null);
+    const [locationPermission, setLocationPermission] = useState("unknown"); // unknown / granted / denied / unavailable
+
     useEffect(() => {
         const fetchLive = async () => {
             try {
@@ -359,6 +367,70 @@ const Homescreen = ({ navigation }) => {
         return () => clearInterval(interval);
     }, []);
 
+    // Nearby Artists: search when location updates (watch + debounce)
+    useEffect(() => {
+        let canceled = false;
+        let watchId = null;
+        let debounceTimer = null;
+
+        const fetchNearby = (lat, lng) => {
+            if (canceled) return;
+            setNearbyLoading(true);
+            setNearbyError(null);
+            store.nearby({ lat, lng, radius: 10 })
+                .then((res) => {
+                    if (canceled) return;
+                    if (res?.success) {
+                        setNearbyArtists(res.artists || []);
+                    } else {
+                        setNearbyError("Could not load nearby artists");
+                    }
+                })
+                .catch((e) => {
+                    if (canceled) return;
+                    setNearbyError("Network error");
+                })
+                .finally(() => setNearbyLoading(false));
+        };
+
+        const startWatch = async () => {
+            if (Platform.OS === "android") {
+                const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                    { title: "Location", message: "Allow location for nearby artists", buttonPositive: "OK" }
+                );
+                if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+                    setLocationPermission("denied");
+                    return;
+                }
+            }
+            setLocationPermission("granted");
+
+            watchId = Geolocation.watchPosition(
+                (position) => {
+                    if (canceled) return;
+                    const { latitude, longitude } = position.coords;
+                    if (debounceTimer) clearTimeout(debounceTimer);
+                    debounceTimer = setTimeout(() => fetchNearby(latitude, longitude), 1500); // wait 1.5s after update
+                },
+                (err) => {
+                    if (canceled) return;
+                    setLocationPermission("unavailable");
+                    setNearbyError("Location unavailable");
+                    setNearbyLoading(false);
+                },
+                { enableHighAccuracy: true, distanceFilter: 50, interval: 5000 }
+            );
+        };
+
+        startWatch();
+        return () => {
+            canceled = true;
+            if (watchId !== null) Geolocation.clearWatch(watchId);
+            if (debounceTimer) clearTimeout(debounceTimer);
+        };
+    }, []);
+
     const handleSearchSubmit = async () => {
         const q = searchText.trim();
         if (!q) return;
@@ -381,12 +453,13 @@ const Homescreen = ({ navigation }) => {
     };
 
     const filteredFoodData = useMemo(() => {
-        return foodData.filter(item =>
-            item.title
+        const source = Array.isArray(liveProducts) && liveProducts.length > 0 ? liveProducts : foodData;
+        return source.filter(item =>
+            (item.title || item.name || "")
                 .toLowerCase()
                 .includes(searchText.toLowerCase())
         );
-    }, [searchText]);
+    }, [searchText, liveProducts]);
     return (
         <SafeAreaView style={styles.Homecontainer}>
             <StatusBar backgroundColor="#f8f1df" barStyle="dark-content" />
@@ -672,39 +745,35 @@ const Homescreen = ({ navigation }) => {
                         </View>
                     </View>
 
-                    {/* Nearby Artists */}
-                    <Text style={styles.exploreCollectionsText}>
-                        Nearby Artists
-                    </Text>
-
+                    {/* Nearby Artists — nearest from DB */}
+                    <Text style={styles.exploreCollectionsText}>Nearby Artists</Text>
                     <View style={styles.foodCardContainer}>
-                        {filteredFoodData.length === 0 ? (
-                            <View style={styles.emptyContainer}>
-                                <Ionicons
-                                    name="search-outline"
-                                    size={50}
-                                    color="#999"
-                                />
-
-                                <Text style={styles.emptyText}>
-                                    No bakery found
-                                </Text>
+                        {nearbyLoading ? (
+                            <Text style={{ textAlign: "center", color: "#75584e", padding: 12 }}>Finding nearest artist…</Text>
+                        ) : nearbyError ? (
+                            <View style={{ alignItems: "center", padding: 12 }}>
+                                <Text style={{ color: "#c00" }}>{nearbyError}</Text>
+                                <TouchableOpacity onPress={() => { setNearbyError(null); setNearbyLoading(true); }} style={{ marginTop: 8, padding: 6, backgroundColor: "#6b4f4f", borderRadius: 8 }}>
+                                    <Text style={{ color: "#fff" }}>Retry</Text>
+                                </TouchableOpacity>
                             </View>
+                        ) : locationPermission === "denied" ? (
+                            <Text style={{ textAlign: "center", color: "#999", padding: 12 }}>Location permission denied. Enable in settings to see nearby artists.</Text>
+                        ) : nearbyArtists.length === 0 ? (
+                            <Text style={{ textAlign: "center", color: "#c00", padding: 12, fontWeight: "600" }}>Artist not found</Text>
                         ) : (
                             <FlatList
                                 scrollEnabled={false}
-                                data={filteredFoodData}
-                                keyExtractor={(item) =>
-                                    item.id.toString()
-                                }
+                                data={nearbyArtists}
+                                keyExtractor={(item) => (item.id ?? item.bakersName ?? Math.random()).toString()}
                                 renderItem={({ item }) => (
                                     <FoodCard
-                                        image={item.image}
-                                        title={item.title}
-                                        rating={item.rating}
-                                        subtitle={item.subtitle}
-                                        tags={item.tags[0]}
-                                        tag={item.tags[1]}
+                                        image={item.logoUrl ? { uri: item.logoUrl } : require("../images/cakeimage.jpeg")}
+                                        title={item.bakersName || "Bakery"}
+                                        rating={"4.8"}
+                                        subtitle={item.city ? item.city + (item.state ? ", " + item.state : "") : (item.shopAddress || "")}
+                                        tags={item.businessType || "BAKERY"}
+                                        tag={item.distanceKm ? item.distanceKm + " km away" : "NEAR"}
                                     />
                                 )}
                             />

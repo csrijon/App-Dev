@@ -84,6 +84,7 @@ export const refunds = {
 
 export const store = {
   get: () => request('/api/store'),
+  nearby: ({ lat, lng, radius = 10 }) => request(`/api/store/nearby?latitude=${lat}&longitude=${lng}&radiusKm=${radius}`),
 };
 
 // Reviews

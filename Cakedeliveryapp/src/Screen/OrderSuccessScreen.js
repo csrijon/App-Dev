@@ -417,6 +417,13 @@ const OrderSuccessScreen = ({ navigation, route }) => {
                         title="Go Home"
                     />
 
+                    <Button
+                        onPress={() =>
+                            navigation.navigate("Orders")
+                        }
+                        title="My Orders"
+                    />
+
                 </View>
 
                 <Text

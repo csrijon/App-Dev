@@ -19,6 +19,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from "@react-navigation/native";
 import RazorpayCheckout from 'react-native-razorpay';
 import { checkoutDate } from "../tempCheckoutDate";
+import { Modal, Pressable } from "react-native";
 
 const Checkoutscreen = ({ navigation, route }) => {
   const selectedDeliveryDate = route?.params?.selectedDate || checkoutDate || "";
@@ -141,9 +142,63 @@ const Checkoutscreen = ({ navigation, route }) => {
     });
   };
 
+  const [addressModalVisible, setAddressModalVisible] = useState(false);
+  const [savedAddresses, setSavedAddresses] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState("");
+
+  // Load saved address on mount for checkout display
+  useEffect(() => {
+    (async () => {
+      try {
+        const token = await AsyncStorage.getItem('auth_token');
+        if (token) {
+          const res = await fetch(`${API_CONFIG.baseURL}/api/address`, { headers: { Authorization: `Bearer ${token}` } });
+          const data = await res.json().catch(() => ({}));
+          if (data.success && Array.isArray(data.data) && data.data.length > 0) {
+            const a = data.data[0];
+            const addrStr = a.address || a.street || a.fullAddress || "";
+            setSelectedAddress(addrStr || "42 Artisan Grove, West Hollywood, CA");
+            setSavedAddresses(data.data);
+          }
+        }
+      } catch (e) {}
+    })();
+  }, []);
+
   const handleChangeAddress = () => {
-    navigation.navigate("ProfileTab", { screen: "Profilescreen" });
+    setAddressModalVisible(true);
+    // Fetch saved addresses
+    (async () => {
+      try {
+        const token = await AsyncStorage.getItem('auth_token');
+        if (token) {
+          const res = await fetch(`${API_CONFIG.baseURL}/api/address`, { headers: { Authorization: `Bearer ${token}` } });
+          const data = await res.json().catch(() => ({}));
+          if (data.success && Array.isArray(data.data)) setSavedAddresses(data.data);
+        }
+      } catch (e) {}
+    })();
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const reloadAddr = async () => {
+        try {
+          const token = await AsyncStorage.getItem('auth_token');
+          if (token) {
+            const res = await fetch(`${API_CONFIG.baseURL}/api/address`, { headers: { Authorization: `Bearer ${token}` } });
+            const data = await res.json().catch(() => ({}));
+            if (data.success && Array.isArray(data.data)) {
+              setSavedAddresses(data.data);
+              const first = data.data[0];
+              if (first) setSelectedAddress(first.address || first.street || first.fullAddress || "");
+            }
+          }
+        } catch (e) {}
+      };
+      reloadAddr();
+    }, [])
+  );
 
   const handleCheckout = async (summary) => {
     if (cartItems.length === 0) {
@@ -220,7 +275,7 @@ const Checkoutscreen = ({ navigation, route }) => {
             description: 'Bakery Delivery Order',
             image: 'https://picsum.photos/seed/bakery/200/200',
             currency: 'INR',
-            key: 'rzp_test_Td8Hvn9ZSyLBEi', // Test key from .env — in production use env var
+            key: 'rzp_test_Td8Hvn9ZSyLBEi',
             amount: Math.round(summary.total * 100),
             name: 'Home Bakers',
             order_id: razorpayOrderId,
@@ -228,29 +283,35 @@ const Checkoutscreen = ({ navigation, route }) => {
             theme: { color: '#75584e' },
           });
 
-          // Payment successful — create order with transaction info
-          const idempotencyKey = `checkout-${Date.now()}-${Math.floor(Math.random() * 100000)}`;
-          const orderData = await orders.create({
-            items: cartItems.map((item) => ({
-              productId: item.id,
-              quantity: item.quantity,
-              price: item.price,
-              note: item.note || "",
-            })),
-            totalAmount: summary.total,
-            customerName: userName,
-            customerPhone: userPhone,
-            customerAddress: userAddress,
-            paymentMethod: "razorpay",
-            paymentStatus: "paid",
-            orderStatus: "pending",
-            deliveryDate: selectedDeliveryDate ? new Date(selectedDeliveryDate).toISOString() : undefined,
-            idempotencyKey,
-          });
+          // Payment completed — create order separately (do not treat order error as payment fail)
+          try {
+            const idempotencyKey = `checkout-${Date.now()}-${Math.floor(Math.random() * 100000)}`;
+            const orderData = await orders.create({
+              items: cartItems.map((item) => ({
+                pid: item.id,
+                qty: item.quantity,
+                price: item.price,
+                note: item.note || "",
+              })),
+              totalAmount: summary.total,
+              customerName: userName,
+              customerPhone: userPhone,
+              customerAddress: userAddress,
+              paymentMethod: "razorpay",
+              paymentStatus: "paid",
+              orderStatus: "pending",
+              deliveryDate: selectedDeliveryDate ? new Date(selectedDeliveryDate).toISOString() : undefined,
+              idempotencyKey,
+            });
 
-          await cart.get();
-          Alert.alert("Order placed", `Grand total: $${summary.total.toFixed(2)}\nOrder ID: ${orderData.id || "#" + Date.now()}\nTransaction: ${paymentData.razorpay_payment_id || "N/A"}`);
-          navigation.navigate("Ordesuccess", { orderId: orderData.id || Date.now(), selectedDate: selectedDeliveryDate });
+            await cart.get();
+            Alert.alert("Order placed", `Grand total: $${summary.total.toFixed(2)}\nOrder ID: ${orderData.id || "#" + Date.now()}\nTransaction: ${paymentData.razorpay_payment_id || "N/A"}`, [
+              { text: "OK", onPress: () => navigation.navigate("Ordesuccess", { orderId: orderData.id || Date.now(), selectedDate: selectedDeliveryDate }) }
+            ]);
+          } catch (orderErr) {
+            console.log("Order creation error after payment:", orderErr);
+            Alert.alert("Payment Success", "Payment completed but order save failed. Check with admin.");
+          }
           setLoading(false);
           return;
         } catch (paymentError) {
@@ -407,7 +468,7 @@ const Checkoutscreen = ({ navigation, route }) => {
           deliveryFee={0}
           taxRate={0.08}
           eta="45-60 mins"
-          address="42 Artisan Grove, West Hollywood, CA"
+          address={selectedAddress || "42 Artisan Grove, West Hollywood, CA"}
           onChangeAddress={handleChangeAddress}
           onCheckout={handleCheckout}
           disabled={
@@ -418,6 +479,26 @@ const Checkoutscreen = ({ navigation, route }) => {
         />
 
       </ScrollView>
+
+      <Modal animationType="slide" transparent={true} visible={addressModalVisible} onRequestClose={() => setAddressModalVisible(false)}>
+        <View style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.45)", justifyContent: "center", padding: 20 }}>
+          <View style={{ backgroundColor: "#fff9e6", borderRadius: 20, padding: 20, maxHeight: "70%" }}>
+            <Text style={{ fontSize: 18, fontWeight: "700", color: "#2f241d", marginBottom: 12 }}>Select Address</Text>
+            {savedAddresses.length > 0 ? savedAddresses.map((a) => (
+              <TouchableOpacity key={a.id} onPress={() => { setSelectedAddress(a.address || a.street || ""); setAddressModalVisible(false); }} style={{ padding: 12, borderBottomWidth: 1, borderColor: "#eee", borderRadius: 8, backgroundColor: selectedAddress === (a.address || a.street || "") ? "#f4ecd8" : "#fff" }}>
+                <Text style={{ fontWeight: "600", fontSize: 14 }}>{a.address || a.street || a.fullAddress || "Address"}</Text>
+                <Text style={{ fontSize: 12, color: "#777" }}>{a.city || ""} {a.state || ""}</Text>
+              </TouchableOpacity>
+            )) : <Text style={{ color: "#999", padding: 12 }}>No saved addresses found.</Text>}
+            <TouchableOpacity onPress={() => { setAddressModalVisible(false); navigation.navigate("ProfileTab", { screen: "AddressUI" }); }} style={{ marginTop: 10, padding: 12, backgroundColor: "#75584e", borderRadius: 10, alignItems: "center" }}>
+              <Text style={{ color: "#fff", fontWeight: "700" }}>Add New Address</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setAddressModalVisible(false)} style={{ marginTop: 8, padding: 8, alignSelf: "center" }}>
+              <Text style={{ color: "#75584e", fontWeight: "600" }}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
     </SafeAreaView>
   );
