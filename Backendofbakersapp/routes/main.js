@@ -9,6 +9,7 @@ import { getProfile, updateProfile, changePassword } from "../controllers/Profil
 import { forgotPassword, resetPassword } from "../controllers/ResetPasswordcontrol.js";
 import { getDashboardAnalytics } from "../controllers/Analyticscontrol.js";
 import { saveOnboarding, getStoreProfile } from "../controllers/Onboardingcontrol.js";
+import { nearbyArtists } from "../controllers/Storecontrol.js";
 import { createNotification, getNotifications, markNotificationRead } from "../controllers/Notificationcontrol.js";
 import { createReview, getReviewsByProduct } from "../controllers/Reviewcontrol.js";
 import { createCustomOrder, getCustomOrdersByCustomer, getAllCustomOrders, updateCustomOrderStatus } from "../controllers/Customordercontrol.js";
@@ -100,6 +101,7 @@ router.post("/api/payments/razorpay/webhook", razorpayWebhook);
 
 // ============== STORE PROFILE (Public store info) ==============
 router.get("/api/store", getStoreProfile);
+router.get("/api/store/nearby", authenticate, nearbyArtists);
 
 // ============== ONBOARDING (Admin store profile) ==============
 router.post("/api/onboarding/save", saveOnboarding);

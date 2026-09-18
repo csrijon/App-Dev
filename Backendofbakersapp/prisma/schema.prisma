@@ -235,6 +235,8 @@ model StoreProfile {
   deliveryCharge    String?
   freeDeliveryAbove String?
   minimumOrderValue String?
+  latitude          Float?
+  longitude         Float?
   productNames      String?
   createdAt         DateTime @default(now())
   products         Product[]
