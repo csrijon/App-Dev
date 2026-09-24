@@ -7,24 +7,25 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  Name     String
-  Email    String @unique
-  Mobile   String @unique
-  Password String
-  role     String @default("customer") // "customer" or "admin"
-  addresses      Address[]
-  orders         Order[]
-  reviews        Review[]
-  refunds        Refund[]
-  notifications  Notifications[]
-  resetTokens   ResetToken[]
-  carts          Cart[]
+  id              Int             @id @default(autoincrement())
+  Name            String
+  Email           String          @unique
+  Mobile          String          @unique
+  Password        String
+  role            String          @default("customer") // "customer" or "admin"
+  addresses       Address[]
+  orders          Order[]
+  reviews         Review[]
+  refunds         Refund[]
+  notifications   Notifications[]
+  resetTokens     ResetToken[]
+  carts           Cart[]
+  products        Product[]
   profileImageUrl String?
   customOrders    CustomOrder[]
+
   @@map("Login&signupsystem")
 }
-
 
 model Address {
   id        Int     @id @default(autoincrement())
@@ -36,7 +37,7 @@ model Address {
   state     String? @db.VarChar(100)
   pincode   String? @db.VarChar(10)
   isDefault Boolean @default(false)
-  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
@@ -48,7 +49,7 @@ model Cart {
   quantity  Int      @default(1)
   createdAt DateTime @default(now())
 
-  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   product Product @relation(fields: [productId], references: [productId], onDelete: Cascade)
 
   @@index([userId])
@@ -98,6 +99,7 @@ model Notifications {
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([userId])
 }
 
@@ -130,15 +132,15 @@ model Order {
   orderDate       DateTime?
   updatedAt       DateTime?
   completedAt     DateTime?
-  storeProfileId Int?
-  idempotencyKey String? @db.VarChar(255)
+  storeProfileId  Int?
+  idempotencyKey  String?   @db.VarChar(255)
 
-  user        User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
-  storeProfile StoreProfile? @relation(fields: [storeProfileId], references: [id], onDelete: SetNull)
+  user             User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
+  storeProfile     StoreProfile?      @relation(fields: [storeProfileId], references: [id], onDelete: SetNull)
   orderItems       OrderItem[]
   payments         Payment[]
   deliveryTracking DeliveryTracking[]
-  refunds         Refund[]
+  refunds          Refund[]
 }
 
 model Payment {
@@ -171,16 +173,18 @@ model Product {
   category           String?   @db.VarChar(100)
   publicCatalog      Boolean   @default(false)
   storeProfileId     Int?
+  userId             Int?
   bestseller         Boolean   @default(false)
   featured           Boolean   @default(false)
   allowCustomMessage Boolean   @default(false)
   createdAt          DateTime?
   updatedAt          DateTime?
 
+  user         User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
   storeProfile StoreProfile? @relation(fields: [storeProfileId], references: [id], onDelete: SetNull)
-  carts      Cart[]
-  reviews    Review[]
-  orderItems OrderItem[]
+  carts        Cart[]
+  reviews      Review[]
+  orderItems   OrderItem[]
 }
 
 model Onboarding {
@@ -212,25 +216,25 @@ model Onboarding {
 }
 
 model StoreProfile {
-  id                Int      @id @default(autoincrement())
-  bakersName        String?  @db.VarChar(150)
-  ownerName         String?  @db.VarChar(150)
-  email             String?  @db.VarChar(150)
-  phone             String?  @db.VarChar(20)
-  businessType      String?  @db.VarChar(50)
+  id                Int       @id @default(autoincrement())
+  bakersName        String?   @db.VarChar(150)
+  ownerName         String?   @db.VarChar(150)
+  email             String?   @db.VarChar(150)
+  phone             String?   @db.VarChar(20)
+  businessType      String?   @db.VarChar(50)
   logoUrl           String?
   shopAddress       String?
   landmark          String?
-  city              String?  @db.VarChar(50)
-  pincode           String?  @db.VarChar(10)
-  state             String?  @db.VarChar(50)
-  fssaiNumber       String?  @db.VarChar(50)
+  city              String?   @db.VarChar(50)
+  pincode           String?   @db.VarChar(10)
+  state             String?   @db.VarChar(50)
+  fssaiNumber       String?   @db.VarChar(50)
   fssaiImage        String?
   openingTime       String?
   closingTime       String?
   weeklyOffDay      String?
-  acceptOrder247    Boolean  @default(false)
-  deliveryAvailable Boolean  @default(false)
+  acceptOrder247    Boolean   @default(false)
+  deliveryAvailable Boolean   @default(false)
   deliveryRadius    String?
   deliveryCharge    String?
   freeDeliveryAbove String?
@@ -238,9 +242,9 @@ model StoreProfile {
   latitude          Float?
   longitude         Float?
   productNames      String?
-  createdAt         DateTime @default(now())
-  products         Product[]
-  orders           Order[]
+  createdAt         DateTime  @default(now())
+  products          Product[]
+  orders            Order[]
 }
 
 model Review {
@@ -269,31 +273,31 @@ model ResetToken {
 }
 
 model CustomOrder {
-  id              Int      @id @default(autoincrement())
-  userId          Int
-  cakeType        String?
-  flavor          String?
-  size            String?
-  message         String?
+  id                    Int       @id @default(autoincrement())
+  userId                Int
+  cakeType              String?
+  flavor                String?
+  size                  String?
+  message               String?
   preferredDeliveryDate DateTime?
-  description     String?
-  referenceImageUrl String?
-  status          String   @default("pending") @db.VarChar(20)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  description           String?
+  referenceImageUrl     String?
+  status                String    @default("pending") @db.VarChar(20)
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Refund {
-  id           Int       @id @default(autoincrement())
-  orderId      Int
-  userId       Int
-  reason       String?
-  status       String    @default("pending") @db.VarChar(20)
-  adminReason  String?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  id          Int      @id @default(autoincrement())
+  orderId     Int
+  userId      Int
+  reason      String?
+  status      String   @default("pending") @db.VarChar(20)
+  adminReason String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   order Order @relation(fields: [orderId], references: [orderId], onDelete: Cascade)
   user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -301,4 +305,29 @@ model Refund {
   @@index([orderId])
   @@index([userId])
   @@index([status])
+}
+
+model VisitorLog {
+  id        Int      @id @default(autoincrement())
+  sessionId String?  @db.VarChar(255)
+  ipAddress String?  @db.VarChar(45)
+  pageUrl   String?  @db.VarChar(500)
+  userAgent String?  @db.Text
+  visitedAt DateTime @default(now())
+
+  @@index([visitedAt])
+  @@index([sessionId])
+  @@map("VisitorLogs")
+}
+
+model PageView {
+  id        Int      @id @default(autoincrement())
+  pagePath  String   @db.VarChar(500)
+  pageTitle String?  @db.VarChar(255)
+  source    String?  @db.VarChar(50) // customer-web / admin-web / app
+  watchedAt DateTime @default(now())
+
+  @@index([watchedAt])
+  @@index([source])
+  @@map("PageViews")
 }

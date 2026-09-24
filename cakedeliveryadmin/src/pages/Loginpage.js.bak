@@ -58,39 +58,11 @@ const Loginpage = ({navigation}) => {
                 global.authToken = data.token;
             }
 
-            // Check onboarding by login email: /api/store returns profile with email
-            try {
-                const storeRes = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/store?email=${encodeURIComponent(email)}`);
-                const storeData = await storeRes.json();
-                const profile = storeData && storeData.store ? storeData.store : null;
-                // Fallback: if email-filter returns nothing, try latest profile (handles missing email in DB)
-                let finalProfile = profile;
-                if (!finalProfile) {
-                    try {
-                        const fallRes = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/store`);
-                        const fallData = await fallRes.json();
-                        if (fallData && fallData.store) finalProfile = fallData.store;
-                    } catch (e) {}
-                }
-                const completed = finalProfile && (finalProfile.email === email || finalProfile.bakersName || finalProfile.shopAddress || finalProfile.ownerName);
-                // Phone match check: signup account vs onboarding/store phone
-                try {
-                    const profRes = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/user/profile`, { headers: { Authorization: `Bearer ${global.authToken || ''}` } });
-                    if (profRes.ok) {
-                        const profData = await profRes.json();
-                        const acctPhone = (profData.user || profData.profile || profData).Mobile || (profData.user || profData.profile || profData).phone || '';
-                        const onbPhone = finalProfile ? (finalProfile.phone || finalProfile.phonenumber || '') : '';
-                        if (acctPhone && onbPhone && acctPhone.replace(/\D/g,'') !== onbPhone.replace(/\D/g,'')) {
-                            Alert.alert('Incorrect Number', 'Please enter the correct number');
-                        }
-                    }
-                } catch (e) {}
-                if (completed) {
-                    navigation.navigate("TabScreens");
-                } else {
-                    navigation.navigate("Onbordingpageone");
-                }
-            } catch (e) {
+            // Check onboarding status from context
+            const isOnboarded = onboardingCtx?.formdata?.personaldetails?.bakersname?.trim();
+            if (isOnboarded) {
+                navigation.navigate("TabScreens");
+            } else {
                 navigation.navigate("Onbordingpageone");
             }
         } catch (error) {

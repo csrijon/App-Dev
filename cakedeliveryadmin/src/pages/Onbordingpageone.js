@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
     View,
     Text,
@@ -124,10 +124,35 @@ const Onbordingpageone = ({ navigation }) => {
 
     const { formdata, setformdata } = useContext(OnbordingContext)
 
+    // Auto-fill name and phone from admin profile after login
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/user/profile`, {
+                    headers: { Authorization: `Bearer ${global.authToken || ''}` }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    const profile = data.user || data.profile || data;
+                    if (profile) {
+                        setformdata(prev => ({
+                            ...prev,
+                            personaldetails: {
+                                ...prev.personaldetails,
+                                ownername: profile.Name || profile.name || prev.personaldetails.ownername || '',
+                                phonenumber: profile.Mobile || profile.mobile || profile.phone || prev.personaldetails.phonenumber || '',
+                            }
+                        }));
+                    }
+                }
+            } catch (e) { /* silent */ }
+        };
+        if (global.authToken) fetchProfile();
+    }, []);
+
     const [errors, setErrors] = useState({
         bakersname: '',
         ownername: '',
-        Bemail: '',
         phonenumber: '',
     });
 
@@ -157,10 +182,6 @@ const Onbordingpageone = ({ navigation }) => {
             case 'ownername':
                 if (!value.trim()) message = 'Owner name is required';
                 break;
-            case 'Bemail':
-                if (!value.trim()) message = 'Email is required';
-                else if (!isValidEmail(value)) message = 'Enter a valid email address';
-                break;
             case 'phonenumber':
                 if (!value.trim()) message = 'Phone number is required';
                 else if (!isValidPhone(value)) message = 'Enter a valid 10-digit phone number';
@@ -174,8 +195,12 @@ const Onbordingpageone = ({ navigation }) => {
     };
 
     const validateAll = () => {
-        const fields = ['bakersname', 'ownername', 'Bemail', 'phonenumber'];
+        const fields = ['bakersname', 'ownername', 'phonenumber'];
         const results = fields.map((field) => validateField(field));
+        if (!logoUri) {
+            Alert.alert('Logo Required', 'Please upload a business logo to continue.');
+            return false;
+        }
         return results.every(Boolean);
     };
 
@@ -359,14 +384,6 @@ const Onbordingpageone = ({ navigation }) => {
                         onChangeText={(text) => updateField('ownername', text)}
                         onBlur={() => validateField('ownerName')}
                         error={errors.ownername}
-                    />
-                    <FloatingLabelInput
-                        label="BUSINESS EMAIL"
-                        value={formdata.personaldetails.Bemail}
-                        onChangeText={(text) => updateField('Bemail', text)}
-                        onBlur={() => validateField('Bemail')}
-                        error={errors.Bemail}
-                        keyboardType="email-address"
                     />
                     <FloatingLabelInput
                         label="PHONE NUMBER"

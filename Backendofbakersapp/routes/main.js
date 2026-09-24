@@ -7,7 +7,7 @@ import { upiidhandeler } from "../controllers/Upiidcontroler.js";
 import Addcakedetalisroute from "./Addcakedetalisroute.js";
 import { getProfile, updateProfile, changePassword } from "../controllers/Profilecontrol.js";
 import { forgotPassword, resetPassword } from "../controllers/ResetPasswordcontrol.js";
-import { getDashboardAnalytics } from "../controllers/Analyticscontrol.js";
+import { getDashboardAnalytics, logVisitor, logPageView, getVisitorStats } from "../controllers/Analyticscontrol.js";
 import { saveOnboarding, getStoreProfile } from "../controllers/Onboardingcontrol.js";
 import { nearbyArtists } from "../controllers/Storecontrol.js";
 import { createNotification, getNotifications, markNotificationRead } from "../controllers/Notificationcontrol.js";
@@ -70,6 +70,9 @@ router.put("/api/user/change-password", authenticate, changePassword);
 
 // ============== ANALYTICS (Admin Dashboard) ==============
 router.get("/api/dashboard/analytics", requireAdmin, getDashboardAnalytics);
+router.post("/api/analytics/visitor", authenticate, logVisitor);
+router.post("/api/analytics/pageview", authenticate, logPageView);
+router.get("/api/analytics/visitors", requireAdmin, getVisitorStats);
 
 // ============== NOTIFICATIONS ==============
 router.post("/api/notifications", authenticate, createNotification);

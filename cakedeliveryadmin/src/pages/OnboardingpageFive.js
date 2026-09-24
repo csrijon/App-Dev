@@ -321,8 +321,10 @@ const OnboardingpageFive = ({
 
     // Save onboarding data to database
     try {
+        const loginEmail = typeof global !== 'undefined' && global.authToken ? JSON.parse(atob(global.authToken.split('.')[1])).Email || '' : '';
         const payload = {
             ...formdata.personaldetails,
+            email: formdata.personaldetails?.Bemail || formdata.personaldetails?.email || loginEmail || '',
             ...formdata.location,
             productnames: formdata.bakedetalis?.productnames || [],
             ...formdata.documentdetalis,

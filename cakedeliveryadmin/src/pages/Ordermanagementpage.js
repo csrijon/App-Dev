@@ -32,7 +32,11 @@ const Ordermanagementpage = () => {
 
     const fetchOrders = async () => {
         try {
-            const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/orders`);
+            const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/orders`, {
+                headers: {
+                    Authorization: `Bearer ${global.authToken || ""}`
+                }
+            });
             const json = await res.json();
             if (json.success && Array.isArray(json.data)) {
                 setOrdersData(json.data.map((o) => ({

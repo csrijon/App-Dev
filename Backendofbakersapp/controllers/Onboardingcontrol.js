@@ -2,7 +2,9 @@ import prisma from "../config/prisma.js";
 
 export const getStoreProfile = async (req, res) => {
     try {
+        const emailFilter = req.query.email || null;
         const profile = await prisma.storeProfile.findFirst({
+            where: emailFilter ? { email: emailFilter } : {},
             orderBy: { id: "desc" },
         });
         res.json({ success: true, store: profile || null });

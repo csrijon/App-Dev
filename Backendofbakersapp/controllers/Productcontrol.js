@@ -90,6 +90,7 @@ const createProduct = async (req, res) => {
                 bestseller: bestseller === "true" || bestseller === true,
                 featured: featured === "true" || featured === true,
                 allowCustomMessage: allowCustomMessage === "true" || allowCustomMessage === true,
+                userId: req.user ? req.user.id || req.user.userId : null,
                 storeProfileId,
             },
         });
@@ -107,12 +108,8 @@ const updateProduct = async (req, res) => {
         // Verify product belongs to admin's store
         const existing = await prisma.product.findUnique({ where: { productId: parseInt(id) } });
         if (!existing) return res.status(404).json({ success: false, message: "Product not found" });
-        let adminStoreId = null;
-        if (req.user && req.user.email) {
-            const profile = await prisma.storeProfile.findFirst({ where: { email: req.user.email } });
-            if (profile) adminStoreId = profile.id;
-        }
-        if (adminStoreId !== null && existing.storeProfileId !== adminStoreId) {
+        const adminUserId = req.user ? req.user.id || null : null;
+        if (adminUserId && existing.userId !== adminUserId) {
             return res.status(403).json({ success: false, message: "Not authorized" });
         }
         const updates = req.body;
@@ -143,12 +140,8 @@ const deleteProduct = async (req, res) => {
         const { id } = req.params;
         const existing = await prisma.product.findUnique({ where: { productId: parseInt(id) } });
         if (!existing) return res.status(404).json({ success: false, message: "Product not found" });
-        let adminStoreId = null;
-        if (req.user && req.user.email) {
-            const profile = await prisma.storeProfile.findFirst({ where: { email: req.user.email } });
-            if (profile) adminStoreId = profile.id;
-        }
-        if (adminStoreId !== null && existing.storeProfileId !== adminStoreId) {
+        const adminUserId = req.user ? req.user.id || null : null;
+        if (adminUserId && existing.userId !== adminUserId) {
             return res.status(403).json({ success: false, message: "Not authorized" });
         }
         await prisma.product.delete({ where: { productId: parseInt(id) } });
@@ -212,15 +205,11 @@ const toggleProductAvailability = async (req, res) => {
 const getAllProductsAdmin = async (req, res) => {
     try {
         let whereClause = {};
-        if (req.user && req.user.email) {
+        if (req.user && req.user.id) {
+            whereClause.userId = req.user.id;
+        } else if (req.user && req.user.email) {
             const profile = await prisma.storeProfile.findFirst({ where: { email: req.user.email } });
-            if (profile) {
-                whereClause = { OR: [{ storeProfileId: profile.id }, { storeProfileId: null }, { publicCatalog: true }] };
-            } else {
-                whereClause = { OR: [{ storeProfileId: null }, { publicCatalog: true }] };
-            }
-        } else {
-            whereClause = {};
+            if (profile) whereClause.userId = profile.id; // fallback if user linked via profile
         }
         const products = await prisma.product.findMany({
             where: whereClause,

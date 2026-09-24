@@ -34,4 +34,33 @@ const getDashboardAnalytics = async (req, res) => {
     }
 };
 
-export { getDashboardAnalytics };
+
+// Visitor / Page-view tracking (new)
+const logVisitor = async (req, res) => {
+  try {
+    const { sessionId, pageUrl, ipAddress, userAgent } = req.body || {};
+    await prisma.visitorLog.create({ data: { sessionId, pageUrl, ipAddress: ipAddress || req.ip, userAgent } });
+    res.status(200).json({ success: true });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
+};
+
+const logPageView = async (req, res) => {
+  try {
+    const { pagePath, pageTitle, source } = req.body || {};
+    await prisma.pageView.create({ data: { pagePath, pageTitle, source: source || 'customer-web' } });
+    res.status(200).json({ success: true });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
+};
+
+const getVisitorStats = async (req, res) => {
+  try {
+    const today = new Date(); today.setHours(0,0,0,0);
+    const week = new Date(today); week.setDate(today.getDate()-7);
+    const countToday = await prisma.visitorLog.count({ where: { visitedAt: { gte: today } } });
+    const countWeek = await prisma.visitorLog.count({ where: { visitedAt: { gte: week } } });
+    const countTotal = await prisma.visitorLog.count();
+    res.json({ success: true, data: { today: countToday, week: countWeek, total: countTotal } });
+  } catch (e) { res.status(500).json({ success: false, message: e.message }); }
+};
+
+export { getDashboardAnalytics, logVisitor, logPageView, getVisitorStats };

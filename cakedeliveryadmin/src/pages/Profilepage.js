@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { ADMIN_API_CONFIG } from "../config/api";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
     ScrollView,
@@ -32,7 +33,7 @@ const Profilepage = ({ navigation }) => {
         // Load profile from real endpoint
         const loadProfile = async () => {
             try {
-                const res = await fetch("http://localhost:3000/api/user/profile", {
+                const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/user/profile`, {
                     method: "GET",
                     headers: { "Content-Type": "application/json", Authorization: `Bearer ${global.authToken || ""}` },
                 });
@@ -53,7 +54,7 @@ const Profilepage = ({ navigation }) => {
 
     const saveProfile = async () => {
         try {
-            const res = await fetch("http://localhost:3000/api/user/profile", {
+            const res = await fetch(`${ADMIN_API_CONFIG.baseURL}/api/user/profile`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json", Authorization: `Bearer ${global.authToken || ""}` },
                 body: JSON.stringify({ name, email, phone, address }),
