@@ -1,0 +1,136 @@
+Update the existing website's Discover, About, and Hello routes.
+
+IMPORTANT:
+Do NOT redesign the pages from scratch.
+Do NOT change the existing content, colors, typography style, components, animations, or functionality unless required for layout consistency.
+
+MAIN GOAL:
+Make the layout structure of the Discover, About, and Hello routes consistent so that all pages follow the same spacing and alignment system.
+
+Requirements:
+
+1. SAME PAGE START POSITION
+- The main heading of Discover, About, and Hello must start at exactly the same horizontal position.
+- The heading should also have the same top spacing from the navbar/header on every route.
+- If I navigate:
+  Discover → About → Hello → Discover
+  the heading should always appear in the same place.
+
+2. SAME CONTAINER
+- Use the same maximum-width container for all three routes.
+- Use the same left and right padding.
+- Do not allow one page to have extra left/right spacing compared with another.
+- The content should align to the same vertical grid.
+
+3. SAME TOP PADDING
+- Define one consistent page-level top padding value.
+- Apply that value to Discover, About, and Hello.
+- Remove route-specific random margins/paddings that cause the headings to shift.
+
+4. SAME HEADING ALIGNMENT
+For every route:
+- Same heading left position
+- Same heading top position
+- Same heading font size
+- Same heading line height
+- Same heading margin-bottom
+
+For example, if the Discover heading starts at X position, About and Hello should start at exactly the same X position.
+
+5. SAME CONTENT WIDTH
+- Use the same content container width across all routes.
+- If a page has a wider/smaller section, keep the main page container aligned with the other routes.
+- Individual sections may have their own internal layout, but their outer boundary must follow the common page container.
+
+6. RESPONSIVE DESIGN
+Check the layout on:
+- Desktop
+- Laptop
+- Tablet
+- Mobile
+
+The heading alignment and page padding should remain consistent at every breakpoint.
+
+Do not create separate random padding values for each route unless absolutely necessary.
+
+7. NAVIGATION EXPERIENCE
+When navigating between Discover, About, and Hello:
+- The page should clearly feel like a different route.
+- But the common layout framework should remain stable.
+- The navbar/header should remain consistent.
+- The heading should not jump left/right/up/down between routes.
+
+8. CREATE A SHARED LAYOUT SYSTEM
+If the current code has duplicated layout styles, create a reusable structure such as:
+
+<PageContainer>
+  <PageHeader>
+    <PageTitle />
+    ...
+  </PageHeader>
+
+Use the same PageContainer/PageHeader spacing for:
+- Discover
+- About
+- Hello
+
+If the project already has an equivalent reusable component, use that instead of creating another one.
+
+9. CSS
+Prefer a shared CSS class or reusable styles rather than repeating inline values.
+
+For example:
+
+.page-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.page-content {
+  padding-top: 60px;
+}
+
+.page-heading {
+  margin: 0 0 24px;
+}
+
+Adjust the actual values according to the existing website design. Do not blindly use these example values.
+
+10. DO NOT BREAK EXISTING DESIGN
+Preserve:
+- Existing colors
+- Existing fonts
+- Existing cards
+- Existing images
+- Existing animations
+- Existing navigation
+- Existing buttons
+- Existing responsive behavior
+- Existing content
+- Existing functionality
+
+Only fix the inconsistent route layout and spacing.
+
+11. FINAL VERIFICATION
+After making the changes, inspect all three routes side-by-side:
+
+/discover
+/about
+/hello
+
+Verify that:
+- Navbar position is consistent
+- Main container starts at the same X position
+- Heading starts at the same X position
+- Heading starts at the same Y position
+- Heading-to-content spacing is consistent
+- Left/right page padding is consistent
+- Mobile layout is also consistent
+
+If one route currently uses a different wrapper, margin, padding, or max-width that causes the heading to shift, identify and fix that cause instead of adding another random offset.
+
+IMPORTANT:
+The final result should make the three routes feel like they belong to ONE website and use ONE consistent page layout system.

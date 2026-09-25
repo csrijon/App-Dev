@@ -1,0 +1,9 @@
+.page-layout {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+  font-family: 'Inter', sans-serif;
+}
+@media (max-width: 640px) {
+  .page-layout { padding: 24px 20px 60px; }
+}

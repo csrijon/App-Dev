@@ -11,4 +11,12 @@ export default function ForCreators() {
       </div>
     </div>
   );
+
+<style>{`
+@media (max-width: 640px) {
+  .container { width: 95% !important; padding: 0 12px !important; }
+  img { max-width: 100% !important; height: auto !important; }
+  a, button { font-size: 0.95rem !important; }
+}
+`}</style>
 }

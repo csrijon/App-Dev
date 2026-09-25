@@ -8,8 +8,9 @@ const creators = [
 export default function FeaturedCreators() {
   return (
     <section style={{ background:'#fff', padding:'60px 0' }}>
-      <div className="container">
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', marginBottom:36 }}>
+      
+      <div className="container featured-creators-section">
+        <div className="featured-creators-header" style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', marginBottom:36, flexWrap:'wrap' }}>
           <div>
             <h2>Featured Creators</h2>
             <p style={{ color:'var(--text-muted)', marginTop:6 }}>Illustrative creator directions. Real portfolio possibilities.</p>
@@ -32,6 +33,13 @@ export default function FeaturedCreators() {
           ))}
         </div>
       </div>
-    </section>
+    
+<style>{`
+@media (max-width: 640px) {
+  .container { width: 95% !important; padding: 0 12px !important; }
+  img { max-width: 100% !important; height: auto !important; }
+  a, button { font-size: 0.95rem !important; }
+}
+`}</style></section>
   );
 }
