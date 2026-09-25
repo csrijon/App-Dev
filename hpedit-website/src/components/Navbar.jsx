@@ -94,7 +94,7 @@ export default function Navbar() {
         <Link
           to="/"
           className="nb-logo"
-          onClick={close}
+          onClick={() => { close(); window.scrollTo(0,0); }}
         >
           HPEDIT<span>+</span>
         </Link>
@@ -111,7 +111,7 @@ export default function Navbar() {
               key={l.to}
               to={l.to}
               className="nb-link"
-              onClick={close}
+              onClick={() => { close(); window.scrollTo(0,0); }}
             >
               {l.label}
             </Link>
@@ -120,7 +120,7 @@ export default function Navbar() {
           <Link
             to="/help"
             className="nb-link"
-            onClick={close}
+            onClick={() => { close(); window.scrollTo(0,0); }}
           >
             Help
           </Link>
@@ -142,7 +142,7 @@ export default function Navbar() {
           <Link
             to="/for-creators"
             className="btn-primary nb-cta"
-            onClick={close}
+            onClick={() => { close(); window.scrollTo(0,0); }}
           >
             Get Started →
           </Link>
@@ -192,7 +192,7 @@ export default function Navbar() {
               key={l.to}
               to={l.to}
               className="nb-mobile-link"
-              onClick={close}
+              onClick={() => { close(); window.scrollTo(0,0); }}
             >
               {l.label}
             </Link>
@@ -203,7 +203,7 @@ export default function Navbar() {
           <Link
             to="/help"
             className="nb-mobile-link"
-            onClick={close}
+            onClick={() => { close(); window.scrollTo(0,0); }}
           >
             Help
           </Link>
@@ -215,7 +215,7 @@ export default function Navbar() {
           <Link
             to="/for-creators"
             className="btn-primary nb-mobile-cta"
-            onClick={close}
+            onClick={() => { close(); window.scrollTo(0,0); }}
           >
             Get Started →
           </Link>

@@ -51,7 +51,7 @@ export default function About() {
 
       {/* Stack */}
       <section className="ab-stack" style={{ color: '#fff', padding: '80px 24px', textAlign: 'center' }}>
-        <h2 style={{ fontSize: 32, fontWeight: 800, letterSpacing: '-0.03em', marginBottom: 10 }}>Modern stack</h2>
+        <h2 style={{ fontSize: 32,color:"rgb(204, 192, 224)", fontWeight: 800, letterSpacing: '-0.03em', marginBottom: 10 }}>Modern stack</h2>
         <p style={{ color: '#ccc0e0', maxWidth: 540, margin: '0 auto 36px', lineHeight: 1.6 }}>Built on technology that scales from edge to cloud.</p>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 12, maxWidth: 800, margin: '0 auto' }}>
           {['Next.js 15', 'Flutter', 'Gemini 2.0', 'Meta WhatsApp Cloud API', '100% IP handover'].map(t => (
