@@ -27,10 +27,6 @@ export default function DMCA() {
         <p style={{ color: '#4a3a5a' }}>Accounts of repeat infringers may be terminated.</p>
       </section>
 
-      <div className="dmca-source">
-        Source: <a href="https://influencers.hpedit.com/dmca" target="_blank" rel="noopener noreferrer">influencers.hpedit.com/dmca</a>
-      </div>
-
       <style>{`
         .dmca-back {
           color: #7a3eb8;

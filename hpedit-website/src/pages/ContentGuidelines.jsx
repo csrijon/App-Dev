@@ -43,9 +43,6 @@ export default function ContentGuidelines() {
         </p>
       </section>
 
-      <div className="cg-source">
-        Source: <a href="https://influencers.hpedit.com/content-guidelines" target="_blank" rel="noopener noreferrer">influencers.hpedit.com/content-guidelines</a>
-      </div>
 
       <style>{`
         .cg-back {

@@ -7,7 +7,7 @@ const creators = [
 ];
 export default function FeaturedCreators() {
   return (
-    <section style={{ background:'#fff', padding:'60px 0' }}>
+    <section id="FeaturedCreators" style={{ background:'#fff', padding:'60px 0' }}>
       
       <div className="container featured-creators-section">
         <div className="featured-creators-header" style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', marginBottom:36, flexWrap:'wrap' }}>
@@ -15,7 +15,7 @@ export default function FeaturedCreators() {
             <h2>Featured Creators</h2>
             <p style={{ color:'var(--text-muted)', marginTop:6 }}>Illustrative creator directions. Real portfolio possibilities.</p>
           </div>
-          <a href="#" style={{ textDecoration:'none', color:'var(--purple-deep)', fontWeight:700, fontSize:'0.95rem' }}>Explore All Creators →</a>
+          <a href="/discover" style={{ textDecoration:'none', color:'var(--purple-deep)', fontWeight:700, fontSize:'0.95rem' }}>Explore All Creators →</a>
         </div>
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(220px, 1fr))', gap:20 }}>
           {creators.map(c=> (

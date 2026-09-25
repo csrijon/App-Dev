@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 const LINKS = [
   { to: '/discover', label: 'Discover' },
-  { to: '/discover', label: 'For Creators' },
+  { to: '#FeaturedCreators', label: 'For Creators', isHash: true },
   { to: '/about', label: 'About' },
 ];
 
@@ -91,10 +91,14 @@ export default function Navbar() {
       >
 
         {/* LOGO */}
+
         <Link
           to="/"
           className="nb-logo"
-          onClick={() => { close(); window.scrollTo(0,0); }}
+          onClick={() => {
+            close();
+            window.scrollTo(0, 0);
+          }}
         >
           HPEDIT<span>+</span>
         </Link>
@@ -106,21 +110,38 @@ export default function Navbar() {
 
         <div className="nb-links">
 
-          {LINKS.map((l) => (
-            <Link
-              key={l.to}
-              to={l.to}
-              className="nb-link"
-              onClick={() => { close(); window.scrollTo(0,0); }}
-            >
-              {l.label}
-            </Link>
-          ))}
+          {LINKS.map((l) =>
+            l.isHash ? (
+              <a
+                key={l.to}
+                href={l.to}
+                className="nb-link"
+                onClick={close}
+              >
+                {l.label}
+              </a>
+            ) : (
+              <Link
+                key={l.to}
+                to={l.to}
+                className="nb-link"
+                onClick={() => {
+                  close();
+                  window.scrollTo(0, 0);
+                }}
+              >
+                {l.label}
+              </Link>
+            )
+          )}
 
           <Link
             to="/help"
             className="nb-link"
-            onClick={() => { close(); window.scrollTo(0,0); }}
+            onClick={() => {
+              close();
+              window.scrollTo(0, 0);
+            }}
           >
             Help
           </Link>
@@ -135,20 +156,26 @@ export default function Navbar() {
         <div className="nb-right">
 
           {/* Desktop / Tablet Search */}
+
           <SearchBox className="nb-search-header" />
 
 
           {/* Desktop Get Started */}
+
           <Link
             to="/for-creators"
             className="btn-primary nb-cta"
-            onClick={() => { close(); window.scrollTo(0,0); }}
+            onClick={() => {
+              close();
+              window.scrollTo(0, 0);
+            }}
           >
             Get Started →
           </Link>
 
 
           {/* Mobile Hamburger */}
+
           <button
             type="button"
             className="nb-hamburger"
@@ -175,47 +202,75 @@ export default function Navbar() {
 
       <div
         id="nb-mobile-menu"
-        className={`nb-mobile ${
-          open ? 'nb-mobile-open' : ''
-        }`}
+        className={`nb-mobile ${open ? 'nb-mobile-open' : ''}`}
       >
 
         <div className="nb-mobile-inner">
 
-          {/* Mobile Search */}
+          {/* =================================
+              MOBILE SEARCH
+          ================================= */}
+
           <SearchBox className="nb-search-mobile" />
 
 
-          {/* Mobile Links */}
-          {LINKS.map((l) => (
-            <Link
-              key={l.to}
-              to={l.to}
-              className="nb-mobile-link"
-              onClick={() => { close(); window.scrollTo(0,0); }}
-            >
-              {l.label}
-            </Link>
-          ))}
+          {/* =================================
+              MOBILE LINKS
+          ================================= */}
+
+          {LINKS.map((l) =>
+            l.isHash ? (
+              <a
+                key={l.to}
+                href={l.to}
+                className="nb-mobile-link"
+                onClick={close}
+              >
+                {l.label}
+              </a>
+            ) : (
+              <Link
+                key={l.to}
+                to={l.to}
+                className="nb-mobile-link"
+                onClick={() => {
+                  close();
+                  window.scrollTo(0, 0);
+                }}
+              >
+                {l.label}
+              </Link>
+            )
+          )}
 
 
-          {/* Help */}
+          {/* =================================
+              HELP
+          ================================= */}
+
           <Link
             to="/help"
             className="nb-mobile-link"
-            onClick={() => { close(); window.scrollTo(0,0); }}
+            onClick={() => {
+              close();
+              window.scrollTo(0, 0);
+            }}
           >
             Help
           </Link>
 
 
           {/* =================================
-              GET STARTED INSIDE HAMBURGER
+              GET STARTED
           ================================= */}
+
           <Link
             to="/for-creators"
             className="btn-primary nb-mobile-cta"
-            onClick={() => { close(); window.scrollTo(0,0); }}
+            onClick={() => {
+              close();
+              window.scrollTo(0, 0);
+            }}
           >
             Get Started →
           </Link>
@@ -363,11 +418,14 @@ export default function Navbar() {
           display: flex;
           align-items: center;
 
+          width: 240px;
           min-width: 0;
         }
 
         .nb-search input {
-          width: 240px;
+          width: 100%;
+
+          height: 38px;
 
           padding: 8px 36px 8px 16px;
 
@@ -384,10 +442,15 @@ export default function Navbar() {
           outline: none;
 
           transition:
-            border-color 0.2s,
-            box-shadow 0.2s;
+            border-color 0.2s ease,
+            box-shadow 0.2s ease;
 
           box-sizing: border-box;
+        }
+
+        .nb-search input::placeholder {
+          color: #777;
+          opacity: 1;
         }
 
         .nb-search input:focus {
@@ -406,6 +469,11 @@ export default function Navbar() {
 
           pointer-events: none;
         }
+
+
+        /* =========================================
+           MOBILE SEARCH
+        ========================================= */
 
         .nb-search-mobile {
           display: none;
@@ -491,7 +559,6 @@ export default function Navbar() {
 
           border-top: 1px solid rgba(74, 29, 122, 0.08);
 
-          overflow-y: auto;
           overflow-x: hidden;
         }
 
@@ -509,15 +576,6 @@ export default function Navbar() {
           width: 100%;
 
           box-sizing: border-box;
-        }
-
-
-        /* =========================================
-           MOBILE SEARCH
-        ========================================= */
-
-        .nb-search-mobile {
-          display: none;
         }
 
 
@@ -594,7 +652,7 @@ export default function Navbar() {
             gap: 20px;
           }
 
-          .nb-search input {
+          .nb-search-header {
             width: 190px;
           }
 
@@ -618,6 +676,8 @@ export default function Navbar() {
           .nb-search-header {
             flex: 1;
 
+            width: auto;
+
             max-width: 280px;
           }
 
@@ -633,21 +693,6 @@ export default function Navbar() {
             max-height: calc(100vh - 72px);
 
             overflow-y: auto;
-          }
-
-          .nb-mobile-link {
-            display: block;
-
-            padding: 14px 4px;
-
-            border-bottom:
-              1px solid rgba(74, 29, 122, 0.08);
-
-            color: var(--text-dark);
-
-            font-weight: 600;
-
-            text-decoration: none;
           }
 
         }
@@ -678,6 +723,7 @@ export default function Navbar() {
 
 
           /* Keep logo visible */
+
           .nb-logo {
             display: inline-flex !important;
 
@@ -699,6 +745,8 @@ export default function Navbar() {
           }
 
 
+          /* Right side */
+
           .nb-right {
             margin-left: auto;
 
@@ -708,19 +756,22 @@ export default function Navbar() {
           }
 
 
-          /* Hide search from top navbar */
+          /* Hide desktop search */
+
           .nb-search-header {
-            display: none;
+            display: none !important;
           }
 
 
           /* Hide desktop Get Started */
+
           .nb-header .nb-cta {
             display: none;
           }
 
 
           /* Hamburger */
+
           .nb-hamburger {
             display: inline-flex;
 
@@ -729,9 +780,14 @@ export default function Navbar() {
           }
 
 
-          /* Mobile menu */
+          /* =================================
+             MOBILE MENU
+          ================================= */
+
           .nb-mobile-open {
-            display: block;
+            display: block !important;
+
+            width: 100%;
 
             max-height: calc(100vh - 64px);
 
@@ -740,50 +796,127 @@ export default function Navbar() {
               16px
               28px;
 
+            background: #fff;
+
             overflow-y: auto;
+            overflow-x: hidden;
+
+            box-sizing: border-box;
           }
 
 
           .nb-mobile-inner {
+            display: flex;
+
+            flex-direction: column;
+
             width: 100%;
 
             max-width: none;
 
             margin: 0 auto;
+
+            gap: 4px;
+
+            box-sizing: border-box;
           }
 
 
-          /* Search inside menu */
-          .nb-search-mobile {
-            display: flex;
+          /* =================================
+             MOBILE SEARCH
+          ================================= */
 
-            width: 100%;
+          .nb-mobile .nb-search-mobile {
+            display: flex !important;
+
+            position: relative;
+
+            width: 100% !important;
+
+            min-width: 0;
 
             height: 46px;
 
-            margin: 4px 0 10px;
+            margin:
+              4px 0
+              12px;
+
+            flex: 0 0 auto;
           }
 
-          .nb-search-mobile input {
-            width: 100%;
+          .nb-mobile .nb-search-mobile input {
+            display: block !important;
+
+            width: 100% !important;
+
+            min-width: 0;
+
+            height: 46px;
 
             padding:
               11px
-              40px
+              42px
               11px
               16px;
 
+            border: 1px solid rgba(74, 29, 122, 0.15);
+
+            border-radius: 100px;
+
+            background: #fff;
+
+            color: var(--text-dark);
+
             font-size: 0.95rem;
+
+            outline: none;
+
+            box-sizing: border-box;
+          }
+
+          .nb-mobile .nb-search-mobile input::placeholder {
+            color: #777;
+
+            opacity: 1;
+          }
+
+          .nb-mobile .nb-search-mobile input:focus {
+            border-color: var(--purple-soft);
+
+            box-shadow:
+              0 0 0 3px rgba(124, 58, 237, 0.12);
+          }
+
+          .nb-mobile .nb-search-mobile svg {
+            position: absolute;
+
+            right: 14px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            width: 17px;
+            height: 17px;
+
+            color: var(--purple-soft);
+
+            pointer-events: none;
           }
 
 
-          /* Mobile links */
+          /* =================================
+             MOBILE LINKS
+          ================================= */
+
           .nb-mobile-link {
             min-height: 50px;
 
             display: flex;
 
             align-items: center;
+
+            width: 100%;
 
             padding:
               0
@@ -793,12 +926,15 @@ export default function Navbar() {
           }
 
 
-          /* IMPORTANT:
-             Get Started is INSIDE hamburger menu */
+          /* =================================
+             MOBILE GET STARTED
+          ================================= */
+
           .nb-header .nb-mobile-cta {
             display: flex !important;
 
             align-items: center;
+
             justify-content: center;
 
             width: 100%;
@@ -846,8 +982,16 @@ export default function Navbar() {
             padding-right: 12px;
           }
 
-          .nb-search-mobile {
+          .nb-mobile .nb-search-mobile {
             height: 44px;
+
+            margin-top: 4px;
+          }
+
+          .nb-mobile .nb-search-mobile input {
+            height: 44px;
+
+            font-size: 0.92rem;
           }
 
           .nb-mobile-link {
@@ -884,6 +1028,13 @@ export default function Navbar() {
           .nb-hamburger svg {
             width: 22px;
             height: 22px;
+          }
+
+          .nb-mobile .nb-search-mobile input {
+            padding-left: 14px;
+            padding-right: 40px;
+
+            font-size: 0.88rem;
           }
 
         }

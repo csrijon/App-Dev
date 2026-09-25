@@ -45,10 +45,6 @@ export default function Terms() {
         <p style={{ color: '#4a3a5a' }}>Indian law applies; Kolkata courts have jurisdiction.</p>
       </section>
 
-      <div className="terms-source">
-        Source: <a href="https://influencers.hpedit.com/terms" target="_blank" rel="noopener noreferrer">influencers.hpedit.com/terms</a>
-      </div>
-
       <style>{`
         .terms-back {
           color: #7a3eb8;

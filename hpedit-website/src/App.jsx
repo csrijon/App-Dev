@@ -44,8 +44,8 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/discover" element={<Discover />} />
-          <Route path="/creators" element={<CreatorsPage />} />
-          <Route path="/for-creators" element={<ForCreators />} />
+          {/* <Route path="/creators" element={<CreatorsPage />} />
+          <Route path="/for-creators" element={<ForCreators />} /> */}
           <Route path="/about" element={<About />} />
           <Route path="/apply" element={<Apply />} />
           <Route path="/help" element={<Help />} />

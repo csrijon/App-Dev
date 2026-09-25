@@ -37,9 +37,6 @@ export default function Cookies() {
         <p style={{ color: '#4a3a5a' }}>No third-party advertising-cookie programme. Clearing storage via browser settings removes access / progress.</p>
       </section>
 
-      <div className="cook-source">
-        Source: <a href="https://influencers.hpedit.com/cookies" target="_blank" rel="noopener noreferrer">influencers.hpedit.com/cookies</a>
-      </div>
 
       <style>{`
         .cook-back {

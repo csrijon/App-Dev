@@ -90,7 +90,7 @@ export default function Discover() {
         <h2 className="disc-h2" style={{ fontSize: 28, fontWeight: 800, letterSpacing: '-0.03em', marginBottom: 24 }}>Explore by category</h2>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 18 }}>
           {['Lifestyle','Travel','Fashion','Fitness','Food','Music','Pets','Art & Design','Business'].map(c => (
-            <Link key={c} to="/creators" className="disc-category-card">
+            <Link key={c} to="#" className="disc-category-card">
               <span>{c}</span>
               <ArrowRight size={18} className="disc-category-arrow" />
             </Link>
@@ -102,7 +102,7 @@ export default function Discover() {
       <section className="disc-cta">
         <h3 style={{ fontSize: 'clamp(24px, 3vw, 30px)', fontWeight: 800, letterSpacing: '-0.03em', marginBottom: 12, color: '#fff' }}>Ready to showcase?</h3>
         <p style={{ color: '#e6d9f5', marginBottom: 24, fontSize: 16 }}>Join creators building real, personal portfolio sites.</p>
-        <Link to="/for-creators" className="disc-cta-btn">Get Started →</Link>
+        <Link to="#" className="disc-cta-btn">Get Started →</Link>
         <div style={{ marginTop: 40, fontSize: 13, color: '#d9c8ec' }}>© 2026 HP Edit Enterprise</div>
       </section>
 

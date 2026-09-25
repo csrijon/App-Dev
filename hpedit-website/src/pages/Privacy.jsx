@@ -44,9 +44,7 @@ export default function Privacy() {
         </p>
       </section>
 
-      <div className="priv-source">
-        Source: <a href="https://influencers.hpedit.com/privacy" target="_blank" rel="noopener noreferrer">influencers.hpedit.com/privacy</a>
-      </div>
+      
 
       <style>{`
         .priv-back {
