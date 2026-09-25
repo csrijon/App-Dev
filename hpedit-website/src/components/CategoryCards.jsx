@@ -88,7 +88,7 @@ export default function CategoryCards() {
 
               {/* Arrow Button */}
               <div className="category-arrow">
-               <ArrowForwardIcon sx={{ fontSize: 22 }} />
+               <ArrowForwardIcon sx={{ fontSize: 22,color:"#fff" }} />
               </div>
             </a>
           ))}

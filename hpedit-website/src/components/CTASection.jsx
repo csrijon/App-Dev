@@ -1,3 +1,5 @@
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+
 export default function CTASection() {
   return (
     <section
@@ -35,7 +37,8 @@ export default function CTASection() {
           href="#"
           className="btn-primary cta-button"
         >
-          Create Your Portfolio →
+          Create Your Portfolio
+          <ArrowForwardIcon sx={{ fontSize: 20, verticalAlign: 'middle' }} />
         </a>
 
       </div>

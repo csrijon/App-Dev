@@ -1,4 +1,6 @@
 import laptopimage from "../assets/laptopimage.png";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+
 
 const FEATURES = [
   { label: "Customisable Designs", color: "#7c3aed" },
@@ -113,7 +115,7 @@ export default function StorySection() {
             className="btn-primary story-cta"
           >
             Create Your Portfolio
-            <span aria-hidden="true">→</span>
+           <ArrowForwardIcon aria-hidden="true" sx={{ fontSize: 20 }} />
           </a>
 
         </div>
