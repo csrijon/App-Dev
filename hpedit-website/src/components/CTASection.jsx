@@ -1,4 +1,5 @@
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import cameraimage from "../assets/camerabackgroudimage.png"
 
 export default function CTASection() {
   return (
@@ -14,7 +15,7 @@ export default function CTASection() {
       {/* Background Image */}
       <img
         className="cta-background"
-        src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=1400&q=80"
+        src={cameraimage}
         alt="Nature"
       />
 
@@ -76,7 +77,7 @@ export default function CTASection() {
 
           max-width: none !important;
 
-          object-fit: cover !important;
+          object-fit: cotain !important;
 
           object-position: center center;
 
@@ -100,12 +101,12 @@ export default function CTASection() {
           width: 100%;
           height: 100%;
 
-          background:
-            linear-gradient(
-              to top,
-              rgba(74, 29, 122, 0.82),
-              rgba(74, 29, 122, 0.55)
-            );
+          // background:
+          //   linear-gradient(
+          //     to top,
+          //     rgba(74, 29, 122, 0.82),
+          //     rgba(74, 29, 122, 0.55)
+          //   );
 
           z-index: 1;
         }

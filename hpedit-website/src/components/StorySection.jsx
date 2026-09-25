@@ -115,7 +115,7 @@ export default function StorySection() {
             className="btn-primary story-cta"
           >
             Create Your Portfolio
-           <ArrowForwardIcon aria-hidden="true" sx={{ fontSize: 20 }} />
+            <ArrowForwardIcon aria-hidden="true" sx={{ fontSize: 20 }} />
           </a>
 
         </div>
