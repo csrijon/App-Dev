@@ -1,8 +1,10 @@
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+
 import { Link } from 'react-router-dom';
 export default function Footer() {
   return (
     <div>
-  
+
       <footer style={{ background: '#2a1045', color: '#fff', padding: '60px 0 24px' }}>
         <div className="container footer-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 40, marginBottom: 40 }}>
           <div>
@@ -47,7 +49,25 @@ export default function Footer() {
             <p style={{ fontSize: '0.85rem', color: '#ccc', marginBottom: 12 }}>Get updates, inspiration and creator stories straight to your inbox.</p>
             <form className="footer-email-form" onSubmit={e => { e.preventDefault(); }} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
               <input type="email" placeholder="Your email address" style={{ flex: 1, padding: '10px 14px', borderRadius: 100, border: 'none', fontSize: '0.85rem', background: '#fff', color: 'var(--text-dark)' }} />
-              <button type="submit" style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--purple)', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 700 }}>→</button>
+              <button
+                type="submit"
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: '50%',
+                  background: 'var(--purple)',
+                  color: '#fff',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontWeight: 700,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: 0,
+                }}
+              >
+                <ArrowForwardIcon fontSize="small" />
+              </button>
             </form>
           </div>
         </div>
@@ -61,7 +81,7 @@ export default function Footer() {
     </div>
   );
 
-<style>{`
+  <style>{`
 @media (max-width: 640px) {
   .container { width: 95% !important; padding: 0 12px !important; }
   img { max-width: 100% !important; height: auto !important; }

@@ -1,3 +1,6 @@
+
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+
 const cats = [
   {
     name: 'Lifestyle',
@@ -85,7 +88,7 @@ export default function CategoryCards() {
 
               {/* Arrow Button */}
               <div className="category-arrow">
-                <span>→</span>
+               <ArrowForwardIcon sx={{ fontSize: 22 }} />
               </div>
             </a>
           ))}
