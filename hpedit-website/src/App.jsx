@@ -1,3 +1,4 @@
+import './admin.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -21,6 +22,17 @@ import Cookies from './pages/Cookies';
 import ContentGuidelines from './pages/ContentGuidelines';
 import DMCA from './pages/DMCA';
 import Takedown from './pages/Takedown';
+import AdminLayout from './components/AdminLayout';
+import ProtectedRoute from './components/ProtectedRoute';
+import AdminLogin from './pages/AdminLogin';
+import AdminDashboard from './pages/AdminDashboard';
+import AdminHero from './pages/AdminHero';
+import AdminCreators from './pages/AdminCreators';
+import AdminCategories from './pages/AdminCategories';
+import AdminTestimonials from './pages/AdminTestimonials';
+import AdminSocialLinks from './pages/AdminSocialLinks';
+import AdminContacts from './pages/AdminContacts';
+import AdminSettings from './pages/AdminSettings';
 
 function Home() {
   return (
@@ -30,7 +42,7 @@ function Home() {
       <FeaturedCreators />
       <FeatureStrip />
       <StorySection />
-      <Testimonial />
+      {/* <Testimonial /> */}
       <CTASection />
     </>
   );
@@ -55,6 +67,15 @@ export default function App() {
           <Route path="/content-guidelines" element={<ContentGuidelines />} />
           <Route path="/dmca" element={<DMCA />} />
           <Route path="/takedown" element={<Takedown />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<ProtectedRoute><AdminLayout><AdminDashboard /></AdminLayout></ProtectedRoute>} />
+          <Route path="/admin/hero" element={<ProtectedRoute><AdminLayout><AdminHero /></AdminLayout></ProtectedRoute>} />
+          <Route path="/admin/creators" element={<ProtectedRoute><AdminLayout><AdminCreators /></AdminLayout></ProtectedRoute>} />
+          <Route path="/admin/categories" element={<ProtectedRoute><AdminLayout><AdminCategories /></AdminLayout></ProtectedRoute>} />
+          <Route path="/admin/testimonials" element={<ProtectedRoute><AdminLayout><AdminTestimonials /></AdminLayout></ProtectedRoute>} />
+          <Route path="/admin/social-links" element={<ProtectedRoute><AdminLayout><AdminSocialLinks /></AdminLayout></ProtectedRoute>} />
+          <Route path="/admin/contacts" element={<ProtectedRoute><AdminLayout><AdminContacts /></AdminLayout></ProtectedRoute>} />
+          <Route path="/admin/settings" element={<ProtectedRoute><AdminLayout><AdminSettings /></AdminLayout></ProtectedRoute>} />
         </Routes>
       </main>
       <Footer />

@@ -1,0 +1,14 @@
+import prisma from '../config/prisma.js';
+
+export const list = async (req, res) => {
+  const list = await prisma.contactSubmission.findMany({ orderBy: { createdAt: 'desc' } });
+  res.json(list);
+};
+export const get = async (req, res) => {
+  const item = await prisma.contactSubmission.findUnique({ where: { id: Number(req.params.id) } });
+  res.json(item);
+};
+export const remove = async (req, res) => {
+  await prisma.contactSubmission.delete({ where: { id: Number(req.params.id) } });
+  res.json({ ok: true });
+};

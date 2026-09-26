@@ -27,7 +27,7 @@ html {
 body {
   font-family: 'Inter', system-ui, sans-serif;
   background: var(--lavender-light);
-  color: var(--text-dark);
+  color: #4a1d7a;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -57,7 +57,7 @@ h3 {
   font-weight: 800;
   letter-spacing: -0.03em;
   line-height: 1.05;
-  color: var(--text-dark);
+  color: #4a1d7a;
 }
 
 h2 {
@@ -123,7 +123,7 @@ img {
   align-items: center;
   gap: 10px;
   background: rgba(255, 255, 255, 0.85);
-  color: var(--text-dark);
+  color: #4a1d7a;
   padding: 14px 28px;
   border-radius: 100px;
   font-weight: 600;

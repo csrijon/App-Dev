@@ -1,46 +1,31 @@
 
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { useEffect, useState } from 'react';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
 
-const cats = [
-  {
-    name: 'Lifestyle',
-    img: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=600&q=80',
-  },
-  {
-    name: 'Travel',
-    img: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80',
-  },
-  {
-    name: 'Fashion',
-    img: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=600&q=80',
-  },
-  {
-    name: 'Fitness',
-    img: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&q=80',
-  },
-  {
-    name: 'Food',
-    img: 'https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=600&q=80',
-  },
-  {
-    name: 'Music',
-    img: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&q=80',
-  },
-  {
-    name: 'Pets',
-    img: 'https://images.unsplash.com/photo-1583511655826-05700d52f4d9?w=600&q=80',
-  },
-  {
-    name: 'Art & Design',
-    img: 'https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=600&q=80',
-  },
-  {
-    name: 'Business',
-    img: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=600&q=80',
-  },
+const defaultCats = [
+  { name: 'Lifestyle', img: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=600&q=80' },
+  { name: 'Travel', img: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80' },
+  { name: 'Fashion', img: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=600&q=80' },
+  { name: 'Fitness', img: 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&q=80' },
+  { name: 'Food', img: 'https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=600&q=80' },
+  { name: 'Music', img: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&q=80' },
+  { name: 'Pets', img: 'https://images.unsplash.com/photo-1583511655826-05700d52f4d9?w=600&q=80' },
+  { name: 'Art & Design', img: 'https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=600&q=80' },
+  { name: 'Business', img: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=600&q=80' },
 ];
 
 export default function CategoryCards() {
+  const [cats, setCats] = useState([]);
+  useEffect(() => {
+    fetch(API_URL + '/api/categories').then(r => r.json()).then(data => {
+      if (Array.isArray(data) && data.length > 0) {
+        setCats(data.map(c => ({ name: c.title, img: c.imageUrl || defaultCats[0].img })));
+      } else {
+        setCats(defaultCats);
+      }
+    }).catch(() => setCats(defaultCats));
+  }, []);
   return (
     <section
       className="category-section"
@@ -65,7 +50,7 @@ export default function CategoryCards() {
     >
       <div className="category-container">
         <div className="category-scroll-track">
-          {[...cats, ...cats].map((c, i) => (
+          {[...cats].map((c, i) => (
             <a
               href="#"
               key={`${c.name}-${i}`}

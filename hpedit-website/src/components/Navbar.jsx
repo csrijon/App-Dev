@@ -371,7 +371,7 @@ export default function Navbar() {
           font-weight: 500;
           font-size: 0.92rem;
 
-          color: var(--text-dark);
+          color: #4a1d7a;
 
           flex: 0 1 auto;
         }
@@ -435,7 +435,7 @@ export default function Navbar() {
 
           background: #fff;
 
-          color: var(--text-dark);
+          color: #4a1d7a;
 
           font-size: 0.85rem;
 
@@ -449,7 +449,7 @@ export default function Navbar() {
         }
 
         .nb-search input::placeholder {
-          color: #777;
+          color: #4a1d7a;
           opacity: 1;
         }
 
@@ -518,7 +518,7 @@ export default function Navbar() {
 
           border-radius: 8px;
 
-          color: var(--text-dark);
+          color: #4a1d7a;
 
           cursor: pointer;
 
@@ -592,7 +592,7 @@ export default function Navbar() {
 
           border-bottom: 1px solid rgba(74, 29, 122, 0.08);
 
-          color: var(--text-dark);
+          color: #4a1d7a;
 
           font-weight: 600;
 
@@ -865,7 +865,7 @@ export default function Navbar() {
 
             background: #fff;
 
-            color: var(--text-dark);
+            color: #4a1d7a;
 
             font-size: 0.95rem;
 
@@ -875,7 +875,7 @@ export default function Navbar() {
           }
 
           .nb-mobile .nb-search-mobile input::placeholder {
-            color: #777;
+            color: #4a1d7a;
 
             opacity: 1;
           }

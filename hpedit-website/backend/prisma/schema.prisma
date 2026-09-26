@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Hero {
+  id        Int      @id @default(autoincrement())
+  title     String
+  subtitle  String?
+  imageUrl  String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Creator {
+  id        Int      @id @default(autoincrement())
+  name      String
+  sub       String?
+  imageUrl  String?
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Testimonial {
+  id        Int      @id @default(autoincrement())
+  quote     String
+  author    String?
+  isActive  Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id        Int      @id @default(autoincrement())
+  title     String
+  imageUrl  String?
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+}
+
+model SocialLink {
+  id        Int      @id @default(autoincrement())
+  name      String
+  url       String
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+}
+
+model ContactSubmission {
+  id        Int      @id @default(autoincrement())
+  name      String?
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+}
+
+model FeatureStrip {
+  id        Int      @id @default(autoincrement())
+  title     String
+  subtitle  String?
+  iconKey   String?
+  sortOrder Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model SiteSettings {
+  id         Int      @id @default(autoincrement())
+  siteName   String?
+  footerText String?
+  updatedAt  DateTime @updatedAt
+}

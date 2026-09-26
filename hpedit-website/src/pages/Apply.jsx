@@ -138,8 +138,8 @@ export default function Apply() {
       {/* Footer */}
       <footer className="apply-footer">
         <h3 style={{ fontSize: 22, fontWeight: 800, marginBottom: 8,color:"rgb(204, 192, 224)" }}>HPEDIT Creator Portfolios</h3>
-        <p style={{ color: '#ccc0e0', maxWidth: 420, margin: '0 auto 16px', fontSize: 15, lineHeight: 1.5 }}>Free bespoke portfolio experiences for creators. Built in Kolkata, West Bengal, India.</p>
-        <p style={{ fontSize: 13, color: '#aaa0c0', marginBottom: 20 }}>© 2026 HP Edit Enterprise. All rights reserved.</p>
+        <p style={{ color: '#4a1d7a0e0', maxWidth: 420, margin: '0 auto 16px', fontSize: 15, lineHeight: 1.5 }}>Free bespoke portfolio experiences for creators. Built in Kolkata, West Bengal, India.</p>
+        <p style={{ fontSize: 13, color: '#4a1d7a0c0', marginBottom: 20 }}>© 2026 HP Edit Enterprise. All rights reserved.</p>
         <Link to="/" className="apply-footer-btn">Back to site →</Link>
       </footer>
 

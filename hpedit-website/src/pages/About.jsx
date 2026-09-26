@@ -52,7 +52,7 @@ export default function About() {
       {/* Stack */}
       <section className="ab-stack" style={{ color: '#fff', padding: '80px 24px', textAlign: 'center' }}>
         <h2 style={{ fontSize: 32,color:"rgb(204, 192, 224)", fontWeight: 800, letterSpacing: '-0.03em', marginBottom: 10 }}>Modern stack</h2>
-        <p style={{ color: '#ccc0e0', maxWidth: 540, margin: '0 auto 36px', lineHeight: 1.6 }}>Built on technology that scales from edge to cloud.</p>
+        <p style={{ color: '#4a1d7a0e0', maxWidth: 540, margin: '0 auto 36px', lineHeight: 1.6 }}>Built on technology that scales from edge to cloud.</p>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 12, maxWidth: 800, margin: '0 auto' }}>
           {['Next.js 15', 'Flutter', 'Gemini 2.0', 'Meta WhatsApp Cloud API', '100% IP handover'].map(t => (
             <span key={t} className="ab-stack-pill">{t}</span>
@@ -112,7 +112,7 @@ export default function About() {
       {/* CTA */}
       <section className="ab-cta" style={{ textAlign: 'center', padding: '60px 24px', color: '#fff', maxWidth: 720, margin: '0 auto 100px' }}>
         <h3 style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.03em', marginBottom: 12 }}>Let&apos;s build together</h3>
-        <p style={{ color: '#ccc0e0', marginBottom: 24, lineHeight: 1.6 }}>Contact: info@hpedit.com · Kolkata, India</p>
+        <p style={{ color: '#4a1d7a0e0', marginBottom: 24, lineHeight: 1.6 }}>Contact: info@hpedit.com · Kolkata, India</p>
         <Link to="/" className="ab-btn-light">Back to site →</Link>
       </section>
 
